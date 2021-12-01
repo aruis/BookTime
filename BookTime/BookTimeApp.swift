@@ -13,10 +13,9 @@ struct BookTimeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            BookList()
-                .environment(\.managedObjectContext,BookPersistenceController.preview.container.viewContext)
+//            BookList()                .environment(\.managedObjectContext,BookPersistenceController.preview.container.viewContext)
 
-//            BookList()                .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
+            BookList()                .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
         }
     }
 }

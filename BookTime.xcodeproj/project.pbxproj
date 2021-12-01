@@ -17,6 +17,7 @@
 		83731CA72755D1BF00305305 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA62755D1BF00305305 /* Book.swift */; };
 		83731CAA2755D39A00305305 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA92755D39A00305305 /* BookList.swift */; };
 		83731CAC2755D45D00305305 /* BookListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CAB2755D45D00305305 /* BookListItem.swift */; };
+		839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6327572FBC00AB05AF /* BookViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		83731CA62755D1BF00305305 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
+		839B4E6327572FBC00AB05AF /* BookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				839B4E6227572FA800AB05AF /* ViewModel */,
 				83492C7B275624BC006B5FF2 /* Extensions */,
 				83731CA82755D37C00305305 /* View */,
 				83731CA52755D18700305305 /* Model */,
@@ -107,6 +110,14 @@
 				835A3CDF275652CA00672F98 /* NewBook.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		839B4E6227572FA800AB05AF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				839B4E6327572FBC00AB05AF /* BookViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,6 +195,7 @@
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,
+				839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */,
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,

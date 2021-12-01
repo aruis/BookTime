@@ -15,6 +15,7 @@ struct BookList: View {
     @Environment(\.managedObjectContext) var context
     
     @State var showNewBook = false
+    @State private var showingAlert = false
     
     var body: some View {
         NavigationView {
@@ -23,23 +24,36 @@ struct BookList: View {
                     BookListItem(book: books[index])
                         .swipeActions(edge: .leading, allowsFullSwipe: false, content: {
                             Button{
-                                
+                                doneBook(book: books[index])
                             }label: {
-                                Label("已读完",systemImage: "checkmark.circle" )
+                                if books[index].isDone{
+                                    Label("没读完",systemImage: "exclamationmark.arrow.circlepath" )
+                                }else{
+                                    Label("已读完",systemImage: "checkmark.circle" )
+                                }
+                                
                             }
-                            .tint(.green)
+                            .tint(books[index].isDone ? Color("xwarning") : .green )
                         })
                         .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                             Button{
-                                deleteBook(book: books[index])
+                                showingAlert = true
                             }label: {
                                 Label( "删除", systemImage:  "trash")
-                                
                             }
                             .tint(Color("warning"))
                         })
+                        .alert(isPresented: $showingAlert){
+                            Alert(title: Text("确定删除吗？"), message: Text("删除后不可恢复哦"),
+                                  primaryButton: .default(Text("确定"),action: {
+                                deleteBook(book: books[index])
+                            }),
+                                  secondaryButton: .cancel(Text("取消")))
+                        }
+                    
                 }
-             
+                
+                
                 
                 //            .listRowSeparator(.hidden)
             }
@@ -71,6 +85,19 @@ struct BookList: View {
             }
         }
     }
+    
+    private func doneBook(book:Book){
+        book.isDone.toggle()
+        //        context.delete(book)
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
+        }
+    }
+    
 }
 
 struct BookList_Previews: PreviewProvider {

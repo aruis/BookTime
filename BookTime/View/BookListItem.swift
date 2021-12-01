@@ -32,11 +32,13 @@ struct BookListItem: View {
                 Text(book.name)
                     .font(.system(.title3, design: .rounded))
                 
-                Text(book.author)
-                    .font(.system(.body))
-                    .foregroundColor(.gray)
+                if let author = book.author {
+                    Text(author)
+                        .font(.system(.body))
+                        .foregroundColor(.gray)
+                }
                 
-                
+                                
                 HStack(alignment: .bottom,spacing: 6) {
                     if book.isDone{
                         Image(systemName: "clock.badge.checkmark.fill")
