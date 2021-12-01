@@ -6,17 +6,42 @@
 //
 
 import CoreData
+import UIKit
 
-struct PersistenceController {
-    static let shared = PersistenceController()
+struct BookPersistenceController {
+    static let shared = BookPersistenceController()
 
-    static var preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
+    static var preview: BookPersistenceController = {
+        let result = BookPersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-        }
+        let book = Book(context:viewContext)
+        
+        book.image = (UIImage(named: "python")?.jpegData(compressionQuality: 1.0))!
+        book.name = "漫画Python：编程入门超简单"
+        book.author = "[日]菅谷充"
+        book.isDone = true
+        book.readMinutes = 10000
+        book.createTime = Date()
+        
+        let book2 = Book(context:viewContext)
+        
+        book2.image = (UIImage(named: "tongji")?.jpegData(compressionQuality: 1.0))!
+        book2.name = "统计学图鉴"
+        book2.author = "[日]栗原伸一 [日]丸山敦史"
+//        book2.isDone = true
+        book2.readMinutes = 1000
+        book2.createTime = Date()
+
+        
+        let book3 = Book(context:viewContext)
+        
+        book3.image = (UIImage(named: "xiandai")?.jpegData(compressionQuality: 1.0))!
+        book3.name = "简单线性代数：漫画线性代数入门"
+        book3.author = "[日]键本聪"
+        book3.isDone = false
+        book3.readMinutes = 2000
+        book3.createTime = Date()
+
         do {
             try viewContext.save()
         } catch {
@@ -26,6 +51,11 @@ struct PersistenceController {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
         return result
+    }()
+    
+    static var testData:[Book]? = {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
+        return try? BookPersistenceController.preview.container.viewContext.fetch(fetchRequest) as? [Book]
     }()
 
     let container: NSPersistentCloudKitContainer

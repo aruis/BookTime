@@ -9,12 +9,14 @@ import SwiftUI
 
 @main
 struct BookTimeApp: App {
-    let persistenceController = PersistenceController.shared
+    let bookPersistenceController = BookPersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            BookList()
+                .environment(\.managedObjectContext,BookPersistenceController.preview.container.viewContext)
+
+//            BookList()                .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
         }
     }
 }
