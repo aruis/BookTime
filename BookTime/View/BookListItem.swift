@@ -18,13 +18,13 @@ struct BookListItem: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80)
-                    .cornerRadius(12)
+//                    .cornerRadius(12)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color("image.border"), lineWidth: 2)
-                        //                                .stroke(Color.black, style:StrokeStyle( lineWidth: 2, dash: [5.0,3.0]  ))
+                        Rectangle()
+                            .stroke(Color("image.border"), lineWidth: 1)
                     )
-                    .shadow(radius: 10)
+                    .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+//                    .shadow(radius: 10)
             }
             
             

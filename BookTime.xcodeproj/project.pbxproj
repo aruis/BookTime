@@ -18,6 +18,9 @@
 		83731CAA2755D39A00305305 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA92755D39A00305305 /* BookList.swift */; };
 		83731CAC2755D45D00305305 /* BookListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CAB2755D45D00305305 /* BookListItem.swift */; };
 		839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6327572FBC00AB05AF /* BookViewModel.swift */; };
+		839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E66275758C600AB05AF /* ImagePicker.swift */; };
+		839B4E692757648200AB05AF /* BookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E682757648200AB05AF /* BookCard.swift */; };
+		839B4E6E2757763900AB05AF /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6D2757763900AB05AF /* TimerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
 		839B4E6327572FBC00AB05AF /* BookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewModel.swift; sourceTree = "<group>"; };
+		839B4E66275758C600AB05AF /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		839B4E682757648200AB05AF /* BookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCard.swift; sourceTree = "<group>"; };
+		839B4E6D2757763900AB05AF /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				839B4E65275758A500AB05AF /* Util */,
 				839B4E6227572FA800AB05AF /* ViewModel */,
 				83492C7B275624BC006B5FF2 /* Extensions */,
 				83731CA82755D37C00305305 /* View */,
@@ -108,6 +115,8 @@
 				83731CA92755D39A00305305 /* BookList.swift */,
 				83731CAB2755D45D00305305 /* BookListItem.swift */,
 				835A3CDF275652CA00672F98 /* NewBook.swift */,
+				839B4E682757648200AB05AF /* BookCard.swift */,
+				839B4E6D2757763900AB05AF /* TimerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -118,6 +127,14 @@
 				839B4E6327572FBC00AB05AF /* BookViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		839B4E65275758A500AB05AF /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				839B4E66275758C600AB05AF /* ImagePicker.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,6 +179,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 83731C862755D0D600305305;
 			productRefGroup = 83731C902755D0D600305305 /* Products */;
@@ -193,10 +211,13 @@
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
+				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,
+				839B4E6E2757763900AB05AF /* TimerView.swift in Sources */,
 				839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */,
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
+				839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
 			);
@@ -332,6 +353,8 @@
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "您需要授权我可以访问您的相机";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "您需要授权我可以访问您的相册";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -361,6 +384,8 @@
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "您需要授权我可以访问您的相机";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "您需要授权我可以访问您的相册";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

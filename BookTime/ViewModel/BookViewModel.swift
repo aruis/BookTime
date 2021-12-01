@@ -12,7 +12,7 @@ import UIKit
 class BookViewModel: ObservableObject{
     @Published var name: String = ""
     @Published var author: String = ""
-    @Published var image: UIImage? = UIImage()
+    @Published var image: UIImage = UIImage()
     @Published var isDone: Bool = false
     @Published var readMinutes: Int64 = 0
     @Published var createTime: Date = Date()
@@ -25,17 +25,17 @@ class BookViewModel: ObservableObject{
                 self.author = author
             }
             
-            //                        self.image = UIImage(data: book.image) ?? UIImage()
+            self.image = UIImage(data: book.image) ?? UIImage()
             self.isDone = book.isDone
             self.readMinutes = book.readMinutes
             self.createTime = book.createTime
             self.doneTime = book.doneTime
             
-            if let imageData =  book.image{
-                self.image = UIImage(data: imageData)
-            }
-//            self.image = UIImage()
-//            self.doneTime = Date()
+//            if let imageData =  book.image{
+                //                self.image = UIImage(data: imageData)!
+//            }
+            //            self.image = UIImage()
+            //            self.doneTime = Date()
         }
     }
 }

@@ -11,8 +11,13 @@ struct NewBook: View {
     
     @Environment(\.managedObjectContext) var context
     @Environment(\.dismiss) var dismiss
+    
     @ObservedObject private var bookViewModel: BookViewModel
-
+    
+    @State private var showPhotoOptins = false
+    @State private var photoSource: PhotoSource?
+    
+    
     init(){
         let viewModel = BookViewModel()
         viewModel.image = UIImage(named: "xiandai")!
@@ -24,17 +29,20 @@ struct NewBook: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .center){
-                    if let image = bookViewModel.image{
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(minWidth: 0,maxWidth: 180)
-                            .padding()
-                            .shadow(color: Color( "image.border"), radius: 20)
-                    }
+                    
+                    Image(uiImage: bookViewModel.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(minWidth: 0,maxWidth: 180)
+                        .padding()
+                        .shadow(color: Color( "image.border"), radius: 20)
+                        .onTapGesture {
+                            self.showPhotoOptins.toggle()
+                        }
+                    
                     
                     FormTextField(label: "书名", placeholder: "请填入书名", value: $bookViewModel.name)
-
+                    
                     FormTextField(label: "作者", placeholder: "在这里输入作者就好", value: $bookViewModel.author)
                     
                     Spacer()
@@ -50,7 +58,28 @@ struct NewBook: View {
                 }){
                     Text("保存")
                         .font(.headline)
-//                        .foregroundColor(Color("NavigationBarTitle"))
+                    //                        .foregroundColor(Color("NavigationBarTitle"))
+                }
+            }
+            .actionSheet(isPresented: $showPhotoOptins){
+                ActionSheet(title: Text("选择一张图片作为本书封面").font(.system(.title)),
+                            message: nil,
+                            buttons: [
+                                .default(Text("相机")){
+                                    self.photoSource = .camera
+                                },
+                                .default(Text("相册")){
+                                    self.photoSource = .photoLibrary
+                                },
+                                .cancel(Text("取消"))
+                                
+                            ]
+                )
+            }
+            .fullScreenCover(item: $photoSource){source in
+                switch source {
+                case .photoLibrary: ImagePicker(sourceType: .photoLibrary, selectedImage: $bookViewModel.image).ignoresSafeArea()
+                case .camera: ImagePicker(sourceType: .camera, selectedImage: $bookViewModel.image).ignoresSafeArea()
                 }
             }
             
@@ -60,7 +89,7 @@ struct NewBook: View {
     
     private func save(){
         let book = Book(context:context)
-        book.image = bookViewModel.image?.pngData()
+        book.image = bookViewModel.image.pngData()!
         book.name = bookViewModel.name
         book.author = bookViewModel.author
         book.createTime = Date()
@@ -77,8 +106,8 @@ struct NewBook: View {
 struct NewBook_Previews: PreviewProvider {
     static var previews: some View {
         NewBook()
-            
-        NewBook()            
+        
+        NewBook()
             .preferredColorScheme(.dark)
     }
 }
@@ -107,5 +136,14 @@ struct FormTextField: View {
                 .padding(.vertical,10)
         }
         
+    }
+}
+
+enum PhotoSource: Identifiable{
+    case photoLibrary
+    case camera
+    
+    var id:Int{
+        hashValue
     }
 }

@@ -12,7 +12,7 @@ import CoreData
 class Book:NSManagedObject{
     @NSManaged var name: String
     @NSManaged var author: String?
-    @NSManaged var image: Data?
+    @NSManaged var image: Data
     @NSManaged var isDone: Bool
     @NSManaged var readMinutes: Int64
     @NSManaged var createTime: Date
