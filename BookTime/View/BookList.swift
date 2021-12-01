@@ -9,7 +9,9 @@ import SwiftUI
 
 struct BookList: View {
     
-    @FetchRequest(entity: Book.entity(), sortDescriptors: [])
+    @FetchRequest(entity: Book.entity(), sortDescriptors:[
+        NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
+    ])
     var books: FetchedResults<Book>
     
     @Environment(\.managedObjectContext) var context
@@ -45,7 +47,7 @@ struct BookList: View {
                         })
                         .alert(isPresented: $showingAlert){
                             Alert(title: Text("确定删除吗？"), message: Text("删除后不可恢复哦"),
-                                  primaryButton: .default(Text("确定"),action: {
+                                  primaryButton: .destructive(Text("删除"),action: {
                                 deleteBook(book: books[index])
                             }),
                                   secondaryButton: .cancel(Text("取消")))
