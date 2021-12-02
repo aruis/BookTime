@@ -13,39 +13,21 @@ struct TimerView: View {
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject var book: Book
+    @ObservedObject var timerTrack:TimerTrack = TimerTrack.shared
     
     @State var nowDate: Date = Date()
     
     
     private let beginDate: Date  = Date()
     
-    var timer: Timer {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
-            self.nowDate = Date()
-        }
-    }
-    
-    var saveTimer:Timer{
-        Timer.scheduledTimer(withTimeInterval: 60, repeats: true) {_ in
-            book.readMinutes += 1
-            print("plus min \(Date())")
-            DispatchQueue.main.async {
-                do{
-                    try context.save()
-                }catch{
-                    print(error)
-                }
-            }
-        }
-    }
     
     var body: some View {
         VStack{
-            Text(countDownString(from: beginDate))
+//            Text(countDownString(from: beginDate))
+            Text(String( timerTrack.count))
                 .font(.largeTitle)
             Button(action: {
-                self.timer.invalidate()
-                self.saveTimer.invalidate()
+             
                 dismiss()
             }){
                 Text("结束")
@@ -54,16 +36,12 @@ struct TimerView: View {
         }
         
         .onAppear(perform: {
-            
-//            _ = self.timer
-//            _ = self.saveTimer
-            
+            timerTrack.start()
             print("begin \(beginDate)")
         })
         .onDisappear(perform: {
+            timerTrack.stop()
             print("close")
-            self.timer.invalidate()
-            self.saveTimer.invalidate()
         })
         
     }
