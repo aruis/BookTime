@@ -20,8 +20,9 @@ struct BookCard: View {
     var body: some View {
         
         if verticalSizeClass == .compact || showTimer{
-            VStack{
+            VStack(alignment: .center,spacing: 200){
                 TimerView(book: book)
+                    .padding(.bottom, verticalSizeClass == .compact ? 50 : 0)
                 
                 if self.showTimer && verticalSizeClass != .compact{
                     Button(action: {
@@ -37,19 +38,19 @@ struct BookCard: View {
         } else{
             ScrollView {
                 VStack(alignment: .center,spacing: 10){
-                    Text(book.name).font(.system(.title))
+                    Text(book.name).font(.system(.title2))
                     
                     Image(uiImage: UIImage(data: book.image)!)
                         .resizable()
                         .scaledToFit()
-                        .frame(minWidth: 0,maxWidth: 180)
+                        .frame(minWidth: 0,maxWidth: 150)
                         .padding()
                         .shadow(color: Color( "image.border"), radius: 8,x:10,y:10)
+                        .onTapGesture {
+                            self.showTimer = true
+                        }
                     
                     if book.isDone {
-                        
-                        
-                        
                         HStack{
                             ForEach(0...4,id: \.self) {index in
                                 Image(systemName: book.rating > index ? "star.fill" : "star")
@@ -84,8 +85,8 @@ struct BookCard: View {
                         }
                     }
                     
-                    Text("您已阅读:").font(.system(.title))
-                    Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                    Text("您已阅读:").font(.system(.title2))
+                    Text(book.readMinutes.asString()).font(.system(.largeTitle))                   
                     
                     Button(action: {
                         self.showTimer = true
