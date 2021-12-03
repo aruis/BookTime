@@ -22,9 +22,15 @@ struct BookCard: View {
         if verticalSizeClass == .compact || showTimer{
             VStack{
                 TimerView(book: book)
-                    .onDisappear(perform: {
+                
+                if self.showTimer && verticalSizeClass != .compact{
+                    Button(action: {
                         self.showTimer = false
-                    })
+                    }){
+                        Text("结束阅读")
+                    }
+                }
+                
                 
             }
             
@@ -39,12 +45,48 @@ struct BookCard: View {
                         .frame(minWidth: 0,maxWidth: 180)
                         .padding()
                         .shadow(color: Color( "image.border"), radius: 8,x:10,y:10)
-                    //                    .padding(10)
                     
-                    //                Spacer(minLength: 10)
+                    if book.isDone {
+                        
+                        
+                        
+                        HStack{
+                            ForEach(0...4,id: \.self) {index in
+                                Image(systemName: book.rating > index ? "star.fill" : "star")
+                                    .onTapGesture {
+                                        if book.rating == 1 && index == 0 {
+                                            book.rating = 0
+                                        }else{
+                                            book.rating = Int16(index+1)
+                                        }
+                                        
+                                        DispatchQueue.main.async {
+                                            do{
+                                                try context.save()
+                                            }catch{
+                                                print(error)
+                                            }
+                                        }
+                                        
+                                    }
+                                    .onTapGesture (count: 2){
+                                        book.rating = 0
+                                        DispatchQueue.main.async {
+                                            do{
+                                                try context.save()
+                                            }catch{
+                                                print(error)
+                                            }
+                                        }
+                                        
+                                    }
+                            }
+                        }
+                    }
                     
                     Text("您已阅读:").font(.system(.title))
                     Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                    
                     Button(action: {
                         self.showTimer = true
                     }) {
@@ -56,8 +98,8 @@ struct BookCard: View {
                                 .font(.title2)
                         }
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50)
-    //                    .background(Color.blue)
-    //                    .foregroundColor(.white)
+                        //                    .background(Color.blue)
+                        //                    .foregroundColor(.white)
                         .cornerRadius(20)
                         .padding(.horizontal)
                     }
@@ -80,7 +122,7 @@ struct BookCard: View {
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-
+            
         }
         
     }

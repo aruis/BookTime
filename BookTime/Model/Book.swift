@@ -17,4 +17,5 @@ class Book:NSManagedObject{
     @NSManaged var readMinutes: Int64
     @NSManaged var createTime: Date
     @NSManaged var doneTime: Date?
+    @NSManaged var rating: Int16
 }

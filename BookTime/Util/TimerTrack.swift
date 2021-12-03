@@ -12,6 +12,7 @@ class TimerTrack:ObservableObject{
     @Published var count = 0
     var timer = Timer()
     
+    
     static var shared: TimerTrack = {
         let instance = TimerTrack()
         // ... configure the instance
@@ -21,10 +22,11 @@ class TimerTrack:ObservableObject{
     
     private init() {}
     
-    func start(){
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true ){_ in
-            print("x")
+    func start(callback: @escaping (Int)->() ){
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true ){ _ in            
             self.count += 1
+            callback(self.count)
+            
         }
     }
     

@@ -17,6 +17,7 @@ class BookViewModel: ObservableObject{
     @Published var readMinutes: Int64 = 0
     @Published var createTime: Date = Date()
     @Published var doneTime: Date? = Date()
+    @Published var rating: Int16 = 0
     
     init(book:Book? = nil){
         if let book = book {
@@ -30,6 +31,7 @@ class BookViewModel: ObservableObject{
             self.readMinutes = book.readMinutes
             self.createTime = book.createTime
             self.doneTime = book.doneTime
+            self.rating = book.rating
             
 //            if let imageData =  book.image{
                 //                self.image = UIImage(data: imageData)!

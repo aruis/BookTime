@@ -25,8 +25,6 @@ struct BookList: View {
                 ForEach(books.indices,id:\.self){index in
                     NavigationLink(
                         destination: BookCard(book: books[index])
-                            
-//                            .padding(.top,10)
                     ){
                         
                         BookListItem(book: books[index])
