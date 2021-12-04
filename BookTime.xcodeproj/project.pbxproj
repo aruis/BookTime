@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
 		83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83492C7E275624F2006B5FF2 /* IntExt.swift */; };
+		83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8350256F275ADC8A00EF9C5C /* RoundedCross.swift */; };
+		83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502570275ADC8A00EF9C5C /* Triangle.swift */; };
+		83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502571275ADC8A00EF9C5C /* SlimRectangle.swift */; };
+		83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */; };
 		835A3CE0275652CA00672F98 /* NewBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A3CDF275652CA00672F98 /* NewBook.swift */; };
 		83731C932755D0D600305305 /* BookTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731C922755D0D600305305 /* BookTimeApp.swift */; };
 		83731C972755D0D700305305 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83731C962755D0D700305305 /* Assets.xcassets */; };
@@ -28,6 +32,10 @@
 /* Begin PBXFileReference section */
 		8320045D2759B71900EB64FC /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		83492C7E275624F2006B5FF2 /* IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExt.swift; sourceTree = "<group>"; };
+		8350256F275ADC8A00EF9C5C /* RoundedCross.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCross.swift; sourceTree = "<group>"; };
+		83502570275ADC8A00EF9C5C /* Triangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
+		83502571275ADC8A00EF9C5C /* SlimRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlimRectangle.swift; sourceTree = "<group>"; };
+		83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiSwiftUI.swift; sourceTree = "<group>"; };
 		835A3CDF275652CA00672F98 /* NewBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBook.swift; sourceTree = "<group>"; };
 		83731C8F2755D0D600305305 /* BookTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83731C922755D0D600305305 /* BookTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeApp.swift; sourceTree = "<group>"; };
@@ -64,6 +72,25 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				8350256E275ADC8A00EF9C5C /* Shapes */,
+				83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */,
+			);
+			path = ConfettiSwiftUI;
+			sourceTree = "<group>";
+		};
+		8350256E275ADC8A00EF9C5C /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				8350256F275ADC8A00EF9C5C /* RoundedCross.swift */,
+				83502570275ADC8A00EF9C5C /* Triangle.swift */,
+				83502571275ADC8A00EF9C5C /* SlimRectangle.swift */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
 		83731C862755D0D600305305 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +110,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */,
 				839B4E65275758A500AB05AF /* Util */,
 				839B4E6227572FA800AB05AF /* ViewModel */,
 				83492C7B275624BC006B5FF2 /* Extensions */,
@@ -217,7 +245,9 @@
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
+				83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */,
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
+				83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,
@@ -227,7 +257,9 @@
 				83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */,
 				839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
+				83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
+				83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+//import ConfettiSwiftUI
 
 struct BookCard: View {
     
@@ -16,6 +17,8 @@ struct BookCard: View {
     @ObservedObject var book: Book
     
     @State private var showTimer:Bool = false
+    @State private var showAlert:Bool = false
+    @State var downTrigger:Int = 0
     
     var body: some View {
         
@@ -34,6 +37,7 @@ struct BookCard: View {
                 
                 
             }
+            .navigationBarBackButtonHidden(true)
             
         } else{
             ScrollView {
@@ -50,82 +54,111 @@ struct BookCard: View {
                             self.showTimer = true
                         }
                     
-                    if book.isDone {
-                        HStack{
-                            ForEach(0...4,id: \.self) {index in
-                                Image(systemName: book.rating > index ? "star.fill" : "star")
-                                    .onTapGesture {
-                                        if book.rating == 1 && index == 0 {
-                                            book.rating = 0
-                                        }else{
-                                            book.rating = Int16(index+1)
-                                        }
-                                        
-                                        DispatchQueue.main.async {
-                                            do{
-                                                try context.save()
-                                            }catch{
-                                                print(error)
-                                            }
-                                        }
-                                        
-                                    }
-                                    .onTapGesture (count: 2){
+                    
+                    HStack(spacing:10){
+                        ForEach(0...4,id: \.self) {index in
+                            Image(systemName: book.rating > index ? "star.fill" : "star")
+                                .font(.title2)
+                                .onTapGesture {
+                                    if book.rating == 1 && index == 0 {
                                         book.rating = 0
-                                        DispatchQueue.main.async {
-                                            do{
-                                                try context.save()
-                                            }catch{
-                                                print(error)
-                                            }
-                                        }
-                                        
+                                    }else{
+                                        book.rating = Int16(index+1)
                                     }
-                            }
+                                    save()
+                                }
+                                .onTapGesture (count: 2){
+                                    book.rating = 0
+                                    save()
+                                }
                         }
-                    }
+                    }.opacity(book.isDone ? 1 : 0)
+                        .animation(.default, value: book.isDone)
+                    
                     
                     Text("您已阅读:").font(.system(.title2))
-                    Text(book.readMinutes.asString()).font(.system(.largeTitle))                   
+                    Text(book.readMinutes.asString()).font(.system(.largeTitle))
                     
-                    Button(action: {
-                        self.showTimer = true
-                    }) {
-                        HStack {
-                            Image(systemName: "iphone.landscape")
-                                .font(.system(size: 20))
-                            
-                            Text(book.readMinutes>0 ? "继续阅读":"开始阅读")
-                                .font(.title2)
-                        }
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50)
-                        //                    .background(Color.blue)
-                        //                    .foregroundColor(.white)
-                        .cornerRadius(20)
-                        .padding(.horizontal)
+                    ZStack{
+                        RoundedRectangle(cornerRadius: book.isDone ? 25:5)
+                            .frame(width: book.isDone ? 50:250, height: 50)
+                            .foregroundColor(book.isDone ? .green : .gray)
+                            .overlay(
+                                //                                Text("")
+                                Image(systemName: "checkmark")
+                                    .font(.system(.title))
+                                    .foregroundColor(.white)
+                                    .scaleEffect(book.isDone ? 1: 0.7)
+                                    .opacity(book.isDone ? 1 : 0)
+                            )
+                        //                            .frame(width: 12, height: 12)
+                        //                                           .modifier(ParticlesModifier())
+                        //                                           .offset(x: -100, y : -50)
+                        
+                        
+                        Text("我已读完")
+                            .opacity(book.isDone ? 0 : 1)
+                            .fixedSize()
+                        
+                            .foregroundColor(.white)
                     }
+                    .onTapGesture {
+                        book.isDone.toggle()
+                        if(book.isDone){ downTrigger+=1}
+                        save()
+                    }
+                    .animation(.easeInOut, value: book.isDone)
+                    
+                    ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
                 }
                 
                 //            .padding(.top,-50)
                 .padding(10)
-                //            .toolbar {
-                //                ToolbarItem(placement: .navigationBarLeading) {
-                //                    Button(action: {
-                //                        dismiss()
-                //                    }) {
-                //                        Text("\(Image(systemName: "chevron.left"))")
-                //                    }
-                //                    .opacity(showReview ? 0 : 1)
-                //                }
-                //            }
+                
                 
                 
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        self.showAlert = true
+                    }){
+                        Image(systemName: "ellipsis")
+                    }
+                    .confirmationDialog("", isPresented: $showAlert, actions: {
+                        Button("删除此书（不可恢复）", role: .destructive) {
+                            delete()
+                            dismiss()
+                        }
+                        Button("取消", role: .cancel) {
+                            self.showAlert = false
+                        }
+                    })
+                }
+            }
+            
+            
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
+//            .navigationBarBackButtonHidden(true)
             
         }
         
+    }
+    
+    func save(){
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
+        }
+    }
+    
+    func delete(){
+        context.delete(book)
+        save()
     }
     
 }
@@ -145,5 +178,45 @@ struct BookCard_Previews: PreviewProvider {
         }
         //        .environment(\.dynamicTypeSize, .small)
         //        .accentColor(.white)
+    }
+}
+
+struct ParticlesModifier: ViewModifier {
+    @State var time = 0.0
+    @State var scale = 0.1
+    let duration = 5.0
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            ForEach(0..<80, id: \.self) { index in
+                content
+                    .hueRotation(Angle(degrees: time * 80))
+                    .scaleEffect(scale)
+                    .modifier(FireworkParticlesGeometryEffect(time: time))
+                    .opacity(((duration-time) / duration))
+            }
+        }
+        .onAppear {
+            withAnimation (.easeOut(duration: duration)) {
+                self.time = duration
+                self.scale = 1.0
+            }
+        }
+    }
+}
+
+struct FireworkParticlesGeometryEffect : GeometryEffect {
+    var time : Double
+    var speed = Double.random(in: 20 ... 200)
+    var direction = Double.random(in: -Double.pi ...  Double.pi)
+    var animatableData: Double {
+        get { time }
+        set { time = newValue }
+    }
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        let xTranslation = speed * cos(direction) * time
+        let yTranslation = speed * sin(direction) * time
+        let affineTranslation =  CGAffineTransform(translationX: xTranslation, y: yTranslation)
+        return ProjectionTransform(affineTranslation)
     }
 }

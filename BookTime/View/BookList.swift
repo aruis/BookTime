@@ -18,94 +18,53 @@ struct BookList: View {
     
     @State var showNewBook = false
     @State private var showingAlert = false
+    @State private var searchText = ""
     
     var body: some View {
         NavigationView {
             List{
                 ForEach(books.indices,id:\.self){index in
-                    NavigationLink(
-                        destination: BookCard(book: books[index])
-                    ){
+                    ZStack(alignment: .leading){
+                        NavigationLink(
+                            destination: BookCard(book: books[index])
+                        ){
+                            EmptyView()
+                        }.opacity(0)
                         
                         BookListItem(book: books[index])
-                            .swipeActions(edge: .leading, allowsFullSwipe: false, content: {
-                                Button{
-                                    doneBook(book: books[index])
-                                }label: {
-                                    if books[index].isDone{
-                                        Label("没读完",systemImage: "exclamationmark.arrow.circlepath" )
-                                    }else{
-                                        Label("已读完",systemImage: "checkmark.circle" )
-                                    }
-                                    
-                                }
-                                .tint(books[index].isDone ? Color("xwarning") : .green )
-                            })
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
-                                Button{
-                                    showingAlert = true
-                                }label: {
-                                    Label( "删除", systemImage:  "trash")
-                                }
-                                .tint(Color("warning"))
-                            })
-                            .alert(isPresented: $showingAlert){
-                                Alert(title: Text("确定删除吗？"), message: Text("删除后不可恢复哦"),
-                                      primaryButton: .destructive(Text("删除"),action: {
-                                    deleteBook(book: books[index])
-                                }),
-                                      secondaryButton: .cancel(Text("取消")))
-                            }}
-                    
-                    
+                        
+                    }
+                    .listRowSeparator(.hidden)
                 }
-                
-                
-                
-                            .listRowSeparator(.hidden)
+            
             }
             .listStyle(.plain)
             .navigationTitle("我的书架")
             .navigationBarTitleDisplayMode(.automatic)
-            
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索一本书" )
+            .onChange(of: searchText){ searchText in
+                let predicate = searchText.isEmpty
+                ? NSPredicate(value: true)
+                : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
+                
+                books.nsPredicate = predicate
+            }
+
             .toolbar{
                 Button(action: {
                     self.showNewBook = true
                 }){
                     Image(systemName: "plus")
                 }
+                
             }
-            .sheet(isPresented: $showNewBook){
-                NewBook()
-            }
+         
+            
         }
-        
-    }
-    
-    private func deleteBook(book:Book){
-        context.delete(book)
-        DispatchQueue.main.async {
-            do{
-                try context.save()
-            }catch{
-                print(error)
-            }
+        .sheet(isPresented: $showNewBook){
+            NewBook()
         }
     }
-    
-    private func doneBook(book:Book){
-        book.isDone.toggle()
-        book.doneTime = Date()
-        //        context.delete(book)
-        DispatchQueue.main.async {
-            do{
-                try context.save()
-            }catch{
-                print(error)
-            }
-        }
-    }
-    
 }
 
 struct BookList_Previews: PreviewProvider {

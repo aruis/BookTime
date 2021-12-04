@@ -46,7 +46,7 @@ struct TimerView: View {
                 
             }
             .font(.custom("Courier New",size: 100)            )
-            .onAppear(perform: {
+            .onAppear(perform: {                
                 UIApplication.shared.isIdleTimerDisabled = true
             })
             .onDisappear(perform: {
