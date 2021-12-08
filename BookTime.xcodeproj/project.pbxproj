@@ -13,7 +13,9 @@
 		83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502570275ADC8A00EF9C5C /* Triangle.swift */; };
 		83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502571275ADC8A00EF9C5C /* SlimRectangle.swift */; };
 		83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */; };
+		83502578275B012200EF9C5C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502577275B012200EF9C5C /* Setting.swift */; };
 		835A3CE0275652CA00672F98 /* NewBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A3CDF275652CA00672F98 /* NewBook.swift */; };
+		835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B845A2760A04600F9BAE8 /* DateExt.swift */; };
 		83731C932755D0D600305305 /* BookTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731C922755D0D600305305 /* BookTimeApp.swift */; };
 		83731C972755D0D700305305 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83731C962755D0D700305305 /* Assets.xcassets */; };
 		83731C9A2755D0D700305305 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83731C992755D0D700305305 /* Preview Assets.xcassets */; };
@@ -22,6 +24,10 @@
 		83731CA72755D1BF00305305 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA62755D1BF00305305 /* Book.swift */; };
 		83731CAA2755D39A00305305 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA92755D39A00305305 /* BookList.swift */; };
 		83731CAC2755D45D00305305 /* BookListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CAB2755D45D00305305 /* BookListItem.swift */; };
+		83862925275F960B004E3141 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862922275F960B004E3141 /* BlurView.swift */; };
+		83862926275F960B004E3141 /* AlertToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862923275F960B004E3141 /* AlertToast.swift */; };
+		83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862924275F960B004E3141 /* ActivityIndicator.swift */; };
+		83955FEB275EFB43004408C3 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955FEA275EFB43004408C3 /* About.swift */; };
 		839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6327572FBC00AB05AF /* BookViewModel.swift */; };
 		839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E66275758C600AB05AF /* ImagePicker.swift */; };
 		839B4E692757648200AB05AF /* BookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E682757648200AB05AF /* BookCard.swift */; };
@@ -36,7 +42,9 @@
 		83502570275ADC8A00EF9C5C /* Triangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
 		83502571275ADC8A00EF9C5C /* SlimRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlimRectangle.swift; sourceTree = "<group>"; };
 		83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiSwiftUI.swift; sourceTree = "<group>"; };
+		83502577275B012200EF9C5C /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		835A3CDF275652CA00672F98 /* NewBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBook.swift; sourceTree = "<group>"; };
+		835B845A2760A04600F9BAE8 /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 		83731C8F2755D0D600305305 /* BookTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83731C922755D0D600305305 /* BookTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeApp.swift; sourceTree = "<group>"; };
 		83731C962755D0D700305305 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -46,6 +54,10 @@
 		83731CA62755D1BF00305305 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
+		83862922275F960B004E3141 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		83862923275F960B004E3141 /* AlertToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertToast.swift; sourceTree = "<group>"; };
+		83862924275F960B004E3141 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		83955FEA275EFB43004408C3 /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		839B4E6327572FBC00AB05AF /* BookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewModel.swift; sourceTree = "<group>"; };
 		839B4E66275758C600AB05AF /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		839B4E682757648200AB05AF /* BookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCard.swift; sourceTree = "<group>"; };
@@ -68,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				83492C7E275624F2006B5FF2 /* IntExt.swift */,
+				835B845A2760A04600F9BAE8 /* DateExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -110,6 +123,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				83862921275F960B004E3141 /* AlertToast */,
 				8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */,
 				839B4E65275758A500AB05AF /* Util */,
 				839B4E6227572FA800AB05AF /* ViewModel */,
@@ -150,8 +164,20 @@
 				839B4E682757648200AB05AF /* BookCard.swift */,
 				839B4E6D2757763900AB05AF /* TimerView.swift */,
 				8320045D2759B71900EB64FC /* Statistics.swift */,
+				83502577275B012200EF9C5C /* Setting.swift */,
+				83955FEA275EFB43004408C3 /* About.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		83862921275F960B004E3141 /* AlertToast */ = {
+			isa = PBXGroup;
+			children = (
+				83862922275F960B004E3141 /* BlurView.swift */,
+				83862923275F960B004E3141 /* AlertToast.swift */,
+				83862924275F960B004E3141 /* ActivityIndicator.swift */,
+			);
+			path = AlertToast;
 			sourceTree = "<group>";
 		};
 		839B4E6227572FA800AB05AF /* ViewModel */ = {
@@ -246,11 +272,15 @@
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
 				83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */,
+				83862926275F960B004E3141 /* AlertToast.swift in Sources */,
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
+				83955FEB275EFB43004408C3 /* About.swift in Sources */,
 				83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
+				83862925275F960B004E3141 /* BlurView.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,
+				83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */,
 				839B4E6E2757763900AB05AF /* TimerView.swift in Sources */,
 				839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */,
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
@@ -258,8 +288,10 @@
 				839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
 				83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */,
+				83502578275B012200EF9C5C /* Setting.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
 				83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */,
+				835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

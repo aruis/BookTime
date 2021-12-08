@@ -14,6 +14,7 @@ struct NewBook: View {
     
     @ObservedObject private var bookViewModel: BookViewModel
     
+    @State private var showToast = false
     @State private var showPhotoOptins = false
     @State private var photoSource: PhotoSource?
     
@@ -48,13 +49,16 @@ struct NewBook: View {
                     Spacer()
                 }
                 .padding(10)
+               
             }
             .navigationTitle("读一本新书")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
-                    save()
-                    dismiss()
+                    if( save()){
+                        dismiss()
+                    }
+                    
                 }){
                     Text("保存")
                         .font(.headline)
@@ -82,24 +86,47 @@ struct NewBook: View {
                 case .camera: ImagePicker(sourceType: .camera, selectedImage: $bookViewModel.image).ignoresSafeArea()
                 }
             }
-            
+            .toast(isPresenting: $showToast){
+
+                      // `.alert` is the default displayMode
+//                    AlertToast(type: .error(.red), title: "Message Sent!")
+                      
+                      //Choose .hud to toast alert from the top of the screen
+//                          AlertToast(displayMode: .hud, type: .regular, title: "Message Sent!")
+                      
+                      //Choose .banner to slide/pop alert from the bottom of the screen
+                AlertToast(displayMode: .hud, type: .systemImage("exclamationmark.bubble.circle.fill", .orange), title: "Message Sent!")
+                  }
         }
         
     }
     
-    private func save(){
+    private func save() -> Bool{
+        if(bookViewModel.name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty) {
+            showToast = true
+            return false
+        }
+        
+        if(bookViewModel.author.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty){
+            return false
+        }
+        
         let book = Book(context:context)
+        book.id = UUID()
         book.image = bookViewModel.image.pngData()!
         book.name = bookViewModel.name
         book.author = bookViewModel.author
         book.createTime = Date()
         
         do{
+            print(book)
             try context.save()
         }catch{
             print("Failed to save the recode...")
             print(error.localizedDescription)
         }
+        
+        return true
     }
 }
 

@@ -4,6 +4,7 @@
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="doneTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -11,6 +12,6 @@
         <attribute name="readMinutes" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Book" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="Book" positionX="-63" positionY="-18" width="128" height="164"/>
     </elements>
 </model>

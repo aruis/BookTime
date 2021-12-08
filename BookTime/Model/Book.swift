@@ -10,6 +10,7 @@ import CoreImage
 import CoreData
 
 class Book:NSManagedObject{
+    @NSManaged var id: UUID
     @NSManaged var name: String
     @NSManaged var author: String?
     @NSManaged var image: Data

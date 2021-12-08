@@ -40,8 +40,9 @@ struct BookList: View {
             }
             .listStyle(.plain)
             .navigationTitle("我的书架")
+            
             .navigationBarTitleDisplayMode(.automatic)
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索一本书" )
+            .searchable(text: $searchText,  prompt: "按书名搜索" )
             .onChange(of: searchText){ searchText in
                 let predicate = searchText.isEmpty
                 ? NSPredicate(value: true)

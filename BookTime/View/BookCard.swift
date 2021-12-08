@@ -18,135 +18,152 @@ struct BookCard: View {
     
     @State private var showTimer:Bool = false
     @State private var showAlert:Bool = false
+    @State private var showBatterySheet:Bool = false
     @State var downTrigger:Int = 0
     
+    
+    
+    @State var batteryLevel = UIDevice.current.batteryLevel
     var body: some View {
-        
-        if verticalSizeClass == .compact || showTimer{
-            VStack(alignment: .center,spacing: 200){
-                TimerView(book: book)
-                    .padding(.bottom, verticalSizeClass == .compact ? 50 : 0)
-                
-                if self.showTimer && verticalSizeClass != .compact{
-                    Button(action: {
-                        self.showTimer = false
-                    }){
-                        Text("结束阅读")
-                    }
-                }
-                
-                
-            }
-            .navigationBarBackButtonHidden(true)
-            
-        } else{
-            ScrollView {
-                VStack(alignment: .center,spacing: 10){
-                    Text(book.name).font(.system(.title2))
+        ZStack{
+            if verticalSizeClass == .compact || showTimer{
+                ZStack{
                     
-                    Image(uiImage: UIImage(data: book.image)!)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(minWidth: 0,maxWidth: 150)
-                        .padding()
-                        .shadow(color: Color( "image.border"), radius: 8,x:10,y:10)
-                        .onTapGesture {
-                            self.showTimer = true
+                    TimerView(book: book)
+                    
+                    
+                    if self.showTimer && verticalSizeClass != .compact{
+                        VStack{
+                            Spacer()
+                            Button(action: {
+                                self.showTimer = false
+                            }){
+                                Text("结束阅读")
+                            }
                         }
+                        
+                    }
                     
-                    
-                    HStack(spacing:10){
-                        ForEach(0...4,id: \.self) {index in
-                            Image(systemName: book.rating > index ? "star.fill" : "star")
-                                .font(.title2)
-                                .onTapGesture {
-                                    if book.rating == 1 && index == 0 {
-                                        book.rating = 0
-                                    }else{
-                                        book.rating = Int16(index+1)
+                }
+                .navigationBarBackButtonHidden(true)
+            } else{
+                ScrollView {
+                    VStack(alignment: .center,spacing: 10){
+                        Text(book.name).font(.system(.title2))
+                        
+                        Image(uiImage: UIImage(data: book.image)!)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(minWidth: 0,maxWidth: 150)
+                            .padding()
+                            .shadow(color: Color( "image.border"), radius: 8,x:10,y:10)
+                            .onTapGesture {
+                                self.showTimer = true
+                            }
+                        
+                        
+                        HStack(spacing:10){
+                            ForEach(0...4,id: \.self) {index in
+                                Image(systemName: book.rating > index ? "star.fill" : "star")
+                                    .font(.title2)
+                                    .onTapGesture {
+                                        if book.rating == 1 && index == 0 {
+                                            book.rating = 0
+                                        }else{
+                                            book.rating = Int16(index+1)
+                                        }
+                                        save()
                                     }
-                                    save()
-                                }
-                                .onTapGesture (count: 2){
-                                    book.rating = 0
-                                    save()
-                                }
+                                    .onTapGesture (count: 2){
+                                        book.rating = 0
+                                        save()
+                                    }
+                            }
+                        }.opacity(book.isDone ? 1 : 0)
+                            .animation(.default, value: book.isDone)
+                        
+                        
+                        Text("您已阅读:").font(.system(.title2))
+                        Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                        
+                        ZStack{
+                            
+                            Spacer()
+                                .frame(width: 800.0)
+                            
+                            RoundedRectangle(cornerRadius: book.isDone ? 25:5)
+                                .frame(width: book.isDone ? 50:250, height: 50)
+                                .foregroundColor(book.isDone ? .green : .gray)
+                                .overlay(
+                                    //                                Text("")
+                                    Image(systemName: "checkmark")
+                                        .font(.system(.title))
+                                        .foregroundColor(.white)
+                                        .scaleEffect(book.isDone ? 1: 0.7)
+                                        .opacity(book.isDone ? 1 : 0)
+                                )
+                            //                            .frame(width: 12, height: 12)
+                            //                                           .modifier(ParticlesModifier())
+                            //                                           .offset(x: -100, y : -50)
+                            
+                            
+                            Text("我已读完")
+                                .opacity(book.isDone ? 0 : 1)
+                                .fixedSize()
+                            
+                                .foregroundColor(.white)
                         }
-                    }.opacity(book.isDone ? 1 : 0)
-                        .animation(.default, value: book.isDone)
-                    
-                    
-                    Text("您已阅读:").font(.system(.title2))
-                    Text(book.readMinutes.asString()).font(.system(.largeTitle))
-                    
-                    ZStack{
-                        RoundedRectangle(cornerRadius: book.isDone ? 25:5)
-                            .frame(width: book.isDone ? 50:250, height: 50)
-                            .foregroundColor(book.isDone ? .green : .gray)
-                            .overlay(
-                                //                                Text("")
-                                Image(systemName: "checkmark")
-                                    .font(.system(.title))
-                                    .foregroundColor(.white)
-                                    .scaleEffect(book.isDone ? 1: 0.7)
-                                    .opacity(book.isDone ? 1 : 0)
-                            )
-                        //                            .frame(width: 12, height: 12)
-                        //                                           .modifier(ParticlesModifier())
-                        //                                           .offset(x: -100, y : -50)
+                        .onTapGesture {
+                            book.isDone.toggle()
+                            if(book.isDone){ downTrigger+=1}
+                            save()
+                        }
+                        .animation(.easeInOut, value: book.isDone)
                         
-                        
-                        Text("我已读完")
-                            .opacity(book.isDone ? 0 : 1)
-                            .fixedSize()
-                        
-                            .foregroundColor(.white)
+                        ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
                     }
-                    .onTapGesture {
-                        book.isDone.toggle()
-                        if(book.isDone){ downTrigger+=1}
-                        save()
-                    }
-                    .animation(.easeInOut, value: book.isDone)
                     
-                    ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
+                    //            .padding(.top,-50)
+                    .padding(10)
+                    
+                    
+                    
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            self.showAlert = true
+                        }){
+                            Image(systemName: "ellipsis")
+                        }
+                        .confirmationDialog("", isPresented: $showAlert, actions: {
+                            Button("删除此书（不可恢复）", role: .destructive) {
+                                delete()
+                                dismiss()
+                            }
+                            Button("取消", role: .cancel) {
+                                self.showAlert = false
+                            }
+                        })
+                    }
                 }
                 
-                //            .padding(.top,-50)
-                .padding(10)
                 
                 
+                
+                //
                 
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        self.showAlert = true
-                    }){
-                        Image(systemName: "ellipsis")
-                    }
-                    .confirmationDialog("", isPresented: $showAlert, actions: {
-                        Button("删除此书（不可恢复）", role: .destructive) {
-                            delete()
-                            dismiss()
-                        }
-                        Button("取消", role: .cancel) {
-                            self.showAlert = false
-                        }
-                    })
-                }
-            }
-            
-            
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-//            .navigationBarBackButtonHidden(true)
-            
         }
-        
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear(perform: {
+            UIDevice.current.isBatteryMonitoringEnabled = true
+        })
     }
     
     func save(){
+        print(book)
         DispatchQueue.main.async {
             do{
                 try context.save()

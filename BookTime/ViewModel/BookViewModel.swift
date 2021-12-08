@@ -10,6 +10,7 @@ import Combine
 import UIKit
 
 class BookViewModel: ObservableObject{
+    @Published var id: UUID = UUID()
     @Published var name: String = ""
     @Published var author: String = ""
     @Published var image: UIImage = UIImage()
@@ -21,6 +22,7 @@ class BookViewModel: ObservableObject{
     
     init(book:Book? = nil){
         if let book = book {
+            self.id = book.id
             self.name = book.name
             if let author = book.author{
                 self.author = author
