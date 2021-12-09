@@ -13,14 +13,48 @@ struct Setting: View {
     @State var showAbout = false
     @State var showGreeting = true
     
+    private let greetings = [
+        "240": "书籍是人类进步的阶梯，但阶梯不是目的，两侧的风景才是。",
+        "180": "为革命，保护视力，眼保健操，请自行脑补。",
+//        }
+//        if(value > 120){
+//            return "自古英雄惜英雄，请收下作者的膝盖。"
+//        }
+//        if(value > 90){
+//            return "道之所在，虽千万人吾往矣。"
+//        }
+//        if(value > 60){
+//            return "路漫漫其修远兮，吾将上下而求索。 "
+//        }
+//        if(value > 45){
+//            return "真的猛士，敢于直面惨淡的人生，敢于正视淋漓的鲜血。"
+//        }
+//        if(value > 30){
+//            return "您已经打败了全国99%的非用户。"
+//        }
+//        if(value > 15){
+//            return "不积跬步，无以至千里。"
+//        }
+//        if(value > 1){
+//            return "好的开始=成功*1/2，好的目标=好的开始*1/2。"
+//        }
+//        if(value == 0){
+//            return "菩提本无树，明镜亦非台。"
+//        }
+
+    ]
+    
     var intProxy: Binding<Double>{
         Binding<Double>(get: {
-            //returns the score as a Double
             return Double(targetMinPerday)
         }, set: {
-            //rounds the double to an Int
-            print($0.description)
             targetMinPerday = Int($0)
+            if((greetings.first{k,v in
+                Int(k) == targetMinPerday
+            }) != nil){
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                                      
+            }
         })
     }
     
@@ -35,8 +69,7 @@ struct Setting: View {
                     
                     Text(showGreeting(value:targetMinPerday))
                         .font(.subheadline)
-                        .opacity(showGreeting ? 0 : 1)
-                    //                .frame(minHeight:10)
+                        .opacity(showGreeting ? 0 : 1)                    
                     
                     Spacer()
                 }
@@ -68,7 +101,7 @@ struct Setting: View {
         
     }
     
-    func showGreeting(value:Int)->String{
+    func showGreeting(value:Int)->String{        
         if(value > 240){
             return "书籍是人类进步的阶梯，但阶梯不是目的，两侧的风景才是。"
         }

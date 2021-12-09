@@ -11,7 +11,13 @@
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="readMinutes" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <entity name="ReadLog" representedClassName="ReadLog" syncable="YES">
+        <attribute name="day" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id_at_book" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="readMinutes" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <elements>
         <element name="Book" positionX="-63" positionY="-18" width="128" height="164"/>
+        <element name="ReadLog" positionX="-63" positionY="54" width="128" height="74"/>
     </elements>
 </model>

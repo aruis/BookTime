@@ -61,6 +61,7 @@ struct TimerView: View {
                 
             })
             .onTapGesture {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()               
                 self.showDate.toggle()
             }
             .scaleEffect(verticalSizeClass == .compact ? 2.2 : 1)

@@ -17,7 +17,9 @@ struct NewBook: View {
     @State private var showToast = false
     @State private var showPhotoOptins = false
     @State private var photoSource: PhotoSource?
+    @FocusState private var isAuthorFocus:Bool
     
+    let generator = UINotificationFeedbackGenerator()
     
     init(){
         let viewModel = BookViewModel()
@@ -41,15 +43,56 @@ struct NewBook: View {
                             self.showPhotoOptins.toggle()
                         }
                     
+                    VStack(alignment: .leading) {
+                        Text("书名".uppercased())
+                            .font(.system(.headline,design: .rounded))
+                            .foregroundColor(Color(.darkGray))
+                        
+                        TextField("请填入书名",text: $bookViewModel.name)
+                            .font(.system(size:20,weight: .semibold,design: .rounded))
+                            .padding(.horizontal)
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color(.systemGray5),lineWidth: 1)
+                            )
+                            .padding(.vertical,10)
+//                            .textInputAutocapitalization(.words)
+                            .submitLabel(.next)
+                            .onSubmit {
+                                isAuthorFocus = true
+                            }
+                        }
                     
-                    FormTextField(label: "书名", placeholder: "请填入书名", value: $bookViewModel.name)
+                    VStack(alignment: .leading) {
+                        Text("作者".uppercased())
+                            .font(.system(.headline,design: .rounded))
+                            .foregroundColor(Color(.darkGray))
+                        
+                        TextField("请输入作者名",text: $bookViewModel.author)
+                            .font(.system(size:20,weight: .semibold,design: .rounded))
+                            .padding(.horizontal)
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color(.systemGray5),lineWidth: 1)
+                            )
+                            .padding(.vertical,10)
+//                            .textInputAutocapitalization(.words)
+                            .focused($isAuthorFocus)
+                            .submitLabel(.done)
+                        
+                    }
                     
-                    FormTextField(label: "作者", placeholder: "在这里输入作者就好", value: $bookViewModel.author)
+                    
+//                    FormTextField(label: "书名", placeholder: "请填入书名", value: $bookViewModel.name)
+//
+//                    FormTextField(label: "作者", placeholder: "请输入作者名", value: $bookViewModel.author)
                     
                     Spacer()
                 }
                 .padding(10)
-               
+                
             }
             .navigationTitle("读一本新书")
             .navigationBarTitleDisplayMode(.inline)
@@ -86,17 +129,9 @@ struct NewBook: View {
                 case .camera: ImagePicker(sourceType: .camera, selectedImage: $bookViewModel.image).ignoresSafeArea()
                 }
             }
-            .toast(isPresenting: $showToast){
-
-                      // `.alert` is the default displayMode
-//                    AlertToast(type: .error(.red), title: "Message Sent!")
-                      
-                      //Choose .hud to toast alert from the top of the screen
-//                          AlertToast(displayMode: .hud, type: .regular, title: "Message Sent!")
-                      
-                      //Choose .banner to slide/pop alert from the bottom of the screen
-                AlertToast(displayMode: .hud, type: .systemImage("exclamationmark.bubble.circle.fill", .orange), title: "Message Sent!")
-                  }
+            .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
+                AlertToast(displayMode: .banner(.pop), type: .systemImage("exclamationmark.circle.fill", .orange), title: "您还没有输入书名哦")
+            }
         }
         
     }
@@ -104,12 +139,10 @@ struct NewBook: View {
     private func save() -> Bool{
         if(bookViewModel.name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty) {
             showToast = true
+            generator.notificationOccurred(.error)
             return false
         }
         
-        if(bookViewModel.author.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty){
-            return false
-        }
         
         let book = Book(context:context)
         book.id = UUID()
@@ -119,7 +152,6 @@ struct NewBook: View {
         book.createTime = Date()
         
         do{
-            print(book)
             try context.save()
         }catch{
             print("Failed to save the recode...")
@@ -145,7 +177,6 @@ struct FormTextField: View {
     
     @Binding var value: String
     
-    
     var body: some View {
         VStack(alignment: .leading) {
             Text(label.uppercased())
@@ -161,7 +192,8 @@ struct FormTextField: View {
                         .stroke(Color(.systemGray5),lineWidth: 1)
                 )
                 .padding(.vertical,10)
-        }
+                .textInputAutocapitalization(.words)
+            }
         
     }
 }

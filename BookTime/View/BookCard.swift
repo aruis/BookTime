@@ -14,6 +14,8 @@ struct BookCard: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
+    @AppStorage("isFirstBookCard") var isFirstBookCard = true
+    
     @ObservedObject var book: Book
     
     @State private var showTimer:Bool = false
@@ -21,9 +23,8 @@ struct BookCard: View {
     @State private var showBatterySheet:Bool = false
     @State var downTrigger:Int = 0
     
+    let generator = UINotificationFeedbackGenerator()
     
-    
-    @State var batteryLevel = UIDevice.current.batteryLevel
     var body: some View {
         ZStack{
             if verticalSizeClass == .compact || showTimer{
@@ -41,6 +42,7 @@ struct BookCard: View {
                                 Text("结束阅读")
                             }
                         }
+                        .padding(.bottom,100)
                         
                     }
                     
@@ -48,7 +50,7 @@ struct BookCard: View {
                 .navigationBarBackButtonHidden(true)
             } else{
                 ScrollView {
-                    VStack(alignment: .center,spacing: 10){
+                    VStack(alignment: .center,spacing: 16){
                         Text(book.name).font(.system(.title2))
                         
                         Image(uiImage: UIImage(data: book.image)!)
@@ -67,6 +69,8 @@ struct BookCard: View {
                                 Image(systemName: book.rating > index ? "star.fill" : "star")
                                     .font(.title2)
                                     .onTapGesture {
+                                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                                    
                                         if book.rating == 1 && index == 0 {
                                             book.rating = 0
                                         }else{
@@ -74,17 +78,20 @@ struct BookCard: View {
                                         }
                                         save()
                                     }
-                                    .onTapGesture (count: 2){
-                                        book.rating = 0
-                                        save()
-                                    }
+
                             }
                         }.opacity(book.isDone ? 1 : 0)
                             .animation(.default, value: book.isDone)
                         
+                        if book.readMinutes > 0{
+                            VStack{
+                                Text("您已阅读:").font(.system(.title2))
+                                Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                            }
+                        }
+                       
                         
-                        Text("您已阅读:").font(.system(.title2))
-                        Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                        
                         
                         ZStack{
                             
@@ -115,7 +122,11 @@ struct BookCard: View {
                         }
                         .onTapGesture {
                             book.isDone.toggle()
-                            if(book.isDone){ downTrigger+=1}
+                            if(book.isDone){
+                                generator.notificationOccurred(.success)
+                                downTrigger+=1
+                                book.doneTime = Date()
+                            }
                             save()
                         }
                         .animation(.easeInOut, value: book.isDone)
@@ -126,13 +137,30 @@ struct BookCard: View {
                     //            .padding(.top,-50)
                     .padding(10)
                     
-                    
+                    if isFirstBookCard || true{
+                        Label(title: {
+                            HStack{
+                                Text("请横置设备，开始计时")
+                                Button(action: {
+                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()                                   
+                                    isFirstBookCard = false
+                                }, label: {
+                                    Text("[不再提示]")
+                                })
+                            }
+                            
+                        }, icon: {
+                            Image(systemName: "iphone.landscape")                                
+                        })
+                            .font(.subheadline)
+                    }
                     
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
+                        Button(action: {                            
                             self.showAlert = true
+                            generator.notificationOccurred(.warning)
                         }){
                             Image(systemName: "ellipsis")
                         }
@@ -149,9 +177,6 @@ struct BookCard: View {
                 }
                 
                 
-                
-                
-                //
                 
             }
         }

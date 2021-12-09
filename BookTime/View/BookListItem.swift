@@ -33,9 +33,11 @@ struct BookListItem: View {
                     .font(.system(.title3, design: .rounded))
                 
                 if let author = book.author {
-                    Text(author)
-                        .font(.system(.body))
-                        .foregroundColor(.gray)
+                    if( author.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false){
+                        Text(author)
+                            .font(.system(.body))
+                            .foregroundColor(.gray)
+                    }
                 }
                 
                                 
@@ -49,9 +51,6 @@ struct BookListItem: View {
                             .font(.system(.subheadline,design: .rounded))
                     }
                     
-                    
-                    //                        Text("已阅读：")
-                    //                            .font(.system(.subheadline))
                     Text(book.readMinutes.asString())
                         .font(.system (.subheadline,design: .rounded))
                 }
