@@ -4,6 +4,7 @@
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="doneTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="firstReadTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -11,13 +12,12 @@
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="readMinutes" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
-    <entity name="ReadLog" representedClassName="ReadLog" syncable="YES">
+    <entity name="ReadLog" representedClassName=".ReadLog" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id_at_book" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="readMinutes" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Book" positionX="-63" positionY="-18" width="128" height="164"/>
-        <element name="ReadLog" positionX="-63" positionY="54" width="128" height="74"/>
+        <element name="Book" positionX="-63" positionY="-18" width="128" height="179"/>
+        <element name="ReadLog" positionX="-63" positionY="54" width="128" height="59"/>
     </elements>
 </model>

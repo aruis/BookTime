@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct Statistics: View {
+    @AppStorage("targetMinPerday") var targetMinPerday = 45
+    @Environment(\.managedObjectContext) var context
     
     @State private var orangeCircleProgress:CGFloat = 0.9
     @State private var greenCircleProgress:CGFloat = 0.3
+    
+    @State private var todayReadMin = 0
+    
     private var percentage:Int {
         get {
             return Int(orangeCircleProgress * 100.0)
@@ -20,6 +25,7 @@ struct Statistics: View {
     
     var body: some View {
         VStack {
+            Text("今日您已阅读 \(todayReadMin) 分")
             Text("Circle Shape")
                 .font(.largeTitle)
             Text("Trim function")
@@ -56,7 +62,39 @@ struct Statistics: View {
             
         }.font(.title)
             .padding()
+            .onAppear(perform: {
+                if let readLog = checkAndBuildTodayLog(){
+                    todayReadMin = readLog.readMinutes
+                }                
+            })
     }
+    
+    func checkAndBuildTodayLog() -> ReadLog?{
+        let fetchReq = ReadLog.fetchRequest()
+        
+        
+        fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
+        fetchReq.fetchLimit = 1
+        
+        do {
+            let today =  try context.fetch(fetchReq).first
+            if let today = (today as? ReadLog){
+                return today
+            } else {
+                let readLog = ReadLog(context: context)
+                readLog.readMinutes = 0
+                readLog.day = Date().start()
+
+                return readLog
+            }
+            
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
+        }
+
+        return nil
+    }
+    
 }
 
 struct Statistics_Previews: PreviewProvider {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Setting: View {
     
-    @AppStorage("targetMinPerday") var targetMinPerday = 0
+    @AppStorage("targetMinPerday") var targetMinPerday = 45
     @State var showAbout = false
     @State var showGreeting = true
     
@@ -52,7 +52,7 @@ struct Setting: View {
             if((greetings.first{k,v in
                 Int(k) == targetMinPerday
             }) != nil){
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+//                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                       
             }
         })

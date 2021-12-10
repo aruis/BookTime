@@ -16,6 +16,7 @@
 		83502578275B012200EF9C5C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502577275B012200EF9C5C /* Setting.swift */; };
 		835A3CE0275652CA00672F98 /* NewBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A3CDF275652CA00672F98 /* NewBook.swift */; };
 		835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B845A2760A04600F9BAE8 /* DateExt.swift */; };
+		835E822F276338D10079FF99 /* ReadLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835E822E276338D10079FF99 /* ReadLog.swift */; };
 		83731C932755D0D600305305 /* BookTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731C922755D0D600305305 /* BookTimeApp.swift */; };
 		83731C972755D0D700305305 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83731C962755D0D700305305 /* Assets.xcassets */; };
 		83731C9A2755D0D700305305 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83731C992755D0D700305305 /* Preview Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		83502577275B012200EF9C5C /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		835A3CDF275652CA00672F98 /* NewBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBook.swift; sourceTree = "<group>"; };
 		835B845A2760A04600F9BAE8 /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
+		835E822E276338D10079FF99 /* ReadLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLog.swift; sourceTree = "<group>"; };
 		83731C8F2755D0D600305305 /* BookTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83731C922755D0D600305305 /* BookTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeApp.swift; sourceTree = "<group>"; };
 		83731C962755D0D700305305 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			children = (
 				83731CA62755D1BF00305305 /* Book.swift */,
 				83731C9B2755D0D700305305 /* BookPersistence.swift */,
+				835E822E276338D10079FF99 /* ReadLog.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83862925275F960B004E3141 /* BlurView.swift in Sources */,
+				835E822F276338D10079FF99 /* ReadLog.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,
 				83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */,

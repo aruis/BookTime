@@ -51,9 +51,6 @@ struct TimerView: View {
                 DispatchQueue.main.async {
                     Tool.hiddenTabBar()
                 }
-                
-                //TODO 检查有无今天的数据
-                
             })
             .onDisappear(perform: {
                 UIApplication.shared.isIdleTimerDisabled = true
@@ -68,14 +65,22 @@ struct TimerView: View {
             }
             .scaleEffect(verticalSizeClass == .compact ? 2.2 : 1)
         }
-        .onAppear(perform: {
+        .onAppear(perform: {            
             timerTrack.start { count in
                 now = Date()
                 self.showColon.toggle()
                 let min = count / 60
+                                
                 if thisMinute != min{
+                    let readLog = checkAndBuildTodayLog()
+                    
                     thisMinute = min
+                    if book.readMinutes == 0 { //第一次读
+                        book.firstReadTime = now
+                    }
                     book.readMinutes += 1
+                    readLog?.readMinutes += 1
+                                        
                     DispatchQueue.main.async {
                         do{
                             try context.save()
@@ -92,6 +97,35 @@ struct TimerView: View {
         })
         
     }
+    
+    
+    func checkAndBuildTodayLog() -> ReadLog?{
+        let fetchReq = ReadLog.fetchRequest()
+        
+        
+        fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
+        fetchReq.fetchLimit = 1
+        
+        do {
+            let today =  try context.fetch(fetchReq).first
+            if let today = (today as? ReadLog){
+                return today
+            } else {
+                let readLog = ReadLog(context: context)
+                readLog.readMinutes = 0
+                readLog.day = Date().start()
+
+                return readLog
+            }
+            
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
+        }
+
+        return nil
+    }
+    
+    
     
 }
 

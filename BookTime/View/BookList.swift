@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct BookList: View {
     
@@ -50,7 +51,6 @@ struct BookList: View {
                 
                 books.nsPredicate = predicate
             }
-
             .toolbar{
                 Button(action: {
                     self.showNewBook = true
