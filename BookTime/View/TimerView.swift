@@ -52,6 +52,8 @@ struct TimerView: View {
                     Tool.hiddenTabBar()
                 }
                 
+                //TODO 检查有无今天的数据
+                
             })
             .onDisappear(perform: {
                 UIApplication.shared.isIdleTimerDisabled = true

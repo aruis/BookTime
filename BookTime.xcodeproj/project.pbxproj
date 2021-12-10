@@ -32,6 +32,8 @@
 		839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E66275758C600AB05AF /* ImagePicker.swift */; };
 		839B4E692757648200AB05AF /* BookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E682757648200AB05AF /* BookCard.swift */; };
 		839B4E6E2757763900AB05AF /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6D2757763900AB05AF /* TimerView.swift */; };
+		83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */; };
+		83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2692762053E001E8E0E /* ImageExt.swift */; };
 		83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC51EC27589ED200C2A90A /* TimerTrack.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +64,8 @@
 		839B4E66275758C600AB05AF /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		839B4E682757648200AB05AF /* BookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCard.swift; sourceTree = "<group>"; };
 		839B4E6D2757763900AB05AF /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
+		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
 		83DC51EC27589ED200C2A90A /* TimerTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTrack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +85,7 @@
 			children = (
 				83492C7E275624F2006B5FF2 /* IntExt.swift */,
 				835B845A2760A04600F9BAE8 /* DateExt.swift */,
+				83BFC2692762053E001E8E0E /* ImageExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 			children = (
 				839B4E66275758C600AB05AF /* ImagePicker.swift */,
 				83DC51EC27589ED200C2A90A /* TimerTrack.swift */,
+				83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -271,11 +277,13 @@
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
+				83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */,
 				83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */,
 				83862926275F960B004E3141 /* AlertToast.swift in Sources */,
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
 				83955FEB275EFB43004408C3 /* About.swift in Sources */,
 				83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */,
+				83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83862925275F960B004E3141 /* BlurView.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,

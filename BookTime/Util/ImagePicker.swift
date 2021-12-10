@@ -42,7 +42,8 @@ struct ImagePicker:UIViewControllerRepresentable{
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-                parent.selectedImage = image
+                
+                parent.selectedImage = UIImage(data: image.aspectFittedToHeight(400).jpegData(compressionQuality: 0.85)!) ?? UIImage()
                 
 //                guard let cgImage =  image.cgImage else {return}
 //

@@ -32,7 +32,6 @@ struct BookCard: View {
                     
                     TimerView(book: book)
                     
-                    
                     if self.showTimer && verticalSizeClass != .compact{
                         VStack{
                             Spacer()
