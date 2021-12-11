@@ -16,6 +16,8 @@ struct Statistics: View {
     
     @State private var todayReadMin = 0
     
+//    private let tool = MyTool()
+    
     private var percentage:Int {
         get {
             return Int(orangeCircleProgress * 100.0)
@@ -63,37 +65,10 @@ struct Statistics: View {
         }.font(.title)
             .padding()
             .onAppear(perform: {
-                if let readLog = checkAndBuildTodayLog(){
-                    todayReadMin = readLog.readMinutes
-                }                
+                todayReadMin = MyTool.checkAndBuildTodayLog(context:context).readMinutes
             })
     }
     
-    func checkAndBuildTodayLog() -> ReadLog?{
-        let fetchReq = ReadLog.fetchRequest()
-        
-        
-        fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
-        fetchReq.fetchLimit = 1
-        
-        do {
-            let today =  try context.fetch(fetchReq).first
-            if let today = (today as? ReadLog){
-                return today
-            } else {
-                let readLog = ReadLog(context: context)
-                readLog.readMinutes = 0
-                readLog.day = Date().start()
-
-                return readLog
-            }
-            
-        } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
-        }
-
-        return nil
-    }
     
 }
 

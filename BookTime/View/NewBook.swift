@@ -14,7 +14,9 @@ struct NewBook: View {
     @Environment(\.managedObjectContext) var context
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject private var bookViewModel: BookViewModel
+    @ObservedObject public var bookViewModel: BookViewModel
+    
+//    @ObservedObject private var bookViewModel: BookViewModel
     
     @State private var showToast = false
     @State private var showPhotoOptins = false
@@ -25,12 +27,12 @@ struct NewBook: View {
     
     let generator = UINotificationFeedbackGenerator()
     
-    init(){
-        let viewModel = BookViewModel()
-        viewModel.image = UIImage(named: "xiandai")!
-        bookViewModel = viewModel
-        
-    }
+//    init(){
+//        let viewModel = BookViewModel()
+//        viewModel.image = UIImage(named: "xiandai")!
+//        bookViewModel = viewModel
+//
+//    }
     
     var body: some View {
         NavigationView {
@@ -98,7 +100,7 @@ struct NewBook: View {
                 .padding(10)
                 
             }
-            .navigationTitle("读一本新书")
+            .navigationTitle(bookViewModel.book == nil ? "读一本新书":"修改信息")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
@@ -173,12 +175,20 @@ struct NewBook: View {
         }
         
         
-        let book = Book(context:context)
-        book.id = UUID()
-        book.image = bookViewModel.image.pngData()!
-        book.name = bookViewModel.name
-        book.author = bookViewModel.author
-        book.createTime = Date()
+        if let book = bookViewModel.book{
+            book.image = bookViewModel.image.pngData()!
+            book.name = bookViewModel.name
+            book.author = bookViewModel.author
+        }else{
+            let book = Book(context:context)
+            book.id = UUID()
+            book.image = bookViewModel.image.pngData()!
+            book.name = bookViewModel.name
+            book.author = bookViewModel.author
+            book.createTime = Date()
+        }
+        
+        
         
         do{
             try context.save()
@@ -193,10 +203,10 @@ struct NewBook: View {
 
 struct NewBook_Previews: PreviewProvider {
     static var previews: some View {
-        NewBook()
+        Text("")
+//        NewBook(Binding.)
         
-        NewBook()
-            .preferredColorScheme(.dark)
+//        NewBook()            .preferredColorScheme(.dark)
     }
 }
 

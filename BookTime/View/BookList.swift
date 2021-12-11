@@ -21,49 +21,92 @@ struct BookList: View {
     @State private var showingAlert = false
     @State private var searchText = ""
     
+    @StateObject private var bookViewModel: BookViewModel = BookViewModel()
+    
     var body: some View {
         NavigationView {
-            List{
-                ForEach(books.indices,id:\.self){index in
-                    ZStack(alignment: .leading){
-                        NavigationLink(
-                            destination: BookCard(book: books[index])
-                        ){
-                            EmptyView()
-                        }.opacity(0)
+            if books.count == 0 {
+                VStack (spacing: 10){
+                    Image(systemName: "plus.circle").font(.largeTitle)
+                        .foregroundColor(.accentColor)
+                    Text("点此添加您的第一本书")
+                }.onTapGesture {
+                    bookViewModel.clean()
+                    self.showNewBook = true
+                }
+                
+            } else {
+                List{
+                    ForEach(books.indices,id:\.self){index in
+                        ZStack(alignment: .leading){
+                            NavigationLink(
+                                destination: BookCard(book: books[index])
+                            ){
+                                EmptyView()
+                            }.opacity(0)
+                            
+                            BookListItem(book: books[index])
+                            
+                        }
+                        .contextMenu {
+                            
+                            Button(action: {
+                                self.bookViewModel.setBook(book: books[index])
+                                self.showNewBook = true
+//                                self.showError.toggle()
+                            }) {
+                                HStack {
+                                    Text("修改信息")
+                                    Image(systemName: "pencil.circle")
+                                }
+                            }
+                        }
                         
-                        BookListItem(book: books[index])
+                        .listRowSeparator(.hidden)
+                    }
+                
+                }
+                .listStyle(.plain)
+                .navigationTitle("我的书架")
+                
+                .navigationBarTitleDisplayMode(.automatic)
+                .searchable(text: $searchText,  prompt: "按书名搜索" )
+                .onChange(of: searchText){ searchText in
+                    let predicate = searchText.isEmpty
+                    ? NSPredicate(value: true)
+                    : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
+                    
+                    books.nsPredicate = predicate
+                }
+                .toolbar(content: {
+                    ToolbarItem(placement: .bottomBar){
+                        if MyTool.checkAndBuildTodayLog(context: context).readMinutes > 0{
+                            Text("今日阅读时长：\(MyTool.checkAndBuildTodayLog(context: context).readMinutes)分钟")
+                        }else if(books.count>0){
+                            Text("今天还没有开始阅读呦")
+                        }else{
+                            
+                        }
                         
                     }
-                    .listRowSeparator(.hidden)
+                })
+                .toolbar{
+                    Button(action: {
+                        bookViewModel.clean()
+                        self.showNewBook = true
+                    }){
+                        Image(systemName: "plus")
+                    }
+                    
                 }
+             
+
+            }
             
-            }
-            .listStyle(.plain)
-            .navigationTitle("我的书架")
-            
-            .navigationBarTitleDisplayMode(.automatic)
-            .searchable(text: $searchText,  prompt: "按书名搜索" )
-            .onChange(of: searchText){ searchText in
-                let predicate = searchText.isEmpty
-                ? NSPredicate(value: true)
-                : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
-                
-                books.nsPredicate = predicate
-            }
-            .toolbar{
-                Button(action: {
-                    self.showNewBook = true
-                }){
-                    Image(systemName: "plus")
-                }
-                
-            }
-         
             
         }
         .sheet(isPresented: $showNewBook){
-            NewBook()
+            NewBook(bookViewModel:bookViewModel)
         }
     }
 }

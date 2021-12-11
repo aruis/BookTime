@@ -28,8 +28,7 @@ struct BookCard: View {
     var body: some View {
         ZStack{
             if verticalSizeClass == .compact || showTimer{
-                ZStack{
-                    
+                ZStack{                                        
                     TimerView(book: book)
                     
                     if self.showTimer && verticalSizeClass != .compact{
@@ -46,6 +45,7 @@ struct BookCard: View {
                     }
                     
                 }
+                .ignoresSafeArea()
                 .navigationBarBackButtonHidden(true)
             } else{
                 ScrollView {

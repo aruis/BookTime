@@ -10,36 +10,48 @@ import Combine
 import UIKit
 
 class BookViewModel: ObservableObject{
-    @Published var id: UUID = UUID()
+//    @Published var id: UUID?
     @Published var name: String = ""
     @Published var author: String = ""
     @Published var image: UIImage = UIImage()
-    @Published var isDone: Bool = false
-    @Published var readMinutes: Int64 = 0
-    @Published var createTime: Date = Date()
-    @Published var doneTime: Date? = Date()
-    @Published var rating: Int16 = 0
+//    @Published var isDone: Bool = false
+//    @Published var readMinutes: Int64 = 0
+//    @Published var createTime: Date = Date()
+//    @Published var doneTime: Date? = Date()
+//    @Published var rating: Int16 = 0
     
-    init(book:Book? = nil){
-        if let book = book {
-            self.id = book.id
+    var book:Book?
+    
+    func setBook(book:Book){
+//        if let book = book {
+//            self.id = book.id
             self.name = book.name
             if let author = book.author{
                 self.author = author
             }
             
             self.image = UIImage(data: book.image) ?? UIImage()
-            self.isDone = book.isDone
-            self.readMinutes = book.readMinutes
-            self.createTime = book.createTime
-            self.doneTime = book.doneTime
-            self.rating = book.rating
+//            self.isDone = book.isDone
+//            self.readMinutes = book.readMinutes
+//            self.createTime = book.createTime
+//            self.doneTime = book.doneTime
+//            self.rating = book.rating
             
 //            if let imageData =  book.image{
                 //                self.image = UIImage(data: imageData)!
 //            }
             //            self.image = UIImage()
             //            self.doneTime = Date()
-        }
+//        }
+        
+        self.book = book
+    }
+    
+    func clean(){
+        self.book = nil
+//        self.id = nil
+        self.name = ""
+        self.author = ""
+        self.image = UIImage(named: "xiandai")!
     }
 }

@@ -27,7 +27,7 @@ struct TimerView: View {
     
     @State private var showColon:Bool = true
     @State private var showDate:Bool = false
-    @State private var now  = Date()
+    @State private var now  = Date()        
     
     var body: some View {
         VStack{
@@ -72,14 +72,14 @@ struct TimerView: View {
                 let min = count / 60
                                 
                 if thisMinute != min{
-                    let readLog = checkAndBuildTodayLog()
+                    let readLog = MyTool.checkAndBuildTodayLog(context:context)
                     
                     thisMinute = min
                     if book.readMinutes == 0 { //第一次读
                         book.firstReadTime = now
                     }
                     book.readMinutes += 1
-                    readLog?.readMinutes += 1
+                    readLog.readMinutes += 1
                                         
                     DispatchQueue.main.async {
                         do{
@@ -97,36 +97,6 @@ struct TimerView: View {
         })
         
     }
-    
-    
-    func checkAndBuildTodayLog() -> ReadLog?{
-        let fetchReq = ReadLog.fetchRequest()
-        
-        
-        fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
-        fetchReq.fetchLimit = 1
-        
-        do {
-            let today =  try context.fetch(fetchReq).first
-            if let today = (today as? ReadLog){
-                return today
-            } else {
-                let readLog = ReadLog(context: context)
-                readLog.readMinutes = 0
-                readLog.day = Date().start()
-
-                return readLog
-            }
-            
-        } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
-        }
-
-        return nil
-    }
-    
-    
-    
 }
 
 struct TimerView_Previews: PreviewProvider {
