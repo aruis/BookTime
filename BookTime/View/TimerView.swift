@@ -45,6 +45,13 @@ struct TimerView: View {
                 Text((showDate ? now.format(format: "HH:mm") : thisMinute.asString()).split(separator: ":")[1])
                 
             }
+            .overlay(alignment: .bottom, content: {
+                if showDate {
+                    Text(now.format(format: "YYYY-MM-dd"))
+                        .font(.subheadline)
+                        .opacity(0.65)
+                }
+            })
             .font(.custom("Courier New",size:  100)            )
             .onAppear(perform: {
                 UIApplication.shared.isIdleTimerDisabled = true
