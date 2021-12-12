@@ -93,10 +93,6 @@ struct BookCard: View {
                         
                         
                         ZStack{
-                            
-                            Spacer()
-                                .frame(width: 800.0)
-                            
                             RoundedRectangle(cornerRadius: book.isDone ? 25:5)
                                 .frame(width: book.isDone ? 50:250, height: 50)
                                 .foregroundColor(book.isDone ? .green : .gray)
@@ -119,6 +115,8 @@ struct BookCard: View {
                             
                                 .foregroundColor(.white)
                         }
+                        .frame(minWidth: 0,maxWidth: .infinity)
+                        .frame(height:80)
                         .onTapGesture {
                             book.isDone.toggle()
                             if(book.isDone){
@@ -130,13 +128,11 @@ struct BookCard: View {
                         }
                         .animation(.easeInOut, value: book.isDone)
                         
-                        ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
+
                     }
-                    
-                    //            .padding(.top,-50)
                     .padding(10)
                     
-                    if isFirstBookCard || true{
+                    if isFirstBookCard{
                         Label(title: {
                             HStack{
                                 Text("请横置设备，开始计时")
@@ -154,6 +150,7 @@ struct BookCard: View {
                             .font(.subheadline)
                     }
                     
+                    ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
