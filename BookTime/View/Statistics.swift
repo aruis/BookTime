@@ -16,6 +16,12 @@ struct Statistics: View {
     
     //    private let gradient =
     
+    var  process:CGFloat{
+        get{
+            return CGFloat( todayReadMin)/CGFloat( targetMinPerdayShadow)
+        }
+    }
+    
     
     var body: some View {
         ScrollView{
@@ -48,13 +54,13 @@ struct Statistics: View {
                         .padding()
                     
                     Circle()
-                        .trim(from: 0.0, to:CGFloat( todayReadMin)/CGFloat( targetMinPerdayShadow))
+                        .trim(from: 0.0, to: process)
                     //                        .trim(from: 0.0,to:  1.0)
                         .stroke( AngularGradient(
                             gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
                             center: .center,
                             startAngle: .degrees(0),
-                            endAngle: .degrees( 360 * CGFloat( todayReadMin)/CGFloat( targetMinPerdayShadow) )
+                            endAngle: .degrees( 360 * process )
                         ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
                         .frame(width:300)
                         .rotationEffect(.degrees(-90))
@@ -63,7 +69,7 @@ struct Statistics: View {
                                 Text("今日您已阅读 \(todayReadMin) 分")
                                     .font(.title2)
                                 if targetMinPerday > 0{
-                                    Text("完成计划的 \( Int( round( CGFloat( todayReadMin)/CGFloat( targetMinPerdayShadow) * 100))) %")
+                                    Text("完成计划的 \( Int( round( process * 100))) %")
                                         .foregroundColor(.gray)
                                 }
                                 
