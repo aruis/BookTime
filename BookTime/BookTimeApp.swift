@@ -24,7 +24,7 @@ struct BookTimeApp: App {
                 
                 Statistics()
                     .tabItem {
-                        Label("报告",systemImage:"chart.line.uptrend.xyaxis")
+                        Label("统计",systemImage:"circle.dotted")
                     }
                     .tag(1)
                 

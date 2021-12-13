@@ -78,18 +78,18 @@ struct BookList: View {
                     
                     books.nsPredicate = predicate
                 }
-                .toolbar(content: {
-                    ToolbarItem(placement: .bottomBar){
-                        if MyTool.checkAndBuildTodayLog(context: context).readMinutes > 0{
-                            Text("今日阅读时长：\(MyTool.checkAndBuildTodayLog(context: context).readMinutes)分钟")
-                        }else if(books.count>0){
-                            Text("今天还没有开始阅读呦")
-                        }else{
-                            
-                        }
-                        
-                    }
-                })
+//                .toolbar(content: {
+//                    ToolbarItem(placement: .bottomBar){
+//                        if MyTool.checkAndBuildTodayLog(context: context).readMinutes > 0{
+//                            Text("今日阅读时长：\(MyTool.checkAndBuildTodayLog(context: context).readMinutes)分钟")
+//                        }else if(books.count>0){
+//                            Text("今天还没有开始阅读呦")
+//                        }else{
+//                            
+//                        }
+//                        
+//                    }
+//                })
                 .toolbar{
                     Button(action: {
                         bookViewModel.clean()
