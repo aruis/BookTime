@@ -14,7 +14,6 @@ struct BookTimeApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            BookList().environment(\.managedObjectContext,BookPersistenceController.preview.container.viewContext)
             TabView(selection: $selectedTabIndex){
                 BookList()
                     .tabItem {
@@ -24,7 +23,7 @@ struct BookTimeApp: App {
                 
                 Statistics()
                     .tabItem {
-                        Label("统计",systemImage:"circle.dotted")
+                        Label("统计",systemImage:"target")
                     }
                     .tag(1)
                 

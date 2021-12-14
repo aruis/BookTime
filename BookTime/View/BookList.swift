@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct BookList: View {
+    let generator = UINotificationFeedbackGenerator()
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
@@ -20,6 +21,7 @@ struct BookList: View {
     @State var showNewBook = false
     @State private var showingAlert = false
     @State private var searchText = ""
+    @State private var showAlert:Bool = false
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
@@ -60,6 +62,18 @@ struct BookList: View {
                                     Image(systemName: "pencil.circle")
                                 }
                             }
+                            
+                            Button(action: {
+                                self.showAlert = true
+                                generator.notificationOccurred(.warning)
+                            }){
+                                HStack{
+                                    Text("删除此书")
+                                    Image(systemName: "trash")
+                                }.foregroundColor(.red)
+                                
+                            }
+
                         }
                         
                         .listRowSeparator(.hidden)
@@ -68,7 +82,16 @@ struct BookList: View {
                 }
                 .listStyle(.plain)
                 .navigationTitle("我的书架")
-                
+                .confirmationDialog("", isPresented: $showAlert, actions: {
+//                    index
+                    Button("删除此书（不可恢复）", role: .destructive) {
+//                        delete(book: books[index])
+                    }
+                    Button("取消", role: .cancel) {
+                        self.showAlert = false
+                    }
+                })
+
                 .navigationBarTitleDisplayMode(.automatic)
                 .searchable(text: $searchText,  prompt: "按书名搜索" )
                 .onChange(of: searchText){ searchText in
@@ -109,6 +132,19 @@ struct BookList: View {
             NewBook(bookViewModel:bookViewModel)
         }
     }
+    
+    func delete(book:Book){
+        context.delete(book)
+        
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
+        }
+    }
+    
 }
 
 struct BookList_Previews: PreviewProvider {
