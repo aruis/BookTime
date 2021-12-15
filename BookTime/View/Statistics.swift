@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct Statistics: View {
-    @AppStorage("targetMinPerday") var targetMinPerday = 45
+    @AppStorage("targetMinPerday") var targetMinPerday = 0
+    
     @Environment(\.managedObjectContext) var context
     
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
@@ -19,7 +20,6 @@ struct Statistics: View {
     @FetchRequest(entity: Book.entity(), sortDescriptors:[])
     var books: FetchedResults<Book>
     
-    @State private var targetMinPerdayShadow = 45
     @State private var todayReadMin:Int16 = 0
     
     
@@ -38,7 +38,12 @@ struct Statistics: View {
     
     var  process:CGFloat{
         get{
-            return CGFloat( todayReadMin)/CGFloat( targetMinPerdayShadow)
+            if(targetMinPerday>0){
+                return CGFloat( todayReadMin)/CGFloat( targetMinPerday)
+            }else{
+                return CGFloat( todayReadMin)/CGFloat( 45)
+            }
+            
         }
     }
     
@@ -56,7 +61,7 @@ struct Statistics: View {
                         .onChange(of: sumType, perform: { val in
                             initAllLog()
                         })
-                        
+                    
                     
                     Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
                     
@@ -95,7 +100,7 @@ struct Statistics: View {
                                 
                             )
                             .padding()
-                           
+                        
                         
                         
                     }
@@ -111,17 +116,8 @@ struct Statistics: View {
                 }
                 .padding()
                 .padding(.bottom,30)
-                
                 .task {
-                    //                    print(MyTool.checkAndBuildTodayLog(context:context).readMinutes)
                     todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
-                    //                todayReadMin = 30
-                    if(targetMinPerday > 0){
-                        targetMinPerdayShadow = targetMinPerday
-                    }else{
-                        targetMinPerdayShadow = 45
-                    }
-                    
                     initAllLog()
                 }
             }
@@ -195,7 +191,7 @@ struct Statistics: View {
                     //说明不是本月，不参与计算
                     continue
                 }
-
+                
                 
                 totalReadBook += 1
             }
