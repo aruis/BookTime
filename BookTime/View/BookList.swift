@@ -147,7 +147,7 @@ struct BookList: View {
                     print(error)
                 }
             }
-        }        
+        }
     }
     
 }

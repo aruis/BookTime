@@ -84,8 +84,8 @@ struct BookCard: View {
                         
                         if book.readMinutes > 0{
                             VStack{
-                                Slogan(title: "已阅读", unit: "天  ", value: Int64( book.readDays))
-                                Slogan(title: "  累计", unit: "分钟", value: Int64( book.readMinutes))
+                                Slogan(title: "已阅读", unit: "天", value: Int64( book.readDays))
+                                Slogan(title: "累计", unit: "分钟", value: Int64( book.readMinutes))
                                 
                                 
 //                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
@@ -136,6 +136,8 @@ struct BookCard: View {
                     }
                     .padding(10)
                     
+                    ConfettiCannon(counter: $downTrigger,num:36,radius: 700)
+                    
                     if isFirstBookCard{
                         Label(title: {
                             HStack{
@@ -154,7 +156,7 @@ struct BookCard: View {
                             .font(.subheadline)
                     }
                     
-                    ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
+                    
                 }
 //                .toolbar {
 //                    ToolbarItem(placement: .navigationBarTrailing) {

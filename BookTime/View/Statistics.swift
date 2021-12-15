@@ -48,88 +48,110 @@ struct Statistics: View {
     }
     
     
-    var body: some View {
-        NavigationView {
-            ScrollView{
-                VStack (spacing:15){
-                    Picker(selection: $sumType, label: Text("DayPiker")) {
-                        Text("全部").tag(SumType.all)
-                        Text("本年").tag(SumType.year)
-                        Text("本月").tag(SumType.month)
-                    }.labelsHidden()
-                        .pickerStyle(SegmentedPickerStyle())
-                        .onChange(of: sumType, perform: { val in
-                            initAllLog()
-                        })
+    
+    var mainView:some View{
+        ScrollView {
+            VStack ( spacing:15)        {
+                
+                Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
+                
+                ZStack{
+                    Circle()
+                        .trim(from: 0.0, to:1.0)
+                        .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                        .frame(width:260)
+                        .rotationEffect(.degrees(-90))
+                        .opacity(0.25)
+                    //                        .opacity(0)
+                        .padding()
                     
-                    
-                    Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
-                    
-                    ZStack{
-                        Circle()
-                            .trim(from: 0.0, to:1.0)
-                            .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                            .frame(width:260)
-                            .rotationEffect(.degrees(-90))
-                            .opacity(0.25)
-                        //                        .opacity(0)
-                            .padding()
-                        
-                        Circle()
-                            .trim(from: 0.0, to: process)
-                        //                        .trim(from: 0.0,to:  1.0)
-                            .stroke( AngularGradient(
-                                gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                                center: .center,
-                                startAngle: .degrees(0),
-                                endAngle: .degrees( 360 * process )
-                            ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                            .frame(width:260)
-                            .rotationEffect(.degrees(-90))
-                            .overlay(
-                                VStack(spacing:6){
-                                    
-                                    Text("今日您已阅读 \(todayReadMin) 分")
-                                        .font(.title2)
-                                    if targetMinPerday > 0{
-                                        Text("完成计划的 \( Int( round( process * 100))) %")
-                                            .foregroundColor(.gray)
-                                    }
-                                    
+                    Circle()
+                        .trim(from: 0.0, to: process)
+                    //                        .trim(from: 0.0,to:  1.0)
+                        .stroke( AngularGradient(
+                            gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
+                            center: .center,
+                            startAngle: .degrees(0),
+                            endAngle: .degrees( 360 * process )
+                        ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                        .frame(width:260)
+                        .rotationEffect(.degrees(-90))
+                        .overlay(
+                            VStack(spacing:6){
+                                
+                                Text("今日您已阅读 \(todayReadMin) 分")
+                                    .font(.title2)
+                                if targetMinPerday > 0{
+                                    Text("完成计划的 \( Int( round( process * 100))) %")
+                                        .foregroundColor(.gray)
                                 }
                                 
-                            )
-                            .padding()
-                        
-                        
-                        
-                    }
-                    .frame(width: 300,height: 300)
-                    .animation(.linear, value: todayReadMin)
-                    
-                    Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
-                    Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
-                    Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
+                            }
+                            
+                        )
+                        .padding()
                     
                     
                     
                 }
-                .padding()
-                .padding(.bottom,30)
-                .task {
-                    todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
-                    initAllLog()
-                }
+                .frame(width: 300,height: 300)
+                .animation(.linear, value: todayReadMin)
+                
+                Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
+                Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
+                Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
+                
             }
-            .navigationTitle("成就")
-            .toolbar(content: {
-                Button(action: {
-                    //                bookViewModel.clean()
-                    //                self.showNewBook = true
-                }){
-                    Image(systemName: "square.and.arrow.up")
+            .padding(.bottom,30)
+        }
+    }
+    
+    var body: some View {
+        NavigationView {
+            //            ScrollView{
+            
+            VStack ( spacing:15)        {
+                Picker(selection: $sumType, label: Text("DayPiker")) {
+                    Text("全部").tag(SumType.all)
+                    Text("本年").tag(SumType.year)
+                    Text("本月").tag(SumType.month)
+                }.labelsHidden()
+                    .pickerStyle(SegmentedPickerStyle())
+                                        .onChange(of: sumType, perform: { val in
+                                            initAllLog()
+                                        })
+                
+                TabView(selection: $sumType){
+                    mainView.id(1) .tag(SumType.all)
+                    mainView.id(2) .tag(SumType.year)
+                    mainView.id(3) .tag(SumType.month)
                 }
-            })
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .animation(.linear, value: sumType)
+                .onChange(of: sumType, perform: {val in
+                    initAllLog()
+                })
+                
+            }
+            .padding()
+            .task {
+                todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
+                initAllLog()
+            }
+            
+            
+            //            }
+            .navigationTitle("成就")
+            .navigationBarTitleDisplayMode(.inline)
+//            .toolbar(content: {
+//                Button(action: {
+//                    let image = mainView.snapshot()
+//
+//                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+//                }){
+//                    Image(systemName: "square.and.arrow.up")
+//                }
+//            })
             
             
         }

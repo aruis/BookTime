@@ -52,6 +52,6 @@ class BookViewModel: ObservableObject{
 //        self.id = nil
         self.name = ""
         self.author = ""
-        self.image = UIImage(named: "xiandai")!
+        self.image = UIImage(named: "camera")!
     }
 }
