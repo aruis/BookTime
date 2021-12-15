@@ -23,6 +23,8 @@ struct BookList: View {
     @State private var searchText = ""
     @State private var showAlert:Bool = false
     
+    @State private var wantDelete:Book? = nil
+    
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
     var body: some View {
@@ -65,6 +67,7 @@ struct BookList: View {
                             
                             Button(action: {
                                 self.showAlert = true
+                                wantDelete = books[index]
                                 generator.notificationOccurred(.warning)
                             }){
                                 HStack{
@@ -85,7 +88,7 @@ struct BookList: View {
                 .confirmationDialog("", isPresented: $showAlert, actions: {
 //                    index
                     Button("删除此书（不可恢复）", role: .destructive) {
-//                        delete(book: books[index])
+                        delete(book: wantDelete)
                     }
                     Button("取消", role: .cancel) {
                         self.showAlert = false
@@ -133,16 +136,18 @@ struct BookList: View {
         }
     }
     
-    func delete(book:Book){
-        context.delete(book)
-        
-        DispatchQueue.main.async {
-            do{
-                try context.save()
-            }catch{
-                print(error)
+    func delete(book:Book?){
+        if let book = book{
+            context.delete(book)
+            
+            DispatchQueue.main.async {
+                do{
+                    try context.save()
+                }catch{
+                    print(error)
+                }
             }
-        }
+        }        
     }
     
 }

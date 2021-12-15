@@ -84,8 +84,12 @@ struct BookCard: View {
                         
                         if book.readMinutes > 0{
                             VStack{
-                                Text("您已阅读:").font(.system(.title2))
-                                Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                                Slogan(title: "已阅读", unit: "天  ", value: Int64( book.readDays))
+                                Slogan(title: "  累计", unit: "分钟", value: Int64( book.readMinutes))
+                                
+                                
+//                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
+//                                Text(book.readMinutes.asString()).font(.system(.largeTitle))
                             }
                         }
                        
@@ -152,25 +156,25 @@ struct BookCard: View {
                     
                     ConfettiCannon(counter: $downTrigger,num:36,radius: 500)
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {                            
-                            self.showAlert = true
-                            generator.notificationOccurred(.warning)
-                        }){
-                            Image(systemName: "ellipsis")
-                        }
-                        .confirmationDialog("", isPresented: $showAlert, actions: {
-                            Button("删除此书（不可恢复）", role: .destructive) {
-                                delete()
-                                dismiss()
-                            }
-                            Button("取消", role: .cancel) {
-                                self.showAlert = false
-                            }
-                        })
-                    }
-                }
+//                .toolbar {
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        Button(action: {
+//                            self.showAlert = true
+//                            generator.notificationOccurred(.warning)
+//                        }){
+//                            Image(systemName: "ellipsis")
+//                        }
+//                        .confirmationDialog("", isPresented: $showAlert, actions: {
+//                            Button("删除此书（不可恢复）", role: .destructive) {
+//                                delete()
+//                                dismiss()
+//                            }
+//                            Button("取消", role: .cancel) {
+//                                self.showAlert = false
+//                            }
+//                        })
+//                    }
+//                }
                 
                 
                 

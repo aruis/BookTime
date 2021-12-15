@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import CoreData
 
-struct MyTool{
+struct ReadLogPersistence{
 //    @Environment(\.managedObjectContext) var context
     
     static func checkAndBuildTodayLog(context:NSManagedObjectContext) -> ReadLog{

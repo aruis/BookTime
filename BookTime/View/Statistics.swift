@@ -11,16 +11,30 @@ struct Statistics: View {
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     @Environment(\.managedObjectContext) var context
     
+    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
+        NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
+    ],predicate:NSPredicate(format: "readMinutes > 0"))
+    var logs: FetchedResults<ReadLog>
+    
+    @FetchRequest(entity: Book.entity(), sortDescriptors:[])
+    var books: FetchedResults<Book>
+    
     @State private var targetMinPerdayShadow = 45
-    @State private var todayReadMin = 0
+    @State private var todayReadMin:Int16 = 0
     
     
-    @State private var totalReadDay = 101
-    @State private var totalReadMin = 2300
-    @State private var totalReadBook = 78
-    @State private var longHit = 10
+    @State private var totalReadDay = 0
+    @State private var totalReadMin:Int64 = 0
+    @State private var totalReadBook = 0
+    @State private var longHit = 0
     
-    @State private var sumType = "all"
+    enum SumType: String,CaseIterable{
+        case all
+        case year
+        case month
+    }
+    
+    @State private var sumType = SumType.all
     
     var  process:CGFloat{
         get{
@@ -34,13 +48,17 @@ struct Statistics: View {
             ScrollView{
                 VStack (spacing:15){
                     Picker(selection: $sumType, label: Text("DayPiker")) {
-                        Text("全部").tag("all")
-                        Text("本年").tag("year")
-                        Text("本月").tag("month")
+                        Text("全部").tag(SumType.all)
+                        Text("本年").tag(SumType.year)
+                        Text("本月").tag(SumType.month)
                     }.labelsHidden()
                         .pickerStyle(SegmentedPickerStyle())
+                        .onChange(of: sumType, perform: { val in
+                            initAllLog()
+                        })
+                        
                     
-                    Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: $totalReadDay)
+                    Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
                     
                     ZStack{
                         Circle()
@@ -77,14 +95,16 @@ struct Statistics: View {
                                 
                             )
                             .padding()
-                            .animation(.linear, value: todayReadMin)
+                           
                         
                         
-                    }.frame(width: 300,height: 300)
+                    }
+                    .frame(width: 300,height: 300)
+                    .animation(.linear, value: todayReadMin)
                     
-                    Slogan(title: "累计阅读", unit: "分钟", value: $totalReadMin)
-                    Slogan(title: "读完了", unit: "本书", value: $totalReadBook)
-                    Slogan(title: "最长连续打卡", unit: "天", value: $longHit)
+                    Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
+                    Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
+                    Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
                     
                     
                     
@@ -93,30 +113,97 @@ struct Statistics: View {
                 .padding(.bottom,30)
                 
                 .task {
-                    todayReadMin = MyTool.checkAndBuildTodayLog(context:context).readMinutes
+                    //                    print(MyTool.checkAndBuildTodayLog(context:context).readMinutes)
+                    todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
                     //                todayReadMin = 30
                     if(targetMinPerday > 0){
                         targetMinPerdayShadow = targetMinPerday
                     }else{
                         targetMinPerdayShadow = 45
                     }
+                    
+                    initAllLog()
                 }
-            }            
-            .navigationTitle("一点微小的成绩")
+            }
+            .navigationTitle("成就")
             .toolbar(content: {
                 Button(action: {
-    //                bookViewModel.clean()
-    //                self.showNewBook = true
+                    //                bookViewModel.clean()
+                    //                self.showNewBook = true
                 }){
                     Image(systemName: "square.and.arrow.up")
                 }
             })
-        
+            
             
         }
-       
+        
     }
     
+    func initAllLog(){
+        totalReadDay = 0
+        totalReadMin = 0
+        totalReadBook = 0
+        
+        longHit = 0
+        
+        var lastHitDay:Date? = nil
+        
+        for log:ReadLog in logs{
+            print(log)
+            if(log.readMinutes>0){
+                
+                if(sumType == .year && Date().format(format: "YYYY") != log.day.format(format: "YYYY")) {
+                    //说明不是本年，不参与计算
+                    continue
+                }
+                if(sumType == .month && Date().format(format: "YYYY-MM") != log.day.format(format: "YYYY-MM")) {
+                    //说明不是本月，不参与计算
+                    continue
+                }
+                
+                totalReadDay += 1
+                totalReadMin += Int64( log.readMinutes)
+                
+                if let lastHitDay = lastHitDay {
+                    let begin = lastHitDay.start()
+                    let end = log.day.start()
+                    let components = NSCalendar.current.dateComponents([.day], from: begin , to: end)
+                    if(components.day == 1){ //间隔一天，连续的
+                        longHit += 1
+                    }else{
+                        longHit = 0
+                    }
+                    
+                }else{
+                    
+                    longHit += 1
+                }
+                
+                lastHitDay = log.day
+            }
+            
+        }
+        
+        for book:Book in books{
+            if let doneTime = book.doneTime {
+                if(sumType == .year && Date().format(format: "YYYY") != doneTime.format(format: "YYYY")) {
+                    //说明不是本年，不参与计算
+                    continue
+                }
+                if(sumType == .month && Date().format(format: "YYYY-MM") != doneTime.format(format: "YYYY-MM")) {
+                    //说明不是本月，不参与计算
+                    continue
+                }
+
+                
+                totalReadBook += 1
+            }
+            if(book.isDone){
+                
+            }
+        }
+    }
     
 }
 
@@ -130,27 +217,5 @@ struct Statistics_Previews: PreviewProvider {
 }
 
 
-struct Slogan: View {
-    var title:String
-    var unit:String
-    
-    @Binding var value:Int
-    
-    var body: some View {
-        HStack(alignment: .firstTextBaseline){
-            Text(title)
-                .font(.subheadline)
-                .foregroundColor(.gray)
-            
-            Text(String(value))
-                .font(.largeTitle)
-                .animation(.default, value: value)
-            
-            
-            Text(unit)
-                .font(.subheadline)
-                .foregroundColor(.gray)
-            
-        }
-    }
-}
+
+

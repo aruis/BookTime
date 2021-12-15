@@ -79,13 +79,21 @@ struct TimerView: View {
                 let min = count / 60
                                 
                 if thisMinute != min{
-                    let readLog = MyTool.checkAndBuildTodayLog(context:context)
+                    let readLog = ReadLogPersistence.checkAndBuildTodayLog(context:context)
                     
                     thisMinute = min
                     if book.readMinutes == 0 { //第一次读
                         book.firstReadTime = now
                     }
                     book.readMinutes += 1
+                    if let lastReadTime = book.lastReadTime {
+                        if(lastReadTime.format(format: "YYYY-MM-dd") != now.format(format: "YYYY-MM-dd")){
+                            book.readDays += 1
+                        }
+                    }else{
+                        book.readDays  = 1
+                    }
+                    book.lastReadTime = now
                     readLog.readMinutes += 1
                                         
                     DispatchQueue.main.async {

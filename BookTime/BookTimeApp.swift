@@ -23,7 +23,7 @@ struct BookTimeApp: App {
                 
                 Statistics()
                     .tabItem {
-                        Label("统计",systemImage:"target")
+                        Label("成就",systemImage:"target")
                     }
                     .tag(1)
                 
