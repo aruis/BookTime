@@ -45,7 +45,7 @@ struct TimerView: View {
                     .baselineOffset(14)
                     .opacity(showColon ? 1 : 0)
                     .animation(.easeInOut, value: showColon)
-                    .font(.system(size: 60))
+                    .font(.system(size: verticalSizeClass == .compact ? 140 : 60))
 //                    .foregroundColor(isHit ? .red : nil)
                 
                 
@@ -56,11 +56,12 @@ struct TimerView: View {
             .overlay(alignment: .bottom, content: {
                 if showDate {
                     Text(now.format(format: "YYYY-MM-dd"))
-                        .font(.subheadline)
-                        .opacity(0.65)
+                        .font(.system(size: verticalSizeClass == .compact ? 40 : 20))
+//                        .font(.subheadline,size: (verticalSizeClass == .compact ? 140 : 60))
+                        .foregroundColor(.gray)
                 }
             })
-            .font(.custom("Courier New",size:  100)            )
+            .font(.custom("Courier New",size: verticalSizeClass == .compact ? 220 : 100)            )
             .onAppear(perform: {
                 UIApplication.shared.isIdleTimerDisabled = true
                 DispatchQueue.main.async {
@@ -78,7 +79,8 @@ struct TimerView: View {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()               
                 self.showDate.toggle()
             }
-            .scaleEffect(verticalSizeClass == .compact ? 2.2 : 1)
+            .animation(.linear, value: verticalSizeClass)
+//            .scaleEffect(verticalSizeClass == .compact ? 2.2 : 1)
         }
         .onAppear(perform: {
             if(targetMinPerday>0 && ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes

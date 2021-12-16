@@ -67,6 +67,7 @@ struct BookCard: View {
                             ForEach(0...4,id: \.self) {index in
                                 Image(systemName: book.rating > index ? "star.fill" : "star")
                                     .font(.title2)
+                                    .foregroundColor(Color("AccentColor"))                                    
                                     .onTapGesture {
                                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                     
