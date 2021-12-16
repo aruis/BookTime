@@ -13,6 +13,8 @@ struct TimerView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
+    @AppStorage("targetMinPerday") var targetMinPerday = 45
+    
     @ObservedObject var book: Book
     @ObservedObject private var timerTrack:TimerTrack = TimerTrack.shared
     
@@ -27,7 +29,11 @@ struct TimerView: View {
     
     @State private var showColon:Bool = true
     @State private var showDate:Bool = false
-    @State private var now  = Date()        
+    @State private var now  = Date()
+    
+    @State private var isHit:Bool = false
+    
+    let generator = UINotificationFeedbackGenerator()
     
     var body: some View {
         VStack{
@@ -40,11 +46,13 @@ struct TimerView: View {
                     .opacity(showColon ? 1 : 0)
                     .animation(.easeInOut, value: showColon)
                     .font(.system(size: 60))
+//                    .foregroundColor(isHit ? .red : nil)
                 
                 
                 Text((showDate ? now.format(format: "HH:mm") : thisMinute.asString()).split(separator: ":")[1])
                 
             }
+            
             .overlay(alignment: .bottom, content: {
                 if showDate {
                     Text(now.format(format: "YYYY-MM-dd"))
@@ -72,13 +80,21 @@ struct TimerView: View {
             }
             .scaleEffect(verticalSizeClass == .compact ? 2.2 : 1)
         }
-        .onAppear(perform: {            
+        .onAppear(perform: {
+            if(targetMinPerday>0 && ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
+            >= targetMinPerday
+            ){
+//                generator.notificationOccurred(.success)
+                isHit = true
+            }
+            
             timerTrack.start { count in
                 now = Date()
                 self.showColon.toggle()
                 let min = count / 60
                                 
                 if thisMinute != min{
+                    
                     let readLog = ReadLogPersistence.checkAndBuildTodayLog(context:context)
                     
                     thisMinute = min
@@ -95,6 +111,12 @@ struct TimerView: View {
                     }
                     book.lastReadTime = now
                     readLog.readMinutes += 1
+                    
+                    if(targetMinPerday>0 && targetMinPerday == readLog.readMinutes){
+                        generator.notificationOccurred(.success)
+                        isHit = true
+                    }
+
                                         
                     DispatchQueue.main.async {
                         do{

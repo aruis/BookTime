@@ -8,13 +8,27 @@
 import SwiftUI
 import CoreData
 
+struct SelectedSort: Equatable {
+    var by = 0
+    var order = 0
+    var index: Int { by + order }
+}
+
 struct BookList: View {
     let generator = UINotificationFeedbackGenerator()
     
+    // TODO 排序问题
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
     ])
     var books: FetchedResults<Book>
+    
+    @SectionedFetchRequest(
+        sectionIdentifier: \.isDone,
+        sortDescriptors: [SortDescriptor(\Book.isDone, order: .forward),SortDescriptor(\Book.createTime, order: .reverse)])
+    private var quakes: SectionedFetchResults<Bool, Book>
+    
+    //    @State private var selectedSort = SelectedSort()
     
     @Environment(\.managedObjectContext) var context
     
@@ -41,52 +55,58 @@ struct BookList: View {
                 
             } else {
                 List{
-                    ForEach(books.indices,id:\.self){index in
-                        ZStack(alignment: .leading){
-                            NavigationLink(
-                                destination: BookCard(book: books[index])
-                            ){
-                                EmptyView()
-                            }.opacity(0)
-                            
-                            BookListItem(book: books[index])
-                            
-                        }
-                        .contextMenu {
-                            
-                            Button(action: {
-                                self.bookViewModel.setBook(book: books[index])
-                                self.showNewBook = true
-//                                self.showError.toggle()
-                            }) {
-                                HStack {
-                                    Text("修改信息")
-                                    Image(systemName: "pencil.circle")
+                    ForEach(quakes) { section in
+                        Section(header: Text(section.id ? "已读完" : "未读完")) {
+                            ForEach(section) { book in
+                                ZStack(alignment: .leading){
+                                    NavigationLink(
+                                        destination: BookCard(book:book)
+                                    ){
+                                        EmptyView()
+                                    }.opacity(0)
+                                    
+                                    BookListItem(book: book)
+                                    
                                 }
-                            }
-                            
-                            Button(action: {
-                                self.showAlert = true
-                                wantDelete = books[index]
-                                generator.notificationOccurred(.warning)
-                            }){
-                                HStack{
-                                    Text("删除此书")
-                                    Image(systemName: "trash")
-                                }.foregroundColor(.red)
+                                .contextMenu {
+                                    
+                                    Button(action: {
+                                        self.bookViewModel.setBook(book: book)
+                                        self.showNewBook = true
+                                        //                                self.showError.toggle()
+                                    }) {
+                                        HStack {
+                                            Text("修改信息")
+                                            Image(systemName: "pencil.circle")
+                                        }
+                                    }
+                                    
+                                    Button(action: {
+                                        self.showAlert = true
+                                        wantDelete = book
+                                        generator.notificationOccurred(.warning)
+                                    }){
+                                        HStack{
+                                            Text("删除此书")
+                                            Image(systemName: "trash")
+                                        }.foregroundColor(.red)
+                                        
+                                    }
+                                    
+                                }
+                                
+                                .listRowSeparator(.hidden)
                                 
                             }
-
                         }
-                        
-                        .listRowSeparator(.hidden)
                     }
-                
+                    
+                    
                 }
                 .listStyle(.plain)
                 .navigationTitle("我的书架")
                 .confirmationDialog("", isPresented: $showAlert, actions: {
-//                    index
+                    //                    index
                     Button("删除此书（不可恢复）", role: .destructive) {
                         delete(book: wantDelete)
                     }
@@ -94,7 +114,7 @@ struct BookList: View {
                         self.showAlert = false
                     }
                 })
-
+                
                 .navigationBarTitleDisplayMode(.automatic)
                 .searchable(text: $searchText,  prompt: "按书名搜索" )
                 .onChange(of: searchText){ searchText in
@@ -104,18 +124,18 @@ struct BookList: View {
                     
                     books.nsPredicate = predicate
                 }
-//                .toolbar(content: {
-//                    ToolbarItem(placement: .bottomBar){
-//                        if MyTool.checkAndBuildTodayLog(context: context).readMinutes > 0{
-//                            Text("今日阅读时长：\(MyTool.checkAndBuildTodayLog(context: context).readMinutes)分钟")
-//                        }else if(books.count>0){
-//                            Text("今天还没有开始阅读呦")
-//                        }else{
-//                            
-//                        }
-//                        
-//                    }
-//                })
+                //                .toolbar(content: {
+                //                    ToolbarItem(placement: .bottomBar){
+                //                        if MyTool.checkAndBuildTodayLog(context: context).readMinutes > 0{
+                //                            Text("今日阅读时长：\(MyTool.checkAndBuildTodayLog(context: context).readMinutes)分钟")
+                //                        }else if(books.count>0){
+                //                            Text("今天还没有开始阅读呦")
+                //                        }else{
+                //
+                //                        }
+                //
+                //                    }
+                //                })
                 .toolbar{
                     Button(action: {
                         bookViewModel.clean()
@@ -125,8 +145,8 @@ struct BookList: View {
                     }
                     
                 }
-             
-
+                
+                
             }
             
             
