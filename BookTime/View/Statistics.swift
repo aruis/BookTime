@@ -214,10 +214,9 @@ struct Statistics: View {
                     continue
                 }
                 
-                
-                totalReadBook += 1
-            }
-            if(book.isDone){
+                if(book.isDone){
+                    totalReadBook += 1
+                }
                 
             }
         }
