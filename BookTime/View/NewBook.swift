@@ -117,7 +117,7 @@ struct NewBook: View {
                 }
             }
             .actionSheet(isPresented: $showPhotoOptins){
-                if  VNDocumentCameraViewController.isSupported{
+                if false && VNDocumentCameraViewController.isSupported{
                     return  ActionSheet(title: Text("选择一张图片作为本书封面").font(.system(.title)),
                                         message: nil,
                                         buttons: [
@@ -185,6 +185,7 @@ struct NewBook: View {
             book.image = bookViewModel.image.pngData()!
             book.name = bookViewModel.name
             book.author = bookViewModel.author
+            book.isDone = false
             book.createTime = Date()
         }
         

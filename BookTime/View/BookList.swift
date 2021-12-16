@@ -19,6 +19,7 @@ struct BookList: View {
     
     // TODO 排序问题
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
+        NSSortDescriptor(keyPath: \Book.isDone, ascending: true),
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
     ])
     var books: FetchedResults<Book>
@@ -55,55 +56,56 @@ struct BookList: View {
                 
             } else {
                 List{
-                    ForEach(quakes) { section in
-                        Section(header: Text(section.id ? "已读完" : "未读完")) {
-                            ForEach(section) { book in
-                                ZStack(alignment: .leading){
-                                    NavigationLink(
-                                        destination: BookCard(book:book)
-                                    ){
-                                        EmptyView()
-                                    }.opacity(0)
-                                    
-                                    BookListItem(book: book)
-                                    
+//                    ForEach(quakes) { section in
+//                        Section(header: Text((section.id ? "已读完" : "未读完") + "·\(section.count)" ).monospacedDigit() ) {
+//
+//                        }
+//                    }
+                    ForEach(books) { book in
+                        ZStack(alignment: .leading){
+                            NavigationLink(
+                                destination: BookCard(book:book)
+                            ){
+                                EmptyView()
+                            }.opacity(0)
+                            
+                            BookListItem(book: book)
+                            
+                        }
+                        .contextMenu {
+                            
+                            Button(action: {
+                                self.bookViewModel.setBook(book: book)
+                                self.showNewBook = true
+                                //                                self.showError.toggle()
+                            }) {
+                                HStack {
+                                    Text("修改信息")
+                                    Image(systemName: "pencil.circle")
                                 }
-                                .contextMenu {
-                                    
-                                    Button(action: {
-                                        self.bookViewModel.setBook(book: book)
-                                        self.showNewBook = true
-                                        //                                self.showError.toggle()
-                                    }) {
-                                        HStack {
-                                            Text("修改信息")
-                                            Image(systemName: "pencil.circle")
-                                        }
-                                    }
-                                    
-                                    Button(action: {
-                                        self.showAlert = true
-                                        wantDelete = book
-                                        generator.notificationOccurred(.warning)
-                                    }){
-                                        HStack{
-                                            Text("删除此书")
-                                            Image(systemName: "trash")
-                                        }.foregroundColor(.red)
-                                        
-                                    }
-                                    
-                                }
-                                
-                                .listRowSeparator(.hidden)
+                            }
+                            
+                            Button(action: {
+                                self.showAlert = true
+                                wantDelete = book
+                                generator.notificationOccurred(.warning)
+                            }){
+                                HStack{
+                                    Text("删除此书")
+                                    Image(systemName: "trash")
+                                }.foregroundColor(.red)
                                 
                             }
+                            
                         }
+                        
+                        .listRowSeparator(.hidden)
+                        
                     }
-                    
                     
                 }
                 .listStyle(.plain)
+                //                .listStyle(.sidebar)
                 .navigationTitle("我的书架")
                 .confirmationDialog("", isPresented: $showAlert, actions: {
                     //                    index
