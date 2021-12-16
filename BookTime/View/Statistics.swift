@@ -110,16 +110,16 @@ struct Statistics: View {
         NavigationView {
             //            ScrollView{
             
-            VStack ( spacing:15)        {
+            VStack (){
                 Picker(selection: $sumType, label: Text("DayPiker")) {
                     Text("全部").tag(SumType.all)
                     Text("本年").tag(SumType.year)
                     Text("本月").tag(SumType.month)
                 }.labelsHidden()
                     .pickerStyle(SegmentedPickerStyle())
-                                        .onChange(of: sumType, perform: { val in
-                                            initAllLog()
-                                        })
+                    .onChange(of: sumType, perform: { val in
+                        initAllLog()
+                    })
                 
                 TabView(selection: $sumType){
                     mainView.id(1) .tag(SumType.all)
@@ -143,15 +143,15 @@ struct Statistics: View {
             //            }
             .navigationTitle("成就")
             .navigationBarTitleDisplayMode(.inline)
-//            .toolbar(content: {
-//                Button(action: {
-//                    let image = mainView.snapshot()
-//
-//                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-//                }){
-//                    Image(systemName: "square.and.arrow.up")
-//                }
-//            })
+            //            .toolbar(content: {
+            //                Button(action: {
+            //                    let image = mainView.snapshot()
+            //
+            //                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            //                }){
+            //                    Image(systemName: "square.and.arrow.up")
+            //                }
+            //            })
             
             
         }
