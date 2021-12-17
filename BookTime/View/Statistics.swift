@@ -51,7 +51,7 @@ struct Statistics: View {
     
     @State private var sumType = SumType.all
     
-     var process:CGFloat{
+    var process:CGFloat{
         get{
             if(targetMinPerday>0){
                 return CGFloat( todayReadMin)/CGFloat( targetMinPerday)
@@ -62,11 +62,11 @@ struct Statistics: View {
         }
     }
     
-     var totalTitle:String{
+    var totalTitle:String{
         get {
             switch sumType {
             case .all:
-                return "全部"
+                return "总"
             case .year:
                 return "本年"
             case .month:
@@ -75,35 +75,101 @@ struct Statistics: View {
         }
     }
     
-//        var reportView:some View{
+    var reportView:some View{
+        VStack {
             
-//        }
+            //                    Picker(selection: $sumType, label: Text("DayPiker")) {
+            //                        Text("全部").tag(SumType.all)
+            //
+            //                        Text("本年").tag(SumType.year)
+            //
+            //                        Text("本月").tag(SumType.month)
+            //
+            //                    }.labelsHidden()
+            //                        .pickerStyle(SegmentedPickerStyle())
+            //                        .onChange(of: sumType, perform: { val in
+            //                            initAllLog()
+            //                        })
+            
+            Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
+            
+            ZStack{
+                Circle()
+                    .trim(from: 0.0, to:1.0)
+                    .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                    .frame(width:260)
+                    .rotationEffect(.degrees(-90))
+                    .opacity(0.25)
+                //                        .opacity(0)
+                    .padding()
+                
+                Circle()
+                    .trim(from: 0.0, to: process)
+                //                        .trim(from: 0.0,to:  1.0)
+                    .stroke( AngularGradient(
+                        gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
+                        center: .center,
+                        startAngle: .degrees(0),
+                        endAngle: .degrees( 360 * process )
+                    ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                    .frame(width:260)
+                    .rotationEffect(.degrees(-90))
+                    .overlay(
+                        VStack(spacing:6){
+                            
+                            Text("今日您已阅读 \(todayReadMin) 分")
+                                .font(.title2)
+                            if targetMinPerday > 0{
+                                Text("完成计划的 \( Int( round( process * 100))) %")
+                                    .foregroundColor(.gray)
+                            }
+                            
+                        }
+                        
+                    )
+                    .padding()
+                
+                
+                
+            }
+            .frame(width: 300,height: 300)
+            .animation(.linear, value: todayReadMin)
+            
+            Text(totalTitle)
+                .font(.title)
+                .animation(.easeIn, value: sumType)
+            
+            TabView(selection: $sumType){
+                
+                Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit, process: process)
+                    .id(1).tag(SumType.all)
+                
+                
+                
+                Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year, process: process)
+                    .id(2) .tag(SumType.year)
+                
+                
+                
+                
+                Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month, process: process)
+                    .id(3) .tag(SumType.month)
+                
+                
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .animation(.linear, value: sumType)
+            .frame( height: 160)
+            
+        }
+    }
     
     var exportBox:some View{
         //        VStack{
         VStack(){
             VStack{
                 Text("BookTime").font(.largeTitle)
-                
-                if sumType == .all {
-                    
-                    Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit, process: process)
-                    
-                    
-                }else if sumType == .year {
-                    
-                    Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year, process: process)
-                    
-                    
-                }else if sumType == .month{
-                    
-                    Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month, process: process)
-                    
-                    
-                    
-                }
-                
-                //                reportView
+                reportView
             }
             .padding()
             .overlay(
@@ -127,90 +193,7 @@ struct Statistics: View {
             
             ScrollView {
                 VStack (){
-                    
-                    //                    Picker(selection: $sumType, label: Text("DayPiker")) {
-                    //                        Text("全部").tag(SumType.all)
-                    //
-                    //                        Text("本年").tag(SumType.year)
-                    //
-                    //                        Text("本月").tag(SumType.month)
-                    //
-                    //                    }.labelsHidden()
-                    //                        .pickerStyle(SegmentedPickerStyle())
-                    //                        .onChange(of: sumType, perform: { val in
-                    //                            initAllLog()
-                    //                        })
-                    
-                    Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
-                    
-                    ZStack{
-                        Circle()
-                            .trim(from: 0.0, to:1.0)
-                            .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                            .frame(width:260)
-                            .rotationEffect(.degrees(-90))
-                            .opacity(0.25)
-                        //                        .opacity(0)
-                            .padding()
-                        
-                        Circle()
-                            .trim(from: 0.0, to: process)
-                        //                        .trim(from: 0.0,to:  1.0)
-                            .stroke( AngularGradient(
-                                gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                                center: .center,
-                                startAngle: .degrees(0),
-                                endAngle: .degrees( 360 * process )
-                            ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                            .frame(width:260)
-                            .rotationEffect(.degrees(-90))
-                            .overlay(
-                                VStack(spacing:6){
-                                    
-                                    Text("今日您已阅读 \(todayReadMin) 分")
-                                        .font(.title2)
-                                    if targetMinPerday > 0{
-                                        Text("完成计划的 \( Int( round( process * 100))) %")
-                                            .foregroundColor(.gray)
-                                    }
-                                    
-                                }
-                                
-                            )
-                            .padding()
-                        
-                        
-                        
-                    }
-                    .frame(width: 300,height: 300)
-                    .animation(.linear, value: todayReadMin)
-                    
-                    Text(totalTitle)
-                        .font(.title)
-                        .animation(.easeIn, value: sumType)
-                    
-                    TabView(selection: $sumType){
-                        
-                        Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit, process: process)
-                            .id(1).tag(SumType.all)
-                        
-                        
-                        
-                        Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year, process: process)
-                            .id(2) .tag(SumType.year)
-                        
-                        
-                        
-                        
-                        Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month, process: process)
-                            .id(3) .tag(SumType.month)
-                        
-                        
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .animation(.linear, value: sumType)
-                    .frame( height: 160)
-                    
+                    reportView
                 }
                 .padding()
                 .task {
@@ -218,7 +201,7 @@ struct Statistics: View {
                     initAllLog()
                 }
                 .navigationTitle("成就")
-                .navigationBarTitleDisplayMode(.inline)
+                //                .navigationBarTitleDisplayMode(.inline)
                 .toolbar(content: {
                     Button(action: {
                         let image = exportBox.snapshot()
@@ -256,7 +239,7 @@ struct Statistics: View {
                 })
                 .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
                     AlertToast( type: .complete(Color("AccentColor")), title: "导出成功\n去相册看看吧")
-            }
+                }
             }
             
             
@@ -265,6 +248,22 @@ struct Statistics: View {
     }
     
     func initAllLog(){
+        
+        
+        
+        totalReadDay = 0
+        totalReadMin = 0
+        totalReadBook = 0
+        longHit = 0
+        totalReadDay_year = 0
+        totalReadMin_year = 0
+        totalReadBook_year = 0
+        longHit_year = 0
+        totalReadDay_month = 0
+        totalReadMin_month = 0
+        totalReadBook_month = 0
+        longHit_month = 0
+        
         //        isShowYear = false
         //        isShowMonth = false
         //
@@ -273,6 +272,9 @@ struct Statistics: View {
         //        totalReadBook = 0
         //
         //        longHit = 0
+        
+        
+        
         
         var lastHitDay:Date? = nil
         var lastHitDay_month:Date? = nil
