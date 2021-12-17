@@ -133,29 +133,30 @@ struct BookCard: View {
                         }
                         .animation(.easeInOut, value: book.isDone)
                         
+                        if isFirstBookCard || true{
+                            Label(title: {
+                                HStack{
+                                    Text("请横置设备，开始计时")
+                                    Button(action: {
+                                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                        isFirstBookCard = false
+                                    }, label: {
+                                        Text("[不再提示]")
+                                    })
+                                }
+                                
+                            }, icon: {
+                                Image(systemName: "iphone.landscape")
+                            })
+                                .font(.subheadline)
+                        }
 
                     }
                     .padding(10)
                     
                     ConfettiCannon(counter: $downTrigger,num:36,radius: 700)
                     
-                    if isFirstBookCard{
-                        Label(title: {
-                            HStack{
-                                Text("请横置设备，开始计时")
-                                Button(action: {
-                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()                                   
-                                    isFirstBookCard = false
-                                }, label: {
-                                    Text("[不再提示]")
-                                })
-                            }
-                            
-                        }, icon: {
-                            Image(systemName: "iphone.landscape")                                
-                        })
-                            .font(.subheadline)
-                    }
+                 
                     
                     
                 }

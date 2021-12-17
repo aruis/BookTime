@@ -28,6 +28,9 @@ struct Statistics: View {
     @State private var totalReadBook = 0
     @State private var longHit = 0
     
+    @State private var isShowMonth = false
+    @State private var isShowYear = false
+    
     enum SumType: String,CaseIterable{
         case all
         case year
@@ -36,7 +39,7 @@ struct Statistics: View {
     
     @State private var sumType = SumType.all
     
-    var  process:CGFloat{
+    var process:CGFloat{
         get{
             if(targetMinPerday>0){
                 return CGFloat( todayReadMin)/CGFloat( targetMinPerday)
@@ -111,20 +114,36 @@ struct Statistics: View {
             //            ScrollView{
             
             VStack (){
-                Picker(selection: $sumType, label: Text("DayPiker")) {
-                    Text("全部").tag(SumType.all)
-                    Text("本年").tag(SumType.year)
-                    Text("本月").tag(SumType.month)
-                }.labelsHidden()
-                    .pickerStyle(SegmentedPickerStyle())
-                    .onChange(of: sumType, perform: { val in
-                        initAllLog()
-                    })
+                
+                if (isShowYear || isShowMonth){
+                    Picker(selection: $sumType, label: Text("DayPiker")) {
+                        Text("全部").tag(SumType.all)
+                        if isShowYear {
+                            Text("本年").tag(SumType.year)
+                        }
+                        if isShowMonth {
+                            Text("本月").tag(SumType.month)
+                        }
+                        
+                        
+                    }.labelsHidden()
+                        .pickerStyle(SegmentedPickerStyle())
+                        .onChange(of: sumType, perform: { val in
+                            initAllLog()
+                        })
+                }
+                
                 
                 TabView(selection: $sumType){
                     mainView.id(1) .tag(SumType.all)
-                    mainView.id(2) .tag(SumType.year)
-                    mainView.id(3) .tag(SumType.month)
+                    if isShowYear {
+                        mainView.id(2) .tag(SumType.year)
+                    }
+                    
+                    if isShowMonth{
+                        mainView.id(3) .tag(SumType.month)
+                    }
+                    
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .animation(.linear, value: sumType)
@@ -142,7 +161,7 @@ struct Statistics: View {
             
             //            }
             .navigationTitle("成就")
-            .navigationBarTitleDisplayMode(.inline)
+//            .navigationBarTitleDisplayMode(.inline)
             //            .toolbar(content: {
             //                Button(action: {
             //                    let image = mainView.snapshot()
@@ -171,13 +190,25 @@ struct Statistics: View {
             print(log)
             if(log.readMinutes>0){
                 
-                if(sumType == .year && Date().format(format: "YYYY") != log.day.format(format: "YYYY")) {
+                if( Date().format(format: "YYYY") != log.day.format(format: "YYYY")) {
+                    
+                    isShowYear = true //存在非本年数据
+                    
                     //说明不是本年，不参与计算
-                    continue
+                    if(sumType == .year ){
+                        continue
+                    }
+                    
                 }
-                if(sumType == .month && Date().format(format: "YYYY-MM") != log.day.format(format: "YYYY-MM")) {
+                if( Date().format(format: "YYYY-MM") != log.day.format(format: "YYYY-MM")) {
+                    
+                    isShowYear = true //存在非本月数据
+                    
                     //说明不是本月，不参与计算
-                    continue
+                    if(sumType == .month ){
+                        continue
+                    }
+                    
                 }
                 
                 totalReadDay += 1
@@ -205,13 +236,20 @@ struct Statistics: View {
         
         for book:Book in books{
             if let doneTime = book.doneTime {
-                if(sumType == .year && Date().format(format: "YYYY") != doneTime.format(format: "YYYY")) {
+                if( Date().format(format: "YYYY") != doneTime.format(format: "YYYY")) {
+                    isShowYear = true //存在非本年数据
+                    
                     //说明不是本年，不参与计算
-                    continue
-                }
-                if(sumType == .month && Date().format(format: "YYYY-MM") != doneTime.format(format: "YYYY-MM")) {
+                    if(sumType == .year ){
+                        continue
+                    }                }
+                if(Date().format(format: "YYYY-MM") != doneTime.format(format: "YYYY-MM")) {
+                    isShowYear = true //存在非本月数据
+                    
                     //说明不是本月，不参与计算
-                    continue
+                    if(sumType == .month ){
+                        continue
+                    }
                 }
                 
                 if(book.isDone){
