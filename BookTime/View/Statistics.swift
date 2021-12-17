@@ -31,6 +31,8 @@ struct Statistics: View {
     @State private var isShowMonth = false
     @State private var isShowYear = false
     
+    @State private var showToast = false
+    
     enum SumType: String,CaseIterable{
         case all
         case year
@@ -50,66 +52,96 @@ struct Statistics: View {
         }
     }
     
-    
-    
-    var mainView:some View{
-        ScrollView {
-            VStack ( spacing:15)        {
+    var reportView:some View{
+        VStack ( spacing:15)        {
+            
+            Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
+            
+            ZStack{
+                Circle()
+                    .trim(from: 0.0, to:1.0)
+                    .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                    .frame(width:260)
+                    .rotationEffect(.degrees(-90))
+                    .opacity(0.25)
+                //                        .opacity(0)
+                    .padding()
                 
-                Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
-                
-                ZStack{
-                    Circle()
-                        .trim(from: 0.0, to:1.0)
-                        .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                        .frame(width:260)
-                        .rotationEffect(.degrees(-90))
-                        .opacity(0.25)
-                    //                        .opacity(0)
-                        .padding()
-                    
-                    Circle()
-                        .trim(from: 0.0, to: process)
-                    //                        .trim(from: 0.0,to:  1.0)
-                        .stroke( AngularGradient(
-                            gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                            center: .center,
-                            startAngle: .degrees(0),
-                            endAngle: .degrees( 360 * process )
-                        ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                        .frame(width:260)
-                        .rotationEffect(.degrees(-90))
-                        .overlay(
-                            VStack(spacing:6){
-                                
-                                Text("今日您已阅读 \(todayReadMin) 分")
-                                    .font(.title2)
-                                if targetMinPerday > 0{
-                                    Text("完成计划的 \( Int( round( process * 100))) %")
-                                        .foregroundColor(.gray)
-                                }
-                                
+                Circle()
+                    .trim(from: 0.0, to: process)
+                //                        .trim(from: 0.0,to:  1.0)
+                    .stroke( AngularGradient(
+                        gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
+                        center: .center,
+                        startAngle: .degrees(0),
+                        endAngle: .degrees( 360 * process )
+                    ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                    .frame(width:260)
+                    .rotationEffect(.degrees(-90))
+                    .overlay(
+                        VStack(spacing:6){
+                            
+                            Text("今日您已阅读 \(todayReadMin) 分")
+                                .font(.title2)
+                            if targetMinPerday > 0{
+                                Text("完成计划的 \( Int( round( process * 100))) %")
+                                    .foregroundColor(.gray)
                             }
                             
-                        )
-                        .padding()
-                    
-                    
-                    
-                }
-                .frame(width: 300,height: 300)
-                .animation(.linear, value: todayReadMin)
+                        }
+                        
+                    )
+                    .padding()
                 
-                Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
-                Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
-                Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
+                
                 
             }
-            .padding(.bottom,30)
+            .frame(width: 300,height: 300)
+            .animation(.linear, value: todayReadMin)
+            
+            Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
+            Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
+            Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
+            
         }
+//        .padding(.bottom,30)
+    }
+    
+    var exportBox:some View{
+//        VStack{
+            VStack(){
+                VStack{
+                    Text("BookTime").font(.largeTitle)
+                    reportView
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .stroke(lineWidth: 3.0)
+                        .foregroundColor(Color("AccentColor"))
+                )
+                Text("test").font(.title)
+                    .opacity(0)
+            }
+            .padding(.all,15)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 10.0)
+//                    .stroke(lineWidth: 3.0)
+//                    .foregroundColor(Color("AccentColor"))
+//            )
+
+            //        .padding(.bottom,30)
+            
+//        }
+//        .padding(.top,5)
+//        .padding(.bottom,15)
     }
     
     var body: some View {
+        
+        
+        //        return exportBox
+        
         NavigationView {
             //            ScrollView{
             
@@ -135,13 +167,22 @@ struct Statistics: View {
                 
                 
                 TabView(selection: $sumType){
-                    mainView.id(1) .tag(SumType.all)
+                    ScrollView{
+                        reportView
+                    }
+                    .id(1) .tag(SumType.all)
                     if isShowYear {
-                        mainView.id(2) .tag(SumType.year)
+                        ScrollView{
+                            reportView
+                        }
+                        .id(2) .tag(SumType.year)
                     }
                     
                     if isShowMonth{
-                        mainView.id(3) .tag(SumType.month)
+                        ScrollView{
+                            reportView
+                        }
+                        .id(3) .tag(SumType.month)
                     }
                     
                 }
@@ -161,16 +202,19 @@ struct Statistics: View {
             
             //            }
             .navigationTitle("成就")
-//            .navigationBarTitleDisplayMode(.inline)
-            //            .toolbar(content: {
-            //                Button(action: {
-            //                    let image = mainView.snapshot()
-            //
-            //                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-            //                }){
-            //                    Image(systemName: "square.and.arrow.up")
-            //                }
-            //            })
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(content: {
+                Button(action: {
+                    let image = exportBox.snapshot()
+                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                    showToast = true
+                }){
+                    Image(systemName: "square.and.arrow.up")
+                }
+            })
+            .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
+                AlertToast( type: .complete(Color("AccentColor")), title: "导出成功\n去相册看看吧")
+            }
             
             
         }
