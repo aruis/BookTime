@@ -28,6 +28,16 @@ struct Statistics: View {
     @State private var totalReadBook = 0
     @State private var longHit = 0
     
+    @State private var totalReadDay_year = 0
+    @State private var totalReadMin_year:Int64 = 0
+    @State private var totalReadBook_year = 0
+    @State private var longHit_year = 0
+    
+    @State private var totalReadDay_month = 0
+    @State private var totalReadMin_month:Int64 = 0
+    @State private var totalReadBook_month = 0
+    @State private var longHit_month = 0
+    
     @State private var isShowMonth = false
     @State private var isShowYear = false
     
@@ -41,7 +51,7 @@ struct Statistics: View {
     
     @State private var sumType = SumType.all
     
-    var process:CGFloat{
+     var process:CGFloat{
         get{
             if(targetMinPerday>0){
                 return CGFloat( todayReadMin)/CGFloat( targetMinPerday)
@@ -52,89 +62,59 @@ struct Statistics: View {
         }
     }
     
-    var reportView:some View{
-        VStack ( spacing:15)        {
-            
-            Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
-            
-            ZStack{
-                Circle()
-                    .trim(from: 0.0, to:1.0)
-                    .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                    .frame(width:260)
-                    .rotationEffect(.degrees(-90))
-                    .opacity(0.25)
-                //                        .opacity(0)
-                    .padding()
-                
-                Circle()
-                    .trim(from: 0.0, to: process)
-                //                        .trim(from: 0.0,to:  1.0)
-                    .stroke( AngularGradient(
-                        gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                        center: .center,
-                        startAngle: .degrees(0),
-                        endAngle: .degrees( 360 * process )
-                    ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                    .frame(width:260)
-                    .rotationEffect(.degrees(-90))
-                    .overlay(
-                        VStack(spacing:6){
-                            
-                            Text("今日您已阅读 \(todayReadMin) 分")
-                                .font(.title2)
-                            if targetMinPerday > 0{
-                                Text("完成计划的 \( Int( round( process * 100))) %")
-                                    .foregroundColor(.gray)
-                            }
-                            
-                        }
-                        
-                    )
-                    .padding()
-                
-                
-                
+     var totalTitle:String{
+        get {
+            switch sumType {
+            case .all:
+                return "全部"
+            case .year:
+                return "本年"
+            case .month:
+                return "本月"
             }
-            .frame(width: 300,height: 300)
-            .animation(.linear, value: todayReadMin)
-            
-            Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
-            Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
-            Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
-            
         }
-//        .padding(.bottom,30)
     }
     
-    var exportBox:some View{
-//        VStack{
-            VStack(){
-                VStack{
-                    Text("BookTime").font(.largeTitle)
-                    reportView
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10.0)
-                        .stroke(lineWidth: 3.0)
-                        .foregroundColor(Color("AccentColor"))
-                )
-                Text("test").font(.title)
-                    .opacity(0)
-            }
-            .padding(.all,15)
-//            .overlay(
-//                RoundedRectangle(cornerRadius: 10.0)
-//                    .stroke(lineWidth: 3.0)
-//                    .foregroundColor(Color("AccentColor"))
-//            )
-
-            //        .padding(.bottom,30)
+//        var reportView:some View{
             
 //        }
-//        .padding(.top,5)
-//        .padding(.bottom,15)
+    
+    var exportBox:some View{
+        //        VStack{
+        VStack(){
+            VStack{
+                Text("BookTime").font(.largeTitle)
+                
+                if sumType == .all {
+                    
+                    Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit, process: process)
+                    
+                    
+                }else if sumType == .year {
+                    
+                    Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year, process: process)
+                    
+                    
+                }else if sumType == .month{
+                    
+                    Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month, process: process)
+                    
+                    
+                    
+                }
+                
+                //                reportView
+            }
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 10.0)
+                    .stroke(lineWidth: 3.0)
+                    .foregroundColor(Color("AccentColor"))
+            )
+            Text("test").font(.title)
+                .opacity(0)
+        }
+        .padding(.all,15)
     }
     
     var body: some View {
@@ -145,75 +125,138 @@ struct Statistics: View {
         NavigationView {
             //            ScrollView{
             
-            VStack (){
-                
-                if (isShowYear || isShowMonth){
-                    Picker(selection: $sumType, label: Text("DayPiker")) {
-                        Text("全部").tag(SumType.all)
-                        if isShowYear {
-                            Text("本年").tag(SumType.year)
-                        }
-                        if isShowMonth {
-                            Text("本月").tag(SumType.month)
-                        }
+            ScrollView {
+                VStack (){
+                    
+                    //                    Picker(selection: $sumType, label: Text("DayPiker")) {
+                    //                        Text("全部").tag(SumType.all)
+                    //
+                    //                        Text("本年").tag(SumType.year)
+                    //
+                    //                        Text("本月").tag(SumType.month)
+                    //
+                    //                    }.labelsHidden()
+                    //                        .pickerStyle(SegmentedPickerStyle())
+                    //                        .onChange(of: sumType, perform: { val in
+                    //                            initAllLog()
+                    //                        })
+                    
+                    Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
+                    
+                    ZStack{
+                        Circle()
+                            .trim(from: 0.0, to:1.0)
+                            .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                            .frame(width:260)
+                            .rotationEffect(.degrees(-90))
+                            .opacity(0.25)
+                        //                        .opacity(0)
+                            .padding()
+                        
+                        Circle()
+                            .trim(from: 0.0, to: process)
+                        //                        .trim(from: 0.0,to:  1.0)
+                            .stroke( AngularGradient(
+                                gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
+                                center: .center,
+                                startAngle: .degrees(0),
+                                endAngle: .degrees( 360 * process )
+                            ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
+                            .frame(width:260)
+                            .rotationEffect(.degrees(-90))
+                            .overlay(
+                                VStack(spacing:6){
+                                    
+                                    Text("今日您已阅读 \(todayReadMin) 分")
+                                        .font(.title2)
+                                    if targetMinPerday > 0{
+                                        Text("完成计划的 \( Int( round( process * 100))) %")
+                                            .foregroundColor(.gray)
+                                    }
+                                    
+                                }
+                                
+                            )
+                            .padding()
                         
                         
-                    }.labelsHidden()
-                        .pickerStyle(SegmentedPickerStyle())
-                        .onChange(of: sumType, perform: { val in
-                            initAllLog()
-                        })
-                }
-                
-                
-                TabView(selection: $sumType){
-                    ScrollView{
-                        reportView
+                        
                     }
-                    .id(1) .tag(SumType.all)
-                    if isShowYear {
-                        ScrollView{
-                            reportView
-                        }
-                        .id(2) .tag(SumType.year)
-                    }
+                    .frame(width: 300,height: 300)
+                    .animation(.linear, value: todayReadMin)
                     
-                    if isShowMonth{
-                        ScrollView{
-                            reportView
-                        }
-                        .id(3) .tag(SumType.month)
+                    Text(totalTitle)
+                        .font(.title)
+                        .animation(.easeIn, value: sumType)
+                    
+                    TabView(selection: $sumType){
+                        
+                        Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit, process: process)
+                            .id(1).tag(SumType.all)
+                        
+                        
+                        
+                        Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year, process: process)
+                            .id(2) .tag(SumType.year)
+                        
+                        
+                        
+                        
+                        Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month, process: process)
+                            .id(3) .tag(SumType.month)
+                        
+                        
                     }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .animation(.linear, value: sumType)
+                    .frame( height: 160)
                     
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .animation(.linear, value: sumType)
-                .onChange(of: sumType, perform: {val in
+                .padding()
+                .task {
+                    todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
                     initAllLog()
-                })
-                
-            }
-            .padding()
-            .task {
-                todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
-                initAllLog()
-            }
-            
-            
-            //            }
-            .navigationTitle("成就")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar(content: {
-                Button(action: {
-                    let image = exportBox.snapshot()
-                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-                    showToast = true
-                }){
-                    Image(systemName: "square.and.arrow.up")
                 }
-            })
-            .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                AlertToast( type: .complete(Color("AccentColor")), title: "导出成功\n去相册看看吧")
+                .navigationTitle("成就")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(content: {
+                    Button(action: {
+                        let image = exportBox.snapshot()
+                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                        
+                        //                    let now = Date()
+                        //                    for i in 1...4000{
+                        //                        let randomInt = Int.random(in: 1...10)
+                        //
+                        //
+                        //                        if(randomInt > 1){
+                        //                            let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
+                        //
+                        //                            let readLog = ReadLog(context: context)
+                        //                            readLog.readMinutes =  Int16.random(in: 5...200)
+                        //                            readLog.day = d
+                        //
+                        //                            DispatchQueue.main.async {
+                        //                                do{
+                        //                                    try context.save()
+                        //                                }catch{
+                        //                                    print(error)
+                        //                                }
+                        //                            }
+                        //
+                        //
+                        //                        }
+                        //
+                        //                    }
+                        
+                        showToast = true
+                    }){
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                })
+                .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
+                    AlertToast( type: .complete(Color("AccentColor")), title: "导出成功\n去相册看看吧")
+            }
             }
             
             
@@ -222,36 +265,63 @@ struct Statistics: View {
     }
     
     func initAllLog(){
-        totalReadDay = 0
-        totalReadMin = 0
-        totalReadBook = 0
-        
-        longHit = 0
+        //        isShowYear = false
+        //        isShowMonth = false
+        //
+        //        totalReadDay = 0
+        //        totalReadMin = 0
+        //        totalReadBook = 0
+        //
+        //        longHit = 0
         
         var lastHitDay:Date? = nil
+        var lastHitDay_month:Date? = nil
+        var lastHitDay_year:Date? = nil
         
         for log:ReadLog in logs{
-            print(log)
+            
             if(log.readMinutes>0){
                 
-                if( Date().format(format: "YYYY") != log.day.format(format: "YYYY")) {
+                if( Date().format(format: "YYYY") == log.day.format(format: "YYYY")) {
+                    totalReadDay_year += 1
+                    totalReadMin_year += Int64( log.readMinutes)
                     
-                    isShowYear = true //存在非本年数据
-                    
-                    //说明不是本年，不参与计算
-                    if(sumType == .year ){
-                        continue
+                    if let lastHitDay = lastHitDay_year {
+                        let begin = lastHitDay.start()
+                        let end = log.day.start()
+                        let components = NSCalendar.current.dateComponents([.day], from: begin , to: end)
+                        if(components.day == 1){ //间隔一天，连续的
+                            longHit_year += 1
+                        }else{
+                            longHit_year = 1
+                        }
+                        
+                    }else{
+                        longHit_year = 1
                     }
+                    
+                    lastHitDay_year = log.day
                     
                 }
-                if( Date().format(format: "YYYY-MM") != log.day.format(format: "YYYY-MM")) {
+                if( Date().format(format: "YYYY-MM") == log.day.format(format: "YYYY-MM")) {
+                    totalReadDay_month += 1
+                    totalReadMin_month += Int64( log.readMinutes)
                     
-                    isShowYear = true //存在非本月数据
-                    
-                    //说明不是本月，不参与计算
-                    if(sumType == .month ){
-                        continue
+                    if let lastHitDay = lastHitDay_month {
+                        let begin = lastHitDay.start()
+                        let end = log.day.start()
+                        let components = NSCalendar.current.dateComponents([.day], from: begin , to: end)
+                        if(components.day == 1){ //间隔一天，连续的
+                            longHit_month += 1
+                        }else{
+                            longHit_month = 1
+                        }
+                        
+                    }else{
+                        longHit_month = 1
                     }
+                    
+                    lastHitDay_month = log.day
                     
                 }
                 
@@ -265,12 +335,11 @@ struct Statistics: View {
                     if(components.day == 1){ //间隔一天，连续的
                         longHit += 1
                     }else{
-                        longHit = 0
+                        longHit = 1
                     }
                     
                 }else{
-                    
-                    longHit += 1
+                    longHit = 1
                 }
                 
                 lastHitDay = log.day
@@ -288,7 +357,7 @@ struct Statistics: View {
                         continue
                     }                }
                 if(Date().format(format: "YYYY-MM") != doneTime.format(format: "YYYY-MM")) {
-                    isShowYear = true //存在非本月数据
+                    isShowMonth = true //存在非本月数据
                     
                     //说明不是本月，不参与计算
                     if(sumType == .month ){
@@ -306,15 +375,40 @@ struct Statistics: View {
     
 }
 
-struct Statistics_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView{
-            Statistics()
+//struct Statistics_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView{
+//            Statistics()
+//        }
+//
+//    }
+//}
+
+struct Report: View{
+    @AppStorage("targetMinPerday") var targetMinPerday = 0
+    
+    var todayReadMin:Int16
+    
+    var totalReadDay:Int
+    var totalReadMin:Int64
+    var totalReadBook:Int
+    
+    var longHit:Int
+    
+    var process:CGFloat
+    
+    var body: some View{
+        VStack ( spacing:15)        {
+            
+            
+            
+            Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
+            Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
+            Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
+            
         }
         
     }
 }
-
-
 
 
