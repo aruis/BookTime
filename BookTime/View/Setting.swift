@@ -8,15 +8,25 @@
 import SwiftUI
 
 struct Setting: View {
+    @Environment(\.managedObjectContext) var context
+    
     let store = NSUbiquitousKeyValueStore()
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     @AppStorage("useiCloud") var useiCloud = false
     
+    @FetchRequest(entity: Book.entity(), sortDescriptors:[])
+    var books: FetchedResults<Book>
+    
+    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
+    var logs: FetchedResults<ReadLog>
     
     @State var showAbout = false
     @State var sliderIsChange = false
     @State var lastBackupTime:String? = nil
+
+    @State var showCleanSheet = false
+    @State var showCleanDataSucToast = false
     
     private var greeting:String{
         get {
@@ -91,9 +101,28 @@ struct Setting: View {
                         })
                     }
                     
-                   
+                    Section(header: Text("以下操作请谨慎")){
+                        Button(action: {
+                            showCleanSheet = true
+                        }){
+                            Text("\(Image(systemName: "exclamationmark.triangle.fill")) 清除所有数据")
+                        }
+                    }
                     
                 }
+                .toast(isPresenting: $showCleanDataSucToast,duration: 3,tapToDismiss: true){
+                    AlertToast( type: .complete(.green), title: "数据已清空")
+                }
+                .confirmationDialog("数据无价，请谨慎选择！", isPresented: $showCleanSheet, titleVisibility : .visible, actions: {
+                    Button("我要清除所有数据", role: .destructive) {
+                            cleanLocal()
+                    }
+                
+                    Button("取消", role: .cancel) {
+                        self.showCleanSheet = false
+    //                    useiCloud = false
+                    }
+                })
                 .onAppear(perform: {
                    UIScrollView.appearance().bounces = false
                  })
@@ -124,6 +153,26 @@ struct Setting: View {
         
     }
        
+    func cleanLocal(){
+        for book in books {
+            context.delete(book)
+        }
+        
+        for log in logs{
+            context.delete(log)
+        }
+        targetMinPerday = 45
+        store.removeObject(forKey: "targetMinPerday")
+        
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+                showCleanDataSucToast = true
+            }catch{
+                print(error)
+            }
+        }
+    }
 }
 
 struct Setting_Previews: PreviewProvider {
