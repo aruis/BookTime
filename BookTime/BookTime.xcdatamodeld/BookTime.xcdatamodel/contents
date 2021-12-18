@@ -5,7 +5,7 @@
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="doneTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="firstReadTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastReadTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

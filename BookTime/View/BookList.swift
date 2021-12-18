@@ -9,16 +9,12 @@ import SwiftUI
 import CoreData
 import CloudKit
 
-struct SelectedSort: Equatable {
-    var by = 0
-    var order = 0
-    var index: Int { by + order }
-}
+
 
 struct BookList: View {
     let generator = UINotificationFeedbackGenerator()
     
-    // TODO 排序问题
+    
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \Book.isDone, ascending: true),
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
@@ -30,7 +26,6 @@ struct BookList: View {
         sortDescriptors: [SortDescriptor(\Book.isDone, order: .forward),SortDescriptor(\Book.createTime, order: .reverse)])
     private var quakes: SectionedFetchResults<Bool, Book>
     
-    //    @State private var selectedSort = SelectedSort()
     
     @Environment(\.managedObjectContext) var context
     
@@ -206,7 +201,7 @@ struct BookList: View {
  
     func saveBookToICloud(book:Book){
         let record = CKRecord(recordType: "Book")
-        record.setValue(book.id.uuidString, forKey: "id")
+        record.setValue(book.id, forKey: "id")
         record.setValue(book.name, forKey: "name")
         record.setValue(book.author, forKey: "author")
         record.setValue(book.isDone, forKey: "isDone")

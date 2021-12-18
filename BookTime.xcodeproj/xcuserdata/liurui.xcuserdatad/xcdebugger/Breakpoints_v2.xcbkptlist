@@ -23,17 +23,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2DF14D16-FCCD-4447-9D61-29C19ADEFFC9"
-            shouldBeEnabled = "Yes"
+            uuid = "9AB6BF5C-B1FA-4181-81A7-2BF09909264E"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BookTime/View/Setting.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "body"
-            landmarkType = "24">
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "cloud2Local()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

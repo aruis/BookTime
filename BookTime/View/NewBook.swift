@@ -181,7 +181,7 @@ struct NewBook: View {
             book.author = bookViewModel.author
         }else{
             let book = Book(context:context)
-            book.id = UUID()
+            book.id = UUID().uuidString
             book.image = bookViewModel.image.pngData()!
             book.name = bookViewModel.name
             book.author = bookViewModel.author
