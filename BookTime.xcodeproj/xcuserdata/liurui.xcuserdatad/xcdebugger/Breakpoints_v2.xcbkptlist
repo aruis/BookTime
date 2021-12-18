@@ -31,9 +31,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "235"
-            endingLineNumber = "235"
-            landmarkName = "cloud2Local()"
-            landmarkType = "7">
+            endingLineNumber = "235">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
