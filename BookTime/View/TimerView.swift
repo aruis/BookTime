@@ -48,7 +48,7 @@ struct TimerView: View {
                     .baselineOffset(14)
                     .opacity(showColon ? 1 : 0)
                     .animation(.easeInOut, value: showColon)
-                    .font(.system(size: verticalSizeClass == .compact ? 140 : 60))
+                    .font(.system(size: verticalSizeClass == .compact ? 120 : 55))
 //                    .foregroundColor(isHit ? .red : nil)
                 
                 
@@ -65,7 +65,7 @@ struct TimerView: View {
                         .foregroundColor(.gray)
                 }
             })
-            .font(.custom("Courier New",size: verticalSizeClass == .compact ? 220 : 100)            )
+            .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
             .onAppear(perform: {
                 UIApplication.shared.isIdleTimerDisabled = true
                 DispatchQueue.main.async {
