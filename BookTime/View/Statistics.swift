@@ -75,6 +75,7 @@ struct Statistics: View {
         }
     }
     
+    @ViewBuilder
     var reportView:some View{
         VStack {
             
@@ -164,6 +165,7 @@ struct Statistics: View {
         }
     }
     
+    @ViewBuilder
     var exportBox:some View{
         //        VStack{
         VStack(){

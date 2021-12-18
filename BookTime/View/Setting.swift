@@ -12,7 +12,7 @@ struct Setting: View {
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     @AppStorage("useiCloud") var useiCloud = false
-
+    
     
     @State var showAbout = false
     @State var sliderIsChange = false
@@ -61,6 +61,7 @@ struct Setting: View {
             return Double(targetMinPerday)
         }, set: {
             targetMinPerday = Int($0)
+            store.set(Int64( targetMinPerday), forKey: "targetMinPerday")
         })
     }
     
@@ -70,7 +71,7 @@ struct Setting: View {
             VStack {
                 VStack(){
                     Text(targetMinPerday.asString())
-                        .font(.system(size: 100)).monospacedDigit()
+                        .font(.system(size: 100)).fontWeight(.light).monospacedDigit()
                     
                     Text(greeting)
                         .font(.subheadline)
@@ -99,6 +100,9 @@ struct Setting: View {
                     }
                     
                 }
+                .onAppear(perform: {
+                   UIScrollView.appearance().bounces = false
+                 })
                 .navigationTitle("设置")
                 .toolbar{
                     Button(action: {
@@ -114,15 +118,24 @@ struct Setting: View {
             }
             
         }
-        .task {
-            let time =  store.string (forKey: "lastBackupTime")
-            if let time = time {
-                lastBackupTime = time
-                print(lastBackupTime)
+        .task {            
+            let minute = store.longLong(forKey: "targetMinPerday")
+            if(minute>0){
+                targetMinPerday = Int(minute)
             }
+            
+            refreshLastBackuptime()
         }
         
         
+    }
+    
+    func refreshLastBackuptime(){
+        let time =  store.string(forKey: "lastBackupTime")
+        if let time = time {
+            lastBackupTime = time
+        }
+
     }
     
 }
