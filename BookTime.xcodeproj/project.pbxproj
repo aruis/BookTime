@@ -29,6 +29,7 @@
 		83862926275F960B004E3141 /* AlertToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862923275F960B004E3141 /* AlertToast.swift */; };
 		83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862924275F960B004E3141 /* ActivityIndicator.swift */; };
 		838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B8ABC2769B47700B8E87A /* ViewExt.swift */; };
+		83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		83955FEB275EFB43004408C3 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955FEA275EFB43004408C3 /* About.swift */; };
 		839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6327572FBC00AB05AF /* BookViewModel.swift */; };
 		839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E66275758C600AB05AF /* ImagePicker.swift */; };
@@ -65,6 +66,8 @@
 		83862923275F960B004E3141 /* AlertToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertToast.swift; sourceTree = "<group>"; };
 		83862924275F960B004E3141 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		838B8ABC2769B47700B8E87A /* ViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
+		83924E61276CDA55002D0678 /* BookTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTime.entitlements; sourceTree = "<group>"; };
+		83924E63276CDB7E002D0678 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		83955FEA275EFB43004408C3 /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		839B4E6327572FBC00AB05AF /* BookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewModel.swift; sourceTree = "<group>"; };
 		839B4E66275758C600AB05AF /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +127,7 @@
 			children = (
 				83731C912755D0D600305305 /* BookTime */,
 				83731C902755D0D600305305 /* Products */,
+				83924E62276CDB7E002D0678 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +142,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				83924E61276CDA55002D0678 /* BookTime.entitlements */,
 				83862921275F960B004E3141 /* AlertToast */,
 				8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */,
 				839B4E65275758A500AB05AF /* Util */,
@@ -195,6 +201,14 @@
 				83862924275F960B004E3141 /* ActivityIndicator.swift */,
 			);
 			path = AlertToast;
+			sourceTree = "<group>";
+		};
+		83924E62276CDB7E002D0678 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83924E63276CDB7E002D0678 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		839B4E6227572FA800AB05AF /* ViewModel */ = {
@@ -445,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
@@ -452,6 +467,7 @@
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "您需要授权我可以访问您的相机";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "您需要授权我可以访问您的相册";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -478,6 +494,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
@@ -485,6 +502,7 @@
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "您需要授权我可以访问您的相机";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "您需要授权我可以访问您的相册";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

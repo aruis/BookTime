@@ -33,12 +33,15 @@ struct TimerView: View {
     
     @State private var isHit:Bool = false
     
+    @State private var showToast = false
+    
     let generator = UINotificationFeedbackGenerator()
     
     var body: some View {
         VStack{
             
             HStack(alignment: .center){
+                
                 Text((showDate ? now.format(format: "HH:mm") : thisMinute.asString()).split(separator: ":")[0])
                 
                 Text(":")
@@ -52,7 +55,8 @@ struct TimerView: View {
                 Text((showDate ? now.format(format: "HH:mm") : thisMinute.asString()).split(separator: ":")[1])
                 
             }
-            
+
+            .foregroundColor(isHit ? Color("AccentColor") : nil)
             .overlay(alignment: .bottom, content: {
                 if showDate {
                     Text(now.format(format: "YYYY-MM-dd"))
@@ -80,8 +84,12 @@ struct TimerView: View {
                 self.showDate.toggle()
             }
             .animation(.linear, value: verticalSizeClass)
-//            .scaleEffect(verticalSizeClass == .compact ? 2.2 : 1)
+
         }
+        .toast(isPresenting: $showToast,duration: 6,tapToDismiss: true){
+            AlertToast( type: .complete(.green), title: "今日目标已达成")
+        }
+
         .onAppear(perform: {
             if(targetMinPerday>0 && ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
             >= targetMinPerday
@@ -117,6 +125,7 @@ struct TimerView: View {
                     if(targetMinPerday>0 && targetMinPerday == readLog.readMinutes){
                         generator.notificationOccurred(.success)
                         isHit = true
+                        showToast = true
                     }
 
                                         

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import CloudKit
 
 struct SelectedSort: Equatable {
     var by = 0
@@ -153,9 +154,40 @@ struct BookList: View {
             
             
         }
+        .task {
+//            await fetchBooksFromICloud()
+//            
+//            for book:Book in books{
+//                saveBookToICloud(book: book)
+//            }
+            
+        }
         .sheet(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel)
         }
+    }
+    
+    func  fetchBooksFromICloud () async{
+        let cloudContainer = CKContainer.default()
+        let privateDB = cloudContainer.privateCloudDatabase
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "Book", predicate: predicate)
+
+        do {
+            let results = try await privateDB.records(matching: query)
+            
+            for record in results.matchResults {
+                let rec =  try record.1.get()
+                print(rec)
+            }
+
+            
+            // Process the records
+
+        } catch {
+            // Handle the error
+        }
+
     }
     
     func delete(book:Book?){
@@ -170,6 +202,46 @@ struct BookList: View {
                 }
             }
         }
+    }
+ 
+    func saveBookToICloud(book:Book){
+        let record = CKRecord(recordType: "Book")
+        record.setValue(book.id.uuidString, forKey: "id")
+        record.setValue(book.name, forKey: "name")
+        record.setValue(book.author, forKey: "author")
+        record.setValue(book.isDone, forKey: "isDone")
+        record.setValue(book.readMinutes, forKey: "readMinutes")
+        record.setValue(book.createTime, forKey: "createTime")
+        record.setValue(book.firstReadTime, forKey: "firstReadTime")
+        record.setValue(book.lastReadTime, forKey: "lastReadTime")
+        record.setValue(book.doneTime, forKey: "doneTime")
+        record.setValue(book.rating, forKey: "rating")
+        record.setValue(book.readDays, forKey: "readDays")
+        
+        
+        let imageFilePath = NSTemporaryDirectory() + book.name
+        let imageFileURL = URL(fileURLWithPath: imageFilePath)
+        try? book.image.write(to: imageFileURL)
+                
+        let imageAsset = CKAsset(fileURL: imageFileURL)
+        record.setValue(imageAsset, forKey: "image")
+
+        // Get the Public iCloud Database
+        let publicDatabase = CKContainer.default().privateCloudDatabase
+
+        // Save the record to iCloud
+        publicDatabase.save(record, completionHandler: { (record, error) -> Void  in
+
+            print("uploaded")
+            
+            if error != nil {
+                print(error.debugDescription)
+            }
+
+            // Remove temp file
+            try? FileManager.default.removeItem(at: imageFileURL)
+        })
+
     }
     
 }

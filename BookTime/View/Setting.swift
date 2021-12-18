@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct Setting: View {
+    let store = NSUbiquitousKeyValueStore()
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
+    @AppStorage("useiCloud") var useiCloud = false
+
+    
     @State var showAbout = false
     @State var sliderIsChange = false
+    @State var lastBackupTime:String? = nil
     
     private var greeting:String{
         get {
@@ -61,45 +66,60 @@ struct Setting: View {
     
     var body: some View {
         NavigationView {
-            VStack{
+            
+            VStack {
                 VStack(){
-                    Text("每日阅读目标")
-                        .font(.title2)
                     Text(targetMinPerday.asString())
                         .font(.system(size: 100)).monospacedDigit()
                     
                     Text(greeting)
                         .font(.subheadline)
-                        
                         .multilineTextAlignment(.center)
                         .opacity(sliderIsChange ? 0 : 1)
                     
-                    Spacer()
+                    
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .frame(minHeight:0,maxHeight: 220)
+                .frame(height:170,alignment: .top)
                 .animation(.default, value: targetMinPerday)
                 
-                
-                Slider(value: intProxy, in: 0...360, step: 5,onEditingChanged: { editing in
-                    self.sliderIsChange = editing
-                })
-                    .padding(.top,60)
-                    .padding([.trailing,.leading],50)
-            }
-            .padding()
-            .toolbar{
-                Button(action: {
-                    self.showAbout = true
-                }){
-                    Image(systemName: "lightbulb")
+                Form {
+                    
+                    Section(header: Text("每日阅读目标")) {
+                        Slider(value: intProxy, in: 0...360, step: 5,onEditingChanged: { editing in
+                            self.sliderIsChange = editing
+                        })
+                    }
+                    
+                    Section(header: Text("高级"),footer: Text(lastBackupTime == nil ? "" : "上次备份时间：\(lastBackupTime!)")) {
+                        Toggle(isOn: $useiCloud) {
+                            Text("使用iCloud备份")
+                        }.onChange(of: useiCloud, perform: { value in
+                            store.set(Date().format(format:"yyyy-MM-dd HH:mm:ss"), forKey: "lastBackupTime")
+                        })
+                    }
+                    
                 }
-                
+                .navigationTitle("设置")
+                .toolbar{
+                    Button(action: {
+                        self.showAbout = true
+                    }){
+                        Image(systemName: "lightbulb")
+                    }
+                    
+                }
+                .sheet(isPresented: $showAbout){
+                    About()
+                }
             }
-            .sheet(isPresented: $showAbout){
-                About()
+            
+        }
+        .task {
+            let time =  store.string (forKey: "lastBackupTime")
+            if let time = time {
+                lastBackupTime = time
+                print(lastBackupTime)
             }
-
         }
         
         

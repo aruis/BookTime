@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Statistics: View {
-    @AppStorage("targetMinPerday") var targetMinPerday = 0
+    @AppStorage("targetMinPerday") var targetMinPerday = 45
     
     @Environment(\.managedObjectContext) var context
     
@@ -66,7 +66,7 @@ struct Statistics: View {
         get {
             switch sumType {
             case .all:
-                return "总"
+                return "总共"
             case .year:
                 return "本年"
             case .month:
@@ -141,18 +141,18 @@ struct Statistics: View {
             
             TabView(selection: $sumType){
                 
-                Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit, process: process)
+                Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit)
                     .id(1).tag(SumType.all)
                 
                 
                 
-                Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year, process: process)
+                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year)
                     .id(2) .tag(SumType.year)
                 
                 
                 
                 
-                Report(targetMinPerday: targetMinPerday, todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month, process: process)
+                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month)
                     .id(3) .tag(SumType.month)
                 
                 
@@ -238,7 +238,7 @@ struct Statistics: View {
                     }
                 })
                 .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(Color("AccentColor")), title: "导出成功\n去相册看看吧")
+                    AlertToast( type: .complete(.green), title: "导出成功\n去相册看看吧")
                 }
             }
             
@@ -387,7 +387,6 @@ struct Statistics: View {
 //}
 
 struct Report: View{
-    @AppStorage("targetMinPerday") var targetMinPerday = 0
     
     var todayReadMin:Int16
     
@@ -396,13 +395,10 @@ struct Report: View{
     var totalReadBook:Int
     
     var longHit:Int
-    
-    var process:CGFloat
+        
     
     var body: some View{
         VStack ( spacing:15)        {
-            
-            
             
             Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
             Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
