@@ -152,6 +152,26 @@ struct Setting: View {
         
         
     }
+    
+//    DispatchQueue.main.async {
+//        do{
+//            try context.execute( NSBatchDeleteRequest(fetchRequest: NSFetchRequest(entityName: "Book")))
+//            try context.execute( NSBatchDeleteRequest(fetchRequest: NSFetchRequest(entityName: "ReadLog")))
+//            try context.save()
+//            
+//            targetMinPerday = 45
+//            isFirstBookCard = true
+//            store.removeObject(forKey: "targetMinPerday")
+//            showCleanDataSucToast = true
+//        }catch{
+//            print(error)
+//        }
+//    }
+//    
+//    for book in books{
+//        print(book)
+//    }
+
        
     func cleanLocal(){
         for book in books {
@@ -163,15 +183,18 @@ struct Setting: View {
         }
         targetMinPerday = 45
         store.removeObject(forKey: "targetMinPerday")
+        showCleanDataSucToast = true
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             do{
                 try context.save()
-                showCleanDataSucToast = true
+                
             }catch{
                 print(error)
             }
-        }
+//        }
+        
+        
     }
 }
 

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-//import ConfettiSwiftUI
 
 struct BookCard: View {
     
@@ -28,7 +27,7 @@ struct BookCard: View {
     var body: some View {
         ZStack{
             if verticalSizeClass == .compact || showTimer{
-                ZStack{                                        
+                ZStack{
                     TimerView(book: book)
                     
                     if self.showTimer && verticalSizeClass != .compact{
@@ -50,9 +49,9 @@ struct BookCard: View {
             } else{
                 ScrollView {
                     VStack(alignment: .center,spacing: 16){
-                        Text(book.name).font(.system(.title2))
+                        Text(book.name).font(.system(.title2))                        
                         
-                        Image(uiImage: UIImage(data: book.image)!)
+                        Image(uiImage: UIImage(data: book.image) ?? UIImage())
                             .resizable()
                             .scaledToFit()
                             .frame(minWidth: 0,maxWidth: 150)
@@ -63,14 +62,16 @@ struct BookCard: View {
                             }
                         
                         
+                        
+                        
                         HStack(spacing:10){
                             ForEach(0...4,id: \.self) {index in
                                 Image(systemName: book.rating > index ? "star.fill" : "star")
                                     .font(.title2)
-                                    .foregroundColor(Color("AccentColor"))                                    
+                                    .foregroundColor(Color("AccentColor"))
                                     .onTapGesture {
                                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                                    
+                                        
                                         if book.rating == 1 && index == 0 {
                                             book.rating = 0
                                         }else{
@@ -78,7 +79,7 @@ struct BookCard: View {
                                         }
                                         save()
                                     }
-
+                                
                             }
                         }.opacity(book.isDone ? 1 : 0)
                             .animation(.default, value: book.isDone)
@@ -89,11 +90,11 @@ struct BookCard: View {
                                 Slogan(title: "累计", unit: "分钟", value: Int64( book.readMinutes))
                                 
                                 
-//                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
-//                                Text(book.readMinutes.asString()).font(.system(.largeTitle))
+                                //                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
+                                //                                Text(book.readMinutes.asString()).font(.system(.largeTitle))
                             }
                         }
-                       
+                        
                         
                         
                         
@@ -150,35 +151,35 @@ struct BookCard: View {
                             })
                                 .font(.subheadline)
                         }
-
+                        
                     }
                     .padding(10)
                     
                     ConfettiCannon(counter: $downTrigger,num:36,radius: 700)
                     
-                 
+                    
                     
                     
                 }
-//                .toolbar {
-//                    ToolbarItem(placement: .navigationBarTrailing) {
-//                        Button(action: {
-//                            self.showAlert = true
-//                            generator.notificationOccurred(.warning)
-//                        }){
-//                            Image(systemName: "ellipsis")
-//                        }
-//                        .confirmationDialog("", isPresented: $showAlert, actions: {
-//                            Button("删除此书（不可恢复）", role: .destructive) {
-//                                delete()
-//                                dismiss()
-//                            }
-//                            Button("取消", role: .cancel) {
-//                                self.showAlert = false
-//                            }
-//                        })
-//                    }
-//                }
+                //                .toolbar {
+                //                    ToolbarItem(placement: .navigationBarTrailing) {
+                //                        Button(action: {
+                //                            self.showAlert = true
+                //                            generator.notificationOccurred(.warning)
+                //                        }){
+                //                            Image(systemName: "ellipsis")
+                //                        }
+                //                        .confirmationDialog("", isPresented: $showAlert, actions: {
+                //                            Button("删除此书（不可恢复）", role: .destructive) {
+                //                                delete()
+                //                                dismiss()
+                //                            }
+                //                            Button("取消", role: .cancel) {
+                //                                self.showAlert = false
+                //                            }
+                //                        })
+                //                    }
+                //                }
                 
                 
                 
