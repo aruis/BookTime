@@ -48,7 +48,7 @@ struct TimerView: View {
                     .baselineOffset(14)
                     .opacity(showColon ? 1 : 0)
                     .animation(.easeInOut, value: showColon)
-                    .font(.system(size: verticalSizeClass == .compact ? 120 : 55))
+                    .font(.system(size: verticalSizeClass == .compact ? 110 : 55))
 //                    .foregroundColor(isHit ? .red : nil)
                 
                 
