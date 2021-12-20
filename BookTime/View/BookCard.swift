@@ -133,7 +133,7 @@ struct BookCard: View {
                         }
                         .animation(.easeInOut, value: book.isDone)
                         
-                        if isFirstBookCard || true{
+                        if isFirstBookCard {
                             Label(title: {
                                 HStack{
                                     Text("请横置设备，开始计时")
