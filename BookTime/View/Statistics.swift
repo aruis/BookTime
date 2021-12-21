@@ -134,7 +134,7 @@ struct Statistics: View {
                 
             }
             .frame(width: 300,height: 300)
-            .animation(.linear, value: todayReadMin)
+//            .animation(.linear, value: todayReadMin)
             
             Text(totalTitle)
                 .font(.title)
@@ -198,8 +198,16 @@ struct Statistics: View {
                     reportView
                 }
                 .padding()
+                .onAppear(perform: {
+                    todayReadMin = 0
+                })
                 .task {
-                    todayReadMin = ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                        withAnimation(.easeInOut){
+                            todayReadMin = BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
+                        }
+                        
+                    })
                     initAllLog()
                 }
                 .navigationTitle("成就")
