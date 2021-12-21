@@ -91,7 +91,7 @@ struct TimerView: View {
         }
 
         .onAppear(perform: {
-            if(targetMinPerday>0 && ReadLogPersistence.checkAndBuildTodayLog(context:context).readMinutes
+            if(targetMinPerday>0 && BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
             >= targetMinPerday
             ){
 //                generator.notificationOccurred(.success)
@@ -105,7 +105,7 @@ struct TimerView: View {
                                 
                 if thisMinute != min{
                     
-                    let readLog = ReadLogPersistence.checkAndBuildTodayLog(context:context)
+                    let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
                     
                     thisMinute = min
                     if book.readMinutes == 0 { //第一次读

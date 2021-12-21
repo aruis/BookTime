@@ -6,10 +6,14 @@
 //
 
 import CoreData
+import CloudKit
 import UIKit
 
 struct BookPersistenceController {
+    let privateDB = CKContainer.default().privateCloudDatabase
     static let shared = BookPersistenceController()
+    
+    let store = NSUbiquitousKeyValueStore()
     
     static var preview: BookPersistenceController = {
         let result = BookPersistenceController(inMemory: true)
@@ -108,4 +112,161 @@ struct BookPersistenceController {
             }
         })
     }
+    
+     func checkAndBuildTodayLog() -> ReadLog{
+         let context = container.viewContext
+        let fetchReq = ReadLog.fetchRequest()
+        
+        
+        fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
+        fetchReq.fetchLimit = 1
+        
+        do {
+            let today =  try context.fetch(fetchReq).first
+            if let today = (today as? ReadLog){
+                return today
+            } else {
+                let readLog = ReadLog(context: context)
+                readLog.readMinutes = 0
+                readLog.day = Date().start()
+
+                return readLog
+            }
+            
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
+        }
+
+        return ReadLog()
+    }
+    
+    func  fetchBooksFromICloud () async ->[CKRecord] {
+        var bookRecords:[CKRecord] = []
+        
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "Book", predicate: predicate)
+        
+        do {
+            let results = try await privateDB.records(matching: query)
+            
+            for record in results.matchResults {
+                bookRecords.append( try record.1.get())
+            }
+            
+            return bookRecords
+            
+            // Process the records
+            
+        } catch {
+            // Handle the error
+        }
+        
+        return bookRecords
+    }
+    
+    func fetchLogsFromICloud () async ->[CKRecord] {
+        var bookRecords:[CKRecord] = []
+        
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "ReadLog", predicate: predicate)
+        
+        do {
+            let results = try await privateDB.records(matching: query)
+            
+            for record in results.matchResults {
+                bookRecords.append( try record.1.get())
+            }
+            
+            return bookRecords
+            
+            // Process the records
+            
+        } catch {
+            // Handle the error
+        }
+        
+        return bookRecords
+    }
+    
+    func cleanCloud() async{
+        
+        
+        let cloudContainer = CKContainer.default()
+        let privateDB = cloudContainer.privateCloudDatabase
+        
+        let predicate = NSPredicate(value: true)
+        let queryBook = CKQuery(recordType: "Book", predicate: predicate)
+        let queryLog = CKQuery(recordType: "ReadLog", predicate: predicate)
+        
+        do {
+            let results = try await privateDB.records(matching: queryBook)
+            for record in results.matchResults {
+                try await privateDB.deleteRecord(withID: record.1.get().recordID)
+            }
+            
+            let results2 = try await privateDB.records(matching: queryLog)
+            for record in results2.matchResults {
+                try await privateDB.deleteRecord(withID: record.1.get().recordID)
+            }
+            
+        } catch {
+            
+        }
+        
+        store.removeObject(forKey: "lastBackupTime")
+    }
+
+    func saveBookInICloud(book:Book){
+        let record = CKRecord(recordType: "Book")
+        record.setValue(book.id, forKey: "id")
+        record.setValue(book.name, forKey: "name")
+        record.setValue(book.author, forKey: "author")
+        record.setValue(book.isDone, forKey: "isDone")
+        record.setValue(book.readMinutes, forKey: "readMinutes")
+        record.setValue(book.createTime, forKey: "createTime")
+        record.setValue(book.firstReadTime, forKey: "firstReadTime")
+        record.setValue(book.lastReadTime, forKey: "lastReadTime")
+        record.setValue(book.doneTime, forKey: "doneTime")
+        record.setValue(book.rating, forKey: "rating")
+        record.setValue(book.readDays, forKey: "readDays")
+        
+        
+        let imageFilePath = NSTemporaryDirectory() + book.name
+        let imageFileURL = URL(fileURLWithPath: imageFilePath)
+        try? book.image.write(to: imageFileURL)
+        
+        let imageAsset = CKAsset(fileURL: imageFileURL)
+        record.setValue(imageAsset, forKey: "image")
+        
+        privateDB.save(record, completionHandler: { (record, error) -> Void  in
+            
+            if error != nil {
+                print(error.debugDescription)
+            }
+            
+            // Remove temp file
+            try? FileManager.default.removeItem(at: imageFileURL)
+        })
+        
+    }
+    
+    func saveLogInICloud(log:ReadLog){
+        let record = CKRecord(recordType: "ReadLog")
+        record.setValue(log.day, forKey: "day")
+        record.setValue(log.readMinutes, forKey: "readMinutes")
+        
+        privateDB.save(record, completionHandler: { (record, error) -> Void  in
+            
+            if error != nil {
+                print(error.debugDescription)
+            }
+            
+        })
+        
+    }
+
+    func tapLastBackuptime(){
+        store.set(Date().format(format:"yyyy-MM-dd HH:mm:ss"), forKey: "lastBackupTime")
+    }    
+
 }

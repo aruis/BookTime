@@ -35,7 +35,6 @@
 		839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E66275758C600AB05AF /* ImagePicker.swift */; };
 		839B4E692757648200AB05AF /* BookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E682757648200AB05AF /* BookCard.swift */; };
 		839B4E6E2757763900AB05AF /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6D2757763900AB05AF /* TimerView.swift */; };
-		83ADE6D62763921600B1EF8F /* ReadLogPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADE6D52763921600B1EF8F /* ReadLogPersistence.swift */; };
 		83B03AD827698032005B4700 /* Slogan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B03AD727698032005B4700 /* Slogan.swift */; };
 		83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */; };
 		83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2692762053E001E8E0E /* ImageExt.swift */; };
@@ -74,7 +73,6 @@
 		839B4E66275758C600AB05AF /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		839B4E682757648200AB05AF /* BookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCard.swift; sourceTree = "<group>"; };
 		839B4E6D2757763900AB05AF /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
-		83ADE6D52763921600B1EF8F /* ReadLogPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLogPersistence.swift; sourceTree = "<group>"; };
 		83B03AD727698032005B4700 /* Slogan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slogan.swift; sourceTree = "<group>"; };
 		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 				83731CA62755D1BF00305305 /* Book.swift */,
 				83731C9B2755D0D700305305 /* BookPersistence.swift */,
 				835E822E276338D10079FF99 /* ReadLog.swift */,
-				83ADE6D52763921600B1EF8F /* ReadLogPersistence.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -306,7 +303,6 @@
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
-				83ADE6D62763921600B1EF8F /* ReadLogPersistence.swift in Sources */,
 				83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */,
 				83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */,
 				83862926275F960B004E3141 /* AlertToast.swift in Sources */,

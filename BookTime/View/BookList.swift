@@ -7,9 +7,16 @@
 
 import SwiftUI
 import CoreData
+import CloudKit
 
 
 struct BookList: View {
+    
+    @AppStorage("latestSync") var latestSync = Calendar.current.date(byAdding: .day, value: -1, to: Date())!.format(format: "yyyy-MM-dd HH")
+    @AppStorage("useiCloud") var useiCloud = false
+    @State private var iCloudCanUse = false
+    
+    let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
     
     
@@ -24,6 +31,8 @@ struct BookList: View {
         sortDescriptors: [SortDescriptor(\Book.isDone, order: .forward),SortDescriptor(\Book.createTime, order: .reverse)])
     private var quakes: SectionedFetchResults<Bool, Book>
     
+    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
+    var logs: FetchedResults<ReadLog>
     
     @Environment(\.managedObjectContext) var context
     
@@ -151,9 +160,26 @@ struct BookList: View {
         .sheet(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel)
         }
+        .onAppear(perform: {
+            checkIfICloudCanUse()
+            Task{
+                if(iCloudCanUse && useiCloud){ //开启自动备份
+                    if(latestSync != Date().format(format: "yyyy-MM-dd HH")){
+                        await local2Cloud()
+                        latestSync = Date().format(format: "yyyy-MM-dd HH")
+                    }
+                }
+            }
+        })
     }
     
-  
+    func checkIfICloudCanUse(){
+        CKContainer.default().accountStatus { accountStatus, error in
+            iCloudCanUse =  accountStatus == .available
+        }
+        
+    }
+
     
     func delete(book:Book?){
         if let book = book{
@@ -169,6 +195,21 @@ struct BookList: View {
         }
     }
  
+    func local2Cloud() async{
+        await  ctrl.cleanCloud()
+        
+        for book in books{
+            ctrl.saveBookInICloud(book: book)
+        }
+        
+        for log in logs{
+            ctrl.saveLogInICloud(log: log)
+        }
+        
+        ctrl.tapLastBackuptime()
+
+    }
+
    
     
 }

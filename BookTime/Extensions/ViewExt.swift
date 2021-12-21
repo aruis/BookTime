@@ -11,15 +11,23 @@ extension View {
     func snapshot(origin:CGPoint = .zero) -> UIImage {
         let controller = UIHostingController(rootView: self)
         let view = controller.view
-
+        
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 5
+        format.opaque = false
+        
         let targetSize = controller.view.intrinsicContentSize
-        view?.bounds = CGRect(origin: origin, size: targetSize)
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
         view?.backgroundColor = .clear
-
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-
-        return renderer.image { _ in
-            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        
+        let window = UIWindow(frame: view!.bounds)
+        window.addSubview(controller.view)
+        window.makeKeyAndVisible()
+        
+        let renderer = UIGraphicsImageRenderer(bounds: view!.bounds, format: format)
+        return renderer.image { rendererContext in
+            view?.layer.render(in: rendererContext.cgContext)
         }
+        
     }
 }

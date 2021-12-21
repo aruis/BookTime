@@ -9,7 +9,9 @@ import SwiftUI
 import CloudKit
 
 struct Setting: View {
-    let privateDB = CKContainer.default().privateCloudDatabase
+    let ctrl = BookPersistenceController.shared
+    
+//    let privateDB = CKContainer.default().privateCloudDatabase
     
     @Environment(\.managedObjectContext) var context
     
@@ -190,7 +192,7 @@ struct Setting: View {
             .confirmationDialog("关闭iCloud后，同时删除iCloud上的数据？", isPresented: $showDeleteCloudSheet, titleVisibility : .visible, actions: {
                 Button("删除", role: .destructive) {
                     Task{
-                        await  cleanCloud()
+                        await  ctrl.cleanCloud()
                         showDeleteCloudSucToast = true
                         store.removeObject(forKey: "lastBackupTime")
                         refreshLastBackuptime()
@@ -238,7 +240,7 @@ struct Setting: View {
     }
     
     func iCloudStart() async{
-        let bookRecords = await fetchBooksFromICloud()
+        let bookRecords = await ctrl.fetchBooksFromICloud()
         
         if(bookRecords.count == 0 ){ // 云端没数据，无脑local->cloud
             await  local2Cloud()
@@ -272,8 +274,8 @@ struct Setting: View {
     func cloud2Local() async{
         cleanLocal()
         
-        let bookRecords = await fetchBooksFromICloud()
-        let logRecords = await fetchLogsFromICloud()
+        let bookRecords = await ctrl.fetchBooksFromICloud()
+        let logRecords = await ctrl.fetchLogsFromICloud()
         
         for bookRecord in bookRecords {
             let book  = Book(context: context)
@@ -319,102 +321,25 @@ struct Setting: View {
     }
     
     func local2Cloud() async{
-        await cleanCloud()
+        await  ctrl.cleanCloud()
         
         for book in books{
-            saveBookInICloud(book: book)
+            ctrl.saveBookInICloud(book: book)
         }
         
         for log in logs{
-            saveLogInICloud(log: log)
+            ctrl.saveLogInICloud(log: log)
         }
         
-        store.set(Date().format(format:"yyyy-MM-dd HH:mm:ss"), forKey: "lastBackupTime")
+        ctrl.tapLastBackuptime()
         refreshLastBackuptime()
         showToast = true
     }
-    
-    func cleanCloud() async{
-        
-        
-        let cloudContainer = CKContainer.default()
-        let privateDB = cloudContainer.privateCloudDatabase
-        
-        let predicate = NSPredicate(value: true)
-        let queryBook = CKQuery(recordType: "Book", predicate: predicate)
-        let queryLog = CKQuery(recordType: "ReadLog", predicate: predicate)
-        
-        do {
-            let results = try await privateDB.records(matching: queryBook)
-            for record in results.matchResults {
-                try await privateDB.deleteRecord(withID: record.1.get().recordID)
-            }
-            
-            let results2 = try await privateDB.records(matching: queryLog)
-            for record in results2.matchResults {
-                try await privateDB.deleteRecord(withID: record.1.get().recordID)
-            }
-            
-        } catch {
-            
-        }
-        
-        store.removeObject(forKey: "lastBackupTime")
-    }
-    
-    func  fetchBooksFromICloud () async ->[CKRecord] {
-        var bookRecords:[CKRecord] = []
-        
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "Book", predicate: predicate)
-        
-        do {
-            let results = try await privateDB.records(matching: query)
-            
-            for record in results.matchResults {
-                bookRecords.append( try record.1.get())
-            }
-            
-            return bookRecords
-            
-            // Process the records
-            
-        } catch {
-            // Handle the error
-        }
-        
-        return bookRecords
-    }
-    
-    
-    func fetchLogsFromICloud () async ->[CKRecord] {
-        var bookRecords:[CKRecord] = []
-        
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "ReadLog", predicate: predicate)
-        
-        do {
-            let results = try await privateDB.records(matching: query)
-            
-            for record in results.matchResults {
-                bookRecords.append( try record.1.get())
-            }
-            
-            return bookRecords
-            
-            // Process the records
-            
-        } catch {
-            // Handle the error
-        }
-        
-        return bookRecords
-    }
-    
+                
     
     func cleanAllData() async{
         if(useiCloud){
-            await cleanCloud()
+            await ctrl.cleanCloud()
         }
         cleanLocal()
         showDeleteAllSucToast = true
@@ -428,53 +353,5 @@ struct Setting: View {
 
     }
     
-    func saveBookInICloud(book:Book){
-        let record = CKRecord(recordType: "Book")
-        record.setValue(book.id, forKey: "id")
-        record.setValue(book.name, forKey: "name")
-        record.setValue(book.author, forKey: "author")
-        record.setValue(book.isDone, forKey: "isDone")
-        record.setValue(book.readMinutes, forKey: "readMinutes")
-        record.setValue(book.createTime, forKey: "createTime")
-        record.setValue(book.firstReadTime, forKey: "firstReadTime")
-        record.setValue(book.lastReadTime, forKey: "lastReadTime")
-        record.setValue(book.doneTime, forKey: "doneTime")
-        record.setValue(book.rating, forKey: "rating")
-        record.setValue(book.readDays, forKey: "readDays")
-        
-        
-        let imageFilePath = NSTemporaryDirectory() + book.name
-        let imageFileURL = URL(fileURLWithPath: imageFilePath)
-        try? book.image.write(to: imageFileURL)
-        
-        let imageAsset = CKAsset(fileURL: imageFileURL)
-        record.setValue(imageAsset, forKey: "image")
-        
-        privateDB.save(record, completionHandler: { (record, error) -> Void  in
-            
-            if error != nil {
-                print(error.debugDescription)
-            }
-            
-            // Remove temp file
-            try? FileManager.default.removeItem(at: imageFileURL)
-        })
-        
-    }
-    
-    func saveLogInICloud(log:ReadLog){
-        let record = CKRecord(recordType: "ReadLog")
-        record.setValue(log.day, forKey: "day")
-        record.setValue(log.readMinutes, forKey: "readMinutes")
-        
-        privateDB.save(record, completionHandler: { (record, error) -> Void  in
-            
-            if error != nil {
-                print(error.debugDescription)
-            }
-            
-        })
-        
-    }
     
 }
