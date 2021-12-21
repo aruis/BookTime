@@ -147,6 +147,7 @@ struct BookList: View {
             
             
         }
+        .navigationViewStyle(.stack)
         .sheet(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel)
         }

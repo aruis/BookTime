@@ -207,33 +207,7 @@ struct Statistics: View {
                 .toolbar(content: {
                     Button(action: {
                         let image = exportBox.snapshot()
-                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-                        
-                        //                    let now = Date()
-                        //                    for i in 1...4000{
-                        //                        let randomInt = Int.random(in: 1...10)
-                        //
-                        //
-                        //                        if(randomInt > 1){
-                        //                            let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
-                        //
-                        //                            let readLog = ReadLog(context: context)
-                        //                            readLog.readMinutes =  Int16.random(in: 5...200)
-                        //                            readLog.day = d
-                        //
-                        //                            DispatchQueue.main.async {
-                        //                                do{
-                        //                                    try context.save()
-                        //                                }catch{
-                        //                                    print(error)
-                        //                                }
-                        //                            }
-                        //
-                        //
-                        //                        }
-                        //
-                        //                    }
-                        
+                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)                                                
                         showToast = true
                     }){
                         Image(systemName: "square.and.arrow.up")
@@ -246,6 +220,7 @@ struct Statistics: View {
             
             
         }
+        .navigationViewStyle(.stack)
         
     }
     

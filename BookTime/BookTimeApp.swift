@@ -32,7 +32,9 @@ struct BookTimeApp: App {
                         Label("设置",systemImage: "gearshape")
                     }
                     .tag(2)
-            }.environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
+            }
+            .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
+//            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
         }
     }
 }
