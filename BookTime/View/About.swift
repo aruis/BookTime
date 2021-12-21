@@ -9,10 +9,13 @@ import SwiftUI
 import StoreKit
 
 struct About: View {
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
     var body: some View {
-        
+                
         NavigationView {
-            VStack (alignment: .leading,spacing: 20){
+            VStack (spacing: 20){
                 Text("""
           创作这个App的💡来源于我正在上小学二年级的👧🏻，她有项作业是每天要阅读30分钟，有了这个App，我就能更好地督促她读书打卡了。
           老师每学期都要统计孩子的阅读量，要求家长做好孩子的阅读记录，所以这个App可帮了我大忙了，因为她每年的阅读量都在百本左右，我平时真的很难持续跟踪记录她的阅读进度。现在，我只要从App导出阅读数据就可以了。
@@ -37,8 +40,17 @@ struct About: View {
                 
                 
                 Spacer()
+                if verticalSizeClass == .compact {
+                    Button(action: {
+                        dismiss()
+                    }){
+                        Image(systemName: "xmark.circle").font(.title)
+                    }
+                }
+                
             }
             .padding()
+            .padding(.bottom,20)
             .navigationTitle("关于")
         }
         
