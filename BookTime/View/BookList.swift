@@ -121,7 +121,7 @@ struct BookList: View {
                 })
                 
                 .navigationBarTitleDisplayMode(.automatic)
-                .searchable(text: $searchText,  prompt: "按书名搜索" )
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "按书名搜索" )
                 .onChange(of: searchText){ searchText in
                     let predicate = searchText.isEmpty
                     ? NSPredicate(value: true)
