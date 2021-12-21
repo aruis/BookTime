@@ -16,14 +16,16 @@ struct BookListItem: View {
             if let imageData = book.image{
                 Image(uiImage: UIImage(data: imageData) ?? UIImage())
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 80)
+                    .scaledToFill()
+                    .frame(width: 85, height: 115 , alignment: .center)
+                    .clipped()
 //                    .cornerRadius(12)
                     .overlay(
                         Rectangle()
                             .stroke(Color("image.border"), lineWidth: 1)
                     )
                     .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+                    
 //                    .shadow(radius: 10)
             }
             
@@ -61,6 +63,7 @@ struct BookListItem: View {
             .padding(.top,10)
             
         }
+//        .frame(height:120)
         
     }
 }

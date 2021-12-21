@@ -28,16 +28,8 @@ struct BookPersistenceController {
         book.author = "[日]菅谷充"
         book.isDone = false
         book.readMinutes = 200
-        book.createTime = Date()
-//
-        do {
-            try viewContext.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        book.createTime = Date().addingTimeInterval(-1000)
+
 
         
         let book2 = Book(context:viewContext)
@@ -46,33 +38,34 @@ struct BookPersistenceController {
         book2.author = "[日]栗原伸一 [日]丸山敦史"
         //        book2.isDone = true
         book2.readMinutes = 200
-        book2.createTime = Date()
-//        
-//        
-//        let book3 = Book(context:viewContext)
-//        book3.image = (UIImage(named: "xiandai")?.jpegData(compressionQuality: 1.0))!
-//        book3.name = "简单线性代数：漫画线性代数入门"
-//        book3.author = "[日]键本聪"
-//        book3.isDone = false
-//        book3.readMinutes = 2000
-//        book3.createTime = Date()
+        book2.createTime = Date().addingTimeInterval(-2000)
+        
+        
+        let book3 = Book(context:viewContext)
+        book3.image = (UIImage(named: "xiandai")?.jpegData(compressionQuality: 1.0))!
+        book3.name = "简单线性代数：漫画线性代数入门"
+        book3.author = "[日]键本聪"
+        book3.isDone = false
+        book3.readMinutes = 2000
+        book3.createTime = Date()
         
         
         let now = Date()
-        for i in 0...40{
+        for i in -1...40{
             let randomInt = Int.random(in: 1...10)
+
+
             
-            
-            if(randomInt > 1){
                 let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
-                
+
                 let readLog = ReadLog(context: viewContext)
-                readLog.readMinutes =  Int16.random(in: 5...100)
+                readLog.readMinutes =  Int16.random(in: 5...60)
                 readLog.day = d
-                
-            }
+
             
+
         }
+        
         
         
         do {
@@ -83,6 +76,7 @@ struct BookPersistenceController {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
+        
         return result
     }()
     
@@ -117,7 +111,7 @@ struct BookPersistenceController {
     }
     
      func checkAndBuildTodayLog() -> ReadLog{
-         let context = container.viewContext
+        let context = container.viewContext
         let fetchReq = ReadLog.fetchRequest()
         
         
