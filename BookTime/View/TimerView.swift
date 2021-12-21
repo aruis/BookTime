@@ -73,7 +73,7 @@ struct TimerView: View {
                 }
             })
             .onDisappear(perform: {
-                UIApplication.shared.isIdleTimerDisabled = true
+                UIApplication.shared.isIdleTimerDisabled = false
                 DispatchQueue.main.async {
                     Tool.showTabBar()
                 }
@@ -141,7 +141,6 @@ struct TimerView: View {
         })
         .onDisappear(perform: {
             timerTrack.stop()
-            print("close")
         })
         
     }

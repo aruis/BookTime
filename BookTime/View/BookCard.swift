@@ -193,7 +193,6 @@ struct BookCard: View {
     }
     
     func save(){
-        print(book)
         DispatchQueue.main.async {
             do{
                 try context.save()

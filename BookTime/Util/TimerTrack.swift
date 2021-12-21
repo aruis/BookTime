@@ -30,8 +30,7 @@ class TimerTrack:ObservableObject{
         }
     }
     
-    func stop(){
-        print("stop")
+    func stop(){        
         count = 0
         timer.invalidate()
     }
