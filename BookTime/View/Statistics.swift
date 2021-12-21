@@ -11,6 +11,7 @@ struct Statistics: View {
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     
     @Environment(\.managedObjectContext) var context
+    @Environment(\.colorScheme) var colorScheme
     
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
@@ -182,6 +183,7 @@ struct Statistics: View {
             Text("test").font(.title)
                 .opacity(0)
         }
+        .foregroundColor(.black)
         .padding(.all,15)
     }
     
