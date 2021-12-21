@@ -8,8 +8,11 @@
 import CoreData
 import CloudKit
 import UIKit
+import SwiftUI
 
 struct BookPersistenceController {
+    @AppStorage("lastBackupTime") var lastBackupTime:String = ""
+    
     let privateDB = CKContainer.default().privateCloudDatabase
     static let shared = BookPersistenceController()
     
@@ -214,6 +217,7 @@ struct BookPersistenceController {
         }
         
         store.removeObject(forKey: "lastBackupTime")
+        lastBackupTime = ""
     }
 
     func saveBookInICloud(book:Book){
@@ -248,6 +252,7 @@ struct BookPersistenceController {
             try? FileManager.default.removeItem(at: imageFileURL)
         })
         
+        
     }
     
     func saveLogInICloud(log:ReadLog){
@@ -266,7 +271,9 @@ struct BookPersistenceController {
     }
 
     func tapLastBackuptime(){
-        store.set(Date().format(format:"yyyy-MM-dd HH:mm:ss"), forKey: "lastBackupTime")
+        let time = Date().format(format:"yyyy-MM-dd HH:mm:ss")
+        store.set(time, forKey: "lastBackupTime")
+        lastBackupTime = time
     }    
 
 }

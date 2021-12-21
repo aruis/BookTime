@@ -30,8 +30,8 @@
             filePath = "BookTime/View/Setting.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "checkIfICloudCanUse()"
             landmarkType = "7">
          </BreakpointContent>

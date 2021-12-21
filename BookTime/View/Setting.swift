@@ -33,7 +33,8 @@ struct Setting: View {
     @State var showDeleteAllSucToast = false
     
     @State var sliderIsChange = false
-    @State var lastBackupTime:String? = nil
+    
+    @AppStorage("lastBackupTime") var lastBackupTime:String = ""
     
     @State private var iCloudCanUse = false
     
@@ -114,7 +115,7 @@ struct Setting: View {
                         })
                     }
                     
-                    Section(header: Text("数据相关"),footer: Text(!iCloudCanUse ? "iCloud在您的设备上未启用" : lastBackupTime == nil ? "" : "上次备份时间：\(lastBackupTime!)")) {
+                    Section(header: Text("数据相关"),footer: Text(!iCloudCanUse ? "iCloud在您的设备上未启用" : lastBackupTime.isEmpty ? "" : "上次备份时间：\(lastBackupTime)")) {
                         Button(action: {
                             showCleanSheet = true
                         }){
@@ -194,8 +195,6 @@ struct Setting: View {
                     Task{
                         await  ctrl.cleanCloud()
                         showDeleteCloudSucToast = true
-                        store.removeObject(forKey: "lastBackupTime")
-                        refreshLastBackuptime()
                     }
                 }
                 Button("保留", role: .destructive) {
@@ -223,17 +222,12 @@ struct Setting: View {
         }
         
     }
-    
-    func refreshLastBackuptime(){
-        lastBackupTime =  store.string(forKey: "lastBackupTime")
-    }
-    
+        
     func checkIfICloudCanUse(){
         CKContainer.default().accountStatus { accountStatus, error in
             iCloudCanUse =  accountStatus == .available
             if(iCloudCanUse){
                 getTargetMinPerdayFromICloud()
-                refreshLastBackuptime()
             }
         }
         
@@ -332,7 +326,6 @@ struct Setting: View {
         }
         
         ctrl.tapLastBackuptime()
-        refreshLastBackuptime()
         showToast = true
     }
                 
@@ -346,10 +339,7 @@ struct Setting: View {
         targetMinPerday = 45
         isFirstBookCard = true
         
-        store.removeObject(forKey: "targetMinPerday")
-        store.removeObject(forKey: "lastBackupTime")
-        
-        refreshLastBackuptime()
+        store.removeObject(forKey: "targetMinPerday")        
 
     }
     
