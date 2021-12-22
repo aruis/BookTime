@@ -1,0 +1,187 @@
+/* No comment provided by engineer. */
+"       The idea💡 for creating this app came from my daughter👧🏻 who is in the second grade of elementary school. She has an assignment that requires 30 minutes of reading every day. With this app, I can better urge her to read and clock in.\n       The teacher counts the children's reading volume every semester and asks parents to make a record of their children's reading, so this app has helped me a lot, because her annual reading volume is about 100 books, it is really difficult for me to keep track of it. Record her reading progress. Now, I only need to export the reading data from the App.\n       This App also helped me develop the habit of reading every day. You can find my [Reading Sharing Video](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833) here. You are also welcome to send [mail](mailto:cheetah_chugs.0g@icloud.com) to me to communicate anything you want to communicate.\n       Finally, I hope you like this App, and I wish you always enjoy the fun of reading ❤️" = "          创作这个App的💡来源于我正在上小学二年级的👧🏻，她有项作业是每天要阅读30分钟，有了这个App，我就能更好地督促她读书打卡了。\n          老师每学期都要统计孩子的阅读量，要求家长做好孩子的阅读记录，所以这个App可帮了我大忙了，因为她每年的阅读量都在百本左右，我平时真的很难持续跟踪记录她的阅读进度。现在，我只要从App导出阅读数据就可以了。\n          这款App也帮我养成每天坚持阅读的习惯，您可以在这里找到我的[读书分享视频](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833)。也欢迎您发[邮件](mailto:cheetah_chugs.0g@icloud.com)给我，交流任何你想交流的事情。\n          最后，希望您喜欢这款App，也祝您永远享受阅读的乐趣❤️";
+
+/* No comment provided by engineer. */
+"（Include iCloud）" = "（含iCloud）";
+
+/* No comment provided by engineer. */
+"[Don't show again.]" = "[不再提示]";
+
+/* No comment provided by engineer. */
+"%@\tClear all data%@" = "%@\t清除所有数据%@";
+
+/* No comment provided by engineer. */
+"%@\tUse iCloud to backup data" = "%@\t使用iCloud备份";
+
+/* No comment provided by engineer. */
+"%d minutes today" = "今日已阅读 %d 分钟";
+
+/* No comment provided by engineer. */
+"%lld %%  of the plan completed" = "完成计划的 %lld %%";
+
+/* 累计阅读 */
+"A total of" = "累计阅读";
+
+/* No comment provided by engineer. */
+"About" = "关于";
+
+/* No comment provided by engineer. */
+"About data" = "关于数据";
+
+/* No comment provided by engineer. */
+"Achievement" = "成就";
+
+/* No comment provided by engineer. */
+"After turning off iCloud, delete the data on iCloud at the same time?" = "关闭iCloud后，同时删除iCloud上的数据？";
+
+/* No comment provided by engineer. */
+"AI Camera" = "AI 相机";
+
+/* No comment provided by engineer. */
+"All" = "总共";
+
+/* 所有数据已删除 */
+"All data has been deleted" = "所有数据已删除";
+
+/* No comment provided by engineer. */
+"Author" = "作者";
+
+/* 本书 */
+"books in total" = "本书";
+
+/* No comment provided by engineer. */
+"Bookshelf" = "书架";
+
+/* No comment provided by engineer. */
+"Camera" = "相机";
+
+/* No comment provided by engineer. */
+"Cancel" = "取消";
+
+/* No comment provided by engineer. */
+"Choose a picture as the cover of the book" = "选择一张图片作为本书封面";
+
+/* No comment provided by engineer. */
+"Daily reading goal" = "每日阅读目标";
+
+/* iCloud数据已删除 */
+"Data in iCloud has been deleted" = "iCloud数据已删除";
+
+/* No comment provided by engineer. */
+"Data is priceless, please choose carefully!" = "数据无价，请谨慎选择！";
+
+/* No comment provided by engineer. */
+"day" = "天";
+
+/* No comment provided by engineer. */
+"days" = "天";
+
+/* No comment provided by engineer. */
+"Delete" = "删除";
+
+/* No comment provided by engineer. */
+"Delete the book" = "删除本书";
+
+/* No comment provided by engineer. */
+"Delete this book (unrecoverable)" = "删除本书（不可恢复）";
+
+/* No comment provided by engineer. */
+"End reading" = "结束阅读";
+
+/* No comment provided by engineer. */
+"Finished Reading" = "我已读完";
+
+/* No comment provided by engineer. */
+"I want to clear all data" = "我要清除所有数据";
+
+/* No comment provided by engineer. */
+"iCloud is not enabled on your device" = "iCloud在您的设备上未启用";
+
+/* No comment provided by engineer. */
+"Keep" = "保留";
+
+/* No comment provided by engineer. */
+"Last backup time: %@" = "上次备份时间：%@";
+
+/* 最长连续打卡 */
+"Longest consecutive hits for" = "最长连续打卡";
+
+/* No comment provided by engineer. */
+"Looking forward to your evaluation%@" = "期待您的评价%@";
+
+/* No comment provided by engineer. */
+"mins" = "分";
+
+/* 分钟 */
+"minutes of reading" = "分钟";
+
+/* No comment provided by engineer. */
+"Modify the book" = "修改此书";
+
+/* No comment provided by engineer. */
+"My Bookshelf" = "我的书架";
+
+/* No comment provided by engineer. */
+"Overwrite cloud data to local" = "云端向本地覆盖";
+
+/* No comment provided by engineer. */
+"Overwrite local data to the cloud" = "本地向覆盖云端";
+
+/* No comment provided by engineer. */
+"Photo Library" = "相册";
+
+/* No comment provided by engineer. */
+"Please enter the author name" = "请输入作者名";
+
+/* No comment provided by engineer. */
+"Please enter the title of the book" = "请填入书名";
+
+/* No comment provided by engineer. */
+"Please place the device horizontally and start timing" = "请横置设备，开始计时";
+
+/* 读完了 */
+"Read" = "读完了";
+
+/* No comment provided by engineer. */
+"Read a new book" = "读一本新书";
+
+/* fredingForDay */
+"Reading for" = "已阅读";
+
+/* No comment provided by engineer. */
+"Save" = "保存";
+
+/* 导出成功
+去相册看看吧 */
+"Saved to album" = "导出成功\n去相册看看吧";
+
+/* No comment provided by engineer. */
+"Search by book title" = "按书名搜索";
+
+/* No comment provided by engineer. */
+"Setting" = "设置";
+
+/* 同步完成 */
+"Synchronization complete" = "同步完成";
+
+/* No comment provided by engineer. */
+"Tap here to add your first book" = "点此添加您的第一本书";
+
+/* No comment provided by engineer. */
+"This Month" = "本月";
+
+/* No comment provided by engineer. */
+"This Year" = "本年";
+
+/* No comment provided by engineer. */
+"Title" = "标题";
+
+/* No comment provided by engineer. */
+"Today's goal has been reached" = "今日目标已达成";
+
+/* 今天是您坚持阅读的第 */
+"You have been reading for" = "今天是您坚持阅读的第";
+
+/* No comment provided by engineer. */
+"You haven't entered the title of the book yet" = "您还没有输入书名哦";
+

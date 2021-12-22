@@ -36,11 +36,12 @@
 		839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E66275758C600AB05AF /* ImagePicker.swift */; };
 		839B4E692757648200AB05AF /* BookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E682757648200AB05AF /* BookCard.swift */; };
 		839B4E6E2757763900AB05AF /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6D2757763900AB05AF /* TimerView.swift */; };
+		839B9C1E27732BC5001094C6 /* BookTime-InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 839B9C1C27732BC5001094C6 /* BookTime-InfoPlist.strings */; };
+		839B9C2127732BC5001094C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 839B9C1F27732BC5001094C6 /* Localizable.strings */; };
 		83B03AD827698032005B4700 /* Slogan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B03AD727698032005B4700 /* Slogan.swift */; };
 		83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */; };
 		83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2692762053E001E8E0E /* ImageExt.swift */; };
 		83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC51EC27589ED200C2A90A /* TimerTrack.swift */; };
-		BE49F210E23F4A25E0224DFD /* SettingBak.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE49F6501833C0953C1C9A56 /* SettingBak.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,11 +76,12 @@
 		839B4E66275758C600AB05AF /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		839B4E682757648200AB05AF /* BookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCard.swift; sourceTree = "<group>"; };
 		839B4E6D2757763900AB05AF /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		839B9C1D27732BC5001094C6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BookTime-InfoPlist.strings"; sourceTree = "<group>"; };
+		839B9C2027732BC5001094C6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		83B03AD727698032005B4700 /* Slogan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slogan.swift; sourceTree = "<group>"; };
 		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
 		83DC51EC27589ED200C2A90A /* TimerTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTrack.swift; sourceTree = "<group>"; };
-		BE49F6501833C0953C1C9A56 /* SettingBak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingBak.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,8 @@
 		83731C862755D0D600305305 = {
 			isa = PBXGroup;
 			children = (
+				839B9C1F27732BC5001094C6 /* Localizable.strings */,
+				839B9C1C27732BC5001094C6 /* BookTime-InfoPlist.strings */,
 				83731C912755D0D600305305 /* BookTime */,
 				83731C902755D0D600305305 /* Products */,
 				83924E62276CDB7E002D0678 /* Frameworks */,
@@ -190,7 +194,6 @@
 				83502577275B012200EF9C5C /* Setting.swift */,
 				83955FEA275EFB43004408C3 /* About.swift */,
 				83B03AD727698032005B4700 /* Slogan.swift */,
-				BE49F6501833C0953C1C9A56 /* SettingBak.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -291,6 +294,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				839B9C1E27732BC5001094C6 /* BookTime-InfoPlist.strings in Resources */,
+				839B9C2127732BC5001094C6 /* Localizable.strings in Resources */,
 				83731C9A2755D0D700305305 /* Preview Assets.xcassets in Resources */,
 				83731C972755D0D700305305 /* Assets.xcassets in Resources */,
 			);
@@ -333,11 +338,29 @@
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
 				83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */,
 				835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */,
-				BE49F210E23F4A25E0224DFD /* SettingBak.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		839B9C1C27732BC5001094C6 /* BookTime-InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				839B9C1D27732BC5001094C6 /* zh-Hans */,
+			);
+			name = "BookTime-InfoPlist.strings";
+			sourceTree = "<group>";
+		};
+		839B9C1F27732BC5001094C6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				839B9C2027732BC5001094C6 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		83731CA02755D0D700305305 /* Debug */ = {
@@ -472,8 +495,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "您需要授权我可以访问您的相机";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "您需要授权我可以访问您的相册";
+				INFOPLIST_KEY_NSCameraUsageDescription = "If you need to take a photo as the cover of the book, you need to grant the App to access to the camera.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "If you need to pick a picture in the photo library as the book cover, you need to grant the App to access to the photo library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -507,8 +530,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "您需要授权我可以访问您的相机";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "您需要授权我可以访问您的相册";
+				INFOPLIST_KEY_NSCameraUsageDescription = "If you need to take a photo as the cover of the book, you need to grant the App to access to the camera.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "If you need to pick a picture in the photo library as the book cover, you need to grant the App to access to the photo library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

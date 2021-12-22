@@ -1,0 +1,6 @@
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "如果要拍照作为图书封面，您需要给我授权。";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "如果要选择相册里的图片作为封面，您需要给我授权。";
+

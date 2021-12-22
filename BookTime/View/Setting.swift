@@ -10,7 +10,7 @@ import CloudKit
 
 struct Setting: View {
     let ctrl = BookPersistenceController.shared
-    
+    let generator = UINotificationFeedbackGenerator()
 //    let privateDB = CKContainer.default().privateCloudDatabase
     
     @Environment(\.managedObjectContext) var context
@@ -121,9 +121,10 @@ struct Setting: View {
                     
                     Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
                         Button(action: {
+                            generator.notificationOccurred(.warning)
                             showCleanSheet = true
                         }){
-                            Text("\(Image(systemName: "exclamationmark.triangle.fill"))\tClear all data\(useiCloud ? "（Include iCloud）":"")")
+                            Text("\(Image(systemName: "exclamationmark.triangle.fill"))\tClear all data\(useiCloud ? String(localized: "（Include iCloud）")  :"")")
                         }
                         
                         
@@ -157,7 +158,7 @@ struct Setting: View {
                     About()
                 }
                 .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title:String(localized: "同步完成" ,comment: "同步完成"))
+                    AlertToast( type: .complete(.green), title:String(localized: "Synchronization complete" ,comment: "同步完成"))
                 }
                 .toast(isPresenting: $showDeleteCloudSucToast,duration: 3,tapToDismiss: true){
                     AlertToast( type: .complete(.green), title: String(localized: "Data in iCloud has been deleted",comment:  "iCloud数据已删除") )
