@@ -14,8 +14,8 @@
             filePath = "BookTime/View/Statistics.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
             landmarkName = "initAllLog()"
             landmarkType = "7">
          </BreakpointContent>

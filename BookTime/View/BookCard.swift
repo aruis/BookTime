@@ -36,7 +36,7 @@ struct BookCard: View {
                             Button(action: {
                                 self.showTimer = false
                             }){
-                                Text("结束阅读")
+                                Text("End reading")
                             }
                         }
                         .padding(.bottom,100)
@@ -86,8 +86,8 @@ struct BookCard: View {
                         
                         if book.readMinutes > 0{
                             VStack{
-                                Slogan(title: "已阅读", unit: "天", value: Int64( book.readDays))
-                                Slogan(title: "累计", unit: "分钟", value: Int64( book.readMinutes))
+                                Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: Int64( book.readDays))
+                                Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "mins"), value: Int64( book.readMinutes))
                                 
                                 
                                 //                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
@@ -115,7 +115,7 @@ struct BookCard: View {
                             //                                           .offset(x: -100, y : -50)
                             
                             
-                            Text("我已读完")
+                            Text("Finished Reading")
                                 .opacity(book.isDone ? 0 : 1)
                                 .fixedSize()
                             
@@ -137,12 +137,12 @@ struct BookCard: View {
                         if isFirstBookCard {
                             Label(title: {
                                 HStack{
-                                    Text("请横置设备，开始计时")
+                                    Text("Please place the device horizontally and start timing")
                                     Button(action: {
                                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                         isFirstBookCard = false
                                     }, label: {
-                                        Text("[不再提示]")
+                                        Text("[Don't show again.]")
                                     })
                                 }
                                 

@@ -67,11 +67,11 @@ struct Statistics: View {
         get {
             switch sumType {
             case .all:
-                return "总共"
+                return String(localized: "All")
             case .year:
-                return "本年"
+                return String(localized: "This Year")
             case .month:
-                return "本月"
+                return String(localized: "This Month")
             }
         }
     }
@@ -93,7 +93,11 @@ struct Statistics: View {
             //                            initAllLog()
             //                        })
             
-            Slogan(title: todayReadMin > 0 ? "今天是您坚持阅读的第":"您已坚持阅读", unit: "天", value: Int64(totalReadDay))
+            
+            Slogan(title: todayReadMin > 0 ? String(localized: "You have been reading for",comment: "今天是您坚持阅读的第"): String(localized: "You have been reading for",comment: "您已坚持阅读"), unit: totalReadDay>0 ? String(localized: "days") : String(localized: "day"), value: Int64(totalReadDay))
+            
+            
+            
             
             ZStack{
                 Circle()
@@ -118,11 +122,10 @@ struct Statistics: View {
                     .rotationEffect(.degrees(-90))
                     .overlay(
                         VStack(spacing:6){
-                            
-                            Text("今日您已阅读 \(todayReadMin) 分")
+                            Text( "\(todayReadMin) minutes today")
                                 .font(.title2)
                             if targetMinPerday > 0{
-                                Text("完成计划的 \( Int( round( process * 100))) %")
+                                Text("\( Int( round( process * 100))) %  of the plan completed")
                                     .foregroundColor(.gray)
                             }
                             
@@ -135,7 +138,7 @@ struct Statistics: View {
                 
             }
             .frame(width: 300,height: 300)
-//            .animation(.linear, value: todayReadMin)
+            //            .animation(.linear, value: todayReadMin)
             
             Text(totalTitle)
                 .font(.title)
@@ -212,19 +215,19 @@ struct Statistics: View {
                     })
                     initAllLog()
                 }
-                .navigationTitle("成就")
+                .navigationTitle("Achievement")
                 //                .navigationBarTitleDisplayMode(.inline)
                 .toolbar(content: {
                     Button(action: {
                         let image = exportBox.snapshot()
-                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)                                                
+                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
                         showToast = true
                     }){
                         Image(systemName: "square.and.arrow.up")
                     }
                 })
                 .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title: "导出成功\n去相册看看吧")
+                    AlertToast( type: .complete(.green), title: String(localized: "Saved to album",comment: "导出成功\n去相册看看吧"))
                 }
             }
             
@@ -362,6 +365,8 @@ struct Statistics: View {
         }
     }
     
+    
+    
 }
 
 //struct Statistics_Previews: PreviewProvider {
@@ -382,15 +387,13 @@ struct Report: View{
     var totalReadBook:Int
     
     var longHit:Int
-        
+    
     
     var body: some View{
-        VStack ( spacing:15)        {
-            
-            Slogan(title: "累计阅读", unit: "分钟", value: Int64( totalReadMin))
-            Slogan(title: "读完了", unit: "本书", value: Int64(totalReadBook))
-            Slogan(title: "最长连续打卡", unit: "天", value: Int64(longHit))
-            
+        VStack ( spacing:15) {
+            Slogan(title: String(localized: "A total of",comment: "累计阅读") , unit: String(localized:"minutes of reading",comment: "分钟" )  , value: Int64( totalReadMin))
+            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"books in total" ,comment: "本书")  , value: Int64(totalReadBook))
+            Slogan(title: String(localized: "Longest consecutive hits for",comment: "最长连续打卡") , unit: String(localized: "days",comment: "天") , value: Int64(longHit))
         }
         
     }

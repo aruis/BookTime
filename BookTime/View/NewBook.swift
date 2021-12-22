@@ -25,7 +25,7 @@ struct NewBook: View {
     
     @FocusState private var isAuthorFocus:Bool
     
-    let generator = UINotificationFeedbackGenerator()
+    let generator = UINotificationFeedbackGenerator()          
     
 //    init(){
 //        let viewModel = BookViewModel()
@@ -50,11 +50,11 @@ struct NewBook: View {
                         }
                     
                     VStack(alignment: .leading) {
-                        Text("书名".uppercased())
+                        Text("Title")
                             .font(.system(.headline,design: .rounded))
                             .foregroundColor(Color(.darkGray))
                         
-                        TextField("请填入书名",text: $bookViewModel.name)
+                        TextField("Please enter the title of the book",text: $bookViewModel.name)
                             .font(.system(size:20,weight: .semibold,design: .rounded))
                             .padding(.horizontal)
                             .padding(10)
@@ -71,11 +71,11 @@ struct NewBook: View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("作者".uppercased())
+                        Text("Author")
                             .font(.system(.headline,design: .rounded))
                             .foregroundColor(Color(.darkGray))
                         
-                        TextField("请输入作者名",text: $bookViewModel.author)
+                        TextField("Please enter the author name",text: $bookViewModel.author)
                             .font(.system(size:20,weight: .semibold,design: .rounded))
                             .padding(.horizontal)
                             .padding(10)
@@ -100,7 +100,7 @@ struct NewBook: View {
                 .padding(10)
                 
             }
-            .navigationTitle(bookViewModel.book == nil ? "读一本新书":"修改信息")
+            .navigationTitle(bookViewModel.book == nil ? "Read a new book":"Modify the book")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
@@ -111,42 +111,42 @@ struct NewBook: View {
                     }
                     
                 }){
-                    Text("保存")
+                    Text("Save")
                         .font(.headline)
                     //                        .foregroundColor(Color("NavigationBarTitle"))
                 }
             }
             .actionSheet(isPresented: $showPhotoOptins){
                 if false && VNDocumentCameraViewController.isSupported{
-                    return  ActionSheet(title: Text("选择一张图片作为本书封面").font(.system(.title)),
+                    return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
                                         message: nil,
                                         buttons: [
-                                            .default(Text("相机")){
+                                            .default(Text("Camera")){
                                                 self.photoSource = .camera
                                             },
-                                            .default(Text("AI相机")){
+                                            .default(Text("AI Camera")){
                                                 self.photoSource = .documentScan
                                             },
-                                                .default(Text("相册")){
+                                                .default(Text("Photo Library")){
                                                     self.photoSource = .photoLibrary
                                                 },
-                                            .cancel(Text("取消"))
+                                            .cancel(Text("Cancel"))
                                             
                                         ]
                     )
                     
                 }
                 else{
-                    return   ActionSheet(title: Text("选择一张图片作为本书封面").font(.system(.title)),
+                    return   ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
                                          message: nil,
                                          buttons: [
-                                            .default(Text("相机")){
+                                            .default(Text("Camera")){
                                                 self.photoSource = .camera
                                             },
-                                            .default(Text("相册")){
+                                            .default(Text("Photo Library")){
                                                 self.photoSource = .photoLibrary
                                             },
-                                            .cancel(Text("取消"))
+                                            .cancel(Text("Cancel"))
                                             
                                          ]
                     )
@@ -161,7 +161,7 @@ struct NewBook: View {
                 }
             }
             .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                AlertToast(displayMode: .banner(.pop), type: .systemImage("exclamationmark.circle.fill", .orange), title: "您还没有输入书名哦")
+                AlertToast(displayMode: .banner(.pop), type: .systemImage("exclamationmark.circle.fill", .orange), title: String(localized: "You haven't entered the title of the book yet"))
             }
         }
         

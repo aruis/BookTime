@@ -17,19 +17,19 @@ struct BookTimeApp: App {
             TabView(selection: $selectedTabIndex){
                 BookList()
                     .tabItem {
-                        Label("书架",systemImage: "books.vertical")
+                        Label("Bookshelf",systemImage: "books.vertical")
                     }
                     .tag(0)
                 
                 Statistics()
                     .tabItem {
-                        Label("成就",systemImage:"target")
+                        Label("Achievement",systemImage:"target")
                     }
                     .tag(1)
                 
                 Setting()
                     .tabItem{
-                        Label("设置",systemImage: "gearshape")
+                        Label("Setting",systemImage: "gearshape")
                     }
                     .tag(2)
             }

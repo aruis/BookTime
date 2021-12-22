@@ -44,6 +44,10 @@ struct Setting: View {
     
     private var greeting:String{
         get {
+            if !Tools.isCN(){
+                return ""
+            }
+            
             let value = targetMinPerday
             if(value > 240){
                 return "书籍是人类进步的阶梯，\n但阶梯不是目的，两侧的风景才是。"
@@ -109,22 +113,22 @@ struct Setting: View {
                 
                 Form {
                     
-                    Section(header: Text("每日阅读目标")) {
+                    Section(header: Text("Daily reading goal")) {
                         Slider(value: intProxy, in: 0...360, step: 5,onEditingChanged: { editing in
                             self.sliderIsChange = editing
                         })
                     }
                     
-                    Section(header: Text("数据相关"),footer: Text(!iCloudCanUse ? "iCloud在您的设备上未启用" : lastBackupTime.isEmpty ? "" : "上次备份时间：\(lastBackupTime)")) {
+                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
                         Button(action: {
                             showCleanSheet = true
                         }){
-                            Text("\(Image(systemName: "exclamationmark.triangle.fill"))\t清除所有数据\(useiCloud ? "（含iCloud）":"")")
+                            Text("\(Image(systemName: "exclamationmark.triangle.fill"))\tClear all data\(useiCloud ? "（Include iCloud）":"")")
                         }
                         
                         
                         Toggle(isOn: $useiCloud) {
-                            Text("\(Image(systemName: "icloud"))\t使用iCloud备份")
+                            Text("\(Image(systemName: "icloud"))\tUse iCloud to backup data")
                         }.onChange(of: useiCloud, perform: { value in
                             if(useiCloud){
                                 Task{
@@ -140,7 +144,7 @@ struct Setting: View {
                 .onAppear(perform: {
                     UIScrollView.appearance().bounces = false
                 })
-                .navigationTitle("设置")
+                .navigationTitle("Setting")
                 .toolbar{
                     Button(action: {
                         self.showAbout = true
@@ -153,54 +157,54 @@ struct Setting: View {
                     About()
                 }
                 .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title: "同步完成")
+                    AlertToast( type: .complete(.green), title:String(localized: "同步完成" ,comment: "同步完成"))
                 }
                 .toast(isPresenting: $showDeleteCloudSucToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title: "iCloud数据已删除")
+                    AlertToast( type: .complete(.green), title: String(localized: "Data in iCloud has been deleted",comment:  "iCloud数据已删除") )
                 }
                 .toast(isPresenting: $showDeleteAllSucToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title: "所有数据已删除")
+                    AlertToast( type: .complete(.green), title: String(localized: "All data has been deleted" ,comment: "所有数据已删除") )
                 }
             }
-            .confirmationDialog("数据无价，请谨慎选择！", isPresented: $showCleanSheet, titleVisibility : .visible, actions: {
-                Button("我要清除所有数据", role: .destructive) {
+            .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCleanSheet, titleVisibility : .visible, actions: {
+                Button("I want to clear all data", role: .destructive) {
                     Task{
                         await cleanAllData()
                     }
                 }
                 
-                Button("取消", role: .cancel) {
+                Button("Cancel", role: .cancel) {
                     self.showCleanSheet = false
                 }
             })
-            .confirmationDialog("数据无价，请谨慎选择！", isPresented: $showCloudSheet, titleVisibility : .visible, actions: {
-                Button("本地向覆盖云端", role: .destructive) {
+            .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCloudSheet, titleVisibility : .visible, actions: {
+                Button("Overwrite local data to the cloud", role: .destructive) {
                     Task{
                         await  local2Cloud()
                     }
                     
                 }
-                Button("云端向本地覆盖", role: .destructive) {
+                Button("Overwrite cloud data to local", role: .destructive) {
                     Task{
                         await cloud2Local()
                     }
                 }
-                Button("取消", role: .cancel) {
+                Button("Cancel", role: .cancel) {
                     self.showCloudSheet = false
                     //                    useiCloud = false
                 }
             })
-            .confirmationDialog("关闭iCloud后，同时删除iCloud上的数据？", isPresented: $showDeleteCloudSheet, titleVisibility : .visible, actions: {
-                Button("删除", role: .destructive) {
+            .confirmationDialog("After turning off iCloud, delete the data on iCloud at the same time?", isPresented: $showDeleteCloudSheet, titleVisibility : .visible, actions: {
+                Button("Delete", role: .destructive) {
                     Task{
                         await  ctrl.cleanCloud()
                         showDeleteCloudSucToast = true
                     }
                 }
-                Button("保留", role: .destructive) {
+                Button("Keep", role: .destructive) {
                     
                 }
-                Button("取消", role: .cancel) {
+                Button("Cancel", role: .cancel) {
                     self.showDeleteCloudSheet = false
                     //                    useiCloud = true
                 }
@@ -339,7 +343,7 @@ struct Setting: View {
         targetMinPerday = 45
         isFirstBookCard = true
         
-        store.removeObject(forKey: "targetMinPerday")        
+        store.removeObject(forKey: "targetMinPerday")
 
     }
     

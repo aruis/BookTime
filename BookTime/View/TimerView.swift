@@ -87,7 +87,7 @@ struct TimerView: View {
 
         }
         .toast(isPresenting: $showToast,duration: 6,tapToDismiss: true){
-            AlertToast( type: .complete(.green), title: "今日目标已达成")
+            AlertToast( type: .complete(.green), title: String(localized: "Today's goal has been reached"))
         }
 
         .onAppear(perform: {

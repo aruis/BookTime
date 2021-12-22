@@ -51,7 +51,7 @@ struct BookList: View {
                 VStack (spacing: 10){
                     Image(systemName: "plus.circle").font(.largeTitle)
                         .foregroundColor(.accentColor)
-                    Text("点此添加您的第一本书")
+                    Text("Tap here to add your first book")
                 }.onTapGesture {
                     bookViewModel.clean()
                     self.showNewBook = true
@@ -83,7 +83,7 @@ struct BookList: View {
                                 //                                self.showError.toggle()
                             }) {
                                 HStack {
-                                    Text("修改信息")
+                                    Text("Modify the book")
                                     Image(systemName: "pencil.circle")
                                 }
                             }
@@ -94,7 +94,7 @@ struct BookList: View {
                                 generator.notificationOccurred(.warning)
                             }){
                                 HStack{
-                                    Text("删除此书")
+                                    Text("Delete the book")
                                     Image(systemName: "trash")
                                 }.foregroundColor(.red)
                                 
@@ -109,19 +109,19 @@ struct BookList: View {
                 }
                 .listStyle(.plain)
                 //                .listStyle(.sidebar)
-                .navigationTitle("我的书架")
-                .confirmationDialog("", isPresented: $showAlert, actions: {
+                .navigationTitle("My Bookshelf")
+                .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
                     //                    index
-                    Button("删除此书（不可恢复）", role: .destructive) {
+                    Button("Delete this book (unrecoverable)", role: .destructive) {
                         delete(book: wantDelete)
                     }
-                    Button("取消", role: .cancel) {
+                    Button("Cancel", role: .cancel) {
                         self.showAlert = false
                     }
                 })
                 
                 .navigationBarTitleDisplayMode(.automatic)
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "按书名搜索" )
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
                 .onChange(of: searchText){ searchText in
                     let predicate = searchText.isEmpty
                     ? NSPredicate(value: true)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8317F89A2772FE5C00864D2F /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317F8992772FE5C00864D2F /* Tools.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
 		83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83492C7E275624F2006B5FF2 /* IntExt.swift */; };
 		83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8350256F275ADC8A00EF9C5C /* RoundedCross.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8317F8992772FE5C00864D2F /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		8320045D2759B71900EB64FC /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		83492C7E275624F2006B5FF2 /* IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExt.swift; sourceTree = "<group>"; };
 		8350256F275ADC8A00EF9C5C /* RoundedCross.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCross.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				839B4E66275758C600AB05AF /* ImagePicker.swift */,
 				83DC51EC27589ED200C2A90A /* TimerTrack.swift */,
 				83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */,
+				8317F8992772FE5C00864D2F /* Tools.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
 				83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */,
 				83502578275B012200EF9C5C /* Setting.swift in Sources */,
+				8317F89A2772FE5C00864D2F /* Tools.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
 				83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */,
 				835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */,
