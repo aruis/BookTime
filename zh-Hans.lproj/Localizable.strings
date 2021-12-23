@@ -11,9 +11,6 @@
 "%@\tClear all data%@" = "%@\t清除所有数据%@";
 
 /* No comment provided by engineer. */
-"%@\tUse iCloud to backup data" = "%@\t使用iCloud备份";
-
-/* No comment provided by engineer. */
 "%d minutes today" = "今日已阅读 %d 分钟";
 
 /* No comment provided by engineer. */
@@ -100,9 +97,6 @@
 /* No comment provided by engineer. */
 "Keep" = "保留";
 
-/* No comment provided by engineer. */
-"Last backup time: %@" = "上次备份时间：%@";
-
 /* 最长连续打卡 */
 "Longest consecutive hits for" = "最长连续打卡";
 
@@ -184,4 +178,7 @@
 
 /* No comment provided by engineer. */
 "You haven't entered the title of the book yet" = "您还没有输入书名哦";
+
+/* No comment provided by engineer. */
+"Your data is automatically syncing via iCloud" = "您的数据已通过iCloud自动同步";
 

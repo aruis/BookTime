@@ -85,10 +85,10 @@ struct BookPersistenceController {
         return try? BookPersistenceController.preview.container.viewContext.fetch(fetchRequest) as? [Book]
     }()
     
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
     
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "BookTime")
+        container = NSPersistentCloudKitContainer(name: "BookTime")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }

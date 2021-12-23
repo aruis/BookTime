@@ -24,7 +24,8 @@ struct Setting: View {
     var logs: FetchedResults<ReadLog>
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
-    @AppStorage("useiCloud") var useiCloud = false
+//    @AppStorage("useiCloud") var useiCloud = false
+    private var useiCloud = false
     @AppStorage("isFirstBookCard") var isFirstBookCard = true
     
     @State var showAbout = false
@@ -118,8 +119,8 @@ struct Setting: View {
                             self.sliderIsChange = editing
                         })
                     }
-                    
-                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
+//                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
+                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : "Your data is automatically syncing via iCloud")) {
                         Button(action: {
                             generator.notificationOccurred(.warning)
                             showCleanSheet = true
@@ -128,17 +129,17 @@ struct Setting: View {
                         }
                         
                         
-                        Toggle(isOn: $useiCloud) {
-                            Text("\(Image(systemName: "icloud"))\tUse iCloud to backup data")
-                        }.onChange(of: useiCloud, perform: { value in
-                            if(useiCloud){
-                                Task{
-                                    await  iCloudStart()
-                                }
-                            }else{
-                                showDeleteCloudSheet = true
-                            }
-                        }).disabled(!iCloudCanUse)
+//                        Toggle(isOn: $useiCloud) {
+//                            Text("\(Image(systemName: "icloud"))\tUse iCloud to backup data")
+//                        }.onChange(of: useiCloud, perform: { value in
+//                            if(useiCloud){
+//                                Task{
+//                                    await  iCloudStart()
+//                                }
+//                            }else{
+//                                showDeleteCloudSheet = true
+//                            }
+//                        }).disabled(!iCloudCanUse)
                     }
                     
                 }
