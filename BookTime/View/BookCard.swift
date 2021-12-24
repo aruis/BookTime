@@ -41,10 +41,8 @@ struct BookCard: View {
                         }
                         .padding(.bottom,100)
                         
-                    }
-                    
+                    }                    
                 }
-                .ignoresSafeArea()
                 .navigationBarBackButtonHidden(true)
             } else{
                 ScrollView {
@@ -150,16 +148,16 @@ struct BookCard: View {
                                 Image(systemName: "iphone.landscape")
                             })
                                 .font(.subheadline)
+                                
                         }
+                    
                         
                     }
                     .padding(10)
                     
+                    
                     ConfettiCannon(counter: $downTrigger,num:36,radius: 700)
-                    
-                    
-                    
-                    
+                                        
                 }
                 //                .toolbar {
                 //                    ToolbarItem(placement: .navigationBarTrailing) {

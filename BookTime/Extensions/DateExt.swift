@@ -14,6 +14,13 @@ extension Date {
         return dateformat.string(from: self)
     }
     
+    func dayString() -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+//        dateFormatter.locale
+        return dateFormatter.string(from: self)
+    }
+    
     func start() -> Date{
         var calendar = Calendar.current
         calendar.timeZone = NSTimeZone.local

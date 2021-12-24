@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+//import Foundation
 
 struct TimerView: View {
     
@@ -27,9 +28,12 @@ struct TimerView: View {
     
     @State private var thisMinute:Int  = 0
     
-    @State private var showColon:Bool = true
-    @State private var showDate:Bool = false
     @State private var now  = Date()
+    
+    private let begin = Date()
+    
+    @State private var changeTabAuto = false
+    @State private var lastShowTab:ShowTimeType? = nil
     
     @State private var isHit:Bool = false
     
@@ -37,72 +41,136 @@ struct TimerView: View {
     
     let generator = UINotificationFeedbackGenerator()
     
+    enum ShowTimeType : String,CaseIterable{
+        case timer
+        case time
+        case today
+    }
+    
+    @State private var tabSelected = ShowTimeType.timer
+    
     var body: some View {
-        VStack{
+        //        VStack{
+        
+        TabView(selection: $tabSelected){
+            TimelineView(.periodic(from: begin, by: 1)) { context in
+                let date = context.date
+                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: begin, to: date)
+                let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+                //                let dataArr  = context.date.format(format: "HH:mm:ss").split(separator: ":")
+                //                let h = "\(components.hour!)".count == 1 ? "0\(components.hour!)" : "\(components.hour!)"
+                //                let m = "\(components.minute!)".count == 1 ? "0\(components.minute!)" : "\(components.minute!)"
+                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+                let hour = String( thisMinute.asString().split(separator: ":")[0])
+                let min = String( thisMinute.asString().split(separator: ":")[1])
+                
+                let process = targetMinPerday > 0 ? CGFloat( thisMinute)/CGFloat( targetMinPerday) : CGFloat( thisMinute)/CGFloat( 45)
+                
+                
+                ClockView(hour: hour, min: min, second: s ,headTitle: String(localized: "\( Int( round( process * 100))) %  of the plan completed"))
+                
+            }
+            .tag(ShowTimeType.today)
             
-            HStack(alignment: .center){
+            
+            TimelineView(.periodic(from: begin, by: 1)) { context in
+                let date = context.date
+                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: begin, to: date)
                 
-                Text((showDate ? now.format(format: "HH:mm") : thisMinute.asString()).split(separator: ":")[0])
+                //                let dataArr  = context.date.format(format: "HH:mm:ss").split(separator: ":")
+                //                let h = "\(components.hour!)".count == 1 ? "0\(components.hour!)" : "\(components.hour!)"
+                //                let m = "\(components.minute!)".count == 1 ? "0\(components.minute!)" : "\(components.minute!)"
+                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+                let hour = String( thisMinute.asString().split(separator: ":")[0])
+                let min = String( thisMinute.asString().split(separator: ":")[1])
                 
-                Text(":")
-                    .baselineOffset(14)
-                    .opacity(showColon ? 1 : 0)
-                    .animation(.easeInOut, value: showColon)
-                    .font(.system(size: verticalSizeClass == .compact ? 110 : 55))
-//                    .foregroundColor(isHit ? .red : nil)
-                
-                
-                Text((showDate ? now.format(format: "HH:mm") : thisMinute.asString()).split(separator: ":")[1])
+                ClockView(hour: hour, min: min, second: s)
                 
             }
-
-            .foregroundColor(isHit ? Color("AccentColor") : nil)
-            .overlay(alignment: .bottom, content: {
-                if showDate {
-                    Text(now.format(format: "YYYY-MM-dd"))
-                        .font(.system(size: verticalSizeClass == .compact ? 40 : 20))
-//                        .font(.subheadline,size: (verticalSizeClass == .compact ? 140 : 60))
-                        .foregroundColor(.gray)
-                }
-            })
-            .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
-            .onAppear(perform: {
-                UIApplication.shared.isIdleTimerDisabled = true
-                DispatchQueue.main.async {
-                    Tool.hiddenTabBar()
-                }
-            })
-            .onDisappear(perform: {
-                UIApplication.shared.isIdleTimerDisabled = false
-                DispatchQueue.main.async {
-                    Tool.showTabBar()
-                }
+            .tag(ShowTimeType.timer)
+            
+            
+            
+            TimelineView(.periodic(from: Date(), by: 1)) { context in
+                let date = context.date
+                let dataArr  = date.format(format: "HH:mm:ss").split(separator: ":")
+                let h = String(dataArr[0])
+                let m = String(dataArr[1])
+                let s = String(dataArr[2])
                 
-            })
-            .onTapGesture {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()               
-                self.showDate.toggle()
+                
+                ClockView(hour: h, min: m, second: s,headTitle: date.dayString())
+                
+                
+                
             }
-            .animation(.linear, value: verticalSizeClass)
-
+            .tag(ShowTimeType.time)
+            
         }
+        .onChange(of: tabSelected, perform: { _ in
+            changeTabAuto = false
+        })
+        .animation(.easeInOut, value: tabSelected)
+        .onTapGesture {
+            //            if tabSelected == .timer {
+            //                tabSelected = .time
+            //            }else{
+            //                tabSelected = .timer
+            //            }
+        }
+        .padding(.bottom,20)
+        .ignoresSafeArea()
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+        .foregroundColor(isHit ? Color("AccentColor") : .white)
+        .background(.black)
+        //        .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
+        .onAppear(perform: {
+            UIApplication.shared.isIdleTimerDisabled = true
+            DispatchQueue.main.async {
+                Tool.hiddenTabBar()
+            }
+        })
+        .onDisappear(perform: {
+            UIApplication.shared.isIdleTimerDisabled = false
+            DispatchQueue.main.async {
+                Tool.showTabBar()
+            }
+            
+        })
+        .animation(.linear, value: verticalSizeClass)
+        
+        //        }
         .toast(isPresenting: $showToast,duration: 6,tapToDismiss: true){
             AlertToast( type: .complete(.green), title: String(localized: "Today's goal has been reached"))
         }
-
+        
         .onAppear(perform: {
             if(targetMinPerday>0 && BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
-            >= targetMinPerday
+               >= targetMinPerday
             ){
-//                generator.notificationOccurred(.success)
                 isHit = true
             }
             
             timerTrack.start { count in
                 now = Date()
-                self.showColon.toggle()
+                let nowStr = now.format(format: "mm:ss")
+                if (nowStr == "30:00" || nowStr == "00:00" ) && tabSelected != .time {
+                    lastShowTab = tabSelected
+                    tabSelected  = .time
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                        changeTabAuto = true
+                    })
+                }
+                
+                if (nowStr == "31:00" || nowStr == "01:00" ) && changeTabAuto {
+                    if let lastShowTab = lastShowTab {
+                        tabSelected = lastShowTab
+                    }
+                    changeTabAuto = false
+                }
+                
                 let min = count / 60
-                                
+                
                 if thisMinute != min{
                     
                     let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
@@ -127,8 +195,8 @@ struct TimerView: View {
                         isHit = true
                         showToast = true
                     }
-
-                                        
+                    
+                    
                     DispatchQueue.main.async {
                         do{
                             try context.save()
@@ -221,5 +289,62 @@ extension View {
     }
     func hiddenTabBar() -> some View {
         return self.modifier(HiddenTabBar())
+    }
+}
+
+struct ClockView: View {
+    var hour:String
+    var min:String
+    var second:String
+    var headTitle:String?
+    
+    @AppStorage("timerShowSec") private var timerShowSec = true
+    
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    var body: some View {
+        HStack(alignment: .firstTextBaseline){
+            
+            Text(hour)
+                .monospacedDigit()
+            
+            Text(":")
+                .opacity(Int(second)!%2==0 ? 1 : 0)
+            
+            
+            Text(min)
+                .monospacedDigit()
+            
+            if(timerShowSec){
+                Text(":")
+                    .opacity(Int(second)!%2==0 ? 1 : 0)
+                
+                
+                Text(second)
+                    .monospacedDigit()
+                
+            }
+            
+            //
+        }
+        .overlay(
+            
+            VStack{
+                Text(headTitle ?? "")
+                    .font(.system(  verticalSizeClass == .compact ? .title2 : .title3 ,design:.rounded))
+                    .frame(width: 200)
+            }.padding(.top,-30)
+            
+            ,alignment:.top
+        )
+        
+        .animation(.easeInOut, value: timerShowSec)
+        .font(.system(size: verticalSizeClass == .compact ? 100: 55,design: .serif))
+        .padding(.bottom,20)
+        .onTapGesture {
+            timerShowSec.toggle()
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
+        
     }
 }
