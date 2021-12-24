@@ -131,13 +131,20 @@ struct TimerView: View {
             DispatchQueue.main.async {
                 Tool.hiddenTabBar()
             }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
+                tabSelected = .time
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
+                tabSelected = .timer
+            })
         })
         .onDisappear(perform: {
             UIApplication.shared.isIdleTimerDisabled = false
             UIDevice.current.isBatteryMonitoringEnabled = false
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
                 Tool.showTabBar()
-            }
+            })
             
         })
         .animation(.linear, value: verticalSizeClass)
