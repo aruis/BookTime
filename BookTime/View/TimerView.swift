@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LocalAuthentication
 //import Foundation
 
 struct TimerView: View {
@@ -65,9 +66,9 @@ struct TimerView: View {
                 let min = String( thisMinute.asString().split(separator: ":")[1])
                 
                 let process = targetMinPerday > 0 ? CGFloat( thisMinute)/CGFloat( targetMinPerday) : CGFloat( thisMinute)/CGFloat( 45)
+                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
                 
-                
-                ClockView(hour: hour, min: min, second: s ,headTitle: String(localized: "\( Int( round( process * 100))) %  of the plan completed"))
+                ClockView(hour: hour, min: min, second: s ,headTitle: String(localized: "\( Int( round( process * 100))) %  of the plan completed"),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
                 
             }
             .tag(ShowTimeType.today)
@@ -83,8 +84,8 @@ struct TimerView: View {
                 let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
                 let hour = String( thisMinute.asString().split(separator: ":")[0])
                 let min = String( thisMinute.asString().split(separator: ":")[1])
-                
-                ClockView(hour: hour, min: min, second: s)
+                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
+                ClockView(hour: hour, min: min, second: s,batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
                 
             }
             .tag(ShowTimeType.timer)
@@ -97,9 +98,9 @@ struct TimerView: View {
                 let h = String(dataArr[0])
                 let m = String(dataArr[1])
                 let s = String(dataArr[2])
+                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
                 
-                
-                ClockView(hour: h, min: m, second: s,headTitle: date.dayString())
+                ClockView(hour: h, min: m, second: s,headTitle: date.dayString(),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
                 
                 
                 
@@ -126,12 +127,14 @@ struct TimerView: View {
         //        .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
         .onAppear(perform: {
             UIApplication.shared.isIdleTimerDisabled = true
+            UIDevice.current.isBatteryMonitoringEnabled = true
             DispatchQueue.main.async {
                 Tool.hiddenTabBar()
             }
         })
         .onDisappear(perform: {
             UIApplication.shared.isIdleTimerDisabled = false
+            UIDevice.current.isBatteryMonitoringEnabled = false
             DispatchQueue.main.async {
                 Tool.showTabBar()
             }
@@ -297,6 +300,28 @@ struct ClockView: View {
     var min:String
     var second:String
     var headTitle:String?
+    var foot:String?
+    var batteryLevel:Int
+    var inCharging:Bool
+    
+    var batteryImg:Image{
+        get {
+            if inCharging {
+                return Image(systemName: "battery.100.bolt")
+            }else  if batteryLevel < 13 {
+                return Image(systemName: "battery.0")
+            } else if batteryLevel < 38{
+                return Image(systemName: "battery.25")
+            }else if batteryLevel < 63{
+                return Image(systemName: "battery.50")
+            }else if batteryLevel < 88{
+                return Image(systemName: "battery.75")
+            }else{
+                return Image(systemName: "battery.100")
+            }
+            
+        }
+    }
     
     @AppStorage("timerShowSec") private var timerShowSec = true
     
@@ -328,7 +353,6 @@ struct ClockView: View {
             //
         }
         .overlay(
-            
             VStack{
                 Text(headTitle ?? "")
                     .font(.system(  verticalSizeClass == .compact ? .title2 : .title3 ,design:.rounded))
@@ -336,6 +360,19 @@ struct ClockView: View {
             }.padding(.top,-30)
             
             ,alignment:.top
+        )
+        .overlay(
+            VStack{
+                Text("\(batteryLevel)% \(batteryImg)")
+                    .monospacedDigit()
+                    .font(.subheadline)
+                //                Label{
+                //                    Text("\(batteryLevel)")
+                //                } icon: {batteryImg}
+                //                Label(,icon: batteryImg)
+            }
+            .padding(.bottom,-100)
+            ,alignment: .bottom
         )
         
         .animation(.easeInOut, value: timerShowSec)
