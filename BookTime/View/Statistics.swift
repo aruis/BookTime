@@ -270,7 +270,7 @@ struct Statistics: View {
         var lastHitDay_month:Date? = nil
         var lastHitDay_year:Date? = nil
         
-        for log:ReadLog in logs{
+        for log:ReadLog in logs{                        
             
             if(log.readMinutes>0){
                 

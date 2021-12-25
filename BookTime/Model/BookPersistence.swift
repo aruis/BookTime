@@ -36,7 +36,7 @@ class BookPersistenceController {
         book2.image = (UIImage(named: "tongji")?.jpegData(compressionQuality: 1.0))!
         book2.name = "统计学图鉴"
         book2.author = "[日]栗原伸一 [日]丸山敦史"
-        //        book2.isDone = true
+        book2.isDone = true
         book2.readMinutes = 200
         book2.createTime = Date().addingTimeInterval(-2000)
         
@@ -51,19 +51,14 @@ class BookPersistenceController {
         
         
         let now = Date()
-        for i in -1...40{
+        for i in 0...0{
             let randomInt = Int.random(in: 1...10)
-            
-            
-            
+                  
             let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
-            
+
             let readLog = ReadLog(context: viewContext)
             readLog.readMinutes =  Int16.random(in: 5...60)
             readLog.day = d
-            
-            
-            
         }
         
         

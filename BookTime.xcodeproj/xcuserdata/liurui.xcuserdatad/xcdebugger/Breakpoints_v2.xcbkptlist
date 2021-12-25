@@ -7,144 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5E727E66-482F-4A15-AE51-1F11456E041C"
+            uuid = "47D2A848-216F-4A0F-A0F2-23E60BFC9166"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BookTime/View/Statistics.swift"
+            filePath = "BookTime/View/NewBook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
-            landmarkName = "initAllLog()"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
+            landmarkName = "save()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "574B252F-B964-456A-BF35-76A47BBA1004"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BookTime/View/TimerView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8DB3ADB3-3F4C-4D42-8202-3B0465FC0148"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BookTime/View/TimerView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6E6D5584-D9B1-4846-84AE-CAD69B4FE0D7"
+            uuid = "4377EDEB-69BF-4E5E-ABF6-AFBD440B8865"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BookTime/Model/BookPersistence.swift"
+            filePath = "BookTime/View/NewBook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "checkAndBuildTodayLog()"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "save()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "06E0A5D3-5159-466C-A7F7-9D5A20C8C01F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BookTime/Model/BookPersistence.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "checkAndBuildTodayLog()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1DFAEF23-6987-4D8D-9450-9BD8DED388CD"
+            uuid = "EA9AEC78-2381-4537-BDFF-1958CB856C20"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BookTime/Model/BookPersistence.swift"
+            filePath = "BookTime/View/NewBook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "checkAndBuildTodayLog()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "1DFAEF23-6987-4D8D-9450-9BD8DED388CD - 589e41fe1ce8485"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "BookTime.BookPersistenceController.checkAndBuildTodayLog() -&gt; BookTime.ReadLog"
-                  moduleName = "BookTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/liurui/develop/workspace-xcode/BookTime/BookTime/Model/BookPersistence.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "492">
-               </Location>
-               <Location
-                  uuid = "1DFAEF23-6987-4D8D-9450-9BD8DED388CD - 589e41fe1ce8485"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "BookTime.BookPersistenceController.checkAndBuildTodayLog() -&gt; BookTime.ReadLog"
-                  moduleName = "BookTime"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/liurui/develop/workspace-xcode/BookTime/BookTime/Model/BookPersistence.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "572">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FDC23BA3-2200-401D-B318-2256B7995B2D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BookTime/Model/BookPersistence.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "checkAndBuildTodayLog()"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "save()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
