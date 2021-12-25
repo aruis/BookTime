@@ -17,3 +17,23 @@
 BookTime可能会自行决定不时修改或更新本隐私政策，因此您应该定期查看此页面。如果我们出于任何原因更改政策，我们将更新本页底部的“上次修改”日期。
 
 本隐私政策最后一次修改是在2021年12月25日。
+
+## Privacy Policy
+
+### SHORT AND SIMPLE, AS ALL PRIVACY POLICIES OUGHT TO BE.
+
+If you need a personalized book cover, you need to authorize BookTime to access your photo library or camera application, but this is optional. Similarly, if you need to back up data via iCloud, you need to authorize BookTIme to access the network and enable iCloud synchronization in your phone settings. This is also optional.
+
+### ABOUT DATA
+
+If you choose iCloud to back up your data, the data will be stored in the private space of the iCloud server. No one, including the author of this software, can read your data, and your data belongs only to you.
+
+### HOW TO CONTACT US
+
+Should you have other questions or concerns about these privacy policies, please email [cheetah_chugs.0g@icloud.com](mailto:cheetah_chugs.0g@icloud.com).
+
+### CHANGES TO THIS POLICY
+
+BookTime may, in its sole discretion, modify or update this Privacy Policy from time to time, and so you should review this page periodically. If we change our policy for any reason, we will update the 'Last modified' date at the bottom of this page.
+
+This Privacy Policy was last modified on December 25, 2021.
