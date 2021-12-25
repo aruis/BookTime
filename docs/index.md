@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## BookTime - 您的阅读计时伴侣
 
 You can use the [editor on GitHub](https://github.com/aruis/BookTime/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
