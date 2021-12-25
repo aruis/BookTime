@@ -1,37 +1,21 @@
 ## BookTime - 您的阅读计时伴侣
 
-You can use the [editor on GitHub](https://github.com/aruis/BookTime/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+### 隐私政策
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## 简明扼要，就像所有隐私政策应该如此。
 
-### Markdown
+如果需要个性化书籍封面，您需要授权BookTime访问您的相册或者相机应用，但是这是可选的。同样的，如果您需要通过iCloud备份数据，您需要授权BookTIme可以访问网络，同时把您手机设置中的iCloud同步开启。这也是可选的。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## 数据相关
 
-```markdown
-Syntax highlighted code block
+如果您选择iCloud备份数据，数据就会存储到iCloud服务器的私有空间中，包括本软件作者在内的任何人都无法读取您的数据，您的数据只属于您。
 
-# Header 1
-## Header 2
-### Header 3
+## 如何联系我们
 
-- Bulleted
-- List
+如果您对这些隐私政策有其他疑问或疑虑，请发送电子邮件至[cheetah_chugs.0g@icloud.com](mailto:cheetah_chugs.0g@icloud.com)。
 
-1. Numbered
-2. List
+## 本政策的更改
 
-**Bold** and _Italic_ and `Code` text
+BookTime可能会自行决定不时修改或更新本隐私政策，因此您应该定期查看此页面。如果我们出于任何原因更改政策，我们将更新本页底部的“上次修改”日期。
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/aruis/BookTime/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+本隐私政策最后一次修改是在2021年12月25日。
