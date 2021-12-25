@@ -24,7 +24,11 @@ struct BookList: View {
     
     @SectionedFetchRequest(
         sectionIdentifier: \.isDone,
-        sortDescriptors: [SortDescriptor(\Book.isDone, order: .forward),SortDescriptor(\Book.createTime, order: .reverse)])
+        sortDescriptors: [
+            SortDescriptor(\Book.isDone, order: .forward),
+//            SortDescriptor(\Book.lastReadTime, order: .forward),
+            SortDescriptor(\Book.createTime, order: .reverse)
+        ])
     private var quakes: SectionedFetchResults<Bool, Book>
     
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
@@ -116,7 +120,8 @@ struct BookList: View {
                     }
                 })
                 .onAppear(perform: {
-                    BookPersistenceController.shared.checkAndBuildTodayLog()
+                    let readMinToday =  BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
+                    print(readMinToday)
                 })
                 .navigationBarTitleDisplayMode(.automatic)
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )

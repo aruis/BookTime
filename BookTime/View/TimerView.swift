@@ -126,25 +126,33 @@ struct TimerView: View {
         .background(.black)
         //        .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
         .onAppear(perform: {
-            UIApplication.shared.isIdleTimerDisabled = true
-            UIDevice.current.isBatteryMonitoringEnabled = true
             DispatchQueue.main.async {
                 Tool.hiddenTabBar()
             }
+            UIApplication.shared.isIdleTimerDisabled = true
+            UIDevice.current.isBatteryMonitoringEnabled = true
             
-            DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
+//            Tool.hiddenTabBar()
+//            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+//                Tool.hiddenTabBar()
+//            })
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.6, execute: {
                 tabSelected = .time
             })
-            DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now()+2.6, execute: {
                 tabSelected = .timer
             })
         })
         .onDisappear(perform: {
+            DispatchQueue.main.async {
+                Tool.showTabBar()
+            }
+            
             UIApplication.shared.isIdleTimerDisabled = false
             UIDevice.current.isBatteryMonitoringEnabled = false
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
-                Tool.showTabBar()
-            })
+          
+//            Tool.showTabBar()
+
             
         })
         .animation(.linear, value: verticalSizeClass)
