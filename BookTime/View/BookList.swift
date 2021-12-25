@@ -115,7 +115,9 @@ struct BookList: View {
                         self.showAlert = false
                     }
                 })
-                
+                .onAppear(perform: {
+                    BookPersistenceController.shared.checkAndBuildTodayLog()
+                })
                 .navigationBarTitleDisplayMode(.automatic)
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
                 .onChange(of: searchText){ searchText in

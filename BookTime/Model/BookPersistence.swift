@@ -10,7 +10,7 @@ import CloudKit
 import UIKit
 import SwiftUI
 
-struct BookPersistenceController {
+class BookPersistenceController {
     @AppStorage("lastBackupTime") var lastBackupTime:String = ""
     
     let privateDB = CKContainer.default().privateCloudDatabase
@@ -21,7 +21,7 @@ struct BookPersistenceController {
     static var preview: BookPersistenceController = {
         let result = BookPersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-                
+        
         let book = Book(context:viewContext)
         book.image = (UIImage(named: "python")?.jpegData(compressionQuality: 1.0))!
         book.name = "漫画Python：编程入门超简单"
@@ -29,8 +29,8 @@ struct BookPersistenceController {
         book.isDone = false
         book.readMinutes = 200
         book.createTime = Date().addingTimeInterval(-1000)
-
-
+        
+        
         
         let book2 = Book(context:viewContext)
         book2.image = (UIImage(named: "tongji")?.jpegData(compressionQuality: 1.0))!
@@ -53,17 +53,17 @@ struct BookPersistenceController {
         let now = Date()
         for i in -1...40{
             let randomInt = Int.random(in: 1...10)
-
-
             
-                let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
-
-                let readLog = ReadLog(context: viewContext)
-                readLog.readMinutes =  Int16.random(in: 5...60)
-                readLog.day = d
-
             
-
+            
+            let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
+            
+            let readLog = ReadLog(context: viewContext)
+            readLog.readMinutes =  Int16.random(in: 5...60)
+            readLog.day = d
+            
+            
+            
         }
         
         
@@ -110,7 +110,15 @@ struct BookPersistenceController {
         })
     }
     
-     func checkAndBuildTodayLog() -> ReadLog{
+    private var todayLog:ReadLog? = nil
+    
+    func checkAndBuildTodayLog() -> ReadLog{
+        if let todayLog = todayLog {
+            if(todayLog.day.format(format: "YYYY-MM-dd") == Date().format(format: "YYYY-MM-dd")){
+                return todayLog
+            }
+        }
+        
         let context = container.viewContext
         let fetchReq = ReadLog.fetchRequest()
         
@@ -121,19 +129,20 @@ struct BookPersistenceController {
         do {
             let today =  try context.fetch(fetchReq).first
             if let today = (today as? ReadLog){
+                self.todayLog = today
                 return today
             } else {
                 let readLog = ReadLog(context: context)
                 readLog.readMinutes = 0
                 readLog.day = Date().start()
-
+                self.todayLog = readLog
                 return readLog
             }
             
         } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
+            print("Could not fetch. \(error), \(error.userInfo)")
         }
-
+        
         return ReadLog()
     }
     
@@ -213,7 +222,7 @@ struct BookPersistenceController {
         store.removeObject(forKey: "lastBackupTime")
         lastBackupTime = ""
     }
-
+    
     func saveBookInICloud(book:Book){
         let record = CKRecord(recordType: "Book")
         record.setValue(book.id, forKey: "id")
@@ -263,11 +272,11 @@ struct BookPersistenceController {
         })
         
     }
-
+    
     func tapLastBackuptime(){
         let time = Date().format(format:"yyyy-MM-dd HH:mm:ss")
         store.set(time, forKey: "lastBackupTime")
         lastBackupTime = time
-    }    
-
+    }
+    
 }
