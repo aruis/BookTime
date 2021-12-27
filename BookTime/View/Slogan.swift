@@ -11,7 +11,7 @@ struct Slogan: View {
     var title:String
     var unit:String
     
-    var value:Int64
+    var value:String
     
     var body: some View {
         HStack(alignment: .firstTextBaseline){
@@ -19,7 +19,7 @@ struct Slogan: View {
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
-            Text(String(value))
+            Text(value)
                 .font(.largeTitle)
                 .animation(.default, value: value)
             

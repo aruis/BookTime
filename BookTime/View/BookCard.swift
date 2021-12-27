@@ -21,6 +21,7 @@ struct BookCard: View {
     @State private var showAlert:Bool = false
     @State private var showBatterySheet:Bool = false
     @State var downTrigger:Int = 0
+    @State var isDone = false
     
     let generator = UINotificationFeedbackGenerator()
     
@@ -79,13 +80,13 @@ struct BookCard: View {
                                     }
                                 
                             }
-                        }.opacity(book.isDone ? 1 : 0)
-                            .animation(.default, value: book.isDone)
+                        }.opacity(isDone ? 1 : 0)
+                            .animation(.default, value: isDone)
                         
                         if book.readMinutes > 0{
                             VStack{
-                                Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: Int64( book.readDays))
-                                Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "mins"), value: Int64( book.readMinutes))
+                                Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: String( book.readDays))
+                                Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: String( book.readMinutes))
                                 
                                 
                                 //                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
@@ -97,16 +98,16 @@ struct BookCard: View {
                         
                         
                         ZStack{
-                            RoundedRectangle(cornerRadius: book.isDone ? 25:5)
-                                .frame(width: book.isDone ? 50:250, height: 50)
-                                .foregroundColor(book.isDone ? .green : .gray)
+                            RoundedRectangle(cornerRadius: isDone ? 25:5)
+                                .frame(width: isDone ? 50:250, height: 50)
+                                .foregroundColor(isDone ? .green : .gray)
                                 .overlay(
                                     //                                Text("")
                                     Image(systemName: "checkmark")
                                         .font(.system(.title))
                                         .foregroundColor(.white)
-                                        .scaleEffect(book.isDone ? 1: 0.7)
-                                        .opacity(book.isDone ? 1 : 0)
+                                        .scaleEffect(isDone ? 1: 0.7)
+                                        .opacity(isDone ? 1 : 0)
                                 )
                             //                            .frame(width: 12, height: 12)
                             //                                           .modifier(ParticlesModifier())
@@ -114,7 +115,7 @@ struct BookCard: View {
                             
                             
                             Text("Finished Reading")
-                                .opacity(book.isDone ? 0 : 1)
+                                .opacity(isDone ? 0 : 1)
                                 .fixedSize()
                             
                                 .foregroundColor(.white)
@@ -122,13 +123,12 @@ struct BookCard: View {
                         .frame(minWidth: 0,maxWidth: .infinity)
                         .frame(height:80)
                         .onTapGesture {
-                            book.isDone.toggle()
-                            if(book.isDone){
+                            isDone.toggle()
+                            if(isDone){
                                 generator.notificationOccurred(.success)
                                 downTrigger+=1
                                 book.doneTime = Date()
                             }
-                            save()
                         }
                         .animation(.easeInOut, value: book.isDone)
                         
@@ -186,7 +186,12 @@ struct BookCard: View {
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: {
+            self.isDone = book.isDone
             UIDevice.current.isBatteryMonitoringEnabled = true
+        })
+        .onDisappear(perform: {
+            book.isDone = self.isDone
+            save()
         })
     }
     

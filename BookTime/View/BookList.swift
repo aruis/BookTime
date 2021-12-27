@@ -11,13 +11,14 @@ import CloudKit
 
 
 struct BookList: View {
-        
+    
     let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
     
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \Book.isDone, ascending: true),
+        //        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false),
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
     ])
     var books: FetchedResults<Book>
@@ -26,10 +27,10 @@ struct BookList: View {
         sectionIdentifier: \.isDone,
         sortDescriptors: [
             SortDescriptor(\Book.isDone, order: .forward),
-//            SortDescriptor(\Book.lastReadTime, order: .forward),
+            //            SortDescriptor(\Book.lastReadTime, order: .forward),
             SortDescriptor(\Book.createTime, order: .reverse)
         ])
-    private var quakes: SectionedFetchResults<Bool, Book>
+    private var booksGroup: SectionedFetchResults<Bool, Book>
     
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
     var logs: FetchedResults<ReadLog>
@@ -59,56 +60,57 @@ struct BookList: View {
                 
             } else {
                 List{
-//                    ForEach(quakes) { section in
-//                        Section(header: Text((section.id ? "已读完" : "未读完") + "·\(section.count)" ).monospacedDigit() ) {
-//
-//                        }
-//                    }
-                    ForEach(books) { book in
-                        ZStack(alignment: .leading){
-                            NavigationLink(
-                                destination: BookCard(book:book)
-                            ){
-                                EmptyView()
-                            }.opacity(0)
-                            
-                            BookListItem(book: book)
-                            
-                        }
-                        .contextMenu {
-                            
-                            Button(action: {
-                                self.bookViewModel.setBook(book: book)
-                                self.showNewBook = true
-                                //                                self.showError.toggle()
-                            }) {
-                                HStack {
-                                    Text("Modify the book")
-                                    Image(systemName: "pencil.circle")
+                    ForEach(booksGroup) { section in
+                        Section(header: Text((section.id ? String(localized: "Finished") : String(localized: "Unfinished")) + "·\(section.count)" ).monospacedDigit() ) {
+                            ForEach(section) { book in
+                                ZStack(alignment: .leading){
+                                    NavigationLink(
+                                        destination: BookCard(book:book)
+                                    ){
+                                        EmptyView()
+                                    }.opacity(0)
+                                    
+                                    BookListItem(book: book)
+                                    
+                                }                                
+                                .contextMenu {
+                                    
+                                    Button(action: {
+                                        self.bookViewModel.setBook(book: book)
+                                        self.showNewBook = true
+                                        //                                self.showError.toggle()
+                                    }) {
+                                        HStack {
+                                            Text("Modify the book")
+                                            Image(systemName: "pencil.circle")
+                                        }
+                                    }
+                                    
+                                    Button(action: {
+                                        self.showAlert = true
+                                        wantDelete = book
+                                        generator.notificationOccurred(.warning)
+                                    }){
+                                        HStack{
+                                            Text("Delete the book")
+                                            Image(systemName: "trash")
+                                        }.foregroundColor(.red)
+                                        
+                                    }
+                                    
                                 }
-                            }
-                            
-                            Button(action: {
-                                self.showAlert = true
-                                wantDelete = book
-                                generator.notificationOccurred(.warning)
-                            }){
-                                HStack{
-                                    Text("Delete the book")
-                                    Image(systemName: "trash")
-                                }.foregroundColor(.red)
+                                
+                                .listRowSeparator(.hidden)
                                 
                             }
-                            
                         }
-                        
-                        .listRowSeparator(.hidden)
-                        
                     }
                     
+                    
                 }
+                
                 .listStyle(.plain)
-                //                .listStyle(.sidebar)
+//                .listStyle(.insetGrouped)
                 .navigationTitle("My Bookshelf")
                 .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
                     //                    index
@@ -163,9 +165,9 @@ struct BookList: View {
         .sheet(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel)
         }
-       
-    }
         
+    }
+    
     
     func delete(book:Book?){
         if let book = book{
@@ -180,7 +182,7 @@ struct BookList: View {
             }
         }
     }
- 
+    
     func local2Cloud() async{
         await  ctrl.cleanCloud()
         
@@ -193,10 +195,10 @@ struct BookList: View {
         }
         
         ctrl.tapLastBackuptime()
-
+        
     }
-
-   
+    
+    
     
 }
 

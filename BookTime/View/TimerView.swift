@@ -68,7 +68,7 @@ struct TimerView: View {
                 let process = targetMinPerday > 0 ? CGFloat( thisMinute)/CGFloat( targetMinPerday) : CGFloat( thisMinute)/CGFloat( 45)
                 let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
                 
-                ClockView(hour: hour, min: min, second: s ,headTitle:  targetMinPerday > 0 ? String(localized: "\( Int( round( process * 100))) %  of the plan completed") : "",batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
+                ClockView(hour: hour, min: min, second: s ,headTitle:  targetMinPerday > 0 ? String(localized: "\( Int( round( process * 100))) %  of the plan completed") : String(localized: "Today"),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
                 
             }
             .tag(ShowTimeType.today)
@@ -138,9 +138,17 @@ struct TimerView: View {
 //            })
             DispatchQueue.main.asyncAfter(deadline: .now()+0.6, execute: {
                 tabSelected = .time
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now()+2.6, execute: {
-                tabSelected = .timer
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    changeTabAuto = true
+                })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
+                    if(changeTabAuto){
+                        tabSelected = .timer
+                    }
+                    changeTabAuto = false
+                })
+
             })
         })
         .onDisappear(perform: {
@@ -172,7 +180,7 @@ struct TimerView: View {
             timerTrack.start { count in
                 now = Date()
                 let nowStr = now.format(format: "mm:ss")
-                if (nowStr == "30:00" || nowStr == "00:00" ) && tabSelected != .time {
+                if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
                     lastShowTab = tabSelected
                     tabSelected  = .time
                     DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
@@ -370,7 +378,7 @@ struct ClockView: View {
         .overlay(
             VStack{
                 Text(headTitle ?? "")
-                    .font(.system(  verticalSizeClass == .compact ? .title2 : .title3 ,design:.rounded))
+                    .font(.system(  verticalSizeClass == .compact ? .title3 : .caption ,design:.rounded))
                     .frame(width: 200)
             }.padding(.top,-30)
             

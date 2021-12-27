@@ -94,7 +94,7 @@ struct Statistics: View {
             //                        })
             
             
-            Slogan(title: todayReadMin > 0 ? String(localized: "You have been reading for",comment: "今天是您坚持阅读的第"): String(localized: "You have been reading for",comment: "您已坚持阅读"), unit: totalReadDay>0 ? String(localized: "days") : String(localized: "day"), value: Int64(totalReadDay))
+            Slogan(title: todayReadMin > 0 ? String(localized: "You have been reading for",comment: "今天是您坚持阅读的第"): String(localized: "You have been reading for",comment: "您已坚持阅读"), unit: totalReadDay>0 ? String(localized: "days") : String(localized: "day"), value: String(totalReadDay))
             
             
             
@@ -391,9 +391,9 @@ struct Report: View{
     
     var body: some View{
         VStack ( spacing:15) {
-            Slogan(title: String(localized: "A total of",comment: "累计阅读") , unit: String(localized:"minutes of reading",comment: "分钟" )  , value: Int64( totalReadMin))
-            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"books in total" ,comment: "本书")  , value: Int64(totalReadBook))
-            Slogan(title: String(localized: "Longest consecutive hits for",comment: "最长连续打卡") , unit: String(localized: "days",comment: "天") , value: Int64(longHit))
+            Slogan(title: String(localized: "A total of",comment: "累计阅读") , unit: String(localized:"minutes of reading",comment: "分钟" )  , value: String( totalReadMin))
+            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"books in total" ,comment: "本书")  , value: String(totalReadBook))
+            Slogan(title: String(localized: "Longest consecutive hits for",comment: "最长连续打卡") , unit: String(localized: "days",comment: "天") , value: String(longHit))
         }
         
     }

@@ -86,6 +86,12 @@
 "End reading" = "结束阅读";
 
 /* No comment provided by engineer. */
+"Finished" = "已读完";
+
+/* No comment provided by engineer. */
+"Unfinished" = "未读完";
+
+/* No comment provided by engineer. */
 "Finished Reading" = "我已读完";
 
 /* No comment provided by engineer. */
@@ -102,6 +108,9 @@
 
 /* No comment provided by engineer. */
 "Looking forward to your evaluation%@" = "期待您的评价%@";
+
+/* No comment provided by engineer. */
+"min" = "分";
 
 /* No comment provided by engineer. */
 "mins" = "分";
@@ -169,6 +178,9 @@
 
 /* No comment provided by engineer. */
 "Title" = "标题";
+
+/* No comment provided by engineer. */
+"Today" = "今日";
 
 /* No comment provided by engineer. */
 "Today's goal has been reached" = "今日目标已达成";
