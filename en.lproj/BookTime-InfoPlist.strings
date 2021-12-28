@@ -1,0 +1,6 @@
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "If you need to take a photo as the cover of the book, you need to grant the App to access to the camera.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "If you need to pick a picture in the photo library as the book cover, you need to grant the App to access to the photo library.";
+

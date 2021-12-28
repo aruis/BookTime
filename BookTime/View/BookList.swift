@@ -86,18 +86,18 @@ struct BookList: View {
                                         }
                                     }
                                     
-                                    Button(action: {
+                                    Button(role: .destructive, action: {
                                         self.showAlert = true
                                         wantDelete = book
                                         generator.notificationOccurred(.warning)
-                                    }){
+
+                                    })  {
                                         HStack{
                                             Text("Delete the book")
                                             Image(systemName: "trash")
-                                        }.foregroundColor(.red)
+                                        }
                                         
                                     }
-                                    
                                 }
                                 
                                 .listRowSeparator(.hidden)

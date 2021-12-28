@@ -82,6 +82,7 @@
 		83B03AD727698032005B4700 /* Slogan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slogan.swift; sourceTree = "<group>"; };
 		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
+		83CE2E84277AD28F00ADD42F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/BookTime-InfoPlist.strings"; sourceTree = "<group>"; };
 		83DC51EC27589ED200C2A90A /* TimerTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTrack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -278,7 +279,6 @@
 			knownRegions = (
 				en,
 				"zh-Hans",
-				Base,
 			);
 			mainGroup = 83731C862755D0D600305305;
 			productRefGroup = 83731C902755D0D600305305 /* Products */;
@@ -349,6 +349,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				839B9C2327734802001094C6 /* zh-Hans */,
+				83CE2E84277AD28F00ADD42F /* en */,
 			);
 			name = "BookTime-InfoPlist.strings";
 			sourceTree = "<group>";
@@ -491,14 +492,14 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "If you need to take a photo as the cover of the book, you need to grant the App to access to the camera.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "If you need to pick a picture in the photo library as the book cover, you need to grant the App to access to the photo library.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "如果要拍照作为图书封面，您需要给我授权。";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "如果要选择相册里的图片作为封面，您需要给我授权。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -526,14 +527,14 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "If you need to take a photo as the cover of the book, you need to grant the App to access to the camera.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "If you need to pick a picture in the photo library as the book cover, you need to grant the App to access to the photo library.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "如果要拍照作为图书封面，您需要给我授权。";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "如果要选择相册里的图片作为封面，您需要给我授权。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
