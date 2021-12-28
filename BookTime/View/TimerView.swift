@@ -119,9 +119,10 @@ struct TimerView: View {
             //                tabSelected = .timer
             //            }
         }
-        .padding(.bottom,20)
+//        .padding(.bottom,20)
 //        .ignoresSafeArea()
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+//        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+        .tabViewStyle(.page)
         .foregroundColor(isHit ? Color("AccentColor") : .white)
         .background(.black)
         //        .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
@@ -379,7 +380,7 @@ struct ClockView: View {
             VStack{
                 Text(headTitle ?? "")
                     .font(.system(  verticalSizeClass == .compact ? .title3 : .caption ,design:.rounded))
-                    .frame(width: 250)
+                    .frame(width: 300)
             }.padding(.top,-30)
             
             ,alignment:.top
