@@ -120,7 +120,7 @@ struct TimerView: View {
             //            }
         }
         .padding(.bottom,20)
-        .ignoresSafeArea()
+//        .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
         .foregroundColor(isHit ? Color("AccentColor") : .white)
         .background(.black)
@@ -379,7 +379,7 @@ struct ClockView: View {
             VStack{
                 Text(headTitle ?? "")
                     .font(.system(  verticalSizeClass == .compact ? .title3 : .caption ,design:.rounded))
-                    .frame(width: 200)
+                    .frame(width: 250)
             }.padding(.top,-30)
             
             ,alignment:.top
