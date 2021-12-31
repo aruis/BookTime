@@ -42,6 +42,7 @@
 		83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */; };
 		83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2692762053E001E8E0E /* ImageExt.swift */; };
 		83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC51EC27589ED200C2A90A /* TimerTrack.swift */; };
+		83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FC0BCD277B0212004C6C27 /* Tutorial.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +84,9 @@
 		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
 		83CE2E84277AD28F00ADD42F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/BookTime-InfoPlist.strings"; sourceTree = "<group>"; };
+		83CE5BF7277DF4A00041D919 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83DC51EC27589ED200C2A90A /* TimerTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTrack.swift; sourceTree = "<group>"; };
+		83FC0BCD277B0212004C6C27 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				83CE5BF7277DF4A00041D919 /* Info.plist */,
 				83924E61276CDA55002D0678 /* BookTime.entitlements */,
 				83862921275F960B004E3141 /* AlertToast */,
 				8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */,
@@ -196,6 +200,7 @@
 				83502577275B012200EF9C5C /* Setting.swift */,
 				83955FEA275EFB43004408C3 /* About.swift */,
 				83B03AD727698032005B4700 /* Slogan.swift */,
+				83FC0BCD277B0212004C6C27 /* Tutorial.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				83502578275B012200EF9C5C /* Setting.swift in Sources */,
 				8317F89A2772FE5C00864D2F /* Tools.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
+				83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */,
 				83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */,
 				835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */,
 			);
@@ -492,11 +498,12 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BookTime/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "如果要拍照作为图书封面，您需要给我授权。";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "如果要选择相册里的图片作为封面，您需要给我授权。";
@@ -527,11 +534,12 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BookTime/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "如果要拍照作为图书封面，您需要给我授权。";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "如果要选择相册里的图片作为封面，您需要给我授权。";

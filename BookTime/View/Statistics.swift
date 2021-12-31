@@ -18,7 +18,9 @@ struct Statistics: View {
     ],predicate:NSPredicate(format: "readMinutes > 0"))
     var logs: FetchedResults<ReadLog>
     
-    @FetchRequest(entity: Book.entity(), sortDescriptors:[])
+    @FetchRequest(entity: Book.entity(), sortDescriptors:[
+        NSSortDescriptor(keyPath: \Book.doneTime, ascending: true)
+    ])
     var books: FetchedResults<Book>
     
     @State private var todayReadMin:Int16 = 0
@@ -163,9 +165,9 @@ struct Statistics: View {
                 
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .animation(.linear, value: sumType)
+            .animation(.easeInOut, value: sumType)
             .frame( height: 160)
-            
+                                    
         }
     }
     

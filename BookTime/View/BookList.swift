@@ -41,10 +41,11 @@ struct BookList: View {
     @State private var showingAlert = false
     @State private var searchText = ""
     @State private var showAlert:Bool = false
-    
     @State private var wantDelete:Book? = nil
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
+    
+    @State private var handMove = false
     
     var body: some View {
         NavigationView {
@@ -52,6 +53,18 @@ struct BookList: View {
                 VStack (spacing: 10){
                     Image(systemName: "plus.circle").font(.largeTitle)
                         .foregroundColor(.accentColor)
+                        .overlay(
+                            Image(systemName: "hand.point.up.left")
+                                .font(.system(size: 100))
+                                .foregroundColor(.gray.opacity(handMove ? 0.6:0.85))
+                                .offset(x: handMove ? 150 : 20,y: handMove ? 150 : 20)
+                        )
+                        .onAppear(perform: {
+                            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)){
+                                handMove.toggle()
+                            }
+                        })
+
                     Text("Tap here to add your first book")
                 }.onTapGesture {
                     bookViewModel.clean()
@@ -72,7 +85,8 @@ struct BookList: View {
                                     
                                     BookListItem(book: book)
                                     
-                                }                                
+                                }
+                                
                                 .contextMenu {
                                     
                                     Button(action: {
@@ -90,7 +104,7 @@ struct BookList: View {
                                         self.showAlert = true
                                         wantDelete = book
                                         generator.notificationOccurred(.warning)
-
+                                        
                                     })  {
                                         HStack{
                                             Text("Delete the book")
@@ -105,12 +119,9 @@ struct BookList: View {
                             }
                         }
                     }
-                    
-                    
                 }
-                
-                .listStyle(.plain)
-//                .listStyle(.insetGrouped)
+                //                .listStyle(.plain)
+                .listStyle(.sidebar)
                 .navigationTitle("My Bookshelf")
                 .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
                     //                    index

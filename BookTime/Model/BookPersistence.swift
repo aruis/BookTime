@@ -87,6 +87,10 @@ class BookPersistenceController {
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
+//        guard let description = container.persistentStoreDescriptions.first else {
+//            fatalError("###\(#function): Failed to retrieve a persistent store description.")
+//        }
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.

@@ -23,6 +23,8 @@ struct BookCard: View {
     @State var downTrigger:Int = 0
     @State var isDone = false
     
+    @State var hPhone = true
+    
     let generator = UINotificationFeedbackGenerator()
     
     var body: some View {
@@ -132,6 +134,8 @@ struct BookCard: View {
                         }
                         .animation(.easeInOut, value: book.isDone)
                         
+                        
+                        
                         if isFirstBookCard {
                             Label(title: {
                                 HStack{
@@ -146,8 +150,14 @@ struct BookCard: View {
                                 
                             }, icon: {
                                 Image(systemName: "iphone.landscape")
+                                    .rotationEffect(.degrees(hPhone ? 90:0))
                             })
                                 .font(.subheadline)
+                                .onAppear(perform: {
+                                    withAnimation(.easeOut(duration: 1.5).repeatForever(autoreverses: false) ){
+                                        hPhone.toggle()
+                                    }
+                                })
                                 
                         }
                     

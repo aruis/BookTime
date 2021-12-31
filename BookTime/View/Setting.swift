@@ -27,6 +27,7 @@ struct Setting: View {
 //    @AppStorage("useiCloud") var useiCloud = false
     private var useiCloud = false
     @AppStorage("isFirstBookCard") var isFirstBookCard = true
+    @AppStorage("hasViewdWalkthrough") var hasViewdWalkthrough = false
     
     @State var showAbout = false
     @State var showToast = false
@@ -344,6 +345,7 @@ struct Setting: View {
         showDeleteAllSucToast = true
         targetMinPerday = 45
         isFirstBookCard = true
+        hasViewdWalkthrough = false
         
         store.removeObject(forKey: "targetMinPerday")
 
