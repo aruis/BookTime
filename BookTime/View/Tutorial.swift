@@ -54,15 +54,15 @@ struct Tutorial: View {
                     
                     
                     if(currentPage > 0){
-                        ExtractedView(index:1, content: "Enter the information of the book you are reading into the device.")
+                        ExtractedView(index:1, content: String(localized: "Enter the information of the book you are reading into the device.") )
                     }
                     
                     if(currentPage > 1){
-                        ExtractedView(index:2,content: "Place the device horizontally and start timing.")
+                        ExtractedView(index:2,content: String(localized: "Place the device horizontally and start timing."))
                     }
                     
                     if(currentPage > 2){
-                        ExtractedView(index:3,content: "Get into the habit of punching in every day to achieve results.")
+                        ExtractedView(index:3,content: String(localized: "Get into the habit of punching in every day to achieve results."))
                     }
                     
                     
@@ -158,7 +158,7 @@ struct ExtractedView: View {
             
             
             Text(content)
-                .frame(width: 240,height: 60)
+                .frame(width: 240,height: 60,alignment: .leading)
                 .font(.system(.callout,design: .rounded))
             
             

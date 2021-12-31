@@ -86,10 +86,19 @@
 "End reading" = "结束阅读";
 
 /* No comment provided by engineer. */
+"Enter the information of the book you are reading into the device." = "选一本书，把信息录入设备。";
+
+/* No comment provided by engineer. */
 "Finished" = "已读完";
 
 /* No comment provided by engineer. */
 "Finished Reading" = "我已读完";
+
+/* No comment provided by engineer. */
+"Get into the habit of punching in every day to achieve results." = "养成每日打卡习惯，达成成就。";
+
+/* No comment provided by engineer. */
+"GET STARTED" = "开始吧";
 
 /* No comment provided by engineer. */
 "I want to clear all data" = "我要清除所有数据";
@@ -119,6 +128,9 @@
 "My Bookshelf" = "我的书架";
 
 /* No comment provided by engineer. */
+"NEXT" = "继续";
+
+/* No comment provided by engineer. */
 "Overwrite cloud data to local" = "云端向本地覆盖";
 
 /* No comment provided by engineer. */
@@ -126,6 +138,9 @@
 
 /* No comment provided by engineer. */
 "Photo Library" = "相册";
+
+/* No comment provided by engineer. */
+"Place the device horizontally and start timing." = "横置手机进入计时模式。";
 
 /* No comment provided by engineer. */
 "Please enter the author name" = "请输入作者名";
@@ -146,6 +161,9 @@
 "Reading for" = "已阅读";
 
 /* No comment provided by engineer. */
+"Return to reading" = "回归阅读";
+
+/* No comment provided by engineer. */
 "Save" = "保存";
 
 /* 导出成功
@@ -157,6 +175,9 @@
 
 /* No comment provided by engineer. */
 "Setting" = "设置";
+
+/* No comment provided by engineer. */
+"Skip" = "跳过";
 
 /* 同步完成 */
 "Synchronization complete" = "同步完成";
@@ -181,6 +202,9 @@
 
 /* No comment provided by engineer. */
 "Unfinished" = "未读完";
+
+/* No comment provided by engineer. */
+"Welcome to BookTime." = "欢迎使用 BookTime";
 
 /* 今天是您坚持阅读的第 */
 "You have been reading for" = "今天是您坚持阅读的第";
