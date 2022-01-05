@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #1 in closure #1 in TimerView.body.getter:TimerView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "begin">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Statistics.initAllLog():Statistics.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "log.day">
+            </PersistentString>
+            <PersistentString
+               value = "components.day">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "_todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "Date().start() as NSDate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #3 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "latestSync">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #7 in TimerView.body.getter:TimerView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "changeTabAuto">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
