@@ -53,9 +53,9 @@ class BookPersistenceController {
         let now = Date()
         for i in 0...0{
             let randomInt = Int.random(in: 1...10)
-                  
+            
             let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
-
+            
             let readLog = ReadLog(context: viewContext)
             readLog.readMinutes =  Int16.random(in: 5...60)
             readLog.day = d
@@ -87,9 +87,12 @@ class BookPersistenceController {
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
-//        guard let description = container.persistentStoreDescriptions.first else {
-//            fatalError("###\(#function): Failed to retrieve a persistent store description.")
-//        }
+        //        guard let description = container.persistentStoreDescriptions.first else {
+        //            fatalError("###\(#function): Failed to retrieve a persistent store description.")
+        //        }
+        container.persistentStoreDescriptions.forEach {
+            $0.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        }
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -107,6 +110,15 @@ class BookPersistenceController {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
+        //添加如下代码
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        do {
+              try container.viewContext.setQueryGenerationFrom(.current)
+        } catch {
+             fatalError("Failed to pin viewContext to the current generation:\(error)")
+        }
     }
     
     private var todayLog:ReadLog? = nil
