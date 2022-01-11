@@ -91,7 +91,7 @@ struct BookList: View {
                 }
                 
             }
-        }        
+        }
         .listRowSeparator(.hidden)
     }
     
