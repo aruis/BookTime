@@ -287,7 +287,12 @@ struct Statistics: View {
                 }
             }
             .sheet(isPresented: $isShowReadedBooks){
-                readedBookView
+                NavigationView{
+                    ScrollView{
+                        readedBookView
+                    }
+                    .navigationTitle("Finished book")
+                }
             }
             
             
