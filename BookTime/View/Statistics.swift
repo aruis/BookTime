@@ -452,7 +452,9 @@ struct Report: View{
             Slogan(title: String(localized: "A total of",comment: "累计阅读") , unit: String(localized:"minutes of reading",comment: "分钟" )  , value: String( totalReadMin))
             Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"books in total" ,comment: "本书")  , value: String(totalReadBook))
                 .onTapGesture {
-                    isShowReadedBooks = true
+                    if(totalReadBook>0){
+                        isShowReadedBooks = true
+                    }
                 }
             Slogan(title: String(localized: "Longest consecutive hits for",comment: "最长连续打卡") , unit: String(localized: "days",comment: "天") , value: String(longHit))
         }
