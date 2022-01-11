@@ -54,6 +54,47 @@ struct BookList: View {
     
     @State private var handMove = false
     
+    @ViewBuilder
+    func itemInList(book:Book) -> some View{
+        ZStack(alignment: .leading){
+            NavigationLink(
+                destination: BookCard(book:book)
+            ){
+                EmptyView()
+            }.opacity(0)
+            
+            BookListItem(book: book)
+            
+        }
+        .contextMenu {
+            
+            Button(action: {
+                self.bookViewModel.setBook(book: book)
+                self.showNewBook = true
+                //                                self.showError.toggle()
+            }) {
+                HStack {
+                    Text("Modify the book")
+                    Image(systemName: "pencil.circle")
+                }
+            }
+            
+            Button(role: .destructive, action: {
+                self.showAlert = true
+                wantDelete = book
+                generator.notificationOccurred(.warning)
+                
+            })  {
+                HStack{
+                    Text("Delete the book")
+                    Image(systemName: "trash")
+                }
+                
+            }
+        }        
+        .listRowSeparator(.hidden)
+    }
+    
     var body: some View {
         NavigationView {
             if booksAll.count == 0 {
@@ -84,92 +125,14 @@ struct BookList: View {
                         ForEach(booksGroup) { section in
                             Section(header: Text((section.id ? String(localized: "Finished") : String(localized: "Unfinished")) + "·\(section.count)" ).monospacedDigit() ) {
                                 ForEach(section) { book in
-                                    ZStack(alignment: .leading){
-                                        NavigationLink(
-                                            destination: BookCard(book:book)
-                                        ){
-                                            EmptyView()
-                                        }.opacity(0)
-                                        
-                                        BookListItem(book: book)
-                                        
-                                    }
-                                    
-                                    .contextMenu {
-                                        
-                                        Button(action: {
-                                            self.bookViewModel.setBook(book: book)
-                                            self.showNewBook = true
-                                            //                                self.showError.toggle()
-                                        }) {
-                                            HStack {
-                                                Text("Modify the book")
-                                                Image(systemName: "pencil.circle")
-                                            }
-                                        }
-                                        
-                                        Button(role: .destructive, action: {
-                                            self.showAlert = true
-                                            wantDelete = book
-                                            generator.notificationOccurred(.warning)
-                                            
-                                        })  {
-                                            HStack{
-                                                Text("Delete the book")
-                                                Image(systemName: "trash")
-                                            }
-                                            
-                                        }
-                                    }
-                                    
-                                    .listRowSeparator(.hidden)
-                                    
+                                    itemInList(book:book)
                                 }
                             }
                         }
 
                     }else{
                         ForEach(books) { book in
-                            ZStack(alignment: .leading){
-                                NavigationLink(
-                                    destination: BookCard(book:book)
-                                ){
-                                    EmptyView()
-                                }.opacity(0)
-                                
-                                BookListItem(book: book)
-                                
-                            }
-                            
-                            .contextMenu {
-                                
-                                Button(action: {
-                                    self.bookViewModel.setBook(book: book)
-                                    self.showNewBook = true
-                                    //                                self.showError.toggle()
-                                }) {
-                                    HStack {
-                                        Text("Modify the book")
-                                        Image(systemName: "pencil.circle")
-                                    }
-                                }
-                                
-                                Button(role: .destructive, action: {
-                                    self.showAlert = true
-                                    wantDelete = book
-                                    generator.notificationOccurred(.warning)
-                                    
-                                })  {
-                                    HStack{
-                                        Text("Delete the book")
-                                        Image(systemName: "trash")
-                                    }
-                                    
-                                }
-                            }
-                            
-                            .listRowSeparator(.hidden)
-                            
+                            itemInList(book:book)
                         }
 
                     }
