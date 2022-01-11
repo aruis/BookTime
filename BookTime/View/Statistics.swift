@@ -46,6 +46,8 @@ struct Statistics: View {
     
     @State private var showToast = false
     
+    @State private var isShowReadedBooks  = false
+    
     enum SumType: String,CaseIterable{
         case all
         case year
@@ -77,6 +79,37 @@ struct Statistics: View {
             }
         }
     }
+    
+    var readedBooks:[Book]{
+        get{
+            var _books:[Book] = []
+                        
+            for book:Book in books{
+                if(book.isDone){
+                    switch sumType {
+                    case .all:
+                        _books.append(book)
+                    case .year:
+                        if(Date().format(format: "YYYY") == book.doneTime?.format(format: "YYYY")) {
+                            _books.append(book)
+                        }
+                    case .month:
+                        if(Date().format(format: "YYYY-MM") == book.doneTime?.format(format: "YYYY-MM")) {
+                            _books.append(book)
+                        }
+                    }
+                }
+            }
+            
+            return _books
+        }
+    }
+    
+    let columnGrid = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     @ViewBuilder
     var reportView:some View{
@@ -148,18 +181,18 @@ struct Statistics: View {
             
             TabView(selection: $sumType){
                 
-                Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit)
+                Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks)
                     .id(1).tag(SumType.all)
                 
                 
                 
-                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year)
+                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks)
                     .id(2) .tag(SumType.year)
                 
                 
                 
                 
-                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month)
+                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks)
                     .id(3) .tag(SumType.month)
                 
                 
@@ -167,7 +200,6 @@ struct Statistics: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .animation(.easeInOut, value: sumType)
             .frame( height: 160)
-                                    
         }
     }
     
@@ -178,6 +210,8 @@ struct Statistics: View {
             VStack{
                 Text("BookTime").font(.largeTitle)
                 reportView
+                readedBookView
+                    .frame(width: 400)
             }
             .padding()
             .overlay(
@@ -188,8 +222,28 @@ struct Statistics: View {
             Text("test").font(.title)
                 .opacity(0)
         }
+        
         .foregroundColor(.black)
         .padding(.all,15)
+    }
+
+    @ViewBuilder
+    var readedBookView:some View{
+        LazyVGrid(columns: columnGrid) {
+            ForEach(readedBooks){book in
+                if let imageData = book.image{
+                    Image(uiImage: UIImage(data: imageData) ?? UIImage())
+                        .resizable()
+                        .scaledToFill()
+                        .overlay(
+                            Rectangle()
+                                .stroke(Color("image.border"), lineWidth: 1)
+                        )
+                        .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+                }
+            }
+        }.padding(10)
+
     }
     
     var body: some View {
@@ -231,6 +285,9 @@ struct Statistics: View {
                 .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
                     AlertToast( type: .complete(.green), title: String(localized: "Saved to album",comment: "导出成功\n去相册看看吧"))
                 }
+            }
+            .sheet(isPresented: $isShowReadedBooks){
+                readedBookView
             }
             
             
@@ -343,26 +400,18 @@ struct Statistics: View {
         
         for book:Book in books{
             if let doneTime = book.doneTime {
-                if( Date().format(format: "YYYY") != doneTime.format(format: "YYYY")) {
-                    isShowYear = true //存在非本年数据
-                    
-                    //说明不是本年，不参与计算
-                    if(sumType == .year ){
-                        continue
-                    }                }
-                if(Date().format(format: "YYYY-MM") != doneTime.format(format: "YYYY-MM")) {
-                    isShowMonth = true //存在非本月数据
-                    
-                    //说明不是本月，不参与计算
-                    if(sumType == .month ){
-                        continue
-                    }
-                }
-                
-                if(book.isDone){
+                if book.isDone {
                     totalReadBook += 1
+                    
+                    if( Date().format(format: "YYYY") == doneTime.format(format: "YYYY")) {
+                        totalReadBook_year += 1
+                    }
+
+                    if( Date().format(format: "YYYY-MM") == doneTime.format(format: "YYYY-MM")) {
+                        totalReadBook_month += 1
+                    }
+
                 }
-                
             }
         }
     }
@@ -390,11 +439,16 @@ struct Report: View{
     
     var longHit:Int
     
+    @Binding var isShowReadedBooks:Bool
+    
     
     var body: some View{
         VStack ( spacing:15) {
             Slogan(title: String(localized: "A total of",comment: "累计阅读") , unit: String(localized:"minutes of reading",comment: "分钟" )  , value: String( totalReadMin))
             Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"books in total" ,comment: "本书")  , value: String(totalReadBook))
+                .onTapGesture {
+                    isShowReadedBooks = true
+                }
             Slogan(title: String(localized: "Longest consecutive hits for",comment: "最长连续打卡") , unit: String(localized: "days",comment: "天") , value: String(longHit))
         }
         
