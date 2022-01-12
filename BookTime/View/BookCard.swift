@@ -47,6 +47,9 @@ struct BookCard: View {
                     }                    
                 }
                 .navigationBarBackButtonHidden(true)
+                .onAppear(perform: {
+                    generator.notificationOccurred(.success)
+                })
             } else{
                 ScrollView {
                     VStack(alignment: .center,spacing: 16){
