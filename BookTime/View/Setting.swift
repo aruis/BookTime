@@ -346,6 +346,7 @@ struct Setting: View {
         targetMinPerday = 45
         isFirstBookCard = true
         hasViewdWalkthrough = false
+        ctrl.cleanTodayLog()
         
         store.removeObject(forKey: "targetMinPerday")
 

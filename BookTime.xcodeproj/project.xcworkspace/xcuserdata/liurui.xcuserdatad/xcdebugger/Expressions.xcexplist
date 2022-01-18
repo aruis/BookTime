@@ -3,24 +3,13 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "todayLog">
-            </PersistentString>
-            <PersistentString
-               value = "_todayLog">
-            </PersistentString>
-            <PersistentString
-               value = "Date().start() as NSDate">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
       </ContextState>
       <ContextState
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
             <PersistentString
                value = "doneTime.format(format: &quot;YYYY&quot;)">
@@ -29,7 +18,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -38,6 +27,14 @@
          <PersistentStrings>
             <PersistentString
                value = "changeTabAuto">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BookCard.body.getter:BookCard.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "verticalSizeClass">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -61,13 +58,13 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -80,7 +77,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
+         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "_todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "Date().start() as NSDate">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

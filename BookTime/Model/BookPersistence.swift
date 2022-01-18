@@ -123,6 +123,10 @@ class BookPersistenceController {
     
     private var todayLog:ReadLog? = nil
     
+    func cleanTodayLog(){
+        todayLog = nil
+    }
+    
     func checkAndBuildTodayLog() -> ReadLog{
         if let todayLog = todayLog {
             if(todayLog.day.format(format: "YYYY-MM-dd") == Date().format(format: "YYYY-MM-dd")){
