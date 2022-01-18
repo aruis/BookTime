@@ -154,6 +154,9 @@
 /* No comment provided by engineer. */
 "Please place the device horizontally and start timing" = "请横置设备，开始计时";
 
+/* No comment provided by engineer. */
+"Tab the book cover and start timing" = "点击书籍封面，开始计时";
+
 /* 读完了 */
 "Read" = "读完了";
 

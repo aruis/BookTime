@@ -29,7 +29,7 @@ struct BookCard: View {
     
     var body: some View {
         ZStack{
-            if verticalSizeClass == .compact || showTimer{
+            if (UIDevice.current.userInterfaceIdiom == .phone && verticalSizeClass == .compact) || showTimer{
                 ZStack{
                     TimerView(book: book)
                     
@@ -142,7 +142,12 @@ struct BookCard: View {
                         if isFirstBookCard {
                             Label(title: {
                                 HStack{
-                                    Text("Please place the device horizontally and start timing")
+                                    if UIDevice.current.userInterfaceIdiom == .phone {
+                                        Text("Please place the device horizontally and start timing")
+                                    }else{
+                                        Text("Tab the book cover and start timing")
+                                    }
+                                    
                                     Button(action: {
                                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                         isFirstBookCard = false
@@ -152,8 +157,10 @@ struct BookCard: View {
                                 }
                                 
                             }, icon: {
-                                Image(systemName: "iphone.landscape")
-                                    .rotationEffect(.degrees(hPhone ? 90:0))
+                                if UIDevice.current.userInterfaceIdiom == .phone {
+                                    Image(systemName: "iphone.landscape")
+                                        .rotationEffect(.degrees(hPhone ? 90:0))
+                                }
                             })
                                 .font(.subheadline)
                                 .onAppear(perform: {
