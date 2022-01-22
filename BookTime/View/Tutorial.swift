@@ -58,7 +58,12 @@ struct Tutorial: View {
                     }
                     
                     if(currentPage > 1){
-                        ExtractedView(index:2,content: String(localized: "Place the device horizontally and start timing."))
+                        if UIDevice.current.userInterfaceIdiom == .phone {
+                            ExtractedView(index:2,content: String(localized: "Place the device horizontally and start timing."))
+                        }else{
+                            ExtractedView(index:2,content: String(localized: "Turn on the timer mode while reading the paper book, or use the split screen mode to time the e-book reading."))
+                        }
+                        
                     }
                     
                     if(currentPage > 2){
@@ -158,7 +163,7 @@ struct ExtractedView: View {
             
             
             Text(content)
-                .frame(width: 240,height: 60,alignment: .leading)
+                .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 240 : 400,height: 60,alignment: .leading)
                 .font(.system(.callout,design: .rounded))
             
             

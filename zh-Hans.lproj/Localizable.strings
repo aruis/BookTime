@@ -157,6 +157,8 @@
 /* No comment provided by engineer. */
 "Tab the book cover and start timing" = "点击书籍封面，开始计时";
 
+"Turn on the timer mode while reading the paper book, or use the split screen mode to time the e-book reading." = "阅读纸质书的同时开启计时模式，或者用分屏模式给电子书阅读计时。";
+
 /* 读完了 */
 "Read" = "读完了";
 
