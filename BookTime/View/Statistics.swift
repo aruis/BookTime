@@ -106,9 +106,9 @@ struct Statistics: View {
     }
     
     let columnGrid = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.flexible(),spacing: 20),
+        GridItem(.flexible(),spacing: 20),
+        GridItem(.flexible(),spacing: 20)
     ]
     
     @ViewBuilder
@@ -208,10 +208,25 @@ struct Statistics: View {
         //        VStack{
         VStack(){
             VStack{
-                Text("BookTime").font(.largeTitle)
+                Text("BookTime").font(.system(.title,design: .rounded))
+                Text("Reading Timing Buddy").font(.subheadline).opacity(0.8)
                 reportView
                 readedBookView
                     .frame(width: 400)
+                
+                
+                
+                Image("qr")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80,height: 80)
+                    .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke( lineWidth: 1)
+                                .foregroundColor(.black.opacity(0.6))
+                        )
+                    
+                
             }
             .padding()
             .overlay(
@@ -219,6 +234,7 @@ struct Statistics: View {
                     .stroke(lineWidth: 3.0)
                     .foregroundColor(Color("AccentColor"))
             )
+            
             Text("test").font(.title)
                 .opacity(0)
         }
@@ -229,7 +245,7 @@ struct Statistics: View {
 
     @ViewBuilder
     var readedBookView:some View{
-        LazyVGrid(columns: columnGrid) {
+        LazyVGrid(columns: columnGrid,spacing: 15) {
             ForEach(readedBooks){book in
                 if let imageData = book.image{
                     Image(uiImage: UIImage(data: imageData) ?? UIImage())
