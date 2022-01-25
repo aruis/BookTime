@@ -3,13 +3,24 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
+         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "_todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "Date().start() as NSDate">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
             </PersistentString>
             <PersistentString
                value = "doneTime.format(format: &quot;YYYY&quot;)">
@@ -18,15 +29,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #7 in TimerView.body.getter:TimerView.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "changeTabAuto">
+               value = "components.day">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -35,6 +38,14 @@
          <PersistentStrings>
             <PersistentString
                value = "verticalSizeClass">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #7 in TimerView.body.getter:TimerView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "changeTabAuto">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -55,38 +66,35 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #1 in closure #4 in closure #1 in closure #1 in Statistics.body.getter:Statistics.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "shareImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
       </ContextState>
       <ContextState
          contextName = "closure #1 in closure #1 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
                value = "begin">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "todayLog">
-            </PersistentString>
-            <PersistentString
-               value = "_todayLog">
-            </PersistentString>
-            <PersistentString
-               value = "Date().start() as NSDate">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

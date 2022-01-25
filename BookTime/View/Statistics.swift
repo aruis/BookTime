@@ -45,8 +45,11 @@ struct Statistics: View {
     @State private var isShowYear = false
     
     @State private var showToast = false
+    @State private var isLoading = false
     
     @State private var isShowReadedBooks  = false
+    @State private var showOptions = false
+    @State private var shareImage:UIImage? = nil
     
     enum SumType: String,CaseIterable{
         case all
@@ -83,7 +86,7 @@ struct Statistics: View {
     var readedBooks:[Book]{
         get{
             var _books:[Book] = []
-                        
+            
             for book:Book in books{
                 if(book.isDone){
                     switch sumType {
@@ -221,11 +224,11 @@ struct Statistics: View {
                     .scaledToFit()
                     .frame(width: 80,height: 80)
                     .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke( lineWidth: 1)
-                                .foregroundColor(.black.opacity(0.6))
-                        )
-                    
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke( lineWidth: 1)
+                            .foregroundColor(.black.opacity(0.6))
+                    )
+                
                 
             }
             .padding()
@@ -242,7 +245,7 @@ struct Statistics: View {
         .foregroundColor(.black)
         .padding(.all,15)
     }
-
+    
     @ViewBuilder
     var readedBookView:some View{
         LazyVGrid(columns: columnGrid,spacing: 15) {
@@ -258,8 +261,10 @@ struct Statistics: View {
                         .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
                 }
             }
-        }.padding(10)
-
+        }
+        .padding(10)
+        .padding([.leading,.trailing],12)
+        
     }
     
     var body: some View {
@@ -271,7 +276,11 @@ struct Statistics: View {
             //            ScrollView{
             
             ScrollView {
-                VStack (){
+                ZStack (){
+                    //                    ActivityView(activityItems: [])
+                    //                    ActivityView(activityItems: [])
+                    //                        .frame(width: 300, height: 300)
+                    //                        .opacity(0)
                     reportView
                 }
                 .padding()
@@ -291,16 +300,39 @@ struct Statistics: View {
                 //                .navigationBarTitleDisplayMode(.inline)
                 .toolbar(content: {
                     Button(action: {
-                        let image = exportBox.snapshot()
-                        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-                        showToast = true
+                        showOptions = true
                     }){
                         Image(systemName: "square.and.arrow.up")
                     }
                 })
-                .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title: String(localized: "Saved to album",comment: "导出成功\n去相册看看吧"))
+                .sheet(isPresented: $showOptions) {
+
+                    VStack{
+                        if let image = shareImage {
+                            ActivityView(activityItems: [image])
+                        }else{
+                            Text("")
+                                .toast(isPresenting: $showToast){
+                                    AlertToast(type: .loading, title: "Rendering image")
+                                }
+                        }
+                    }
+                    .task {
+                        DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                            shareImage = exportBox.snapshot()
+                            self.showToast = false
+                        })
+                        
+                    }
+                    .onAppear() {
+                        self.showToast = true
+                    }
+                    .onDisappear(perform: {
+                        shareImage = nil
+                    })
+                    
                 }
+                
             }
             .sheet(isPresented: $isShowReadedBooks){
                 NavigationView{
@@ -427,11 +459,11 @@ struct Statistics: View {
                     if( Date().format(format: "YYYY") == doneTime.format(format: "YYYY")) {
                         totalReadBook_year += 1
                     }
-
+                    
                     if( Date().format(format: "YYYY-MM") == doneTime.format(format: "YYYY-MM")) {
                         totalReadBook_month += 1
                     }
-
+                    
                 }
             }
         }

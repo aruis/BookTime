@@ -20,12 +20,68 @@ struct BookCard: View {
     @State private var showTimer:Bool = false
     @State private var showAlert:Bool = false
     @State private var showBatterySheet:Bool = false
+    @State private var showToast = false
+    @State private var showOptions = false
+    
+    
     @State var downTrigger:Int = 0
     @State var isDone = false
     
     @State var hPhone = true
     
+    @State private var shareImage:UIImage? = nil
+    
     let generator = UINotificationFeedbackGenerator()
+    
+    @ViewBuilder
+    var mainView:some View{
+        VStack(alignment: .center,spacing: 16){
+            Text(String(localized: "《") + book.name + String(localized: "》")).font(.system(.title2))
+            
+            Image(uiImage: UIImage(data: book.image) ?? UIImage())
+                .resizable()
+                .scaledToFit()
+                .frame(minWidth: 0,maxWidth: 150)
+                .padding()
+                .shadow(color: Color( "image.border"), radius: 8,x:10,y:10)
+                .onTapGesture {
+                    self.showTimer = true
+                }
+            
+            
+            
+            
+            HStack(spacing:10){
+                ForEach(0...4,id: \.self) {index in
+                    Image(systemName: book.rating > index ? "star.fill" : "star")
+                        .font(.title2)
+                        .foregroundColor(Color("AccentColor"))
+                        .onTapGesture {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            
+                            if book.rating == 1 && index == 0 {
+                                book.rating = 0
+                            }else{
+                                book.rating = Int16(index+1)
+                            }
+                            save()
+                        }
+                    
+                }
+            }.opacity(isDone ? 1 : 0)
+                .animation(.default, value: isDone)
+            
+            if book.readMinutes > 0{
+                VStack{
+                    Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: String( book.readDays))
+                    Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: String( book.readMinutes))
+                }
+            }
+                        
+            
+            
+        }
+    }
     
     var body: some View {
         ZStack{
@@ -44,7 +100,7 @@ struct BookCard: View {
                         }
                         .padding(.bottom,100)
                         
-                    }                    
+                    }
                 }
                 .navigationBarBackButtonHidden(true)
                 .onAppear(perform: {
@@ -53,54 +109,8 @@ struct BookCard: View {
             } else{
                 ScrollView {
                     VStack(alignment: .center,spacing: 16){
-                        Text(book.name).font(.system(.title2))                        
                         
-                        Image(uiImage: UIImage(data: book.image) ?? UIImage())
-                            .resizable()
-                            .scaledToFit()
-                            .frame(minWidth: 0,maxWidth: 150)
-                            .padding()
-                            .shadow(color: Color( "image.border"), radius: 8,x:10,y:10)
-                            .onTapGesture {
-                                self.showTimer = true
-                            }
-                        
-                        
-                        
-                        
-                        HStack(spacing:10){
-                            ForEach(0...4,id: \.self) {index in
-                                Image(systemName: book.rating > index ? "star.fill" : "star")
-                                    .font(.title2)
-                                    .foregroundColor(Color("AccentColor"))
-                                    .onTapGesture {
-                                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                        
-                                        if book.rating == 1 && index == 0 {
-                                            book.rating = 0
-                                        }else{
-                                            book.rating = Int16(index+1)
-                                        }
-                                        save()
-                                    }
-                                
-                            }
-                        }.opacity(isDone ? 1 : 0)
-                            .animation(.default, value: isDone)
-                        
-                        if book.readMinutes > 0{
-                            VStack{
-                                Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: String( book.readDays))
-                                Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: String( book.readMinutes))
-                                
-                                
-                                //                                Text("您已阅读\(book.readDays)天:").font(.system(.title2))
-                                //                                Text(book.readMinutes.asString()).font(.system(.largeTitle))
-                            }
-                        }
-                        
-                        
-                        
+                        mainView
                         
                         ZStack{
                             RoundedRectangle(cornerRadius: isDone ? 25:5)
@@ -114,9 +124,6 @@ struct BookCard: View {
                                         .scaleEffect(isDone ? 1: 0.7)
                                         .opacity(isDone ? 1 : 0)
                                 )
-                            //                            .frame(width: 12, height: 12)
-                            //                                           .modifier(ParticlesModifier())
-                            //                                           .offset(x: -100, y : -50)
                             
                             
                             Text("Finished Reading")
@@ -135,9 +142,8 @@ struct BookCard: View {
                                 book.doneTime = Date()
                             }
                         }
-                        .animation(.easeInOut, value: book.isDone)
-                        
-                        
+                        .animation(.easeInOut, value: isDone)
+
                         
                         if isFirstBookCard {
                             Label(title: {
@@ -168,16 +174,36 @@ struct BookCard: View {
                                         hPhone.toggle()
                                     }
                                 })
-                                
+                            
                         }
-                    
+                        
                         
                     }
                     .padding(10)
+                    .toolbar(content: {
+                        if(isDone){
+                            Button(action: {
+                                shareImage = exportBox.snapshot()
+                                showOptions = true
+                            }){
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                        }
+                        
+                    })
+                    .sheet(isPresented: $showOptions) {
+                        if let image = shareImage {
+                            ActivityView(activityItems: [image])
+                        }
+                    }
+                    .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
+                        AlertToast( type: .complete(.green), title: String(localized: "Saved to album",comment: "导出成功\n去相册看看吧"))
+                    }
+                    
                     
                     
                     ConfettiCannon(counter: $downTrigger,num:36,radius: 700)
-                                        
+                    
                 }
                 //                .toolbar {
                 //                    ToolbarItem(placement: .navigationBarTrailing) {
@@ -213,6 +239,42 @@ struct BookCard: View {
             book.isDone = self.isDone
             save()
         })
+    }
+    
+    @ViewBuilder
+    var exportBox:some View{
+        //        VStack{
+        VStack(){
+            VStack{
+                mainView
+                    .frame(width: 400)
+                                                
+                Image("qr")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80,height: 80)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke( lineWidth: 1)
+                            .foregroundColor(.black.opacity(0.6))
+                    )
+                
+                
+            }
+            .padding()
+            .padding(.top,15)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10.0)
+                    .stroke(lineWidth: 3.0)
+                    .foregroundColor(Color("AccentColor"))
+            )
+            
+            Text("test").font(.title)
+                .opacity(0)
+        }
+        
+        .foregroundColor(.black)
+        .padding(.all,15)
     }
     
     func save(){
