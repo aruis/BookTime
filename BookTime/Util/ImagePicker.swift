@@ -13,6 +13,7 @@ struct ImagePicker:UIViewControllerRepresentable{
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
     @Binding var selectedImage: UIImage
+    @Binding var textInPhoto: String
     
     @Environment(\.dismiss) private var dismiss
     
@@ -45,21 +46,23 @@ struct ImagePicker:UIViewControllerRepresentable{
                 
                 parent.selectedImage = UIImage(data: image.aspectFittedToHeight(400).jpegData(compressionQuality: 0.85)!) ?? UIImage()
                 
-//                guard let cgImage =  image.cgImage else {return}
-//
-//                // Create a new image-request handler.
-//                let requestHandler = VNImageRequestHandler(cgImage: cgImage)
-//
-//                // Create a new request to recognize text.
-//                let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-//                   request.recognitionLanguages = ["zh_CN","en_GB"]
-//
-//                do {
-//                    // Perform the text-recognition request.
-//                    try requestHandler.perform([request])
-//                } catch {
-//                    print("Unable to perform the requests: \(error).")
-//                }
+                guard let cgImage =  image.cgImage else {return}
+
+                // Create a new image-request handler.
+                let requestHandler = VNImageRequestHandler(cgImage: cgImage)
+
+                // Create a new request to recognize text.
+                let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
+                
+                request.recognitionLevel = .accurate
+                request.recognitionLanguages = ["zh_CN", "en_US","en_GB"]
+
+                do {
+                    // Perform the text-recognition request.
+                    try requestHandler.perform([request])
+                } catch {
+                    print("Unable to perform the requests: \(error).")
+                }
                 
             }
             parent.dismiss()
@@ -77,6 +80,8 @@ struct ImagePicker:UIViewControllerRepresentable{
             
             // Process the recognized strings.
             print(recognizedStrings)
+            
+            parent.textInPhoto = recognizedStrings
 //            processResults(recognizedStrings)
         }
     }

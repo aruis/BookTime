@@ -9,6 +9,8 @@ import SwiftUI
 import VisionKit
 import Vision
 
+
+
 struct NewBook: View {
     
     @Environment(\.managedObjectContext) var context
@@ -16,29 +18,34 @@ struct NewBook: View {
     
     @ObservedObject public var bookViewModel: BookViewModel
     
-//    @ObservedObject private var bookViewModel: BookViewModel
+    //    @ObservedObject private var bookViewModel: BookViewModel
     
     @State private var showToast = false
     @State private var showPhotoOptins = false
     @State private var photoSource: PhotoSource?
     @State private var recognizedText = "Tap button to start scanning"
     
+    @State private var textInPhoto:String = ""
+    @State private var userInput:String = ""
+    
     @FocusState private var isAuthorFocus:Bool
     
-    let generator = UINotificationFeedbackGenerator()          
+    let generator = UINotificationFeedbackGenerator()
     
-//    init(){
-//        let viewModel = BookViewModel()
-//        viewModel.image = UIImage(named: "xiandai")!
-//        bookViewModel = viewModel
-//
-//    }
+    //    init(){
+    //        let viewModel = BookViewModel()
+    //        viewModel.image = UIImage(named: "xiandai")!
+    //        bookViewModel = viewModel
+    //
+    //    }
+    
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .center){
                     
+                    Text(textInPhoto)
                     Image(uiImage: bookViewModel.image)
                         .resizable()
                         .scaledToFit()
@@ -68,6 +75,10 @@ struct NewBook: View {
                             .onSubmit {
                                 isAuthorFocus = true
                             }
+                            .onChange(of: bookViewModel.name, perform: {x in
+                                userInput = x
+                                //                                tipWords = []
+                            })
                     }
                     
                     VStack(alignment: .leading) {
@@ -87,6 +98,10 @@ struct NewBook: View {
                         //                            .textInputAutocapitalization(.words)
                             .focused($isAuthorFocus)
                             .submitLabel(.done)
+                            .onChange(of: bookViewModel.author, perform: {x in
+                                userInput = x
+                            })
+                        
                         
                     }
                     
@@ -116,6 +131,42 @@ struct NewBook: View {
                     //                        .foregroundColor(Color("NavigationBarTitle"))
                 }
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+
+                    
+                    
+                        if (!userInput.isEmpty
+                            && !textInPhoto.isEmpty
+                        ){
+                                                        
+                            
+                            ForEach(
+                                textInPhoto.split(separator: ",")
+                                    .filter{ x in
+                                        x.starts(with: String(userInput.last!))
+                                    }
+                                    .map{String($0)}
+
+                                ,id:\.self){x in
+                                    Button(bookViewModel.name) {
+                                        if isAuthorFocus {
+                                            bookViewModel.author += x
+                                        }else{
+                                            bookViewModel.name += x
+                                        }
+                                    }
+
+                                }
+                        }else{
+                            Text("nil")
+                        }
+                        
+                        
+                    
+                    
+                }
+            }
             .actionSheet(isPresented: $showPhotoOptins){
                 if false && VNDocumentCameraViewController.isSupported{
                     return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
@@ -127,9 +178,9 @@ struct NewBook: View {
                                             .default(Text("AI Camera")){
                                                 self.photoSource = .documentScan
                                             },
-                                                .default(Text("Photo Library")){
-                                                    self.photoSource = .photoLibrary
-                                                },
+                                            .default(Text("Photo Library")){
+                                                self.photoSource = .photoLibrary
+                                            },
                                             .cancel(Text("Cancel"))
                                             
                                         ]
@@ -156,8 +207,8 @@ struct NewBook: View {
             .fullScreenCover(item: $photoSource){source in
                 switch source {
                 case .documentScan: ScanDocumentView(recognizedText: $recognizedText,selectedImage: $bookViewModel.image)
-                case .photoLibrary: ImagePicker(sourceType: .photoLibrary, selectedImage: $bookViewModel.image).ignoresSafeArea()
-                case .camera: ImagePicker(sourceType: .camera, selectedImage: $bookViewModel.image).ignoresSafeArea()
+                case .photoLibrary: ImagePicker(sourceType: .photoLibrary, selectedImage: $bookViewModel.image,textInPhoto:$textInPhoto).ignoresSafeArea()
+                case .camera: ImagePicker(sourceType: .camera, selectedImage: $bookViewModel.image,textInPhoto:$textInPhoto).ignoresSafeArea()
                 }
             }
             .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
@@ -205,9 +256,9 @@ struct NewBook: View {
 struct NewBook_Previews: PreviewProvider {
     static var previews: some View {
         Text("")
-//        NewBook(Binding.)
+        //        NewBook(Binding.)
         
-//        NewBook()            .preferredColorScheme(.dark)
+        //        NewBook()            .preferredColorScheme(.dark)
     }
 }
 
