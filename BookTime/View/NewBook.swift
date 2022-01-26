@@ -43,9 +43,7 @@ struct NewBook: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .center){
-                    
-                    Text(textInPhoto)
+                VStack(alignment: .center){                                        
                     Image(uiImage: bookViewModel.image)
                         .resizable()
                         .scaledToFit()
@@ -133,38 +131,26 @@ struct NewBook: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
-
-                    
-                    
-                        if (!userInput.isEmpty
-                            && !textInPhoto.isEmpty
-                        ){
-                                                        
-                            
-                            ForEach(
-                                textInPhoto.split(separator: ",")
-                                    .filter{ x in
-                                        x.starts(with: String(userInput.last!))
-                                    }
-                                    .map{String($0)}
-
-                                ,id:\.self){x in
-                                    Button(bookViewModel.name) {
-                                        if isAuthorFocus {
-                                            bookViewModel.author += x
-                                        }else{
-                                            bookViewModel.name += x
+                    if (!textInPhoto.isEmpty){
+                        ScrollView(.horizontal){
+                            HStack{
+                                ForEach(
+                                    textInPhoto.split(separator: ",")
+                                        .map{String($0)}
+                                    ,id:\.self){x in
+                                        Button(x) {
+                                            if isAuthorFocus {
+                                                bookViewModel.author += x
+                                            }else{
+                                                bookViewModel.name += x
+                                            }
                                         }
+                                        
+                                        
                                     }
-
-                                }
-                        }else{
-                            Text("nil")
-                        }
-                        
-                        
-                    
-                    
+                                
+                            }}
+                    }
                 }
             }
             .actionSheet(isPresented: $showPhotoOptins){
