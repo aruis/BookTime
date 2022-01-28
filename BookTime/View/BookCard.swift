@@ -247,12 +247,12 @@ struct BookCard: View {
         VStack(){
             VStack{
                 mainView
-                    .frame(width: 400)
+                    .frame(width: 280)
                                                 
                 Image("qr")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 80,height: 80)
+                    .frame(width: 60,height: 60)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke( lineWidth: 1)
@@ -274,7 +274,8 @@ struct BookCard: View {
         }
         
         .foregroundColor(.black)
-        .padding(.all,15)
+        .padding([.trailing,.leading],15)
+        .padding([.top,.bottom],-15)
     }
     
     func save(){

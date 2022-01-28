@@ -243,7 +243,9 @@ struct Statistics: View {
         }
         
         .foregroundColor(.black)
-        .padding(.all,15)
+        .padding([.trailing,.leading],15)
+//        .padding([.top,.bottom],-15)
+
     }
     
     @ViewBuilder
