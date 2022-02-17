@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CloudKit
+import UniformTypeIdentifiers
 
 struct Setting: View {
     let ctrl = BookPersistenceController.shared
@@ -43,6 +44,9 @@ struct Setting: View {
     @State private var showCleanSheet = false
     @State private var showCloudSheet = false
     @State private var showDeleteCloudSheet = false
+    
+    @State private var document: BookTimeFileDoc = BookTimeFileDoc(message: "Hello, World!")
+    @State private var isExporting: Bool = false
     
     private var greeting:String{
         get {
@@ -129,6 +133,12 @@ struct Setting: View {
                             Text("\(Image(systemName: "exclamationmark.triangle.fill"))\tClear all data\(useiCloud ? String(localized: "（Include iCloud）")  :"")")
                         }
                         
+//                        Button(action: {
+//                            isExporting = true
+//                        }){
+//                            Text("Export Data")
+//                        }
+                        
                         
 //                        Toggle(isOn: $useiCloud) {
 //                            Text("\(Image(systemName: "icloud"))\tUse iCloud to backup data")
@@ -212,7 +222,19 @@ struct Setting: View {
                     //                    useiCloud = true
                 }
             })
-            
+            .fileExporter(
+                       isPresented: $isExporting,
+                       document: document,
+                       contentType: UTType.text,
+                       defaultFilename: "Message"
+                   ) { result in
+                       if case .success = result {
+                           print(result)
+                           // Handle success.
+                       } else {
+                           // Handle failure.
+                       }
+                   }
         }
         .navigationViewStyle(.stack)
         .task {

@@ -3,16 +3,10 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
+         contextName = "closure #1 in closure #1 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "todayLog">
-            </PersistentString>
-            <PersistentString
-               value = "_todayLog">
-            </PersistentString>
-            <PersistentString
-               value = "Date().start() as NSDate">
+               value = "begin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -20,7 +14,7 @@
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
             <PersistentString
                value = "doneTime.format(format: &quot;YYYY&quot;)">
@@ -29,7 +23,15 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "View.snapshot(origin:):ViewExt.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "view?.bounds">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -77,26 +79,32 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BookPersistenceController.checkAndBuildTodayLog():BookPersistence.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "_todayLog">
+            </PersistentString>
+            <PersistentString
+               value = "Date().start() as NSDate">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #1 in TimerView.body.getter:TimerView.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "begin">
-            </PersistentString>
-         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

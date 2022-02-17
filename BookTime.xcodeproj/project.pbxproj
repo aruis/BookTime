@@ -27,6 +27,7 @@
 		83731CA72755D1BF00305305 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA62755D1BF00305305 /* Book.swift */; };
 		83731CAA2755D39A00305305 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA92755D39A00305305 /* BookList.swift */; };
 		83731CAC2755D45D00305305 /* BookListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CAB2755D45D00305305 /* BookListItem.swift */; };
+		83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */; };
 		83862925275F960B004E3141 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862922275F960B004E3141 /* BlurView.swift */; };
 		83862926275F960B004E3141 /* AlertToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862923275F960B004E3141 /* AlertToast.swift */; };
 		83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862924275F960B004E3141 /* ActivityIndicator.swift */; };
@@ -69,6 +70,7 @@
 		83731CA62755D1BF00305305 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
+		83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeFileDoc.swift; sourceTree = "<group>"; };
 		83862922275F960B004E3141 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		83862923275F960B004E3141 /* AlertToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertToast.swift; sourceTree = "<group>"; };
 		83862924275F960B004E3141 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				838316E327B3B5DF001575E0 /* Resources */,
 				83CE5BF7277DF4A00041D919 /* Info.plist */,
 				83924E61276CDA55002D0678 /* BookTime.entitlements */,
 				83862921275F960B004E3141 /* AlertToast */,
@@ -165,6 +168,7 @@
 				83731CA82755D37C00305305 /* View */,
 				83731CA52755D18700305305 /* Model */,
 				83731C922755D0D600305305 /* BookTimeApp.swift */,
+				83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */,
 				83731C962755D0D700305305 /* Assets.xcassets */,
 				83731C9D2755D0D700305305 /* BookTime.xcdatamodeld */,
 				83731C982755D0D700305305 /* Preview Content */,
@@ -206,6 +210,21 @@
 				830935D7279F9F37006F8F56 /* ActivityView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		838316E327B3B5DF001575E0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				838316E427B3B5E8001575E0 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		838316E427B3B5E8001575E0 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		83862921275F960B004E3141 /* AlertToast */ = {
@@ -329,6 +348,7 @@
 				83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */,
 				83B03AD827698032005B4700 /* Slogan.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
+				83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */,
 				83862925275F960B004E3141 /* BlurView.swift in Sources */,
 				835E822F276338D10079FF99 /* ReadLog.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
@@ -502,7 +522,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -538,7 +558,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;

@@ -400,6 +400,7 @@ struct ClockView: View {
         )
         
         .animation(.easeInOut, value: timerShowSec)
+//        .font(.custom("AzeretMono-Thin", size: verticalSizeClass == .compact ? 100: 55,relativeTo: .largeTitle).monospacedDigit())
         .font(.system(size: verticalSizeClass == .compact ? 100: 55,design: .serif))
         .padding(.bottom,20)
         .onTapGesture {

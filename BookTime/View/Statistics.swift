@@ -237,15 +237,11 @@ struct Statistics: View {
                     .stroke(lineWidth: 3.0)
                     .foregroundColor(Color("AccentColor"))
             )
-            
-            Text("test").font(.title)
-                .opacity(0)
-        }
-        
+        }        
         .foregroundColor(.black)
-        .padding([.trailing,.leading],15)
-//        .padding([.top,.bottom],-15)
-
+        .padding()
+        .ignoresSafeArea()
+        
     }
     
     @ViewBuilder
@@ -308,7 +304,7 @@ struct Statistics: View {
                     }
                 })
                 .sheet(isPresented: $showOptions) {
-
+                    
                     VStack{
                         if let image = shareImage {
                             ActivityView(activityItems: [image])
