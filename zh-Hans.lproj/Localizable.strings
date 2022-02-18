@@ -2,7 +2,7 @@
 "       The idea💡 for creating this app came from my daughter👧🏻 who is in the second grade of elementary school. She has an assignment that requires 30 minutes of reading every day. With this app, I can better urge her to read and clock in.\n       The teacher counts the children's reading volume every semester and asks parents to make a record of their children's reading, so this app has helped me a lot, because her annual reading volume is about 100 books, it is really difficult for me to keep track of it. Record her reading progress. Now, I only need to export the reading data from the App.\n       This App also helped me develop the habit of reading every day. You can find my [Reading Sharing Video](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833) here. You are also welcome to send [mail](mailto:cheetah_chugs.0g@icloud.com) to me to communicate anything you want to communicate.\n       Finally, I hope you like this App, and I wish you always enjoy the fun of reading ❤️" = "          创作这个App的💡来源于我正在上小学二年级的👧🏻，她有项作业是每天要阅读30分钟，有了这个App，我就能更好地督促她读书打卡了。\n          老师每学期都要统计孩子的阅读量，要求家长做好孩子的阅读记录，所以这个App可帮了我大忙了，因为她每年的阅读量都在百本左右，我平时真的很难持续跟踪记录她的阅读进度。现在，我只要从App导出阅读数据就可以了。\n          这款App也帮我养成每天坚持阅读的习惯，您可以在这里找到我的[读书分享视频](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833)。也欢迎您发[邮件](mailto:cheetah_chugs.0g@icloud.com)给我，交流任何你想交流的事情。\n          最后，希望您喜欢这款App，也祝您永远享受阅读的乐趣❤️";
 
 /* No comment provided by engineer. */
-"（Include iCloud）" = "（含iCloud）";
+"(Include iCloud)" = "（含iCloud）";
 
 /* No comment provided by engineer. */
 "[Don't show again.]" = "[不再提示]";
@@ -11,13 +11,13 @@
 "%@\tClear all data%@" = "%@\t清除所有数据%@";
 
 /* No comment provided by engineer. */
-"%d minutes today" = "今日已阅读 %d 分钟";
+"**%d** Minutes Today" = "今日已阅读 **%d** 分钟";
 
 /* No comment provided by engineer. */
-"%lld %%  of the plan completed" = "完成计划的 %lld %%";
+"%lld %%  of the Plan Completed" = "完成计划的 %lld %%";
 
 /* 累计阅读 */
-"A total of" = "累计阅读";
+"A Total of" = "累计阅读";
 
 /* No comment provided by engineer. */
 "About" = "关于";
@@ -44,7 +44,7 @@
 "Author" = "作者";
 
 /* 本书 */
-"books in total" = "本书";
+"Books in Total" = "本书";
 
 /* No comment provided by engineer. */
 "Bookshelf" = "书架";
@@ -77,7 +77,7 @@
 "Delete" = "删除";
 
 /* No comment provided by engineer. */
-"Delete the book" = "删除本书";
+"Delete the Book" = "删除本书";
 
 /* No comment provided by engineer. */
 "Delete this book (unrecoverable)" = "删除本书（不可恢复）";
@@ -92,7 +92,11 @@
 "Finished" = "已读完";
 
 /* No comment provided by engineer. */
-"Finished book" = "读完的书";
+"Finished Book" = "读完的书";
+
+"Total Reading Days" = "总阅读天数";
+
+"Consecutive Check-In Days" = "连续打卡天数";
 
 /* No comment provided by engineer. */
 "Finished Reading" = "我已读完";
@@ -122,10 +126,10 @@
 "min" = "分";
 
 /* 分钟 */
-"minutes of reading" = "分钟";
+"Minutes of Reading" = "分钟";
 
 /* No comment provided by engineer. */
-"Modify the book" = "修改此书";
+"Modify the Book" = "修改此书";
 
 /* No comment provided by engineer. */
 "My Bookshelf" = "我的书架";
@@ -169,7 +173,7 @@
 "Read" = "读完了";
 
 /* No comment provided by engineer. */
-"Read a new book" = "读一本新书";
+"Read a New Book" = "读一本新书";
 
 /* fredingForDay */
 "Reading for" = "已阅读";

@@ -86,7 +86,7 @@ struct BookList: View {
                 
             })  {
                 HStack{
-                    Text("Delete the book")
+                    Text("Delete the Book")
                     Image(systemName: "trash")
                 }
                 

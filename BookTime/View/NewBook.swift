@@ -113,7 +113,7 @@ struct NewBook: View {
                 .padding(10)
                 
             }
-            .navigationTitle(bookViewModel.book == nil ? "Read a new book":"Modify the book")
+            .navigationTitle(bookViewModel.book == nil ? "Read a New Book":"Modify the Book")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {

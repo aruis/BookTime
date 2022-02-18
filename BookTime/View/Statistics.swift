@@ -116,94 +116,117 @@ struct Statistics: View {
     
     @ViewBuilder
     var reportView:some View{
-        VStack {
-            
-            //                    Picker(selection: $sumType, label: Text("DayPiker")) {
-            //                        Text("全部").tag(SumType.all)
-            //
-            //                        Text("本年").tag(SumType.year)
-            //
-            //                        Text("本月").tag(SumType.month)
-            //
-            //                    }.labelsHidden()
-            //                        .pickerStyle(SegmentedPickerStyle())
-            //                        .onChange(of: sumType, perform: { val in
-            //                            initAllLog()
-            //                        })
-            
-            
-            Slogan(title: todayReadMin > 0 ? String(localized: "You have been reading for",comment: "今天是您坚持阅读的第"): String(localized: "You have been reading for",comment: "您已坚持阅读"), unit: totalReadDay>0 ? String(localized: "days") : String(localized: "day"), value: String(totalReadDay))
-            
-            
-            
-            
-            ZStack{
-                Circle()
-                    .trim(from: 0.0, to:1.0)
-                    .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                    .frame(width:260)
-                    .rotationEffect(.degrees(-90))
-                    .opacity(0.25)
-                //                        .opacity(0)
-                    .padding()
+        VStack{
+            HStack{
+                GroupBox(label: Label("Total Reading Days",systemImage: "target").font(.footnote)){
+                    Text("\(totalReadDay)").font(.largeTitle)
+                        .frame(height: 100)
+                }
                 
-                Circle()
-                    .trim(from: 0.0, to: process)
-                //                        .trim(from: 0.0,to:  1.0)
-                    .stroke( AngularGradient(
-                        gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                        center: .center,
-                        startAngle: .degrees(0),
-                        endAngle: .degrees( 360 * process )
-                    ), style: StrokeStyle(lineWidth: 25, lineCap: CGLineCap.round))
-                    .frame(width:260)
-                    .rotationEffect(.degrees(-90))
-                    .overlay(
-                        VStack(spacing:6){
-                            Text( "\(todayReadMin) minutes today")
-                                .font(.title2)
-                            if targetMinPerday > 0{
-                                Text("\( Int( round( process * 100))) %  of the plan completed")
-                                    .foregroundColor(.gray)
-                            }
-                            
-                        }
+                
+                GroupBox(label: Label("Consecutive Check-In Days",systemImage: "checkmark.circle")
+                            .font(.footnote)
+                ){
+                    Text("\(longHit)").font(.largeTitle)
+                        .frame(height: 100)
+                }
+            }
+            
+            
+            GroupBox(label:Label("\( Int( round( process * 100))) %  of the Plan Completed",systemImage: "goforward").font(.footnote)){
+                HStack{
+                    
+                    Text( "**\(todayReadMin)** Minutes Today")
+                        .font(.title2)
+                    
+                    Spacer()
+                    
+                    
+                    ZStack{
+                        Circle()
+                            .trim(from: 0.0, to:1.0)
+                            .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 12, lineCap: CGLineCap.round))
+                            .frame(width:100)
+                            .rotationEffect(.degrees(-90))
+                            .opacity(0.25)
+                        //                        .opacity(0)
+                            .padding()
                         
-                    )
-                    .padding()
-                
-                
-                
-            }
-            .frame(width: 300,height: 300)
-            //            .animation(.linear, value: todayReadMin)
-            
-            Text(totalTitle)
-                .font(.title)
-                .animation(.easeIn, value: sumType)
-            
-            TabView(selection: $sumType){
-                
-                Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks)
-                    .id(1).tag(SumType.all)
-                
-                
-                
-                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks)
-                    .id(2) .tag(SumType.year)
-                
-                
-                
-                
-                Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks)
-                    .id(3) .tag(SumType.month)
-                
+                        Circle()
+                            .trim(from: 0.0, to: process)
+                        //                        .trim(from: 0.0,to:  1.0)
+                            .stroke( AngularGradient(
+                                gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
+                                center: .center,
+                                startAngle: .degrees(0),
+                                endAngle: .degrees( 360 * process )
+                            ), style: StrokeStyle(lineWidth: 12, lineCap: CGLineCap.round))
+                            .frame(width:100)
+                            .rotationEffect(.degrees(-90))
+                            .padding()
+                        
+                        
+                        
+                    }
+                    .frame(width: 100,height: 100)
+                    
+                }
                 
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .animation(.easeInOut, value: sumType)
-            .frame( height: 160)
+            
+            
+            GroupBox(label: Label(totalTitle,systemImage: "clock")
+                        .font(.footnote)
+                        .animation(.easeIn, value: sumType)
+            ){
+                TabView(selection: $sumType){
+                    
+                    Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks)
+                        .id(1).tag(SumType.all)
+                    
+                    
+                    
+                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks)
+                        .id(2) .tag(SumType.year)
+                    
+                    
+                    
+                    
+                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks)
+                        .id(3) .tag(SumType.month)
+                    
+                    
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .animation(.easeInOut, value: sumType)
+                .frame( height: 100)
+            }
+
+            if readedBooks.count > 0 {
+                GroupBox(label: Label("Finished Book",systemImage: "books.vertical")
+                            .font(.footnote)
+                ){
+                    LazyVGrid(columns: columnGrid,spacing: 15) {
+                        ForEach(readedBooks){book in
+                            if let imageData = book.image{
+                                Image(uiImage: UIImage(data: imageData) ?? UIImage())
+                                    .resizable()
+                                    .scaledToFill()
+                                    .overlay(
+                                        Rectangle()
+                                            .stroke(Color("image.border"), lineWidth: 1)
+                                    )
+                                    .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+                            }
+                        }
+                    }
+                    .padding(8)
+                    .animation(.easeInOut, value: sumType)
+                }
+
+            }
         }
+        
     }
     
     @ViewBuilder
@@ -214,8 +237,7 @@ struct Statistics: View {
                 Text("BookTime").font(.system(.title,design: .rounded))
                 Text("Reading Timing Buddy").font(.subheadline).opacity(0.8)
                 reportView
-                readedBookView
-                    .frame(width: 400)
+                    .frame(width:380)
                 
                 
                 
@@ -237,34 +259,13 @@ struct Statistics: View {
                     .stroke(lineWidth: 3.0)
                     .foregroundColor(Color("AccentColor"))
             )
-        }        
+        }
         .foregroundColor(.black)
         .padding()
         .ignoresSafeArea()
         
     }
-    
-    @ViewBuilder
-    var readedBookView:some View{
-        LazyVGrid(columns: columnGrid,spacing: 15) {
-            ForEach(readedBooks){book in
-                if let imageData = book.image{
-                    Image(uiImage: UIImage(data: imageData) ?? UIImage())
-                        .resizable()
-                        .scaledToFill()
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color("image.border"), lineWidth: 1)
-                        )
-                        .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
-                }
-            }
-        }
-        .padding(10)
-        .padding([.leading,.trailing],12)
         
-    }
-    
     var body: some View {
         
         
@@ -274,13 +275,7 @@ struct Statistics: View {
             //            ScrollView{
             
             ScrollView {
-                ZStack (){
-                    //                    ActivityView(activityItems: [])
-                    //                    ActivityView(activityItems: [])
-                    //                        .frame(width: 300, height: 300)
-                    //                        .opacity(0)
-                    reportView
-                }
+                reportView
                 .padding()
                 .onAppear(perform: {
                     todayReadMin = 0
@@ -331,14 +326,6 @@ struct Statistics: View {
                     
                 }
                 
-            }
-            .sheet(isPresented: $isShowReadedBooks){
-                NavigationView{
-                    ScrollView{
-                        readedBookView
-                    }
-                    .navigationTitle("Finished book")
-                }
             }
             
             
@@ -495,14 +482,8 @@ struct Report: View{
     
     var body: some View{
         VStack ( spacing:15) {
-            Slogan(title: String(localized: "A total of",comment: "累计阅读") , unit: String(localized:"minutes of reading",comment: "分钟" )  , value: String( totalReadMin))
-            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"books in total" ,comment: "本书")  , value: String(totalReadBook))
-                .onTapGesture {
-                    if(totalReadBook>0){
-                        isShowReadedBooks = true
-                    }
-                }
-            Slogan(title: String(localized: "Longest consecutive hits for",comment: "最长连续打卡") , unit: String(localized: "days",comment: "天") , value: String(longHit))
+            Slogan(title: String(localized: "A Total of",comment: "累计阅读") , unit: String(localized:"Minutes of Reading",comment: "分钟" )  , value: String( totalReadMin))
+            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"Books in Total" ,comment: "本书")  , value: String(totalReadBook))
         }
         
     }

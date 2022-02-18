@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 
 struct BookTimeFileDoc: FileDocument {
     
-    static var readableContentTypes: [UTType] { [.text] }
+    static var readableContentTypes: [UTType] { [.commaSeparatedText] }
 
     var message: String
 

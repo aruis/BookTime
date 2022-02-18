@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 struct Setting: View {
     let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
-//    let privateDB = CKContainer.default().privateCloudDatabase
+    //    let privateDB = CKContainer.default().privateCloudDatabase
     
     @Environment(\.managedObjectContext) var context
     
@@ -25,7 +25,7 @@ struct Setting: View {
     var logs: FetchedResults<ReadLog>
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
-//    @AppStorage("useiCloud") var useiCloud = false
+    //    @AppStorage("useiCloud") var useiCloud = false
     private var useiCloud = false
     @AppStorage("isFirstBookCard") var isFirstBookCard = true
     @AppStorage("hasViewdWalkthrough") var hasViewdWalkthrough = false
@@ -47,6 +47,7 @@ struct Setting: View {
     
     @State private var document: BookTimeFileDoc = BookTimeFileDoc(message: "Hello, World!")
     @State private var isExporting: Bool = false
+    @State private var isImporting: Bool = false
     
     private var greeting:String{
         get {
@@ -124,33 +125,88 @@ struct Setting: View {
                             self.sliderIsChange = editing
                         })
                     }
-//                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
+                    //                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
                     Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : "Your data is automatically syncing via iCloud")) {
+                        
+                        Button(action: {
+                            var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays\n"
+                            for book in books{
+                                str.append("\(book.id),")
+                                str.append("\(book.name),")
+                                if let author = book.author{
+                                    str.append("\(author)")
+                                }
+                                str.append(",")
+                                str.append(book.image.base64EncodedString())
+                                str.append(",")
+                                str.append("\(book.isDone),")
+                                str.append("\(book.readMinutes),")
+                                str.append("\(book.createTime),")
+                                if let firstReadTime = book.firstReadTime {
+                                    str.append("\(firstReadTime)")
+                                }
+                                str.append(",")
+                                if let lastReadTime = book.lastReadTime {
+                                    str.append("\(lastReadTime)")
+                                }
+                                str.append(",")
+
+                                if let doneTime = book.doneTime {
+                                    str.append("\(doneTime)")
+                                }
+                                str.append(",")
+
+                                str.append("\(book.rating),")
+                                str.append("\(book.readDays)")
+                                
+                                str.append("\n")
+                            }
+                            
+                            str.append("\n")
+                            str.append("day,readMinutes")
+                            str.append("\n")
+                            
+                            for log in logs {
+                                str.append("\(log.day)")
+                                str.append(",")
+                                str.append("\(log.readMinutes)")
+                                str.append("\n")
+                            }
+                            
+                            document.message = str
+                            
+                            isExporting = true
+                        }){
+                            Label("Export Data",systemImage: "arrow.up.doc")
+                        }
+                        
+                        Button(action: {
+                            isImporting = true
+                        }){
+                            Label("Import Data",systemImage: "arrow.down.doc")
+
+                        }
+                        
                         Button(action: {
                             generator.notificationOccurred(.warning)
                             showCleanSheet = true
                         }){
-                            Text("\(Image(systemName: "exclamationmark.triangle.fill"))\tClear all data\(useiCloud ? String(localized: "（Include iCloud）")  :"")")
+                            Label("Clear all data\(useiCloud ? String(localized: "(Include iCloud)")  :"")",systemImage: "exclamationmark.triangle.fill")
                         }
-                        
-//                        Button(action: {
-//                            isExporting = true
-//                        }){
-//                            Text("Export Data")
-//                        }
+
                         
                         
-//                        Toggle(isOn: $useiCloud) {
-//                            Text("\(Image(systemName: "icloud"))\tUse iCloud to backup data")
-//                        }.onChange(of: useiCloud, perform: { value in
-//                            if(useiCloud){
-//                                Task{
-//                                    await  iCloudStart()
-//                                }
-//                            }else{
-//                                showDeleteCloudSheet = true
-//                            }
-//                        }).disabled(!iCloudCanUse)
+                        //                        Toggle(isOn: $useiCloud) {
+                        //                            Text("\(Image(systemName: "icloud"))\tUse iCloud to backup data")
+                        //                        }.onChange(of: useiCloud, perform: { value in
+                        //                            if(useiCloud){
+                        //                                Task{
+                        //                                    await  iCloudStart()
+                        //                                }
+                        //                            }else{
+                        //                                showDeleteCloudSheet = true
+                        //                            }
+                        //                        }).disabled(!iCloudCanUse)
                     }
                     
                 }
@@ -223,18 +279,46 @@ struct Setting: View {
                 }
             })
             .fileExporter(
-                       isPresented: $isExporting,
-                       document: document,
-                       contentType: UTType.text,
-                       defaultFilename: "Message"
-                   ) { result in
-                       if case .success = result {
-                           print(result)
-                           // Handle success.
-                       } else {
-                           // Handle failure.
-                       }
-                   }
+                isPresented: $isExporting,
+                document: document,
+                contentType: UTType.commaSeparatedText,
+                defaultFilename: "books"
+            ) { result in
+                if case .success = result {
+                    print(result)
+                    // Handle success.
+                } else {
+                    // Handle failure.
+                }
+            }
+            .fileImporter(
+                isPresented: $isImporting,
+                allowedContentTypes: [UTType.commaSeparatedText],
+                allowsMultipleSelection: false
+            ) { result in
+                do {
+                    guard let selectedFile: URL = try result.get().first else { return }
+                    
+                    //trying to get access to url contents
+                    if (CFURLStartAccessingSecurityScopedResource(selectedFile as CFURL)) {
+                        
+                        guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
+                        
+                        document.message = message
+                        
+                        print(message)
+                        
+                        //done accessing the url
+                        CFURLStopAccessingSecurityScopedResource(selectedFile as CFURL)
+                    }
+                    else {
+                        print("Permission error!")
+                    }
+                } catch {
+                    // Handle failure.
+//                    print(error.localizedDescription)
+                }
+            }
         }
         .navigationViewStyle(.stack)
         .task {
@@ -251,7 +335,7 @@ struct Setting: View {
         }
         
     }
-        
+    
     func checkIfICloudCanUse(){
         CKContainer.default().accountStatus { accountStatus, error in
             iCloudCanUse =  accountStatus == .available
@@ -357,7 +441,7 @@ struct Setting: View {
         ctrl.tapLastBackuptime()
         showToast = true
     }
-                
+    
     
     func cleanAllData() async{
         if(useiCloud){
@@ -371,7 +455,7 @@ struct Setting: View {
         ctrl.cleanTodayLog()
         
         store.removeObject(forKey: "targetMinPerday")
-
+        
     }
     
     
