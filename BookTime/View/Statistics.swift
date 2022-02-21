@@ -260,8 +260,8 @@ struct Statistics: View {
                     .foregroundColor(Color("AccentColor"))
             )
         }
-        .foregroundColor(.black)
-        .padding()
+//        .foregroundColor(.white)
+        .padding()        
         .ignoresSafeArea()
         
     }

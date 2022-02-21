@@ -35,7 +35,7 @@
 "AI Camera" = "AI 相机";
 
 /* No comment provided by engineer. */
-"All" = "共";
+"All" = "迄今为止";
 
 /* 所有数据已删除 */
 "All data has been deleted" = "所有数据已删除";
@@ -96,7 +96,7 @@
 
 "Total Reading Days" = "总阅读天数";
 
-"Consecutive Check-In Days" = "连续打卡天数";
+"Consecutive Check-In Days" = "最近连续打卡天数";
 
 /* No comment provided by engineer. */
 "Finished Reading" = "我已读完";
