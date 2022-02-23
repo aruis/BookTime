@@ -89,7 +89,7 @@ struct ImagePicker:UIViewControllerRepresentable{
             }.joined(separator: ",")
             
             // Process the recognized strings.
-            print(recognizedStrings)
+//            print(recognizedStrings)
             
             parent.textInPhoto = recognizedStrings
 //            processResults(recognizedStrings)

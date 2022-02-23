@@ -8,13 +8,19 @@
 "[Don't show again.]" = "[不再提示]";
 
 /* No comment provided by engineer. */
-"%@\tClear all data%@" = "%@\t清除所有数据%@";
+"Clear All Data" = "清除所有数据";
 
 /* No comment provided by engineer. */
 "**%d** Minutes Today" = "今日已阅读 **%d** 分钟";
 
 /* No comment provided by engineer. */
 "%lld %%  of the Plan Completed" = "完成计划的 %lld %%";
+
+"%lld book has been imported" = "%lld 条书籍信息已导入";
+
+"Export Data" = "导出数据";
+
+"Import Data" = "导入数据";
 
 /* 累计阅读 */
 "A Total of" = "累计阅读";
@@ -23,7 +29,7 @@
 "About" = "关于";
 
 /* No comment provided by engineer. */
-"About data" = "关于数据";
+"About data" = "数据相关";
 
 /* No comment provided by engineer. */
 "Achievement" = "成就";

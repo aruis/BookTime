@@ -10,9 +10,10 @@ import CloudKit
 import UniformTypeIdentifiers
 
 struct Setting: View {
+    let monkeyStr = "$#*#$"
     let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
-    //    let privateDB = CKContainer.default().privateCloudDatabase
+    let dateFormatter = ISO8601DateFormatter()
     
     @Environment(\.managedObjectContext) var context
     
@@ -31,7 +32,7 @@ struct Setting: View {
     @AppStorage("hasViewdWalkthrough") var hasViewdWalkthrough = false
     
     @State var showAbout = false
-    @State var showToast = false
+    @State var isShowToast = false
     @State var showDeleteCloudSucToast = false
     @State var showDeleteAllSucToast = false
     
@@ -48,6 +49,8 @@ struct Setting: View {
     @State private var document: BookTimeFileDoc = BookTimeFileDoc(message: "Hello, World!")
     @State private var isExporting: Bool = false
     @State private var isImporting: Bool = false
+    
+    @State private var toastString:String = ""
     
     private var greeting:String{
         get {
@@ -128,71 +131,26 @@ struct Setting: View {
                     //                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
                     Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : "Your data is automatically syncing via iCloud")) {
                         
-                        Button(action: {
-                            var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays\n"
-                            for book in books{
-                                str.append("\(book.id),")
-                                str.append("\(book.name),")
-                                if let author = book.author{
-                                    str.append("\(author)")
-                                }
-                                str.append(",")
-                                str.append(book.image.base64EncodedString())
-                                str.append(",")
-                                str.append("\(book.isDone),")
-                                str.append("\(book.readMinutes),")
-                                str.append("\(book.createTime),")
-                                if let firstReadTime = book.firstReadTime {
-                                    str.append("\(firstReadTime)")
-                                }
-                                str.append(",")
-                                if let lastReadTime = book.lastReadTime {
-                                    str.append("\(lastReadTime)")
-                                }
-                                str.append(",")
-
-                                if let doneTime = book.doneTime {
-                                    str.append("\(doneTime)")
-                                }
-                                str.append(",")
-
-                                str.append("\(book.rating),")
-                                str.append("\(book.readDays)")
-                                
-                                str.append("\n")
-                            }
-                            
-                            str.append("\n")
-                            str.append("day,readMinutes")
-                            str.append("\n")
-                            
-                            for log in logs {
-                                str.append("\(log.day)")
-                                str.append(",")
-                                str.append("\(log.readMinutes)")
-                                str.append("\n")
-                            }
-                            
-                            document.message = str
-                            
-                            isExporting = true
-                        }){
+                        Button(action: exportData){
                             Label("Export Data",systemImage: "arrow.up.doc")
                         }
                         
-                        Button(action: {
+                        Button( action: {
                             isImporting = true
                         }){
                             Label("Import Data",systemImage: "arrow.down.doc")
 
                         }
                         
-                        Button(action: {
+                        
+                        Button(role: .destructive,action: {
                             generator.notificationOccurred(.warning)
                             showCleanSheet = true
                         }){
-                            Label("Clear all data\(useiCloud ? String(localized: "(Include iCloud)")  :"")",systemImage: "exclamationmark.triangle.fill")
+                            Label(String(localized:"Clear All Data") + (useiCloud ? String(localized: "(Include iCloud)")  :""),systemImage: "exclamationmark.triangle.fill")
+                                .foregroundColor(.red.opacity(0.85))
                         }
+
 
                         
                         
@@ -225,8 +183,8 @@ struct Setting: View {
                 .sheet(isPresented: $showAbout){
                     About()
                 }
-                .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title:String(localized: "Synchronization complete" ,comment: "同步完成"))
+                .toast(isPresenting: $isShowToast,duration: 3,tapToDismiss: true){
+                    AlertToast( type: .complete(.green), title:toastString)
                 }
                 .toast(isPresenting: $showDeleteCloudSucToast,duration: 3,tapToDismiss: true){
                     AlertToast( type: .complete(.green), title: String(localized: "Data in iCloud has been deleted",comment:  "iCloud数据已删除") )
@@ -285,7 +243,7 @@ struct Setting: View {
                 defaultFilename: "books"
             ) { result in
                 if case .success = result {
-                    print(result)
+//                    print(result)
                     // Handle success.
                 } else {
                     // Handle failure.
@@ -304,9 +262,99 @@ struct Setting: View {
                         
                         guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
                         
-                        document.message = message
+                        let lines = message.split(separator: "\n")
                         
-                        print(message)
+                        if(lines.count == 2) {return}
+                        
+                        var importBookCount = 0
+                        
+                        for str in  lines[1...]{
+                            let cells = str.split(separator: ",",omittingEmptySubsequences: false).map{String($0)}
+                            
+                            if(cells[0] == "day"){
+                                continue
+                            }
+                            
+                            if(cells.count > 2){ // 书籍信息
+                                let id = cells[0]
+                                let name = cells[1].replacingOccurrences(of: monkeyStr, with: ",")
+                                let author = cells[2].replacingOccurrences(of: monkeyStr, with: ",")
+                                let image = Data(base64Encoded: String(cells[3])) ?? UIImage(named: "camera")!.pngData()!
+                                let isDone = cells[4] == "true"
+                                let readMinutes = Int64( cells[5]) ?? 0
+                                let createTime =  dateFormatter.date(from: String(cells[6]))
+                                let firstReadTime =  dateFormatter.date(from: String(cells[7]))
+                                let lastReadTime =  dateFormatter.date(from: String(cells[8]))
+                                let doneTime =  dateFormatter.date(from: String(cells[9]))
+                                let rating = Int16( cells[10]) ?? 0
+                                let readDays = Int16(cells[11]) ?? 0
+                                
+                                
+                                let matchBook = books.first(where: {$0.id == id})
+                                
+                                if let book = matchBook { //书存在
+                                    if readMinutes > book.readMinutes
+                                        && readDays >= book.readDays{
+                                        book.readMinutes = readMinutes
+                                        book.lastReadTime = lastReadTime
+                                        
+                                        book.isDone = isDone
+                                        book.rating = rating
+                                        book.readDays = readDays
+                                        
+                                    }
+                                } else {//书不存在
+                                    let book  = Book(context: context)
+                                    book.id = id
+                                    book.name = name
+                                    book.author = author
+                                    book.image = image
+                                    book.isDone = isDone
+                                    book.readMinutes = readMinutes
+                                    book.createTime = createTime ?? Date()
+                                    book.firstReadTime = firstReadTime
+                                    book.lastReadTime = lastReadTime
+                                    book.doneTime = doneTime
+                                    book.rating = rating
+                                    book.readDays = readDays
+                                    
+                                    importBookCount+=1
+                                }
+                                                                
+                            }else{ // 日志信息
+                                let day = dateFormatter.date(from: String(cells[0]))
+                                let readMinutes = Int16(cells[1]) ?? 0
+                                
+                                if let day = day {
+                                    let matchLog = logs.first(where: {$0.day == day})
+                                    
+                                    if let log = matchLog{
+                                        if(readMinutes > log.readMinutes){
+                                            log.readMinutes = readMinutes
+                                        }
+                                        
+                                    }else {
+                                        let log = ReadLog(context:context)
+                                        log.day = day
+                                        log.readMinutes = readMinutes
+                                        
+                                    }
+
+                                }
+                            }
+                                                                                                         
+                            
+                        }
+                        
+                        DispatchQueue.main.async {
+                            do{
+                                try context.save()
+                                showToast(String(localized: "\(importBookCount) book has been imported"))
+                            }catch{
+                                print(error)
+                            }
+                        }
+                                                                       
                         
                         //done accessing the url
                         CFURLStopAccessingSecurityScopedResource(selectedFile as CFURL)
@@ -326,6 +374,56 @@ struct Setting: View {
         }
         
         
+    }
+    
+    func exportData(){
+        var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays\n"
+        for book in books{
+            str.append("\(book.id),")
+            str.append("\(book.name.replacingOccurrences(of: ",", with: monkeyStr)),")
+            if let author = book.author{
+                str.append("\(author.replacingOccurrences(of: ",", with: monkeyStr))")
+            }
+            str.append(",")
+            str.append(book.image.base64EncodedString())
+            str.append(",")
+            str.append("\(book.isDone),")
+            str.append("\(book.readMinutes),")
+            str.append("\(dateFormatter.string(from: book.createTime)),")
+            if let firstReadTime = book.firstReadTime {
+                str.append("\(dateFormatter.string(from: firstReadTime))")
+            }
+            str.append(",")
+            if let lastReadTime = book.lastReadTime {
+                str.append("\(dateFormatter.string(from: lastReadTime))")
+            }
+            str.append(",")
+
+            if let doneTime = book.doneTime {
+                str.append("\(dateFormatter.string(from: doneTime))")
+            }
+            str.append(",")
+
+            str.append("\(book.rating),")
+            str.append("\(book.readDays)")
+            
+            str.append("\n")
+        }
+        
+        str.append("day,readMinutes")
+        str.append("\n")
+        
+        for log in logs {
+            str.append("\(dateFormatter.string(from: log.day))")
+            str.append(",")
+            str.append("\(log.readMinutes)")
+            str.append("\n")
+        }
+        
+        document.message = str
+        
+        isExporting = true
+
     }
     
     func getTargetMinPerdayFromICloud(){
@@ -418,7 +516,7 @@ struct Setting: View {
         DispatchQueue.main.async {
             do{
                 try context.save()
-                showToast = true
+//                showToast = true
             }catch{
                 print(error)
             }
@@ -439,7 +537,7 @@ struct Setting: View {
         }
         
         ctrl.tapLastBackuptime()
-        showToast = true
+//        showToast = true
     }
     
     
@@ -456,6 +554,11 @@ struct Setting: View {
         
         store.removeObject(forKey: "targetMinPerday")
         
+    }
+    
+    func showToast(_ text:String){
+        toastString = text
+        isShowToast  = true
     }
     
     

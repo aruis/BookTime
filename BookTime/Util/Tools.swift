@@ -14,7 +14,7 @@ struct Tools{
         //        let preferredLang = (languages! as AnyObject).object(0)
         let preferredLang = Bundle.main.preferredLocalizations.first! as NSString
         //
-        print(preferredLang)
+//        print(preferredLang)
         
         switch String(describing: preferredLang) {
         case "en-US", "en-CN":

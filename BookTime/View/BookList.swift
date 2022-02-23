@@ -74,7 +74,7 @@ struct BookList: View {
                 //                                self.showError.toggle()
             }) {
                 HStack {
-                    Text("Modify the book")
+                    Text("Modify the Book")
                     Image(systemName: "pencil.circle")
                 }
             }
