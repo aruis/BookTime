@@ -40,15 +40,22 @@ struct TimerView: View {
     
     @State private var showToast = false
     
+    @State private var oldLight:CGFloat = 0
+    @State private var lowLight:Bool = false
+    
     let generator = UINotificationFeedbackGenerator()
     
-    enum ShowTimeType : String,CaseIterable{
+    enum ShowTimeType : Int,CaseIterable{
         case timer
         case time
         case today
     }
     
+    @Binding var handShowTimer:Bool
+    
     @State private var tabSelected = ShowTimeType.timer
+    
+    @State private var tabSelectedStore = ShowTimeType.timer
     
     var body: some View {
         //        VStack{
@@ -108,6 +115,82 @@ struct TimerView: View {
             .tag(ShowTimeType.time)
             
         }
+        .overlay{
+            
+            if handShowTimer{
+                VStack{
+                    Spacer()
+                    Button(action: {
+                        dismiss()
+                        //                        self.handShowTimer = true
+                        //                        self.showTimer = false
+                    }){
+                        Text("End reading")
+                    }
+                }
+                .padding(.bottom,100)
+                
+            }
+            
+        }
+        
+        .overlay(alignment: .bottomTrailing , content: {
+            HStack{
+                if handShowTimer{
+                    Button(action: {
+                        if  verticalSizeClass == .compact{
+                            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                        }else{
+                            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+                        }
+                        
+                    }, label: {
+                        ZStack(alignment: .bottomTrailing){
+                            if  verticalSizeClass == .compact{
+                                Label("", systemImage: "iphone")
+                                Label("", systemImage: "iphone.landscape").opacity(0.35)
+                            }else{
+                                Label("", systemImage: "iphone.landscape")
+                                Label("", systemImage: "iphone").opacity(0.35)
+                            }
+                            
+                        }
+                        //                            .offset(x: -10, y: 10)
+                    })
+                }
+                
+                Button(action: {
+                    if lowLight{
+                        UIScreen.main.brightness = oldLight
+                    }else{
+                        oldLight = UIScreen.main.brightness
+                        UIScreen.main.brightness = CGFloat(0.1)
+                    }
+                    lowLight.toggle()
+                    
+                }, label: {
+                    Label("",systemImage: lowLight ? "lightbulb":"lightbulb.fill")
+                })
+                
+                //                        }
+                
+            }
+            
+        })
+        .onRotate { newOrientation in
+            tabSelectedStore = tabSelected
+            if tabSelected != .today{
+                tabSelected = .today
+            }else{
+                tabSelected = .time
+            }
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+                tabSelected = tabSelectedStore
+            })
+        }
+        
         .onChange(of: tabSelected, perform: { _ in
             changeTabAuto = false
         })
@@ -119,49 +202,51 @@ struct TimerView: View {
             //                tabSelected = .timer
             //            }
         }
-//        .padding(.bottom,20)
-//        .ignoresSafeArea()
-//        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+        //        .padding(.bottom,20)
+        //        .ignoresSafeArea()
+        //        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
         .tabViewStyle(.page)
         .foregroundColor(isHit ? Color("AccentColor") : .white)
         .background(.black)
+        //        .edgesIgnoringSafeArea(.all)
+        
         //        .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
         .onAppear(perform: {
-            DispatchQueue.main.async {
-                Tool.hiddenTabBar()
-            }
+            //            DispatchQueue.main.async {
+            //                Tool.hiddenTabBar()
+            //            }
             UIApplication.shared.isIdleTimerDisabled = true
             UIDevice.current.isBatteryMonitoringEnabled = true
             
-//            Tool.hiddenTabBar()
-//            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
-//                Tool.hiddenTabBar()
-//            })
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.6, execute: {
-                tabSelected = .time
-                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-                    changeTabAuto = true
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
-                    if(changeTabAuto){
-                        tabSelected = .timer
-                    }
-                    changeTabAuto = false
-                })
-
-            })
+            //            Tool.hiddenTabBar()
+            //            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+            //                Tool.hiddenTabBar()
+            //            })
+            //            DispatchQueue.main.asyncAfter(deadline: .now()+0.6, execute: {
+            //                tabSelected = .time
+            //                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+            //                    changeTabAuto = true
+            //                })
+            //
+            //                DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
+            //                    if(changeTabAuto){
+            //                        tabSelected = .timer
+            //                    }
+            //                    changeTabAuto = false
+            //                })
+            //
+            //            })
         })
         .onDisappear(perform: {
-            DispatchQueue.main.async {
-                Tool.showTabBar()
-            }
+            //            DispatchQueue.main.async {
+            //                Tool.showTabBar()
+            //            }
             
             UIApplication.shared.isIdleTimerDisabled = false
             UIDevice.current.isBatteryMonitoringEnabled = false
-          
-//            Tool.showTabBar()
-
+            
+            //            Tool.showTabBar()
+            
             
         })
         .animation(.linear, value: verticalSizeClass)
@@ -244,7 +329,7 @@ struct TimerView: View {
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
         //        NavigationView {
-        TimerView(book: (BookPersistenceController.testData?.first)! )
+        TimerView(book: (BookPersistenceController.testData?.first)!,handShowTimer : .constant(true) )
             .environment(\.managedObjectContext, BookPersistenceController.preview.container.viewContext)
             .previewInterfaceOrientation(.portrait)
         //        }
@@ -395,12 +480,12 @@ struct ClockView: View {
                 //                } icon: {batteryImg}
                 //                Label(,icon: batteryImg)
             }
-            .padding(.bottom,-100)
+                .padding(.bottom,-100)
             ,alignment: .bottom
         )
         
         .animation(.easeInOut, value: timerShowSec)
-//        .font(.custom("AzeretMono-Thin", size: verticalSizeClass == .compact ? 100: 55,relativeTo: .largeTitle).monospacedDigit())
+        //        .font(.custom("AzeretMono-Thin", size: verticalSizeClass == .compact ? 100: 55,relativeTo: .largeTitle).monospacedDigit())
         .font(.system(size: verticalSizeClass == .compact ? 100: 55,design: .serif))
         .padding(.bottom,20)
         .onTapGesture {
