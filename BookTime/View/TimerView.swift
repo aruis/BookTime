@@ -17,6 +17,8 @@ struct TimerView: View {
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     
+    @State private var orientation = UIDeviceOrientation.unknown
+    
     @ObservedObject var book: Book
     @ObservedObject private var timerTrack:TimerTrack = TimerTrack.shared
     
@@ -53,9 +55,23 @@ struct TimerView: View {
     
     @Binding var handShowTimer:Bool
     
+    @State var isShowButtons:Bool = false
+    
     @State private var tabSelected = ShowTimeType.timer
     
     @State private var tabSelectedStore = ShowTimeType.timer
+    
+    func showButton() {
+        if isShowButtons {
+            return
+        }
+        
+        isShowButtons = true
+        DispatchQueue.main.asyncAfter(deadline: .now()+3.8, execute: {
+            isShowButtons = false
+        })
+        
+    }
     
     var body: some View {
         //        VStack{
@@ -115,69 +131,81 @@ struct TimerView: View {
             .tag(ShowTimeType.time)
             
         }
-        .overlay{
-            
-            if handShowTimer{
-                VStack{
-                    Spacer()
-                    Button(action: {
-                        dismiss()
-                        //                        self.handShowTimer = true
-                        //                        self.showTimer = false
-                    }){
-                        Text("End reading")
-                    }
-                }
-                .padding(.bottom,100)
-                
-            }
-            
+        .onTapGesture {
+            showButton()
         }
-        
-        .overlay(alignment: .bottomTrailing , content: {
-            HStack{
-                if handShowTimer{
-                    Button(action: {
-                        if  verticalSizeClass == .compact{
-                            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                        }else{
-                            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-                        }
+        .overlay{
+            VStack {
+                Spacer()
+                HStack(spacing:15){
+                    if handShowTimer{
+                        Button(action: {
+                            dismiss()
+                        }, label: {
+                            Image(systemName: "clear")
+                        })
+                        .font(.system(size: 23))
+                        .buttonStyle(.bordered)
                         
-                    }, label: {
-                        ZStack(alignment: .bottomTrailing){
+                        
+                    }
+                    
+                    if handShowTimer{
+                        Button(action: {
                             if  verticalSizeClass == .compact{
-                                Label("", systemImage: "iphone")
-                                Label("", systemImage: "iphone.landscape").opacity(0.35)
+                                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
                             }else{
-                                Label("", systemImage: "iphone.landscape")
-                                Label("", systemImage: "iphone").opacity(0.35)
+                                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
                             }
                             
-                        }
-                        //                            .offset(x: -10, y: 10)
-                    })
-                }
-                
-                Button(action: {
-                    if lowLight{
-                        UIScreen.main.brightness = oldLight
-                    }else{
-                        oldLight = UIScreen.main.brightness
-                        UIScreen.main.brightness = CGFloat(0.1)
+                        }, label: {
+                            ZStack(alignment: .bottomTrailing){
+                                if  verticalSizeClass == .compact{
+                                    Image( systemName: "iphone")
+                                    Image( systemName: "iphone.landscape").opacity(0.35)
+                                }else{
+                                    Image( systemName: "iphone.landscape")
+                                    Image( systemName: "iphone").opacity(0.35)
+                                }
+                                
+                            }
+                            
+                        })
+                        .font(.system(size: 23))
+                        .buttonStyle(.bordered)
                     }
-                    lowLight.toggle()
                     
-                }, label: {
-                    Label("",systemImage: lowLight ? "lightbulb":"lightbulb.fill")
-                })
-                
-                //                        }
-                
+                    Button(action: {
+                        if lowLight{
+                            UIScreen.main.brightness = oldLight
+                        }else{
+                            oldLight = UIScreen.main.brightness
+                            UIScreen.main.brightness = CGFloat(0.05)
+                        }
+                        lowLight.toggle()
+                        
+                    }, label: {
+                        Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
+                    })
+                    .font(.system(size: 23))
+                    .buttonStyle(.bordered)
+                    
+                    //                        }
+                    
+                }
+            }
+            .padding(.bottom,60)
+            .opacity(isShowButtons ? 1 : 0)
+            .animation(.default, value: isShowButtons)
+            
+        }
+        .onRotate { newOrientation in
+            if orientation != .unknown && orientation.isPortrait == newOrientation.isPortrait {
+                return
             }
             
-        })
-        .onRotate { newOrientation in
+            orientation = newOrientation
+            
             tabSelectedStore = tabSelected
             if tabSelected != .today{
                 tabSelected = .today
@@ -215,9 +243,11 @@ struct TimerView: View {
             //            DispatchQueue.main.async {
             //                Tool.hiddenTabBar()
             //            }
+            showButton()
+            
             UIApplication.shared.isIdleTimerDisabled = true
             UIDevice.current.isBatteryMonitoringEnabled = true
-            
+            oldLight = UIScreen.main.brightness
             //            Tool.hiddenTabBar()
             //            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
             //                Tool.hiddenTabBar()
@@ -241,7 +271,7 @@ struct TimerView: View {
             //            DispatchQueue.main.async {
             //                Tool.showTabBar()
             //            }
-            
+            UIScreen.main.brightness = oldLight
             UIApplication.shared.isIdleTimerDisabled = false
             UIDevice.current.isBatteryMonitoringEnabled = false
             
