@@ -33,7 +33,6 @@ struct TimerView: View {
     
     @State private var now  = Date()
     
-    private let begin = Date()
     
     @State private var changeTabAuto = false
     @State private var lastShowTab:ShowTimeType? = nil
@@ -55,31 +54,19 @@ struct TimerView: View {
     
     @Binding var handShowTimer:Bool
     
-    @State var isShowButtons:Bool = false
+    @State var isShowButtons:Bool = true
     
     @State private var tabSelected = ShowTimeType.timer
     
     @State private var tabSelectedStore = ShowTimeType.timer
-    
-    func showButton() {
-        if isShowButtons {
-            return
-        }
         
-        isShowButtons = true
-        DispatchQueue.main.asyncAfter(deadline: .now()+3.8, execute: {
-            isShowButtons = false
-        })
-        
-    }
-    
     var body: some View {
         //        VStack{
         
         TabView(selection: $tabSelected){
-            TimelineView(.periodic(from: begin, by: 1)) { context in
+            TimelineView(.periodic(from: timerTrack.begin, by: 1)) { context in
                 let date = context.date
-                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: begin, to: date)
+                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: timerTrack.begin, to: date)
                 let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
                 //                let dataArr  = context.date.format(format: "HH:mm:ss").split(separator: ":")
                 //                let h = "\(components.hour!)".count == 1 ? "0\(components.hour!)" : "\(components.hour!)"
@@ -97,9 +84,9 @@ struct TimerView: View {
             .tag(ShowTimeType.today)
             
             
-            TimelineView(.periodic(from: begin, by: 1)) { context in
+            TimelineView(.periodic(from: timerTrack.begin, by: 1)) { context in
                 let date = context.date
-                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: begin, to: date)
+                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: timerTrack.begin, to: date)
                 
                 //                let dataArr  = context.date.format(format: "HH:mm:ss").split(separator: ":")
                 //                let h = "\(components.hour!)".count == 1 ? "0\(components.hour!)" : "\(components.hour!)"
@@ -131,8 +118,8 @@ struct TimerView: View {
             .tag(ShowTimeType.time)
             
         }
-        .onTapGesture {
-            showButton()
+        .onTapGesture(count: 2) {
+            isShowButtons.toggle()
         }
         .overlay{
             VStack {
@@ -200,6 +187,12 @@ struct TimerView: View {
             
         }
         .onRotate { newOrientation in
+            
+            if newOrientation.isFlat{
+                return
+            }
+
+                        
             if orientation != .unknown && orientation.isPortrait == newOrientation.isPortrait {
                 return
             }
@@ -232,8 +225,8 @@ struct TimerView: View {
         }
         //        .padding(.bottom,20)
         //        .ignoresSafeArea()
-        //        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-        .tabViewStyle(.page)
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: isShowButtons ? .always : .never))
+//        .tabViewStyle(.page)
         .foregroundColor(isHit ? Color("AccentColor") : .white)
         .background(.black)
         //        .edgesIgnoringSafeArea(.all)
@@ -243,7 +236,6 @@ struct TimerView: View {
             //            DispatchQueue.main.async {
             //                Tool.hiddenTabBar()
             //            }
-            showButton()
             
             UIApplication.shared.isIdleTimerDisabled = true
             UIDevice.current.isBatteryMonitoringEnabled = true

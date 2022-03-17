@@ -9,6 +9,8 @@ import Foundation
 
 class TimerTrack:ObservableObject{
     
+    var begin =  Date()
+    
     @Published var count = 0
     var timer = Timer()
     
@@ -23,6 +25,7 @@ class TimerTrack:ObservableObject{
     private init() {}
     
     func start(callback: @escaping (Int)->() ){
+        begin =  Date()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true ){ _ in            
             self.count += 1
             callback(self.count)

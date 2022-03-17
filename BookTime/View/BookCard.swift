@@ -37,7 +37,7 @@ struct BookCard: View {
     @State private var isFullScreen = true
     
     @State private var orientation = UIDeviceOrientation.unknown
-    
+            
     let generator = UINotificationFeedbackGenerator()
     
     var body: some View {
@@ -186,6 +186,14 @@ struct BookCard: View {
             
         }
         .onRotate { newOrientation in
+            if newOrientation.isFlat{
+                return
+            }
+            
+            if orientation != .unknown && orientation.isPortrait == newOrientation.isPortrait {
+                return
+            }
+
             orientation = newOrientation
             
             if orientation.isLandscape {
