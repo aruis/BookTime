@@ -25,10 +25,12 @@ extension View {
         window.makeKeyAndVisible()
         
         let renderer = UIGraphicsImageRenderer(bounds: view!.bounds, format: format)
-        return renderer.image { rendererContext in
+        let image =  renderer.image { rendererContext in
             view?.layer.render(in: rendererContext.cgContext)
         }
         
+//        return image
+        return UIImage(data: image.aspectFittedToWidth(600).jpegData(compressionQuality: 0.85)!)!
     }
     
     func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {

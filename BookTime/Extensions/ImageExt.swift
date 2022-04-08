@@ -18,4 +18,16 @@ extension UIImage {
             self.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
+
+    func aspectFittedToWidth(_ newWidth: CGFloat) -> UIImage {
+        let scale = newWidth / self.size.width
+        let newHeight = self.size.height * scale
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+    }
+
 }
