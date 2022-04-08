@@ -104,7 +104,7 @@ struct TimerView: View {
             
             TimelineView(.periodic(from: Date(), by: 1)) { context in
                 let date = context.date
-                let dataArr  = date.format(format: "HH:mm:ss").split(separator: ":")
+                let dataArr  = date.format("HH:mm:ss").split(separator: ":")
                 let h = String(dataArr[0])
                 let m = String(dataArr[1])
                 let s = String(dataArr[2])
@@ -287,7 +287,7 @@ struct TimerView: View {
             
             timerTrack.start { count in
                 now = Date()
-                let nowStr = now.format(format: "mm:ss")
+                let nowStr = now.format("mm:ss")
                 if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
                     lastShowTab = tabSelected
                     tabSelected  = .time
@@ -315,7 +315,7 @@ struct TimerView: View {
                     }
                     book.readMinutes += 1
                     if let lastReadTime = book.lastReadTime {
-                        if(lastReadTime.format(format: "YYYY-MM-dd") != now.format(format: "YYYY-MM-dd")){
+                        if(lastReadTime.format("YYYY-MM-dd") != now.format("YYYY-MM-dd")){
                             book.readDays += 1
                         }
                     }else{

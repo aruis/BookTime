@@ -93,11 +93,11 @@ struct Statistics: View {
                     case .all:
                         _books.append(book)
                     case .year:
-                        if(Date().format(format: "YYYY") == book.doneTime?.format(format: "YYYY")) {
+                        if(Date().format("YYYY") == book.doneTime?.format("YYYY")) {
                             _books.append(book)
                         }
                     case .month:
-                        if(Date().format(format: "YYYY-MM") == book.doneTime?.format(format: "YYYY-MM")) {
+                        if(Date().format("YYYY-MM") == book.doneTime?.format("YYYY-MM")) {
                             _books.append(book)
                         }
                     }
@@ -383,7 +383,7 @@ struct Statistics: View {
             
             if(log.readMinutes>0){
                 
-                if( Date().format(format: "YYYY") == log.day.format(format: "YYYY")) {
+                if( Date().format("YYYY") == log.day.format("YYYY")) {
                     totalReadDay_year += 1
                     totalReadMin_year += Int64( log.readMinutes)
                     
@@ -404,7 +404,7 @@ struct Statistics: View {
                     lastHitDay_year = log.day
                     
                 }
-                if( Date().format(format: "YYYY-MM") == log.day.format(format: "YYYY-MM")) {
+                if( Date().format("YYYY-MM") == log.day.format("YYYY-MM")) {
                     totalReadDay_month += 1
                     totalReadMin_month += Int64( log.readMinutes)
                     
@@ -453,11 +453,11 @@ struct Statistics: View {
                 if book.isDone {
                     totalReadBook += 1
                     
-                    if( Date().format(format: "YYYY") == doneTime.format(format: "YYYY")) {
+                    if( Date().format("YYYY") == doneTime.format("YYYY")) {
                         totalReadBook_year += 1
                     }
                     
-                    if( Date().format(format: "YYYY-MM") == doneTime.format(format: "YYYY-MM")) {
+                    if( Date().format("YYYY-MM") == doneTime.format("YYYY-MM")) {
                         totalReadBook_month += 1
                     }
                     

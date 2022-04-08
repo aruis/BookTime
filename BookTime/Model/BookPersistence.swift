@@ -115,9 +115,9 @@ class BookPersistenceController {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         do {
-              try container.viewContext.setQueryGenerationFrom(.current)
+            try container.viewContext.setQueryGenerationFrom(.current)
         } catch {
-             fatalError("Failed to pin viewContext to the current generation:\(error)")
+            fatalError("Failed to pin viewContext to the current generation:\(error)")
         }
     }
     
@@ -129,7 +129,7 @@ class BookPersistenceController {
     
     func checkAndBuildTodayLog() -> ReadLog{
         if let todayLog = todayLog {
-            if(todayLog.day.format(format: "YYYY-MM-dd") == Date().format(format: "YYYY-MM-dd")){
+            if(todayLog.day.format( "YYYY-MM-dd") == Date().format( "YYYY-MM-dd")){
                 return todayLog
             }
         }
@@ -289,7 +289,7 @@ class BookPersistenceController {
     }
     
     func tapLastBackuptime(){
-        let time = Date().format(format:"yyyy-MM-dd HH:mm:ss")
+        let time = Date().format("yyyy-MM-dd HH:mm:ss")
         store.set(time, forKey: "lastBackupTime")
         lastBackupTime = time
     }

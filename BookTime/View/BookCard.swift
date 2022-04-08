@@ -30,14 +30,14 @@ struct BookCard: View {
     
     @State var hPhone = true
     
-    //    @State var forceRight = false    
+    //    @State var forceRight = false
     
     @State private var shareImage:UIImage? = nil
     
     @State private var isFullScreen = true
     
     @State private var orientation = UIDeviceOrientation.unknown
-            
+    
     let generator = UINotificationFeedbackGenerator()
     
     var body: some View {
@@ -58,7 +58,7 @@ struct BookCard: View {
                             self.handShowTimer = true
                             self.showTimer = true
                         }
-                                                           
+                    
                     
                     HStack(spacing:10){
                         ForEach(0...4,id: \.self) {index in
@@ -193,7 +193,7 @@ struct BookCard: View {
             if orientation != .unknown && orientation.isPortrait == newOrientation.isPortrait {
                 return
             }
-
+            
             orientation = newOrientation
             
             if orientation.isLandscape {
@@ -204,8 +204,8 @@ struct BookCard: View {
             } else if !handShowTimer {
                 showTimer = false
             }
-                        
-                        
+            
+            
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -222,7 +222,7 @@ struct BookCard: View {
                 .onAppear(perform: {
                     generator.notificationOccurred(.success)
                 })
-
+            
             
         })
         
@@ -248,104 +248,116 @@ struct BookCard: View {
         
         
         
-    
-    
-    
-}
-
-@ViewBuilder
-var exportBox:some View{
-    //        VStack{
-    
-    ZStack{
-        Image(uiImage: UIImage(data: book.image) ?? UIImage())
-            .resizable()
-            .scaledToFit()
-            .frame(height:400)
+        
+        
+        
     }
-    .padding(2)
-    .overlay(alignment: .bottom, content: {
-        Rectangle()
-            .frame(maxWidth: .infinity, maxHeight: 80)
-            .foregroundColor(.black)
-            .opacity(0.80)
-            .overlay(
-                HStack{
-                    VStack(spacing:8){
-                        HStack(spacing:10){
-                            ForEach(0...4,id: \.self) {index in
-                                Image(systemName: book.rating > index ? "star.fill" : "star")
-                                    .font(.subheadline)
-                                    .foregroundColor(Color("AccentColor"))
+    
+    @ViewBuilder
+    var exportBox:some View{
+        //        VStack{
+        
+        ZStack{
+            Image(uiImage: UIImage(data: book.image) ?? UIImage())
+                .resizable()
+                .scaledToFit()
+                .frame(height:400)
+        }
+        .padding(2)
+        .overlay(alignment: .bottom, content: {
+            Rectangle()
+                .frame(maxWidth: .infinity, maxHeight: 80)
+                .foregroundColor(.black)
+                .opacity(0.80)
+                .overlay(
+                    HStack{
+                        VStack(spacing:8){
+                            HStack(spacing:10){
+                                ForEach(0...4,id: \.self) {index in
+                                    Image(systemName: book.rating > index ? "star.fill" : "star")
+                                        .font(.subheadline)
+                                        .foregroundColor(Color("AccentColor"))
+                                }
+                            }.opacity(isDone ? 1 : 0)
+                                .animation(.default, value: isDone)
+                            
+                            
+                            if ( Locale.current.languageCode == "zh"){
+                                HStack(spacing:0){
+                                    Text("阅读")
+                                    Text("**\(book.readDays)**")
+                                    Text("天，共计")
+                                    //                                Text("")
+                                    Text("**\(book.readMinutes)**分钟")
+                                }
+                                .frame(maxWidth:.infinity)
+                                .font(.footnote)
+                                .foregroundColor(.white)
+                            }else{
+                                HStack(spacing:0){
+                                    Text("Read ")
+                                    Text("**\(book.readMinutes)**")
+                                    Text(" minutes in ")
+                                    //                                Text("")
+                                    Text("**\(book.readDays)**")
+                                    Text(" days")
+                                }
+                                .frame(maxWidth:.infinity)
+                                .font(.caption)
+                                .foregroundColor(.white)
+                                
                             }
-                        }.opacity(isDone ? 1 : 0)
-                            .animation(.default, value: isDone)
-                        
-                        
-                        
-                        if ( Locale.current.languageCode == "zh"){
-                            HStack(spacing:0){
-                                Text("已阅读")
-                                Text("**\(book.readDays)**")
-                                Text("天，共计")
-                                //                                Text("")
-                                Text("**\(book.readMinutes)**分钟")
+                            
+                            if let doneTime = book.doneTime , let firstReadTime = book.firstReadTime{
+                                HStack(spacing:2){
+                                    Text(firstReadTime.format("yyyy-MM-dd"))
+                                    Text("~")
+                                    Text(doneTime.format("yyyy-MM-dd"))
+                                }
+                                .font(.caption2)
+                                .foregroundColor(.white)
+                                
+                                //                            Text("于\(doneTime.format("yyyy-MM-dd"))读完")
                             }
-                            .frame(maxWidth:.infinity)
-                            .font(.caption)
-                            .foregroundColor(.white)
-                        }else{
-                            HStack(spacing:0){
-                                Text("Read ")
-                                Text("**\(book.readMinutes)**")
-                                Text(" minutes in ")
-                                //                                Text("")
-                                Text("**\(book.readDays)**")
-                                Text(" days")
-                            }
-                            .frame(maxWidth:.infinity)
-                            .font(.caption)
-                            .foregroundColor(.white)
                             
                         }
+                        
+                        Spacer()
+                        
+                        Image("qr")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 60,height: 60)
+                        
                     }
-                    
-                    Spacer()
-                    
-                    Image("qr")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 60,height: 60)
-                    
-                }
-                    .padding(15)
-            )
-    })
-    .overlay(
-        Rectangle()
-            .stroke(lineWidth: 3)
-            .foregroundColor(.black)
-    )
-    .ignoresSafeArea()
+                        .padding(15)
+                )
+        })
+        .overlay(
+            Rectangle()
+                .stroke(lineWidth: 3)
+                .foregroundColor(.black)
+        )
+        .ignoresSafeArea()
+        
+    }
     
-}
-
-
-func save(){
-    DispatchQueue.main.async {
-        do{
-            try context.save()
-        }catch{
-            print(error)
+    
+    func save(){
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
         }
     }
-}
-
-func delete(){
-    context.delete(book)
-    save()
-}
-
+    
+    func delete(){
+        context.delete(book)
+        save()
+    }
+    
 }
 
 struct BookCard_Previews: PreviewProvider {
