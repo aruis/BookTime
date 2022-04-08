@@ -57,7 +57,7 @@ struct Statistics: View {
         case month
     }
     
-    @State private var sumType = SumType.all
+    @State private var sumType = SumType.year
     
     var process:CGFloat{
         get{
