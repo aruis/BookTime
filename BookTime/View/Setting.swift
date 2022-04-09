@@ -288,6 +288,7 @@ struct Setting: View {
                                 let doneTime =  dateFormatter.date(from: String(cells[9]))
                                 let rating = Int16( cells[10]) ?? 0
                                 let readDays = Int16(cells[11]) ?? 0
+                                let tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
                                 
                                 
                                 let matchBook = books.first(where: {$0.id == id})
@@ -317,6 +318,7 @@ struct Setting: View {
                                     book.doneTime = doneTime
                                     book.rating = rating
                                     book.readDays = readDays
+                                    book.tags = tags
                                     
                                     importBookCount+=1
                                 }
@@ -377,7 +379,7 @@ struct Setting: View {
     }
     
     func exportData(){
-        var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays\n"
+        var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays,tags\n"
         for book in books{
             str.append("\(book.id),")
             str.append("\(book.name.replacingOccurrences(of: ",", with: monkeyStr)),")
@@ -405,7 +407,11 @@ struct Setting: View {
             str.append(",")
 
             str.append("\(book.rating),")
-            str.append("\(book.readDays)")
+            str.append("\(book.readDays),")
+            if let tags = book.tags{
+                str.append("\(tags.replacingOccurrences(of: ",", with: monkeyStr))")
+            }
+            
             
             str.append("\n")
         }
@@ -496,6 +502,7 @@ struct Setting: View {
             book.doneTime = bookRecord.object(forKey: "doneTime") as? Date
             book.rating = bookRecord.object(forKey: "rating") as! Int16
             book.readDays = bookRecord.object(forKey: "readDays") as! Int16
+            book.tags = bookRecord.object(forKey: "tags") as? String
             
             let imageFile:CKAsset? = bookRecord.object(forKey: "image") as? CKAsset
             

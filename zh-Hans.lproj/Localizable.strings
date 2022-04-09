@@ -162,6 +162,12 @@
 "Please enter the author name" = "请输入作者名";
 
 /* No comment provided by engineer. */
+"Please enter a tag" = "请输入标签";
+
+/* No comment provided by engineer. */
+"Tags" = "标签";
+
+/* No comment provided by engineer. */
 "Please enter the title of the book" = "请填入书名";
 
 /* No comment provided by engineer. */

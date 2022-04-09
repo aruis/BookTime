@@ -37,25 +37,43 @@ struct BookListItem: View {
                 if let author = book.author {
                     if( author.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false){
                         Text(author)
-                            .font(.system(.body))
+                            .font(.system(.subheadline))
                             .foregroundColor(.gray)
                     }
+                }
+                
+                if let tagString = book.tags{
+                    if !tagString.isEmpty {
+                        HStack{
+                            ForEach( tagString.split(separator: ",").map({Tag(name: String($0))})){tag in
+                            
+                                    Text(tag.name)
+                                        .padding(3)
+                                        .padding(.horizontal,5)
+                                        .background(.gray.opacity(0.2))
+                                        .clipShape(Capsule())
+                                        .font(.caption)
+                            
+                            }
+                        }
+                    }
+                    
                 }
                 
                                 
                 HStack(alignment: .bottom,spacing: 6) {
                     if book.isDone{
                         Image(systemName: "clock.badge.checkmark.fill")
-                            .font(.system(.subheadline,design: .rounded))
                             .foregroundColor(.green)
                     }else{
                         Image(systemName: "deskclock")
-                            .font(.system(.subheadline,design: .rounded))
+                           
                     }
                     
                     Text(book.readMinutes.asString())
-                        .font(.system (.subheadline,design: .rounded))
+                 
                 }
+                .font(.system (.subheadline,design: .rounded))
                 //                        .foregroundColor(.gray)
             }
             .padding(.leading,8)

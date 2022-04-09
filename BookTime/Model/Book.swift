@@ -13,6 +13,7 @@ class Book:NSManagedObject , Identifiable{
     @NSManaged var id: String
     @NSManaged var name: String
     @NSManaged var author: String?
+    @NSManaged var tags: String?
     @NSManaged var image: Data
     @NSManaged var isDone: Bool
     @NSManaged var readMinutes: Int64

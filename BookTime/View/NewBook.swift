@@ -12,6 +12,13 @@ import Vision
 
 
 struct NewBook: View {
+    enum FocusInput{
+        case name
+        case author
+        case tag
+    }
+
+    
     
     @Environment(\.managedObjectContext) var context
     @Environment(\.dismiss) var dismiss
@@ -26,9 +33,11 @@ struct NewBook: View {
     @State private var recognizedText = "Tap button to start scanning"
     
     @State private var textInPhoto:String = ""
-    @State private var userInput:String = ""
     
-    @FocusState private var isAuthorFocus:Bool
+    
+    @State private var tagInput:String = ""
+    
+    @FocusState private var focusInput:FocusInput?
     
     let generator = UINotificationFeedbackGenerator()
     
@@ -43,7 +52,7 @@ struct NewBook: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .center){                                        
+                VStack(alignment: .center){
                     Image(uiImage: bookViewModel.image)
                         .resizable()
                         .scaledToFit()
@@ -71,12 +80,9 @@ struct NewBook: View {
                         //                            .textInputAutocapitalization(.words)
                             .submitLabel(.next)
                             .onSubmit {
-                                isAuthorFocus = true
+                                focusInput = .author
                             }
-                            .onChange(of: bookViewModel.name, perform: {x in
-                                userInput = x
-                                //                                tipWords = []
-                            })
+                                           
                     }
                     
                     VStack(alignment: .leading) {
@@ -94,14 +100,94 @@ struct NewBook: View {
                             )
                             .padding(.vertical,10)
                         //                            .textInputAutocapitalization(.words)
-                            .focused($isAuthorFocus)
-                            .submitLabel(.done)
-                            .onChange(of: bookViewModel.author, perform: {x in
-                                userInput = x
-                            })
+                            .focused($focusInput,equals: .author)
+                            .submitLabel(.next)
+                            .onSubmit {
+                                focusInput = .tag
+                            }
+
                         
                         
                     }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Tags")
+                            .font(.system(.headline,design: .rounded))
+                            .foregroundColor(Color(.darkGray))
+                        
+                        HStack{
+                            
+                            ForEach(bookViewModel.tags){item in
+                                Button(action: {
+                                    bookViewModel.tags.removeAll(where: {$0.name == item.name})
+                                }, label: {
+                                    Label(item.name, systemImage: "multiply")
+                                    
+                                })
+                                .buttonStyle(.bordered)
+                                
+                            }
+                        }
+
+                        
+                        TextField("Please enter a tag",text: $tagInput)
+                            .font(.system(size:20,weight: .semibold,design: .rounded))
+                            .padding(.horizontal)
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color(.systemGray5),lineWidth: 1)
+                            )
+                            .overlay(
+                                
+                                HStack(){
+                                    Spacer()
+                                    
+                                    if tagInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                                        Button(action: {
+                                            let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            tagString.split(separator: ",").forEach{
+                                                let _tag = Tag(name: String($0))
+                                                if(bookViewModel.tags.firstIndex(where: { tag in
+                                                    tag.name == _tag.name
+                                                }) == nil){
+                                                    bookViewModel.tags.append(_tag)
+                                                }
+                                            }
+                                            tagInput = ""
+                                        }, label: {
+                                            Label("",systemImage: "plus.circle")
+                                        })
+                                    }
+                                }
+                                
+                            )
+                            .padding(.vertical,10)
+                        //                            .textInputAutocapitalization(.words)
+                            .focused($focusInput,equals: .tag)
+//                            .submitLabel(.done)
+                            .onSubmit{
+                                let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
+                                tagString.split(separator: ",").forEach{
+                                    let _tag = Tag(name: String($0))
+                                    if(bookViewModel.tags.firstIndex(where: { tag in
+                                        tag.name == _tag.name
+                                    }) == nil){
+                                        bookViewModel.tags.append(_tag)
+                                    }
+                                }
+                                tagInput = ""
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    focusInput = .tag
+                                }
+                                
+                            }
+                        
+                        
+                        
+                    }
+                    
                     
                     
                     //                    FormTextField(label: "书名", placeholder: "请填入书名", value: $bookViewModel.name)
@@ -139,16 +225,14 @@ struct NewBook: View {
                                         .map{String($0)}
                                     ,id:\.self){x in
                                         Button(x) {
-                                            if isAuthorFocus {
+                                            if focusInput == .author {
                                                 bookViewModel.author += x
                                             }else{
                                                 bookViewModel.name += x
                                             }
                                         }
                                         
-                                        
                                     }
-                                
                             }}
                     }
                 }
@@ -216,6 +300,13 @@ struct NewBook: View {
             book.image = bookViewModel.image.pngData()!
             book.name = bookViewModel.name
             book.author = bookViewModel.author
+            var tag = ""
+            bookViewModel.tags.forEach({t in
+                tag += t.name
+                tag += ","
+            })
+            book.tags = tag
+            
         }else{
             let book = Book(context:context)
             book.id = UUID().uuidString
@@ -224,10 +315,14 @@ struct NewBook: View {
             book.author = bookViewModel.author
             book.isDone = false
             book.createTime = Date()
+            var tag = ""
+            bookViewModel.tags.forEach({t in
+                tag += t.name
+                tag += ","
+            })
+            book.tags = tag
         }
-        
-        
-        
+                        
         do{
             try context.save()
         }catch{
@@ -284,3 +379,5 @@ enum PhotoSource: Identifiable{
         hashValue
     }
 }
+
+
