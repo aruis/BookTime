@@ -49,6 +49,7 @@ struct BookList: View {
     @State private var searchText = ""
     @State private var showAlert:Bool = false
     @State private var wantDelete:Book? = nil
+    @State private var tags:[Tag] = []
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
@@ -121,6 +122,12 @@ struct BookList: View {
                 
             } else {
                 List{
+                    if let tags = tags {
+                        ForEach(tags){tag in
+                            Text(tag.name)
+                        }
+                    }
+                    
                     if searchText.isEmpty {
                         ForEach(booksGroup) { section in
                             Section(header: Text((section.id ? String(localized: "Finished") : String(localized: "Unfinished")) + "·\(section.count)" ).monospacedDigit() ) {
@@ -192,7 +199,24 @@ struct BookList: View {
         }
         .navigationViewStyle(.stack)
         .sheet(isPresented: $showNewBook){
-            NewBook(bookViewModel:bookViewModel)
+            NewBook(bookViewModel:bookViewModel,tags: tags)
+        }
+        .task {
+            tags.removeAll()
+            booksAll.forEach({book in
+                if let tagString = book.tags ,!tagString.isEmpty {
+                    tagString.split(separator: ",").forEach{
+                        let _tag = Tag(name: String($0))
+                        if(tags.firstIndex(where: { tag in
+                            tag.name == _tag.name
+                        }) == nil){
+                            tags.append(_tag)
+                        }
+                    }
+                }
+            })
+            
+//            tags = BookPersistenceController.shared.getAllTags()
         }
         
     }

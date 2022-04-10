@@ -127,6 +127,38 @@ class BookPersistenceController {
         todayLog = nil
     }
     
+    func getAllTags() -> [Tag]{
+        var tags:[Tag] = []
+        
+        let context = container.viewContext
+        let fetchReq = Book.fetchRequest()
+
+        do {
+            let books =  try context.fetch(fetchReq)
+            books.forEach({book in
+                if let book = (book as? Book){
+                    if let tagString = book.tags ,!tagString.isEmpty {
+                        tagString.split(separator: ",").forEach{
+                            let _tag = Tag(name: String($0))
+                            if(tags.firstIndex(where: { tag in
+                                tag.name == _tag.name
+                            }) == nil){
+                                tags.append(_tag)
+                            }
+                        }
+
+                    }
+                }
+            })
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        
+        return tags
+    }
+    
     func checkAndBuildTodayLog() -> ReadLog{
         if let todayLog = todayLog {
             if(todayLog.day.format( "YYYY-MM-dd") == Date().format( "YYYY-MM-dd")){

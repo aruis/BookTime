@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830935D7279F9F37006F8F56 /* ActivityView.swift */; };
 		8317F89A2772FE5C00864D2F /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317F8992772FE5C00864D2F /* Tools.swift */; };
+		831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831939052802682A0011AA3C /* TagLabelStyle.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
 		83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83492C7E275624F2006B5FF2 /* IntExt.swift */; };
 		83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8350256F275ADC8A00EF9C5C /* RoundedCross.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		830935D7279F9F37006F8F56 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		8317F8992772FE5C00864D2F /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		831939052802682A0011AA3C /* TagLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabelStyle.swift; sourceTree = "<group>"; };
 		8320045D2759B71900EB64FC /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		8338BEAE2773552E00D51AFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		83492C7E275624F2006B5FF2 /* IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExt.swift; sourceTree = "<group>"; };
@@ -105,6 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		83193904280267FA0011AA3C /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				831939052802682A0011AA3C /* TagLabelStyle.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 		83492C7B275624BC006B5FF2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +167,7 @@
 		83731C912755D0D600305305 /* BookTime */ = {
 			isa = PBXGroup;
 			children = (
+				83193904280267FA0011AA3C /* Style */,
 				838316E327B3B5DF001575E0 /* Resources */,
 				83CE5BF7277DF4A00041D919 /* Info.plist */,
 				83924E61276CDA55002D0678 /* BookTime.entitlements */,
@@ -346,6 +357,7 @@
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
 				83955FEB275EFB43004408C3 /* About.swift in Sources */,
 				83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */,
+				831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */,
 				83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */,
 				83B03AD827698032005B4700 /* Slogan.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,

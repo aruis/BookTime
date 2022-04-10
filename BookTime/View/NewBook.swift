@@ -37,6 +37,8 @@ struct NewBook: View {
     
     @State private var tagInput:String = ""
     
+    @State public var tags:[Tag]
+    
     @FocusState private var focusInput:FocusInput?
     
     let generator = UINotificationFeedbackGenerator()
@@ -122,6 +124,7 @@ struct NewBook: View {
                                     bookViewModel.tags.removeAll(where: {$0.name == item.name})
                                 }, label: {
                                     Label(item.name, systemImage: "multiply")
+                                        .labelStyle(TagLabelStyle())
                                     
                                 })
                                 .buttonStyle(.bordered)
@@ -144,18 +147,7 @@ struct NewBook: View {
                                     Spacer()
                                     
                                     if tagInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
-                                        Button(action: {
-                                            let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
-                                            tagString.split(separator: ",").forEach{
-                                                let _tag = Tag(name: String($0))
-                                                if(bookViewModel.tags.firstIndex(where: { tag in
-                                                    tag.name == _tag.name
-                                                }) == nil){
-                                                    bookViewModel.tags.append(_tag)
-                                                }
-                                            }
-                                            tagInput = ""
-                                        }, label: {
+                                        Button(action:addTag, label: {
                                             Label("",systemImage: "plus.circle")
                                         })
                                     }
@@ -167,22 +159,13 @@ struct NewBook: View {
                             .focused($focusInput,equals: .tag)
 //                            .submitLabel(.done)
                             .onSubmit{
-                                let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
-                                tagString.split(separator: ",").forEach{
-                                    let _tag = Tag(name: String($0))
-                                    if(bookViewModel.tags.firstIndex(where: { tag in
-                                        tag.name == _tag.name
-                                    }) == nil){
-                                        bookViewModel.tags.append(_tag)
-                                    }
-                                }
-                                tagInput = ""
-                                
+                                addTag()
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                     focusInput = .tag
                                 }
                                 
                             }
+                            
                         
                         
                         
@@ -217,13 +200,25 @@ struct NewBook: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
-                    if (!textInPhoto.isEmpty){
-                        ScrollView(.horizontal){
-                            HStack{
-                                ForEach(
-                                    textInPhoto.split(separator: ",")
-                                        .map{String($0)}
-                                    ,id:\.self){x in
+                    
+                    ScrollView(.horizontal){
+                        HStack{
+                            ForEach(tags){x in
+                                if focusInput == .tag && bookViewModel.tags.first(where:{ tag in
+                                    tag.name == x.name
+                                }) == nil {
+                                    Button(x.name) {
+                                        bookViewModel.tags.append(x)
+                                    }
+                                }
+                            }
+                            
+                            
+                            ForEach(
+                                textInPhoto.split(separator: ",")
+                                    .map{String($0)}
+                                ,id:\.self){x in
+                                    if focusInput != .tag {
                                         Button(x) {
                                             if focusInput == .author {
                                                 bookViewModel.author += x
@@ -231,12 +226,16 @@ struct NewBook: View {
                                                 bookViewModel.name += x
                                             }
                                         }
-                                        
                                     }
-                            }}
+                                }
+                        }
+                        
                     }
+                    
                 }
+                
             }
+
             .actionSheet(isPresented: $showPhotoOptins){
                 if false && VNDocumentCameraViewController.isSupported{
                     return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
@@ -288,6 +287,20 @@ struct NewBook: View {
         
     }
     
+    private func addTag(){
+        let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        tagString.split(separator: ",").forEach{
+            let _tag = Tag(name: String($0))
+            if(bookViewModel.tags.firstIndex(where: { tag in
+                tag.name == _tag.name
+            }) == nil){
+                bookViewModel.tags.append(_tag)
+            }
+        }
+        tagInput = ""
+
+    }
+    
     private func save() -> Bool{
         if(bookViewModel.name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty) {
             showToast = true
@@ -295,6 +308,7 @@ struct NewBook: View {
             return false
         }
         
+        addTag()
         
         if let book = bookViewModel.book{
             book.image = bookViewModel.image.pngData()!
