@@ -50,6 +50,7 @@ struct BookList: View {
     @State private var showAlert:Bool = false
     @State private var wantDelete:Book? = nil
     @State private var tags:[Tag] = []
+    @State private var selectTag:Tag? = nil
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
@@ -122,12 +123,6 @@ struct BookList: View {
                 
             } else {
                 List{
-                    if let tags = tags {
-                        ForEach(tags){tag in
-                            Text(tag.name)
-                        }
-                    }
-                    
                     if searchText.isEmpty {
                         ForEach(booksGroup) { section in
                             Section(header: Text((section.id ? String(localized: "Finished") : String(localized: "Unfinished")) + "·\(section.count)" ).monospacedDigit() ) {
@@ -191,6 +186,42 @@ struct BookList: View {
                     }
                     
                 }
+                .toolbar{
+                    
+                    ToolbarItem(placement: .navigation){
+                        if !tags.isEmpty{
+                            Menu {
+                                
+                                ForEach(tags){tag in
+                                    Button( action: {
+                                        selectTag = tag
+                                        
+                                        let predicate = NSPredicate(format: "tags CONTAINS[c] %@ ", tag.name+",")
+                                        booksGroup.nsPredicate = predicate
+                                        
+                                    },label: {
+                                        Text(tag.name)
+                                    })
+                                }
+                                
+                                Button(action: {
+                                    selectTag = nil
+                                    
+                                    let predicate = NSPredicate(value: true)
+                                    booksGroup.nsPredicate = predicate
+                                    
+                                }, label: {Text("-")})
+
+                                
+                            } label:{
+                                Label(selectTag?.name ?? "",systemImage: selectTag != nil ? "tag.fill" :"tag")
+                                        .labelStyle(.titleAndIcon)
+                            }
+                        }
+                    }
+                    
+                    
+                }
                 
                 
             }
@@ -200,27 +231,32 @@ struct BookList: View {
         .navigationViewStyle(.stack)
         .sheet(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel,tags: tags)
+                .onDisappear(perform: {
+                    initTags()
+                })
         }
         .task {
-            tags.removeAll()
-            booksAll.forEach({book in
-                if let tagString = book.tags ,!tagString.isEmpty {
-                    tagString.split(separator: ",").forEach{
-                        let _tag = Tag(name: String($0))
-                        if(tags.firstIndex(where: { tag in
-                            tag.name == _tag.name
-                        }) == nil){
-                            tags.append(_tag)
-                        }
-                    }
-                }
-            })
-            
-//            tags = BookPersistenceController.shared.getAllTags()
+            initTags()
         }
         
     }
     
+    func initTags(){
+        tags.removeAll()
+        booksAll.forEach({book in
+            if let tagString = book.tags ,!tagString.isEmpty {
+                tagString.split(separator: ",").forEach{
+                    let _tag = Tag(name: String($0))
+                    if(tags.firstIndex(where: { tag in
+                        tag.name == _tag.name
+                    }) == nil){
+                        tags.append(_tag)
+                    }
+                }
+            }
+        })
+
+    }
     
     func delete(book:Book?){
         if let book = book{

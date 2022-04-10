@@ -64,5 +64,5 @@ class BookViewModel: ObservableObject{
 
 struct Tag:Identifiable{
     let name:String
-    var id:String{name}
+    var id:String{name}    
 }

@@ -59,6 +59,24 @@ struct BookCard: View {
                             self.showTimer = true
                         }
                     
+                    if let tagString = book.tags{
+                        if !tagString.isEmpty {
+                            HStack{
+                                ForEach( tagString.split(separator: ",").map({Tag(name: String($0))})){tag in
+                                
+                                        Text(tag.name)
+                                            .padding(3)
+                                            .padding(.horizontal,5)
+                                            .background(.gray.opacity(0.2))
+                                            .clipShape(Capsule())
+                                            .font(.subheadline)
+                                
+                                }
+                            }
+                        }
+                        
+                    }
+
                     
                     HStack(spacing:10){
                         ForEach(0...4,id: \.self) {index in
