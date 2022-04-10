@@ -32,6 +32,8 @@ class BookViewModel: ObservableObject{
         }
         if let tags = book.tags{
             self.tags = tags.split(separator: ",").map { Tag(name: String($0)) }
+        } else{
+            tags = []
         }
         
         self.image = UIImage(data: book.image) ?? UIImage()
