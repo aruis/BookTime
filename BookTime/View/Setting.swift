@@ -8,6 +8,7 @@
 import SwiftUI
 import CloudKit
 import UniformTypeIdentifiers
+import AlertToast
 
 struct Setting: View {
     let monkeyStr = "$#*#$"
@@ -288,8 +289,6 @@ struct Setting: View {
                                 let doneTime =  dateFormatter.date(from: String(cells[9]))
                                 let rating = Int16( cells[10]) ?? 0
                                 let readDays = Int16(cells[11]) ?? 0
-                                let tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
-                                
                                 
                                 let matchBook = books.first(where: {$0.id == id})
                                 
@@ -318,7 +317,10 @@ struct Setting: View {
                                     book.doneTime = doneTime
                                     book.rating = rating
                                     book.readDays = readDays
-                                    book.tags = tags
+                                    
+                                    if(cells.count == 13){
+                                        book.tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
+                                    }
                                     
                                     importBookCount+=1
                                 }

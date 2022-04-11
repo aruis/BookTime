@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct Statistics: View {
     @AppStorage("targetMinPerday") var targetMinPerday = 45

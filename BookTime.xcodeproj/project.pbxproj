@@ -12,10 +12,6 @@
 		831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831939052802682A0011AA3C /* TagLabelStyle.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
 		83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83492C7E275624F2006B5FF2 /* IntExt.swift */; };
-		83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8350256F275ADC8A00EF9C5C /* RoundedCross.swift */; };
-		83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502570275ADC8A00EF9C5C /* Triangle.swift */; };
-		83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502571275ADC8A00EF9C5C /* SlimRectangle.swift */; };
-		83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */; };
 		83502578275B012200EF9C5C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83502577275B012200EF9C5C /* Setting.swift */; };
 		835A3CE0275652CA00672F98 /* NewBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A3CDF275652CA00672F98 /* NewBook.swift */; };
 		835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B845A2760A04600F9BAE8 /* DateExt.swift */; };
@@ -29,9 +25,8 @@
 		83731CAA2755D39A00305305 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA92755D39A00305305 /* BookList.swift */; };
 		83731CAC2755D45D00305305 /* BookListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CAB2755D45D00305305 /* BookListItem.swift */; };
 		83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */; };
-		83862925275F960B004E3141 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862922275F960B004E3141 /* BlurView.swift */; };
-		83862926275F960B004E3141 /* AlertToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862923275F960B004E3141 /* AlertToast.swift */; };
-		83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83862924275F960B004E3141 /* ActivityIndicator.swift */; };
+		838316112803DA3100869E1D /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 838316102803DA3100869E1D /* AlertToast */; };
+		838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 838316132803FE4800869E1D /* ConfettiSwiftUI */; };
 		838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B8ABC2769B47700B8E87A /* ViewExt.swift */; };
 		83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		83955FEB275EFB43004408C3 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955FEA275EFB43004408C3 /* About.swift */; };
@@ -55,10 +50,6 @@
 		8320045D2759B71900EB64FC /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		8338BEAE2773552E00D51AFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		83492C7E275624F2006B5FF2 /* IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExt.swift; sourceTree = "<group>"; };
-		8350256F275ADC8A00EF9C5C /* RoundedCross.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCross.swift; sourceTree = "<group>"; };
-		83502570275ADC8A00EF9C5C /* Triangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
-		83502571275ADC8A00EF9C5C /* SlimRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlimRectangle.swift; sourceTree = "<group>"; };
-		83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiSwiftUI.swift; sourceTree = "<group>"; };
 		83502577275B012200EF9C5C /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		835A3CDF275652CA00672F98 /* NewBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBook.swift; sourceTree = "<group>"; };
 		835B845A2760A04600F9BAE8 /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
@@ -73,9 +64,6 @@
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
 		83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeFileDoc.swift; sourceTree = "<group>"; };
-		83862922275F960B004E3141 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		83862923275F960B004E3141 /* AlertToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertToast.swift; sourceTree = "<group>"; };
-		83862924275F960B004E3141 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		838B8ABC2769B47700B8E87A /* ViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
 		83924E61276CDA55002D0678 /* BookTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTime.entitlements; sourceTree = "<group>"; };
 		83924E63276CDB7E002D0678 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -100,7 +88,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */,
 				83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */,
+				838316112803DA3100869E1D /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,25 +114,6 @@
 				838B8ABC2769B47700B8E87A /* ViewExt.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-				8350256E275ADC8A00EF9C5C /* Shapes */,
-				83502572275ADC8A00EF9C5C /* ConfettiSwiftUI.swift */,
-			);
-			path = ConfettiSwiftUI;
-			sourceTree = "<group>";
-		};
-		8350256E275ADC8A00EF9C5C /* Shapes */ = {
-			isa = PBXGroup;
-			children = (
-				8350256F275ADC8A00EF9C5C /* RoundedCross.swift */,
-				83502570275ADC8A00EF9C5C /* Triangle.swift */,
-				83502571275ADC8A00EF9C5C /* SlimRectangle.swift */,
-			);
-			path = Shapes;
 			sourceTree = "<group>";
 		};
 		83731C862755D0D600305305 = {
@@ -171,8 +142,6 @@
 				838316E327B3B5DF001575E0 /* Resources */,
 				83CE5BF7277DF4A00041D919 /* Info.plist */,
 				83924E61276CDA55002D0678 /* BookTime.entitlements */,
-				83862921275F960B004E3141 /* AlertToast */,
-				8350256D275ADC8A00EF9C5C /* ConfettiSwiftUI */,
 				839B4E65275758A500AB05AF /* Util */,
 				839B4E6227572FA800AB05AF /* ViewModel */,
 				83492C7B275624BC006B5FF2 /* Extensions */,
@@ -238,16 +207,6 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		83862921275F960B004E3141 /* AlertToast */ = {
-			isa = PBXGroup;
-			children = (
-				83862922275F960B004E3141 /* BlurView.swift */,
-				83862923275F960B004E3141 /* AlertToast.swift */,
-				83862924275F960B004E3141 /* ActivityIndicator.swift */,
-			);
-			path = AlertToast;
-			sourceTree = "<group>";
-		};
 		83924E62276CDB7E002D0678 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +250,10 @@
 			dependencies = (
 			);
 			name = BookTime;
+			packageProductDependencies = (
+				838316102803DA3100869E1D /* AlertToast */,
+				838316132803FE4800869E1D /* ConfettiSwiftUI */,
+			);
 			productName = BookTime;
 			productReference = 83731C8F2755D0D600305305 /* BookTime.app */;
 			productType = "com.apple.product-type.application";
@@ -320,6 +283,10 @@
 				Base,
 			);
 			mainGroup = 83731C862755D0D600305305;
+			packageReferences = (
+				8383160F2803DA3100869E1D /* XCRemoteSwiftPackageReference "AlertToast" */,
+				838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+			);
 			productRefGroup = 83731C902755D0D600305305 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -352,21 +319,16 @@
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
 				83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */,
-				83502575275ADC8A00EF9C5C /* SlimRectangle.swift in Sources */,
-				83862926275F960B004E3141 /* AlertToast.swift in Sources */,
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
 				83955FEB275EFB43004408C3 /* About.swift in Sources */,
-				83502576275ADC8A00EF9C5C /* ConfettiSwiftUI.swift in Sources */,
 				831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */,
 				83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */,
 				83B03AD827698032005B4700 /* Slogan.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */,
-				83862925275F960B004E3141 /* BlurView.swift in Sources */,
 				835E822F276338D10079FF99 /* ReadLog.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,
-				83862927275F960B004E3141 /* ActivityIndicator.swift in Sources */,
 				839B4E6E2757763900AB05AF /* TimerView.swift in Sources */,
 				839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */,
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
@@ -375,12 +337,10 @@
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
 				839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
-				83502573275ADC8A00EF9C5C /* RoundedCross.swift in Sources */,
 				83502578275B012200EF9C5C /* Setting.swift in Sources */,
 				8317F89A2772FE5C00864D2F /* Tools.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
 				83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */,
-				83502574275ADC8A00EF9C5C /* Triangle.swift in Sources */,
 				835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,6 +581,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8383160F2803DA3100869E1D /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		838316102803DA3100869E1D /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8383160F2803DA3100869E1D /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
+		838316132803FE4800869E1D /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		83731C9D2755D0D700305305 /* BookTime.xcdatamodeld */ = {
