@@ -27,6 +27,9 @@
 		83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */; };
 		838316112803DA3100869E1D /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 838316102803DA3100869E1D /* AlertToast */; };
 		838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 838316132803FE4800869E1D /* ConfettiSwiftUI */; };
+		83831617280426B100869E1D /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 83831616280426B100869E1D /* SwiftUICharts */; };
+		8383161F28045D0600869E1D /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383161E28045D0600869E1D /* BarView.swift */; };
+		8383162128045E7900869E1D /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383162028045E7900869E1D /* ChartData.swift */; };
 		838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B8ABC2769B47700B8E87A /* ViewExt.swift */; };
 		83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		83955FEB275EFB43004408C3 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955FEA275EFB43004408C3 /* About.swift */; };
@@ -64,6 +67,8 @@
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
 		83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeFileDoc.swift; sourceTree = "<group>"; };
+		8383161E28045D0600869E1D /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
+		8383162028045E7900869E1D /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		838B8ABC2769B47700B8E87A /* ViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
 		83924E61276CDA55002D0678 /* BookTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTime.entitlements; sourceTree = "<group>"; };
 		83924E63276CDB7E002D0678 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -89,6 +94,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */,
+				83831617280426B100869E1D /* SwiftUICharts in Frameworks */,
 				83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */,
 				838316112803DA3100869E1D /* AlertToast in Frameworks */,
 			);
@@ -177,6 +183,7 @@
 		83731CA82755D37C00305305 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8383161D28045CF700869E1D /* Chart */,
 				83731CA92755D39A00305305 /* BookList.swift */,
 				83731CAB2755D45D00305305 /* BookListItem.swift */,
 				835A3CDF275652CA00672F98 /* NewBook.swift */,
@@ -190,6 +197,15 @@
 				830935D7279F9F37006F8F56 /* ActivityView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		8383161D28045CF700869E1D /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				8383161E28045D0600869E1D /* BarView.swift */,
+				8383162028045E7900869E1D /* ChartData.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		838316E327B3B5DF001575E0 /* Resources */ = {
@@ -253,6 +269,7 @@
 			packageProductDependencies = (
 				838316102803DA3100869E1D /* AlertToast */,
 				838316132803FE4800869E1D /* ConfettiSwiftUI */,
+				83831616280426B100869E1D /* SwiftUICharts */,
 			);
 			productName = BookTime;
 			productReference = 83731C8F2755D0D600305305 /* BookTime.app */;
@@ -286,6 +303,7 @@
 			packageReferences = (
 				8383160F2803DA3100869E1D /* XCRemoteSwiftPackageReference "AlertToast" */,
 				838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+				83831615280426B100869E1D /* XCRemoteSwiftPackageReference "ChartView" */,
 			);
 			productRefGroup = 83731C902755D0D600305305 /* Products */;
 			projectDirPath = "";
@@ -315,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8383161F28045D0600869E1D /* BarView.swift in Sources */,
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
@@ -332,6 +351,7 @@
 				839B4E6E2757763900AB05AF /* TimerView.swift in Sources */,
 				839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */,
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
+				8383162128045E7900869E1D /* ChartData.swift in Sources */,
 				83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */,
 				830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */,
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
@@ -599,6 +619,14 @@
 				minimumVersion = 0.3.1;
 			};
 		};
+		83831615280426B100869E1D /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -611,6 +639,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
 			productName = ConfettiSwiftUI;
+		};
+		83831616280426B100869E1D /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 83831615280426B100869E1D /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 

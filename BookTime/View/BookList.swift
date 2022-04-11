@@ -200,7 +200,7 @@ struct BookList: View {
                                         booksGroup.nsPredicate = predicate
                                         
                                     },label: {
-                                        Text(tag.name)
+                                        Label(tag.name,systemImage: selectTag?.name == tag.name ?  "checkmark" : "")
                                     })
                                 }
                                 
@@ -210,7 +210,9 @@ struct BookList: View {
                                     let predicate = NSPredicate(value: true)
                                     booksGroup.nsPredicate = predicate
                                     
-                                }, label: {Text("-")})
+                                }, label: {
+                                    Label("-",systemImage: selectTag == nil ?  "checkmark" : "")
+                                })
 
                                 
                             } label:{

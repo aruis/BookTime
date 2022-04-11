@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AlertToast
+import SwiftUICharts
 
 struct Statistics: View {
     @AppStorage("targetMinPerday") var targetMinPerday = 45
@@ -186,6 +187,12 @@ struct Statistics: View {
                 }
                 
             }
+
+//            GroupBox(label: Label("Data for the last 30 days",systemImage: "chart.bar")
+//                .font(.footnote), content: {
+//
+//                        
+//            })
             
             
             GroupBox(label: Label(totalTitle,systemImage: "clock")
