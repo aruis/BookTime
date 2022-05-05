@@ -137,8 +137,8 @@ struct TimerView: View {
                         
                         
                     }
-                    
-                    if handShowTimer{
+                                       
+                    if handShowTimer && UIDevice.current.userInterfaceIdiom == .phone {
                         Button(action: {
                             if  verticalSizeClass == .compact{
                                 UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
