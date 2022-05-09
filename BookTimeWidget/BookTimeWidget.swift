@@ -1,26 +1,23 @@
 //
-//  BookTimeWdiget.swift
-//  BookTimeWdiget
+//  BookTimeWidget.swift
+//  BookTimeWidget
 //
-//  Created by Liu Rui on 2022/5/8.
+//  Created by Liu Rui on 2022/5/9.
 //
 
 import WidgetKit
 import SwiftUI
-import Intents
 
-
-struct Provider: IntentTimelineProvider {
+struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> BookTimeWidgetEntry {
         BookTimeWidgetEntry(date: Date(),todayReadMin: 0,targetMinPerday: 45)
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
+    func getSnapshot(in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
         completion(buildEntry())
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        
+    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         let nextUpdateDate = Calendar.current.date(byAdding: .day, value: 1, to: Date().start())!
 
         let timeline = Timeline(entries: [buildEntry()], policy: .after(nextUpdateDate))
@@ -62,7 +59,8 @@ struct BookTimeWidgetEntry: TimelineEntry {
     let targetMinPerday:Int
 }
 
-struct BookTimeWdigetEntryView : View {
+
+struct BookTimeWidgetEntryView : View {
     var process:CGFloat{
         get{
             if(entry.targetMinPerday>0){
@@ -198,24 +196,23 @@ struct BookTimeWdigetEntryView : View {
         
     }
 }
-
 @main
-struct BookTimeWdiget: Widget {
-    let kind: String = "BookTimeWdiget"
+struct BookTimeWidget: Widget {
+    let kind: String = "BookTimeWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-            BookTimeWdigetEntryView(entry: entry)
-        }
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            BookTimeWidgetEntryView(entry: entry)
+        }        
         .configurationDisplayName("BookTime")
         .description("Reading timing buddy")
         .supportedFamilies([.systemMedium,.systemSmall])
     }
 }
 
-struct BookTimeWdiget_Previews: PreviewProvider {
+struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        BookTimeWdigetEntryView(entry: BookTimeWidgetEntry(date: Date(),todayReadMin: 45,targetMinPerday: 90))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),todayReadMin: 45,targetMinPerday: 90))
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }

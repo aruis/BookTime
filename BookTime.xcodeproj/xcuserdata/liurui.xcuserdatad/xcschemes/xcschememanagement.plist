@@ -9,15 +9,20 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>BookTimeWdigetExtension.xcscheme_^#shared#^_</key>
+		<key>BookTimeWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>83731C8E2755D0D600305305</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83D53FF6282906B300A72716</key>
 		<dict>
 			<key>primary</key>
 			<true/>
