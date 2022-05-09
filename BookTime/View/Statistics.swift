@@ -147,11 +147,10 @@ struct Statistics: View {
             }
             
             
-            GroupBox(label:Label("\( Int( round( process * 100))) %  of the Plan Completed",systemImage: "goforward").font(.footnote)){
+            GroupBox(label:Label("\( Int( round( process * 100))) % of the Plan Completed",systemImage: "goforward").font(.footnote)){
                 HStack{
-                    
                     Text( "**\(todayReadMin)** Minutes Today")
-                        .font(.title2)
+                        .font(.system(.title2,design: .rounded))
                     
                     Spacer()
                     

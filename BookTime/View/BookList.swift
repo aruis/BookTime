@@ -8,10 +8,10 @@
 import SwiftUI
 import CoreData
 import CloudKit
-
+import WidgetKit
 
 struct BookList: View {
-    
+    @AppStorage("targetMinPerday") var targetMinPerday = 45
     let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
     
@@ -152,10 +152,6 @@ struct BookList: View {
                         self.showAlert = false
                     }
                 })
-                .onAppear(perform: {
-                    let readMinToday =  BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
-                    print(readMinToday)
-                })
                 .navigationBarTitleDisplayMode(.automatic)
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
                 .onChange(of: searchText){ searchText in
@@ -239,6 +235,12 @@ struct BookList: View {
         }
         .task {
             initTags()
+            
+            let readMinToday =  BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
+            
+            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readMinToday, forKey: "todayReadMin")
+            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
+            WidgetCenter.shared.reloadAllTimelines()
         }
         
     }

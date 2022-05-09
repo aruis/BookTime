@@ -31,6 +31,16 @@
 		8383161F28045D0600869E1D /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383161E28045D0600869E1D /* BarView.swift */; };
 		8383162128045E7900869E1D /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383162028045E7900869E1D /* ChartData.swift */; };
 		838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B8ABC2769B47700B8E87A /* ViewExt.swift */; };
+		8392247E2827A7EA00303541 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392247D2827A7EA00303541 /* WidgetKit.framework */; };
+		839224802827A7EA00303541 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392247F2827A7EA00303541 /* SwiftUI.framework */; };
+		839224832827A7EA00303541 /* BookTimeWdiget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839224822827A7EA00303541 /* BookTimeWdiget.swift */; };
+		839224862827A7EB00303541 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 839224852827A7EB00303541 /* Assets.xcassets */; };
+		839224882827A7EB00303541 /* BookTimeWdiget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 839224842827A7EA00303541 /* BookTimeWdiget.intentdefinition */; };
+		839224892827A7EB00303541 /* BookTimeWdiget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 839224842827A7EA00303541 /* BookTimeWdiget.intentdefinition */; };
+		8392248C2827A7EB00303541 /* BookTimeWdigetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8392247C2827A7EA00303541 /* BookTimeWdigetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8392249D2828E40800303541 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 839B9C2527734802001094C6 /* Localizable.strings */; };
+		8392249F2828E82000303541 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392249E2828E82000303541 /* DateExt.swift */; };
+		839224A02828E82000303541 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392249E2828E82000303541 /* DateExt.swift */; };
 		83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		83955FEB275EFB43004408C3 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955FEA275EFB43004408C3 /* About.swift */; };
 		839B4E6427572FBC00AB05AF /* BookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B4E6327572FBC00AB05AF /* BookViewModel.swift */; };
@@ -45,6 +55,30 @@
 		83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC51EC27589ED200C2A90A /* TimerTrack.swift */; };
 		83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FC0BCD277B0212004C6C27 /* Tutorial.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8392248A2827A7EB00303541 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83731C872755D0D600305305 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8392247B2827A7EA00303541;
+			remoteInfo = BookTimeWdigetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8392248D2827A7EB00303541 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8392248C2827A7EB00303541 /* BookTimeWdigetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		830935D7279F9F37006F8F56 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -70,6 +104,15 @@
 		8383161E28045D0600869E1D /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		8383162028045E7900869E1D /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		838B8ABC2769B47700B8E87A /* ViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
+		8392247C2827A7EA00303541 /* BookTimeWdigetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BookTimeWdigetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8392247D2827A7EA00303541 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		8392247F2827A7EA00303541 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		839224822827A7EA00303541 /* BookTimeWdiget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeWdiget.swift; sourceTree = "<group>"; };
+		839224842827A7EA00303541 /* BookTimeWdiget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = BookTimeWdiget.intentdefinition; sourceTree = "<group>"; };
+		839224852827A7EB00303541 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		839224872827A7EB00303541 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8392249C2828A99200303541 /* BookTimeWdigetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTimeWdigetExtension.entitlements; sourceTree = "<group>"; };
+		8392249E2828E82000303541 /* DateExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateExt.swift; path = BookTime/Extensions/DateExt.swift; sourceTree = SOURCE_ROOT; };
 		83924E61276CDA55002D0678 /* BookTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTime.entitlements; sourceTree = "<group>"; };
 		83924E63276CDB7E002D0678 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		83955FEA275EFB43004408C3 /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
@@ -100,6 +143,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		839224792827A7EA00303541 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				839224802827A7EA00303541 /* SwiftUI.framework in Frameworks */,
+				8392247E2827A7EA00303541 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -125,9 +177,11 @@
 		83731C862755D0D600305305 = {
 			isa = PBXGroup;
 			children = (
+				8392249C2828A99200303541 /* BookTimeWdigetExtension.entitlements */,
 				839B9C2527734802001094C6 /* Localizable.strings */,
 				839B9C2227734802001094C6 /* BookTime-InfoPlist.strings */,
 				83731C912755D0D600305305 /* BookTime */,
+				839224812827A7EA00303541 /* BookTimeWdiget */,
 				83731C902755D0D600305305 /* Products */,
 				83924E62276CDB7E002D0678 /* Frameworks */,
 			);
@@ -137,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				83731C8F2755D0D600305305 /* BookTime.app */,
+				8392247C2827A7EA00303541 /* BookTimeWdigetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,10 +278,24 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		839224812827A7EA00303541 /* BookTimeWdiget */ = {
+			isa = PBXGroup;
+			children = (
+				8392249E2828E82000303541 /* DateExt.swift */,
+				839224822827A7EA00303541 /* BookTimeWdiget.swift */,
+				839224842827A7EA00303541 /* BookTimeWdiget.intentdefinition */,
+				839224852827A7EB00303541 /* Assets.xcassets */,
+				839224872827A7EB00303541 /* Info.plist */,
+			);
+			path = BookTimeWdiget;
+			sourceTree = "<group>";
+		};
 		83924E62276CDB7E002D0678 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				83924E63276CDB7E002D0678 /* CloudKit.framework */,
+				8392247D2827A7EA00303541 /* WidgetKit.framework */,
+				8392247F2827A7EA00303541 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -260,10 +329,12 @@
 				83731C8B2755D0D600305305 /* Sources */,
 				83731C8C2755D0D600305305 /* Frameworks */,
 				83731C8D2755D0D600305305 /* Resources */,
+				8392248D2827A7EB00303541 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8392248B2827A7EB00303541 /* PBXTargetDependency */,
 			);
 			name = BookTime;
 			packageProductDependencies = (
@@ -275,6 +346,23 @@
 			productReference = 83731C8F2755D0D600305305 /* BookTime.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8392247B2827A7EA00303541 /* BookTimeWdigetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 839224902827A7EB00303541 /* Build configuration list for PBXNativeTarget "BookTimeWdigetExtension" */;
+			buildPhases = (
+				839224782827A7EA00303541 /* Sources */,
+				839224792827A7EA00303541 /* Frameworks */,
+				8392247A2827A7EA00303541 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BookTimeWdigetExtension;
+			productName = BookTimeWdigetExtension;
+			productReference = 8392247C2827A7EA00303541 /* BookTimeWdigetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -282,11 +370,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					83731C8E2755D0D600305305 = {
 						CreatedOnToolsVersion = 13.1;
+					};
+					8392247B2827A7EA00303541 = {
+						CreatedOnToolsVersion = 13.3.1;
 					};
 				};
 			};
@@ -310,6 +401,7 @@
 			projectRoot = "";
 			targets = (
 				83731C8E2755D0D600305305 /* BookTime */,
+				8392247B2827A7EA00303541 /* BookTimeWdigetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -326,6 +418,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8392247A2827A7EA00303541 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				839224862827A7EB00303541 /* Assets.xcassets in Resources */,
+				8392249D2828E40800303541 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -333,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				839224892827A7EB00303541 /* BookTimeWdiget.intentdefinition in Sources */,
 				8383161F28045D0600869E1D /* BarView.swift in Sources */,
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
@@ -354,6 +456,7 @@
 				8383162128045E7900869E1D /* ChartData.swift in Sources */,
 				83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */,
 				830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */,
+				8392249F2828E82000303541 /* DateExt.swift in Sources */,
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
 				839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
@@ -365,7 +468,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		839224782827A7EA00303541 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				839224882827A7EB00303541 /* BookTimeWdiget.intentdefinition in Sources */,
+				839224832827A7EA00303541 /* BookTimeWdiget.swift in Sources */,
+				839224A02828E82000303541 /* DateExt.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8392248B2827A7EB00303541 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8392247B2827A7EA00303541 /* BookTimeWdigetExtension */;
+			targetProxy = 8392248A2827A7EB00303541 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		839B9C2227734802001094C6 /* BookTime-InfoPlist.strings */ = {
@@ -510,12 +631,13 @@
 		83731CA32755D0D700305305 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -533,7 +655,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.22.4;
+				MARKETING_VERSION = 1.22.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -546,12 +668,13 @@
 		83731CA42755D0D700305305 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -569,10 +692,70 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.22.4;
+				MARKETING_VERSION = 1.22.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8392248E2827A7EB00303541 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BookTimeWdigetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BookTimeWdiget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BookTimeWdiget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime.BookTimeWdiget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8392248F2827A7EB00303541 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BookTimeWdigetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BookTimeWdiget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BookTimeWdiget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime.BookTimeWdiget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -596,6 +779,15 @@
 			buildConfigurations = (
 				83731CA32755D0D700305305 /* Debug */,
 				83731CA42755D0D700305305 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		839224902827A7EB00303541 /* Build configuration list for PBXNativeTarget "BookTimeWdigetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8392248E2827A7EB00303541 /* Debug */,
+				8392248F2827A7EB00303541 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

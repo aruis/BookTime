@@ -10,11 +10,18 @@
 /* No comment provided by engineer. */
 "Clear All Data" = "清除所有数据";
 
+"Reading timing buddy" = "您的阅读计时伴侣";
+
 /* No comment provided by engineer. */
 "**%d** Minutes Today" = "今日已阅读 **%d** 分钟";
 
 /* No comment provided by engineer. */
-"%lld %%  of the Plan Completed" = "完成计划的 %lld %%";
+"%lld Minutes Today" = "今日已阅读 **%lld** 分";
+
+"%lld Min" = "%lld 分";
+
+/* No comment provided by engineer. */
+"%lld %% of the Plan Completed" = "完成计划的 %lld %%";
 
 "%lld book has been imported" = "%lld 条书籍信息已导入";
 

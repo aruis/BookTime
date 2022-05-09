@@ -8,6 +8,7 @@
 import SwiftUI
 import LocalAuthentication
 import AlertToast
+import WidgetKit
 //import Foundation
 
 struct TimerView: View {
@@ -331,6 +332,10 @@ struct TimerView: View {
                         showToast = true
                     }
                     
+                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readLog.readMinutes, forKey: "todayReadMin")
+                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
+                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
+                    WidgetCenter.shared.reloadAllTimelines()
                     
                     DispatchQueue.main.async {
                         do{
