@@ -20,6 +20,14 @@
 
 "%lld Min" = "%lld 分";
 
+"Reading Reminder" = "读书提醒";
+
+"Reading time is here, let's read it.😄" = "阅读时间到，快点来读书吧。😄";
+
+"Turn on reading reminders" = "阅读定时提醒";
+
+"Read reminder time" = "阅读提醒时间";
+
 /* No comment provided by engineer. */
 "%lld %% of the Plan Completed" = "完成计划的 %lld %%";
 

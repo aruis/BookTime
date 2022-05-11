@@ -28,8 +28,8 @@ struct Setting: View {
     
     @AppStorage("isRemind") var isRemind = false
     
-    @AppStorage("remindDateHour") var reminDateHour = 0
-    @AppStorage("remindDateMin") var reminDateMin = 0
+    @AppStorage("remindDateHour") var reminDateHour = -1
+    @AppStorage("remindDateMin") var reminDateMin = -1
     
     @State private var remindDate = Date()
     
@@ -136,63 +136,37 @@ struct Setting: View {
                             self.sliderIsChange = editing
                         })
 
-                        
-                        Button(action: {
-                            
-                            let content = UNMutableNotificationContent()
-                            content.title = "读书提醒"
-                            content.subtitle = "今天还没有读书，抽10分钟读读书吧。"
-                            content.sound = UNNotificationSound.default
-
-                            // show this notification five seconds from now
-//                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                            
-                            
-                            
-                            var date = DateComponents()
-                            date.hour = 20
-                            date.minute = 38
-                            let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-
-                            // choose a random identifier
-                            let request = UNNotificationRequest(identifier: "booktime-remind", content: content, trigger: trigger)
-
-                            // add our notification request
-                            UNUserNotificationCenter.current().add(request)
-                            
-                        }){
-                            Label("定时提醒",systemImage: "arrow.up.doc")
-                        }
-                        
-                        Toggle("阅读定时提醒", isOn: $isRemind).onChange(of: isRemind, perform: {value in
+                                                
+                        Toggle("Turn on reading reminders", isOn: $isRemind).onChange(of: isRemind, perform: {value in
                             if value{
                                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                                     if success {
-                                        print("All set!")
+                                        if reminDateHour > -1 && reminDateMin > -1 {
+                                            NotificationTool.add(hour: reminDateHour, minute: reminDateMin)
+                                        }
                                     } else if let error = error {
                                         print(error.localizedDescription)
                                         isRemind = false
                                     }
                                 }
                             } else {
-                                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["booktime-remind"])
+                                NotificationTool.cancel()
                             }
                                                         
                         })
                         .foregroundColor(.accentColor)
                         
                         if isRemind {
-                            DatePicker("阅读提醒时间", selection: $remindDate, displayedComponents: .hourAndMinute)
+                            DatePicker("Read reminder time", selection: $remindDate, displayedComponents: .hourAndMinute)
                                 .foregroundColor(.accentColor)
                                 .onChange(of: remindDate, perform: {date in
-                                    var calendar = Calendar.current
+                                    let calendar = Calendar.current
                                     
-                                    let hour = calendar.component(.hour, from: date)
-                                    let minute = calendar.component(.minute, from: date)
+                                    reminDateHour = calendar.component(.hour, from: date)
+                                    reminDateMin = calendar.component(.minute, from: date)
                                     
-                                    print(hour)
-                                    print(minute)
-                                    
+                                    NotificationTool.add(hour: reminDateHour, minute: reminDateMin)
+                                                                        
                                 })
                         }
                         
