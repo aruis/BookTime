@@ -31,7 +31,7 @@ struct Setting: View {
     @AppStorage("remindDateHour") var reminDateHour = -1
     @AppStorage("remindDateMin") var reminDateMin = -1
     
-    @State private var remindDate = Date()
+    @State private var remindDate = Date().start()
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     //    @AppStorage("useiCloud") var useiCloud = false
@@ -59,6 +59,8 @@ struct Setting: View {
     @State private var isImporting: Bool = false
     
     @State private var toastString:String = ""
+    
+    @Environment(\.scenePhase) var scenePhase
     
     private var greeting:String{
         get {
@@ -144,9 +146,13 @@ struct Setting: View {
                                         if reminDateHour > -1 && reminDateMin > -1 {
                                             NotificationTool.add(hour: reminDateHour, minute: reminDateMin)
                                         }
-                                    } else if let error = error {
-                                        print(error.localizedDescription)
+                                    } else {
                                         isRemind = false
+                                        Task{
+                                            if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
+                                                 await UIApplication.shared.open(appSettings)
+                                            }
+                                        }
                                     }
                                 }
                             } else {
@@ -155,6 +161,14 @@ struct Setting: View {
                                                         
                         })
                         .foregroundColor(.accentColor)
+                        .onAppear{
+                            checkNotificationAuth()
+                        }
+                        .onChange(of: scenePhase) { newPhase in
+                                       if newPhase == .active {
+                                           checkNotificationAuth()
+                                       }
+                        }
                         
                         if isRemind {
                             DatePicker("Read reminder time", selection: $remindDate, displayedComponents: .hourAndMinute)
@@ -168,6 +182,11 @@ struct Setting: View {
                                     NotificationTool.add(hour: reminDateHour, minute: reminDateMin)
                                                                         
                                 })
+                                .onAppear{
+                                    if reminDateMin > -1 && reminDateHour > -1 {
+                                        remindDate  = Calendar.current.date(bySettingHour: reminDateHour, minute: reminDateMin,second: 0, of: Date())!
+                                    }                                    
+                                }
                         }
                         
 //                                    .labelsHidden()
@@ -422,6 +441,13 @@ struct Setting: View {
         }
         
         
+    }
+    
+    func checkNotificationAuth(){
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            isRemind = (settings.authorizationStatus == .authorized)
+        }
     }
     
     func exportData(){
