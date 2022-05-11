@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> BookTimeWidgetEntry {
-        BookTimeWidgetEntry(date: Date(),todayReadMin: 0,targetMinPerday: 45)
+        BookTimeWidgetEntry(date: Date(), latReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
@@ -39,14 +39,15 @@ struct Provider: TimelineProvider {
             var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
             let targetMinPerday  = userDefaults.integer(forKey: "targetMinPerday")
             let lastReadDateString = userDefaults.string(forKey: "lastReadDateString")
+            let latReadDate:Date? =  userDefaults.object(forKey: "lastReadDate") as? Date
 
             if(lastReadDateString != now.format("YYYY-MM-dd")){
                 todayReadMin = 0
             }
             
-            return BookTimeWidgetEntry(date: now,todayReadMin: todayReadMin,targetMinPerday: targetMinPerday)
+            return BookTimeWidgetEntry(date: now,latReadDate:latReadDate, todayReadMin: todayReadMin,targetMinPerday: targetMinPerday)
         }else{
-            return BookTimeWidgetEntry(date: now,todayReadMin: 0,targetMinPerday: 45)
+            return BookTimeWidgetEntry(date: now,latReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
         }
        
     }
@@ -55,6 +56,7 @@ struct Provider: TimelineProvider {
 struct BookTimeWidgetEntry: TimelineEntry {
     let date: Date
     
+    let latReadDate:Date?
     let todayReadMin:Int
     let targetMinPerday:Int
 }
@@ -108,7 +110,7 @@ struct BookTimeWidgetEntryView : View {
         .frame(width: circleDia,height: circleDia)
         .overlay{
             Text("\(entry.todayReadMin) Min")
-                .font(.system(.headline ,design: .rounded))
+                .font(.system(.headline ,design: .rounded).bold())
         }
 
     }
@@ -117,10 +119,25 @@ struct BookTimeWidgetEntryView : View {
     var mediumView:some View{
         HStack{
             
-            VStack{
+            VStack(alignment: .leading,spacing: 2){
+                if entry.todayReadMin > 0 {
+                    Text("\(entry.todayReadMin) Minutes Today")
+                        .font(.system(.title2,design: .rounded))
+                }else{
+                    Text("No Reading Today")
+                        .font(.system(.title2,design: .rounded))
+                    if let latReadDate = entry.latReadDate{
+                        HStack{
+                            Text("Since Last:")
+                            Text(latReadDate,style: .relative)
+                        }
+                        .font(.system(.caption,design: .rounded))
+                    }
+                }
+                
+                
 //                Text("\(Int( round( process * 100))) % of the Plan Completed")
-                Text("\(entry.todayReadMin) Minutes Today")
-                    .font(.system(.title2,design: .rounded))
+                
             }
             
             
@@ -156,7 +173,7 @@ struct BookTimeWidgetEntryView : View {
             .frame(width: circleDia,height: circleDia)
             .overlay{
                 Text("\(Int( round( process * 100)))%")
-                    .font(.system(.subheadline,design: .rounded))
+                    .font(.system(.headline ,design: .rounded).bold())
             }
             
         }
@@ -171,7 +188,7 @@ struct BookTimeWidgetEntryView : View {
              smallView
            case .systemMedium:
              mediumView
-           @unknown default:
+           default:
              smallView
            }
 
@@ -212,7 +229,7 @@ struct BookTimeWidget: Widget {
 
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),todayReadMin: 45,targetMinPerday: 90))
+        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),latReadDate: Date().start(), todayReadMin: 0,targetMinPerday: 90))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }

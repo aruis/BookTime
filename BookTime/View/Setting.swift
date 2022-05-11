@@ -26,6 +26,13 @@ struct Setting: View {
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
     var logs: FetchedResults<ReadLog>
     
+    @AppStorage("isRemind") var isRemind = false
+    
+    @AppStorage("remindDateHour") var reminDateHour = 0
+    @AppStorage("remindDateMin") var reminDateMin = 0
+    
+    @State private var remindDate = Date()
+    
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     //    @AppStorage("useiCloud") var useiCloud = false
     private var useiCloud = false
@@ -128,6 +135,69 @@ struct Setting: View {
                         Slider(value: intProxy, in: 0...360, step: 5,onEditingChanged: { editing in
                             self.sliderIsChange = editing
                         })
+
+                        
+                        Button(action: {
+                            
+                            let content = UNMutableNotificationContent()
+                            content.title = "读书提醒"
+                            content.subtitle = "今天还没有读书，抽10分钟读读书吧。"
+                            content.sound = UNNotificationSound.default
+
+                            // show this notification five seconds from now
+//                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                            
+                            
+                            
+                            var date = DateComponents()
+                            date.hour = 20
+                            date.minute = 38
+                            let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+
+                            // choose a random identifier
+                            let request = UNNotificationRequest(identifier: "booktime-remind", content: content, trigger: trigger)
+
+                            // add our notification request
+                            UNUserNotificationCenter.current().add(request)
+                            
+                        }){
+                            Label("定时提醒",systemImage: "arrow.up.doc")
+                        }
+                        
+                        Toggle("阅读定时提醒", isOn: $isRemind).onChange(of: isRemind, perform: {value in
+                            if value{
+                                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                                    if success {
+                                        print("All set!")
+                                    } else if let error = error {
+                                        print(error.localizedDescription)
+                                        isRemind = false
+                                    }
+                                }
+                            } else {
+                                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["booktime-remind"])
+                            }
+                                                        
+                        })
+                        .foregroundColor(.accentColor)
+                        
+                        if isRemind {
+                            DatePicker("阅读提醒时间", selection: $remindDate, displayedComponents: .hourAndMinute)
+                                .foregroundColor(.accentColor)
+                                .onChange(of: remindDate, perform: {date in
+                                    var calendar = Calendar.current
+                                    
+                                    let hour = calendar.component(.hour, from: date)
+                                    let minute = calendar.component(.minute, from: date)
+                                    
+                                    print(hour)
+                                    print(minute)
+                                    
+                                })
+                        }
+                        
+//                                    .labelsHidden()
+
                     }
                     //                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
                     Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : "Your data is automatically syncing via iCloud")) {

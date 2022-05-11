@@ -16,7 +16,7 @@
 "**%d** Minutes Today" = "今日已阅读 **%d** 分钟";
 
 /* No comment provided by engineer. */
-"%lld Minutes Today" = "今日已阅读 **%lld** 分";
+"%lld Minutes Today" = "今日已阅读 %lld 分";
 
 "%lld Min" = "%lld 分";
 
@@ -28,6 +28,10 @@
 "Export Data" = "导出数据";
 
 "Import Data" = "导入数据";
+
+"No Reading Today" = "今日未阅读";
+
+"Since Last:" = "距离上次";
 
 /* 累计阅读 */
 "A Total of" = "累计阅读";

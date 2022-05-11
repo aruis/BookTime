@@ -335,6 +335,7 @@ struct TimerView: View {
                     UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readLog.readMinutes, forKey: "todayReadMin")
                     UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
                     UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
+                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now, forKey: "lastReadDate")
                     WidgetCenter.shared.reloadAllTimelines()
                     
                     DispatchQueue.main.async {
