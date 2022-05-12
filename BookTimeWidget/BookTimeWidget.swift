@@ -127,7 +127,7 @@ struct BookTimeWidgetEntryView : View {
                     Text("No Reading Today")
                         .font(.system(.title2,design: .rounded))
                     if let latReadDate = entry.latReadDate{
-                        HStack{
+                        HStack(spacing:0){
                             Text("Since Last:")
                             Text(latReadDate,style: .relative)
                         }
@@ -177,7 +177,7 @@ struct BookTimeWidgetEntryView : View {
             }
             
         }
-        .padding(.leading,10)
+        .padding(.leading, Tools.isCN() ? 15 : 10)
     }
 
 

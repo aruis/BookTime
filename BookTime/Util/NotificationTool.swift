@@ -39,7 +39,7 @@ struct NotificationTool{
 
     }
     
-    static func cancel(){
+    static func cancel(){        
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
     }
 }
