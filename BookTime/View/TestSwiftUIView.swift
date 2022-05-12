@@ -9,7 +9,14 @@ import SwiftUI
 
 struct TestSwiftUIView: View {
     var body: some View {
-        Text(Date().start(),style: .relative)
+        VStack{
+            Text(Date().start(),style: .relative)
+            
+            Text(Date.now, format: .dateTime.hour().minute())
+            
+            Text(Date.now, format: .dateTime.day().month().year())
+        }
+        
     }
 }
 

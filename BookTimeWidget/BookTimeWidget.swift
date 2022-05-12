@@ -132,6 +132,7 @@ struct BookTimeWidgetEntryView : View {
                             Text(latReadDate,style: .relative)
                         }
                         .font(.system(.caption,design: .rounded))
+                        .opacity(0.8)
                     }
                 }
                 

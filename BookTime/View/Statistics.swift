@@ -296,18 +296,6 @@ struct Statistics: View {
             ScrollView {
                 reportView
                 .padding()
-                .onAppear(perform: {
-                    todayReadMin = 0
-                })
-                .task {
-                    DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-                        withAnimation(.easeInOut){
-                            todayReadMin = BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
-                        }
-                        
-                    })
-                    initAllLog()
-                }
                 .navigationTitle("Achievement")
                 //                .navigationBarTitleDisplayMode(.inline)
                 .toolbar(content: {
@@ -350,6 +338,19 @@ struct Statistics: View {
             
         }
         .navigationViewStyle(.stack)
+        .onAppear(perform: {
+            todayReadMin = 0
+        })
+        .task {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.25, execute: {
+                withAnimation(.easeInOut){
+                    todayReadMin = BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
+                }
+                
+            })
+            initAllLog()
+        }
+
         
     }
     

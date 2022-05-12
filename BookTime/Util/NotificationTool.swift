@@ -29,6 +29,7 @@ struct NotificationTool{
         date.hour = hour
         date.minute = minute
         
+        
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
                 
         // choose a random identifier
@@ -39,7 +40,7 @@ struct NotificationTool{
 
     }
     
-    static func cancel(){        
+    static func cancel(){
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
     }
 }

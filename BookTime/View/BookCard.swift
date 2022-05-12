@@ -234,8 +234,10 @@ struct BookCard: View {
             UIDevice.current.isBatteryMonitoringEnabled = true
         })
         .onDisappear(perform: {
-            book.isDone = self.isDone
-            save()
+            if book.isDone != self.isDone{
+                book.isDone = self.isDone
+                save()
+            }            
         })
         .fullScreenCover(isPresented: $showTimer, content: {
             TimerView(book: book,handShowTimer: $handShowTimer)

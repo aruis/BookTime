@@ -78,6 +78,16 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		839BF17D282CB0F2001E2A4E /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -330,6 +340,7 @@
 				83731C8C2755D0D600305305 /* Frameworks */,
 				83731C8D2755D0D600305305 /* Resources */,
 				8392248D2827A7EB00303541 /* Embed App Extensions */,
+				839BF17D282CB0F2001E2A4E /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
