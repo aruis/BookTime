@@ -142,7 +142,7 @@ struct BookTimeWidgetEntryView : View {
             }
             
             
-//            Spacer()
+            Spacer()
             
             
             ZStack{
@@ -178,7 +178,7 @@ struct BookTimeWidgetEntryView : View {
             }
             
         }
-        .padding(.leading, Tools.isCN() ? 15 : 10)
+        .padding(.leading, 12)
     }
 
 
@@ -230,7 +230,7 @@ struct BookTimeWidget: Widget {
 
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),latReadDate: Date().start(), todayReadMin: 0,targetMinPerday: 90))
+        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),latReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
