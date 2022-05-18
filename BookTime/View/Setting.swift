@@ -446,7 +446,9 @@ struct Setting: View {
     func checkNotificationAuth(){
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
-            isRemind = (settings.authorizationStatus == .authorized)
+            if isRemind && settings.authorizationStatus != .authorized{
+                isRemind = false
+            }
         }
     }
     
@@ -629,9 +631,14 @@ struct Setting: View {
         targetMinPerday = 45
         isFirstBookCard = true
         hasViewdWalkthrough = false
+        isRemind = false
+        reminDateHour = -1
+        reminDateMin = -1
+        NotificationTool.cancel()
         ctrl.cleanTodayLog()
         
         store.removeObject(forKey: "targetMinPerday")
+        UserDefaults.standard.removeSuite(named: "group.com.aruistar.BookTime")
         
     }
     

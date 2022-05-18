@@ -3,24 +3,51 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "closure #1 in closure #7 in TimerView.body.getter:TimerView.swift">
+         contextName = "closure #1 in closure #1 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "changeTabAuto">
+               value = "begin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
+         contextName = "closure #1 in closure #3 in closure #1 in closure #2 in closure #1 in closure #1 in Setting.body.getter:Setting.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newOrientation">
+               value = "settings.authorizationStatus == .authorized">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in closure #1 in closure #8 in closure #1 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tags">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in closure #4 in BookCard.body.getter:BookCard.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.showTimer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "searchText">
             </PersistentString>
             <PersistentString
-               value = "orientation.isPortrait">
+               value = "books.count">
             </PersistentString>
             <PersistentString
-               value = "newOrientation.isPortrait">
+               value = " searchText.isEmpty">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -33,6 +60,61 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #1 in closure #4 in closure #1 in closure #1 in Statistics.body.getter:Statistics.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "shareImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #3 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "latestSync">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BookCard.body.getter:BookCard.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "verticalSizeClass">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in TimerView.body.getter:TimerView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Statistics.initAllLog():Statistics.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Date().format(format: &quot;YYYY&quot;) ">
+            </PersistentString>
+            <PersistentString
+               value = "longHit">
+            </PersistentString>
+            <PersistentString
+               value = "doneTime.format(format: &quot;YYYY&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "log.day">
+            </PersistentString>
+            <PersistentString
+               value = "components.day">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #6 in closure #1 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "searchText.isEmpty">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #6 in closure #1 in Setting.body.getter:Setting.swift">
          <PersistentStrings>
             <PersistentString
@@ -41,18 +123,40 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in closure #1 in TimerView.body.getter:TimerView.swift">
+         contextName = "closure #1 in closure #2 in closure #1 in closure #2 in closure #1 in closure #1 in Setting.body.getter:Setting.swift">
          <PersistentStrings>
             <PersistentString
-               value = "begin">
+               value = "reminDateHour">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in closure #4 in closure #1 in closure #1 in Statistics.body.getter:Statistics.swift">
+         contextName = "closure #1 in closure #7 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "shareImage">
+               value = "changeTabAuto">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WithFrameModifier.body(content:):AlertToast.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "withFrame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "newOrientation.isPortrait">
+            </PersistentString>
+            <PersistentString
+               value = "orientation.isPortrait">
+            </PersistentString>
+            <PersistentString
+               value = "newOrientation">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -71,108 +175,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Statistics.initAllLog():Statistics.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "components.day">
-            </PersistentString>
-            <PersistentString
-               value = "longHit">
-            </PersistentString>
-            <PersistentString
-               value = "doneTime.format(format: &quot;YYYY&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "log.day">
-            </PersistentString>
-            <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in BookCard.body.getter:BookCard.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "verticalSizeClass">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #3 in BookList.body.getter:BookList.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "latestSync">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in variable initialization expression of static BookPersistenceController.preview:BookPersistence.swift">
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in closure #4 in BookCard.body.getter:BookCard.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.showTimer">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #6 in closure #1 in BookList.body.getter:BookList.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "searchText.isEmpty">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #1 in closure #1 in closure #8 in closure #1 in BookList.body.getter:BookList.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "tags">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in BookList.body.getter:BookList.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = " searchText.isEmpty">
-            </PersistentString>
-            <PersistentString
-               value = "books.count">
-            </PersistentString>
-            <PersistentString
-               value = "searchText">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #3 in closure #1 in closure #2 in closure #1 in closure #1 in Setting.body.getter:Setting.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "settings.authorizationStatus == .authorized">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "View.snapshot(origin:):ViewExt.swift">
          <PersistentStrings>
             <PersistentString
                value = "view?.bounds">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #2 in closure #1 in closure #2 in closure #1 in closure #1 in Setting.body.getter:Setting.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "reminDateHour">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in TimerView.body.getter:TimerView.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

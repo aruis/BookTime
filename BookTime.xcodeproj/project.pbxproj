@@ -29,7 +29,6 @@
 		83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */; };
 		838316112803DA3100869E1D /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 838316102803DA3100869E1D /* AlertToast */; };
 		838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 838316132803FE4800869E1D /* ConfettiSwiftUI */; };
-		83831617280426B100869E1D /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 83831616280426B100869E1D /* SwiftUICharts */; };
 		8383161F28045D0600869E1D /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383161E28045D0600869E1D /* BarView.swift */; };
 		8383162128045E7900869E1D /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383162028045E7900869E1D /* ChartData.swift */; };
 		838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B8ABC2769B47700B8E87A /* ViewExt.swift */; };
@@ -147,7 +146,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */,
-				83831617280426B100869E1D /* SwiftUICharts in Frameworks */,
 				83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */,
 				838316112803DA3100869E1D /* AlertToast in Frameworks */,
 			);
@@ -351,7 +349,6 @@
 			packageProductDependencies = (
 				838316102803DA3100869E1D /* AlertToast */,
 				838316132803FE4800869E1D /* ConfettiSwiftUI */,
-				83831616280426B100869E1D /* SwiftUICharts */,
 			);
 			productName = BookTime;
 			productReference = 83731C8F2755D0D600305305 /* BookTime.app */;
@@ -405,7 +402,6 @@
 			packageReferences = (
 				8383160F2803DA3100869E1D /* XCRemoteSwiftPackageReference "AlertToast" */,
 				838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
-				83831615280426B100869E1D /* XCRemoteSwiftPackageReference "ChartView" */,
 			);
 			productRefGroup = 83731C902755D0D600305305 /* Products */;
 			projectDirPath = "";
@@ -810,8 +806,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 		838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
@@ -819,15 +815,7 @@
 			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.1;
-			};
-		};
-		83831615280426B100869E1D /* XCRemoteSwiftPackageReference "ChartView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AppPear/ChartView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -842,11 +830,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
 			productName = ConfettiSwiftUI;
-		};
-		83831616280426B100869E1D /* SwiftUICharts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 83831615280426B100869E1D /* XCRemoteSwiftPackageReference "ChartView" */;
-			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 
