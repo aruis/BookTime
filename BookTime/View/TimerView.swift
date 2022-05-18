@@ -9,9 +9,11 @@ import SwiftUI
 import LocalAuthentication
 import AlertToast
 import WidgetKit
-//import Foundation
 
 struct TimerView: View {
+    
+    let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    @State private var count = 0
     
     @Environment(\.managedObjectContext) var context
     @Environment(\.dismiss) var dismiss
@@ -24,16 +26,11 @@ struct TimerView: View {
     @ObservedObject var book: Book
     @ObservedObject private var timerTrack:TimerTrack = TimerTrack.shared
     
-    @State var uiTabarController: UITabBarController?
-    @State var nowDate: Date = Date()
-    
-    @State private var myRed = 0.2
-    @State private var myGreen = 0.2
-    @State private var myBlue = 0.2
+       
     
     @State private var thisMinute:Int  = 0
     
-    @State private var now  = Date()
+    @State private var beginDate  = Date()
     
     
     @State private var changeTabAuto = false
@@ -63,16 +60,12 @@ struct TimerView: View {
     @State private var tabSelectedStore = ShowTimeType.timer
         
     var body: some View {
-        //        VStack{
-        
         TabView(selection: $tabSelected){
-            TimelineView(.periodic(from: timerTrack.begin, by: 1)) { context in
+            TimelineView(.periodic(from: beginDate, by: 1)) { context in
                 let date = context.date
-                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: timerTrack.begin, to: date)
+                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
                 let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
-                //                let dataArr  = context.date.format(format: "HH:mm:ss").split(separator: ":")
-                //                let h = "\(components.hour!)".count == 1 ? "0\(components.hour!)" : "\(components.hour!)"
-                //                let m = "\(components.minute!)".count == 1 ? "0\(components.minute!)" : "\(components.minute!)"
+
                 let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
                 let hour = String( thisMinute.asString().split(separator: ":")[0])
                 let min = String( thisMinute.asString().split(separator: ":")[1])
@@ -84,15 +77,11 @@ struct TimerView: View {
                 
             }
             .tag(ShowTimeType.today)
-            
-            
-            TimelineView(.periodic(from: timerTrack.begin, by: 1)) { context in
+                        
+            TimelineView(.periodic(from: beginDate, by: 1)) { context in
                 let date = context.date
-                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: timerTrack.begin, to: date)
+                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
                 
-                //                let dataArr  = context.date.format(format: "HH:mm:ss").split(separator: ":")
-                //                let h = "\(components.hour!)".count == 1 ? "0\(components.hour!)" : "\(components.hour!)"
-                //                let m = "\(components.minute!)".count == 1 ? "0\(components.minute!)" : "\(components.minute!)"
                 let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
                 let hour = String( thisMinute.asString().split(separator: ":")[0])
                 let min = String( thisMinute.asString().split(separator: ":")[1])
@@ -104,7 +93,7 @@ struct TimerView: View {
             
             
             
-            TimelineView(.periodic(from: Date(), by: 1)) { context in
+            TimelineView(.periodic(from: beginDate, by: 1)) { context in
                 let date = context.date
                 let dataArr  = date.format("HH:mm:ss").split(separator: ":")
                 let h = String(dataArr[0])
@@ -178,8 +167,7 @@ struct TimerView: View {
                     })
                     .font(.system(size: 23))
                     .buttonStyle(.bordered)
-                    
-                    //                        }
+                                        
                     
                 }
             }
@@ -218,138 +206,93 @@ struct TimerView: View {
             changeTabAuto = false
         })
         .animation(.easeInOut, value: tabSelected)
-        .onTapGesture {
-            //            if tabSelected == .timer {
-            //                tabSelected = .time
-            //            }else{
-            //                tabSelected = .timer
-            //            }
-        }
-        //        .padding(.bottom,20)
-        //        .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: isShowButtons ? .always : .never))
-//        .tabViewStyle(.page)
         .foregroundColor(isHit ? Color("AccentColor") : .white)
         .background(.black)
-        //        .edgesIgnoringSafeArea(.all)
-        
-        //        .font(.custom("Courier New",size: verticalSizeClass == .compact ? 180 : 90)            )
+        .animation(.linear, value: verticalSizeClass)
+        .toast(isPresenting: $showToast,duration: 6,tapToDismiss: true){
+            AlertToast( type: .complete(.green), title: String(localized: "Today's goal has been reached"))
+        }
         .onAppear(perform: {
-            //            DispatchQueue.main.async {
-            //                Tool.hiddenTabBar()
-            //            }
             
             UIApplication.shared.isIdleTimerDisabled = true
             UIDevice.current.isBatteryMonitoringEnabled = true
             oldLight = UIScreen.main.brightness
-            //            Tool.hiddenTabBar()
-            //            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
-            //                Tool.hiddenTabBar()
-            //            })
-            //            DispatchQueue.main.asyncAfter(deadline: .now()+0.6, execute: {
-            //                tabSelected = .time
-            //                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-            //                    changeTabAuto = true
-            //                })
-            //
-            //                DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
-            //                    if(changeTabAuto){
-            //                        tabSelected = .timer
-            //                    }
-            //                    changeTabAuto = false
-            //                })
-            //
-            //            })
-        })
-        .onDisappear(perform: {
-            //            DispatchQueue.main.async {
-            //                Tool.showTabBar()
-            //            }
-            UIScreen.main.brightness = oldLight
-            UIApplication.shared.isIdleTimerDisabled = false
-            UIDevice.current.isBatteryMonitoringEnabled = false
             
-            //            Tool.showTabBar()
-            
-            
-        })
-        .animation(.linear, value: verticalSizeClass)
-        
-        //        }
-        .toast(isPresenting: $showToast,duration: 6,tapToDismiss: true){
-            AlertToast( type: .complete(.green), title: String(localized: "Today's goal has been reached"))
-        }
-        
-        .onAppear(perform: {
             if(targetMinPerday>0 && BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
                >= targetMinPerday
             ){
                 isHit = true
             }
-            
-            timerTrack.start { count in
-                now = Date()
-                let nowStr = now.format("mm:ss")
-                if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
-                    lastShowTab = tabSelected
-                    tabSelected  = .time
-                    DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-                        changeTabAuto = true
-                    })
-                }
-                
-                if (nowStr == "31:00" || nowStr == "01:00" ) && changeTabAuto {
-                    if let lastShowTab = lastShowTab {
-                        tabSelected = lastShowTab
-                    }
-                    changeTabAuto = false
-                }
-                
-                let min = count / 60
-                
-                if thisMinute != min{
-                    
-                    let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
-                    
-                    thisMinute = min
-                    if book.readMinutes == 0 { //第一次读
-                        book.firstReadTime = now
-                    }
-                    book.readMinutes += 1
-                    if let lastReadTime = book.lastReadTime {
-                        if(lastReadTime.format("YYYY-MM-dd") != now.format("YYYY-MM-dd")){
-                            book.readDays += 1
-                        }
-                    }else{
-                        book.readDays  = 1
-                    }
-                    book.lastReadTime = now
-                    readLog.readMinutes += 1
-                    
-                    if(targetMinPerday>0 && targetMinPerday == readLog.readMinutes){
-                        generator.notificationOccurred(.success)
-                        isHit = true
-                        showToast = true
-                    }
-                    
-                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readLog.readMinutes, forKey: "todayReadMin")
-                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
-                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
-                    UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now, forKey: "lastReadDate")
-                    WidgetCenter.shared.reloadAllTimelines()
-                    
-                    DispatchQueue.main.async {
-                        do{
-                            try context.save()
-                        }catch{
-                            print(error)
-                        }
-                    }
-                }
-            }
+
         })
         .onDisappear(perform: {
-            timerTrack.stop()
+            UIScreen.main.brightness = oldLight
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIDevice.current.isBatteryMonitoringEnabled = false
+            
+            timer.upstream.connect().cancel()
+        })
+        .onReceive(timer, perform: { now in
+//            count += 10
+            
+//            let nowStr = now.format("mm:ss")
+//            if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
+//                lastShowTab = tabSelected
+//                tabSelected  = .time
+//                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+//                    changeTabAuto = true
+//                })
+//            }
+//
+//            if (nowStr == "31:00" || nowStr == "01:00" ) && changeTabAuto {
+//                if let lastShowTab = lastShowTab {
+//                    tabSelected = lastShowTab
+//                }
+//                changeTabAuto = false
+//            }
+                        
+            thisMinute += 1
+            
+            print("thisMinute: \(thisMinute)")
+            
+            let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
+            
+            
+            if book.readMinutes == 0 { //第一次读
+                book.firstReadTime = now
+            }
+            book.readMinutes += 1
+            if let lastReadTime = book.lastReadTime {
+                if(lastReadTime.format("YYYY-MM-dd") != now.format("YYYY-MM-dd")){
+                    book.readDays += 1
+                }
+            }else{
+                book.readDays  = 1
+            }
+            book.lastReadTime = now
+            readLog.readMinutes += 1
+            
+            if(targetMinPerday>0 && targetMinPerday == readLog.readMinutes){
+                generator.notificationOccurred(.success)
+                isHit = true
+                showToast = true
+            }
+            
+            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readLog.readMinutes, forKey: "todayReadMin")
+            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
+            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
+            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now, forKey: "lastReadDate")
+            WidgetCenter.shared.reloadAllTimelines()
+            
+            DispatchQueue.main.async {
+                do{
+                    try context.save()
+                }catch{
+                    print(error)
+                }
+            }
+            
         })
         
     }
@@ -367,71 +310,6 @@ struct TimerView_Previews: PreviewProvider {
     }
 }
 
-extension UIView {
-    
-    func allSubviews() -> [UIView] {
-        var res = self.subviews
-        for subview in self.subviews {
-            let riz = subview.allSubviews()
-            res.append(contentsOf: riz)
-        }
-        return res
-    }
-}
-
-struct Tool {
-    static func showTabBar() {
-        //           UIWindowScene
-        UIApplication
-            .shared
-            .connectedScenes
-            .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
-            .first { $0.isKeyWindow }?
-            .allSubviews().forEach({ (v) in
-                if let view = v as? UITabBar {
-                    view.isHidden = false
-                }
-            })
-    }
-    
-    static func hiddenTabBar() {
-        UIApplication
-            .shared
-            .connectedScenes
-            .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
-            .first { $0.isKeyWindow }?
-        
-            .allSubviews().forEach({ (v) in
-                if let view = v as? UITabBar {
-                    view.isHidden = true
-                }
-            })
-    }
-}
-
-struct ShowTabBar: ViewModifier {
-    func body(content: Content) -> some View {
-        return content.padding(.zero).onAppear {
-            Tool.showTabBar()
-        }
-    }
-}
-struct HiddenTabBar: ViewModifier {
-    func body(content: Content) -> some View {
-        return content.padding(.zero).onAppear {
-            Tool.hiddenTabBar()
-        }
-    }
-}
-
-extension View {
-    func showTabBar() -> some View {
-        return self.modifier(ShowTabBar())
-    }
-    func hiddenTabBar() -> some View {
-        return self.modifier(HiddenTabBar())
-    }
-}
 
 struct ClockView: View {
     var hour:String
