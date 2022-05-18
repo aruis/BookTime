@@ -51,7 +51,6 @@
 		83D54002282906B400A72716 /* BookTimeWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 83D53FF7282906B300A72716 /* BookTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		83D540072829080200A72716 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B845A2760A04600F9BAE8 /* DateExt.swift */; };
 		83D540082829095D00A72716 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 839B9C2527734802001094C6 /* Localizable.strings */; };
-		83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC51EC27589ED200C2A90A /* TimerTrack.swift */; };
 		83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FC0BCD277B0212004C6C27 /* Tutorial.swift */; };
 /* End PBXBuildFile section */
 
@@ -136,7 +135,6 @@
 		83D53FFD282906B400A72716 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83D53FFF282906B400A72716 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83D54006282906BC00A72716 /* BookTimeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTimeWidgetExtension.entitlements; sourceTree = "<group>"; };
-		83DC51EC27589ED200C2A90A /* TimerTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTrack.swift; sourceTree = "<group>"; };
 		83FC0BCD277B0212004C6C27 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -309,7 +307,6 @@
 			isa = PBXGroup;
 			children = (
 				839B4E66275758C600AB05AF /* ImagePicker.swift */,
-				83DC51EC27589ED200C2A90A /* TimerTrack.swift */,
 				83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */,
 				8317F8992772FE5C00864D2F /* Tools.swift */,
 				833F9D35282B586F006F19AE /* NotificationTool.swift */,
@@ -461,7 +458,6 @@
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
 				833F9D34282B49F2006F19AE /* TestSwiftUIView.swift in Sources */,
 				8383162128045E7900869E1D /* ChartData.swift in Sources */,
-				83DC51ED27589ED200C2A90A /* TimerTrack.swift in Sources */,
 				833F9D36282B586F006F19AE /* NotificationTool.swift in Sources */,
 				830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */,
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
