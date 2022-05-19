@@ -141,7 +141,7 @@ struct Setting: View {
                         })
 
                                                 
-                        Toggle("Turn on reading reminders", isOn: $isRemind).onChange(of: isRemind, perform: {value in
+                        Toggle("Reading Reminder", isOn: $isRemind).onChange(of: isRemind, perform: {value in
                             if value{
                                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                                     if success {
@@ -173,7 +173,7 @@ struct Setting: View {
                         }
                         
                         if isRemind {
-                            DatePicker("Read reminder time", selection: $remindDate, displayedComponents: .hourAndMinute)
+                            DatePicker("Reminder Time", selection: $remindDate, displayedComponents: .hourAndMinute)
                                 .foregroundColor(.accentColor)
                                 .onChange(of: remindDate, perform: {date in
                                     let calendar = Calendar.current
