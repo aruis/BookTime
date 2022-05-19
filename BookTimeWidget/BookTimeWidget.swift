@@ -34,7 +34,7 @@ struct Provider: TimelineProvider {
             now = date
         }
         
-        if let  userDefaults = userDefaults {
+        if let userDefaults = userDefaults {
                                     
             var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
             let targetMinPerday  = userDefaults.integer(forKey: "targetMinPerday")

@@ -62,6 +62,8 @@ struct Setting: View {
     
     @Environment(\.scenePhase) var scenePhase
     
+    @State private var todayReadMin:Int16 = 0
+    
     private var greeting:String{
         get {
             if !Tools.isCN(){
@@ -144,7 +146,7 @@ struct Setting: View {
                                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                                     if success {
                                         if reminDateHour > -1 && reminDateMin > -1 {
-                                            NotificationTool.add(hour: reminDateHour, minute: reminDateMin)
+                                            NotificationTool.add(hour: reminDateHour, minute: reminDateMin ,readedToday: todayReadMin > 0)
                                         }
                                     } else {
                                         isRemind = false
@@ -179,7 +181,7 @@ struct Setting: View {
                                     reminDateHour = calendar.component(.hour, from: date)
                                     reminDateMin = calendar.component(.minute, from: date)
                                     
-                                    NotificationTool.add(hour: reminDateHour, minute: reminDateMin)
+                                    NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday: todayReadMin > 0)
                                                                         
                                 })
                                 .onAppear{
@@ -233,7 +235,7 @@ struct Setting: View {
                     
                 }
                 .onAppear(perform: {
-                    UIScrollView.appearance().bounces = false
+//                    UIScrollView.appearance().bounces = false
                 })
                 .navigationTitle("Setting")
                 .toolbar{
@@ -438,6 +440,10 @@ struct Setting: View {
         .navigationViewStyle(.stack)
         .task {
             checkIfICloudCanUse()
+        }
+        .onAppear{
+            let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
+            todayReadMin = readLog.readMinutes
         }
         
         

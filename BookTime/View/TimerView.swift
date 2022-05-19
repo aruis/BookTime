@@ -12,6 +12,11 @@ import WidgetKit
 
 struct TimerView: View {
     
+    @AppStorage("isRemind") var isRemind = false
+    
+    @AppStorage("remindDateHour") var reminDateHour = -1
+    @AppStorage("remindDateMin") var reminDateMin = -1
+    
     let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     @State private var count = 0
     
@@ -24,8 +29,6 @@ struct TimerView: View {
     @State private var orientation = UIDeviceOrientation.unknown
     
     @ObservedObject var book: Book
-    @ObservedObject private var timerTrack:TimerTrack = TimerTrack.shared
-    
        
     
     @State private var thisMinute:Int  = 0
@@ -232,6 +235,11 @@ struct TimerView: View {
             UIDevice.current.isBatteryMonitoringEnabled = false
             
             timer.upstream.connect().cancel()
+            
+            if isRemind {
+                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0)
+            }
+            
         })
         .onReceive(timer, perform: { now in
 //            count += 10
@@ -386,8 +394,7 @@ struct ClockView: View {
                 //                    Text("\(batteryLevel)")
                 //                } icon: {batteryImg}
                 //                Label(,icon: batteryImg)
-            }
-                .padding(.bottom,-100)
+            }.padding(.bottom,-100)
             ,alignment: .bottom
         )
         
