@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BookListItem: View {
-    @ObservedObject var book: Book    
+    @ObservedObject var book: Book
     
     var body: some View {
         
