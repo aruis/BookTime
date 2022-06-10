@@ -9,6 +9,8 @@ import SwiftUI
 import LocalAuthentication
 import AlertToast
 import WidgetKit
+import FlipView
+import PacmanProgress
 
 struct TimerView: View {
     
@@ -29,12 +31,12 @@ struct TimerView: View {
     @State private var orientation = UIDeviceOrientation.unknown
     
     @ObservedObject var book: Book
-       
     
     @State private var thisMinute:Int  = 0
     
     @State private var beginDate  = Date()
     
+    @State private var showRealTime = false
     
     @State private var changeTabAuto = false
     @State private var lastShowTab:ShowTimeType? = nil
@@ -61,60 +63,112 @@ struct TimerView: View {
     @State private var tabSelected = ShowTimeType.timer
     
     @State private var tabSelectedStore = ShowTimeType.timer
-        
+    
+    @State private var isShowProgress = true
+    
     var body: some View {
-        TabView(selection: $tabSelected){
-            TimelineView(.periodic(from: beginDate, by: 1)) { context in
-                let date = context.date
-                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
-                let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+//        TabView(selection: $tabSelected){
+//            TimelineView(.periodic(from: beginDate, by: 1)) { context in
+//                let date = context.date
+//                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
+//                let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+//
+//                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+//                let hour = String( thisMinute.asString().split(separator: ":")[0])
+//                let min = String( thisMinute.asString().split(separator: ":")[1])
+//
+//                let process = targetMinPerday > 0 ? CGFloat( thisMinute)/CGFloat( targetMinPerday) : CGFloat( thisMinute)/CGFloat( 45)
+//                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
+//
+//                ClockView(hour: hour, min: min, second: s ,headTitle:  targetMinPerday > 0 ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed") : String(localized: "Today"),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
+//
+//            }
+//            .ignoresSafeArea()
+//            .tag(ShowTimeType.today)
+//
+//            TimelineView(.periodic(from: beginDate, by: 1)) { context in
+//                let date = context.date
+//                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
+//
+//                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+//                let hour = String( thisMinute.asString().split(separator: ":")[0])
+//                let min = String( thisMinute.asString().split(separator: ":")[1])
+//                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
+//                ClockView(hour: hour, min: min, second: s,batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
+//
+//            }
+//            .ignoresSafeArea()
+//            .tag(ShowTimeType.timer)
+//
+//
+//
+//            TimelineView(.periodic(from: beginDate, by: 1)) { context in
+//                let date = context.date
+//                let dataArr  = date.format("HH:mm:ss").split(separator: ":")
+//                let h = String(dataArr[0])
+//                let m = String(dataArr[1])
+//                let s = String(dataArr[2])
+//                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
+//
+//                ClockView(hour: h, min: m, second: s,headTitle: date.dayString(),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
+//
+//
+//
+//            }
+//            .ignoresSafeArea()
+//            .tag(ShowTimeType.time)
+//
+//        }
+        TimelineView(.periodic(from: beginDate, by: 1)) { context in
+            let date = context.date
+            
+            
+            let dataArr  = date.format("HH:mm:ss").split(separator: ":")
+            
+            let hh = String(dataArr[0])
+            let mm = String(dataArr[1])
+            let ss = String(dataArr[2])
 
-                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
-                let hour = String( thisMinute.asString().split(separator: ":")[0])
-                let min = String( thisMinute.asString().split(separator: ":")[1])
-                
-                let process = targetMinPerday > 0 ? CGFloat( thisMinute)/CGFloat( targetMinPerday) : CGFloat( thisMinute)/CGFloat( 45)
-                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
-                
-                ClockView(hour: hour, min: min, second: s ,headTitle:  targetMinPerday > 0 ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed") : String(localized: "Today"),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
-                
-            }
-            .tag(ShowTimeType.today)
+            let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
+
+            let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+            let hour = String( thisMinute.asString().split(separator: ":")[0])
+            let min = String( thisMinute.asString().split(separator: ":")[1])
+            let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
+            
+            let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+            let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
                         
-            TimelineView(.periodic(from: beginDate, by: 1)) { context in
-                let date = context.date
-                let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
-                
-                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
-                let hour = String( thisMinute.asString().split(separator: ":")[0])
-                let min = String( thisMinute.asString().split(separator: ":")[1])
-                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
-                ClockView(hour: hour, min: min, second: s,batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
-                
-            }
-            .tag(ShowTimeType.timer)
-            
-            
-            
-            TimelineView(.periodic(from: beginDate, by: 1)) { context in
-                let date = context.date
-                let dataArr  = date.format("HH:mm:ss").split(separator: ":")
-                let h = String(dataArr[0])
-                let m = String(dataArr[1])
-                let s = String(dataArr[2])
-                let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
-                
-                ClockView(hour: h, min: m, second: s,headTitle: date.dayString(),batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging)
-                
-                
-                
-            }
-            .tag(ShowTimeType.time)
-            
+            ClockView(hour: showRealTime ? hh : hour, min: showRealTime ? mm : min, second: showRealTime ? ss : s,headTitle: date.dayString(), batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging,progress: .constant(process),isShowProgress:$isShowProgress,clockTap:{
+                showRealTime.toggle()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            })
+                .onTapGesture(count: 2) {
+                    isShowButtons.toggle()
+                }
+                .onTapGesture {
+                    if !isShowProgress {
+                        isShowProgress = true
+                        DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
+                            isShowProgress = false
+                        })
+                    }
+                    
+
+                }
+
         }
-        .onTapGesture(count: 2) {
-            isShowButtons.toggle()
-        }
+        .ignoresSafeArea()
+        .gesture(DragGesture().onEnded{value in
+            
+            if abs( value.translation.width) > 20 {
+                showRealTime.toggle()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }else if value.translation.height > 20 {
+                dismiss()
+            }
+            
+        })
         .overlay{
             VStack {
                 Spacer()
@@ -125,12 +179,12 @@ struct TimerView: View {
                         }, label: {
                             Image(systemName: "clear")
                         })
-                        .font(.system(size: 23))
+                        .font(.title2)
                         .buttonStyle(.bordered)
                         
                         
                     }
-                                       
+                    
                     if handShowTimer && UIDevice.current.userInterfaceIdiom == .phone {
                         Button(action: {
                             if  verticalSizeClass == .compact{
@@ -152,7 +206,7 @@ struct TimerView: View {
                             }
                             
                         })
-                        .font(.system(size: 23))
+                        .font(.title2)
                         .buttonStyle(.bordered)
                     }
                     
@@ -168,13 +222,13 @@ struct TimerView: View {
                     }, label: {
                         Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
                     })
-                    .font(.system(size: 23))
+                    .font(.title2)
                     .buttonStyle(.bordered)
-                                        
+                    
                     
                 }
             }
-            .padding(.bottom,60)
+            .padding(.bottom,45)
             .opacity(isShowButtons ? 1 : 0)
             .animation(.default, value: isShowButtons)
             
@@ -184,8 +238,8 @@ struct TimerView: View {
             if newOrientation.isFlat{
                 return
             }
-
-                        
+            
+            
             if orientation != .unknown && orientation.isPortrait == newOrientation.isPortrait {
                 return
             }
@@ -210,8 +264,8 @@ struct TimerView: View {
         })
         .animation(.easeInOut, value: tabSelected)
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: isShowButtons ? .always : .never))
-        .foregroundColor(isHit ? Color("AccentColor") : .white)
-        .background(.black)
+        .foregroundColor(.clockText)
+        //        .background(.black)
         .animation(.linear, value: verticalSizeClass)
         .toast(isPresenting: $showToast,duration: 6,tapToDismiss: true){
             AlertToast( type: .complete(.green), title: String(localized: "Today's goal has been reached"))
@@ -227,7 +281,12 @@ struct TimerView: View {
             ){
                 isHit = true
             }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
+                isShowProgress = false
+            })
 
+            
         })
         .onDisappear(perform: {
             UIScreen.main.brightness = oldLight
@@ -242,24 +301,24 @@ struct TimerView: View {
             
         })
         .onReceive(timer, perform: { now in
-//            count += 10
+            //            count += 10
             
-//            let nowStr = now.format("mm:ss")
-//            if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
-//                lastShowTab = tabSelected
-//                tabSelected  = .time
-//                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-//                    changeTabAuto = true
-//                })
-//            }
-//
-//            if (nowStr == "31:00" || nowStr == "01:00" ) && changeTabAuto {
-//                if let lastShowTab = lastShowTab {
-//                    tabSelected = lastShowTab
-//                }
-//                changeTabAuto = false
-//            }
-                        
+            //            let nowStr = now.format("mm:ss")
+            //            if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
+            //                lastShowTab = tabSelected
+            //                tabSelected  = .time
+            //                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+            //                    changeTabAuto = true
+            //                })
+            //            }
+            //
+            //            if (nowStr == "31:00" || nowStr == "01:00" ) && changeTabAuto {
+            //                if let lastShowTab = lastShowTab {
+            //                    tabSelected = lastShowTab
+            //                }
+            //                changeTabAuto = false
+            //            }
+            
             thisMinute += 1
             
             print("thisMinute: \(thisMinute)")
@@ -323,10 +382,16 @@ struct ClockView: View {
     var hour:String
     var min:String
     var second:String
-    var headTitle:String?
+    var headTitle:String
     var foot:String?
     var batteryLevel:Int
     var inCharging:Bool
+    
+    @Binding var progress:Float
+    
+    @Binding var isShowProgress:Bool
+    
+    var clockTap:()->()
     
     var batteryImg:Image{
         get {
@@ -347,64 +412,96 @@ struct ClockView: View {
         }
     }
     
-    @AppStorage("timerShowSec") private var timerShowSec = true
-    
-    @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
-        HStack(alignment: .firstTextBaseline){
+        
+        Color.black.overlay{
             
-            Text(hour)
-                .monospacedDigit()
-            
-            Text(":")
-                .opacity(Int(second)!%2==0 ? 1 : 0)
-            
-            
-            Text(min)
-                .monospacedDigit()
-            
-            if(timerShowSec){
-                Text(":")
-                    .opacity(Int(second)!%2==0 ? 1 : 0)
+            GeometryReader{ geometry in
+                let width =  geometry.frame(in: .global).size.width/9
+                let particles = width/20
+                let gap = particles/2
+                     
                 
+                HStack(spacing: width/4 ){
+
+                    HStack(spacing: -gap ){
+                        
+                        FlipView(.constant(hour[0]), flipColor: .constant(.clock))
+                            .foregroundColor(.clockText)
+                            .frame(width: width, height: width*2)
+                        
+                        FlipView(.constant(hour[1]), flipColor: .constant(.clock))
+                            .foregroundColor(.clockText)
+                            .frame(width: width, height: width*2)
+                        
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+
+
+                    HStack(spacing: -gap ){
+                        FlipView(.constant(min[0]), flipColor: .constant(.clock))
+                            .foregroundColor(.clockText)
+                            .frame(width: width, height: width*2)
+                        
+                        FlipView(.constant(min[1]), flipColor: .constant(.clock))
+                            .foregroundColor(.clockText)
+                            .frame(width: width, height: width*2)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+
+
+
+
+                    
+                    HStack(spacing: -gap ){
+                        FlipView(.constant(second[0]), flipColor: .constant(.clock))
+                            .foregroundColor(.clockText)
+                            .frame(width: width, height: width*2)
+                        
+                        FlipView(.constant(second[1]), flipColor: .constant(.clock))
+                            .foregroundColor(.clockText)
+                            .frame(width: width, height: width*2)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+
+
+                }
+                .onTapGesture {
+                    clockTap()
+                }
+                .overlay(
+                    VStack{
+                        HStack{
+                            Text(headTitle)
+                            Spacer()
+                            Text("\(batteryLevel)% \(batteryImg)")
+                                .monospacedDigit()
+                        }
+                        .foregroundColor(.clockText)
+                        .font(.system(.subheadline,design:.rounded))
+                    }
+                        .padding(.top, -30)
+                    ,alignment:.top
+                )
+                .overlay(
+                    
+                    VStack{
+                        if isShowProgress{
+                            PacmanProgress(progress: $progress,displayType: .mini(pacmanColor: .accentColor,dotColor: .clockText))
+                        }
+                        
+                    }
+                    .padding(.bottom, -width*2.5)
+                    .animation(.default,value: isShowProgress)
+                    
+                    ,alignment:.bottom
+                )
                 
-                Text(second)
-                    .monospacedDigit()
-                
+                .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }
             
-            //
-        }
-        .overlay(
-            VStack{
-                Text(headTitle ?? "")
-                    .font(.system(  verticalSizeClass == .compact ? .title3 : .caption ,design:.rounded))
-                    .frame(width: 300)
-            }.padding(.top,-30)
             
-            ,alignment:.top
-        )
-        .overlay(
-            VStack{
-                Text("\(batteryLevel)% \(batteryImg)")
-                    .monospacedDigit()
-                    .font(.subheadline)
-                //                Label{
-                //                    Text("\(batteryLevel)")
-                //                } icon: {batteryImg}
-                //                Label(,icon: batteryImg)
-            }.padding(.bottom,-100)
-            ,alignment: .bottom
-        )
-        
-        .animation(.easeInOut, value: timerShowSec)
-        //        .font(.custom("AzeretMono-Thin", size: verticalSizeClass == .compact ? 100: 55,relativeTo: .largeTitle).monospacedDigit())
-        .font(.system(size: verticalSizeClass == .compact ? 100: 55,design: .serif))
-        .padding(.bottom,20)
-        .onTapGesture {
-            timerShowSec.toggle()
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         
     }

@@ -17,6 +17,24 @@
         "revision" : "8d3a15d0aa2991e0761749b767ef8d89bca6275a",
         "version" : "1.0.1"
       }
+    },
+    {
+      "identity" : "flipview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aruis/FlipView.git",
+      "state" : {
+        "revision" : "7c53f5b6a9a39ff86d159ef3b4407ce5ba5b37a6",
+        "version" : "1.22.8"
+      }
+    },
+    {
+      "identity" : "pacmanprogress",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aruis/PacmanProgress.git",
+      "state" : {
+        "revision" : "a2184d3618e5fdabd44425da3363419296ee6918",
+        "version" : "1.22.3"
+      }
     }
   ],
   "version" : 2

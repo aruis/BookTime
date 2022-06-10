@@ -53,8 +53,7 @@ struct BookList: View {
     @State private var selectTag:Tag? = nil
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
-    
-    @State private var handMove = false
+        
     
     @ViewBuilder
     func itemInList(book:Book) -> some View{
@@ -99,28 +98,12 @@ struct BookList: View {
     
     var body: some View {
         NavigationView {
-            if booksAll.count == 0 {
-                VStack (spacing: 10){
-                    Image(systemName: "plus.circle").font(.largeTitle)
-                        .foregroundColor(.accentColor)
-                        .overlay(
-                            Image(systemName: "hand.point.up.left")
-                                .font(.system(size: 100))
-                                .foregroundColor(.gray.opacity(handMove ? 0.6:0.85))
-                                .offset(x: handMove ? 150 : 20,y: handMove ? 150 : 20)
-                        )
-                        .onAppear(perform: {
-                            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)){
-                                handMove.toggle()
-                            }
-                        })
-
-                    Text("Tap here to add your first book")
-                }.onTapGesture {
-                    bookViewModel.clean()
-                    self.showNewBook = true
-                }
-                
+            if UIDevice.current.userInterfaceIdiom == .phone && booksAll.count == 0 {
+                AddBookView()
+                    .onTapGesture {
+                        bookViewModel.clean()
+                        self.showNewBook = true
+                    }
             } else {
                 List{
                     if searchText.isEmpty {
@@ -140,7 +123,7 @@ struct BookList: View {
                     }
                     
                 }
-                //                .listStyle(.plain)
+//                .listStyle(.automatic)
                 .listStyle(.sidebar)
                 .navigationTitle("My Bookshelf")
                 .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
@@ -224,9 +207,13 @@ struct BookList: View {
                 
             }
             
-            
+            AddBookView()
+                .onTapGesture {
+                    bookViewModel.clean()
+                    self.showNewBook = true
+                }
         }
-        .navigationViewStyle(.stack)
+        .autoNav()
         .sheet(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel,tags: tags)
                 .onDisappear(perform: {
@@ -295,6 +282,24 @@ struct BookList: View {
     
 }
 
+struct AutoNav: ViewModifier {
+    func body(content: Content) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            content
+                .navigationViewStyle(.stack)
+        }else{
+            content
+        }
+        
+    }
+}
+
+extension View {
+    func autoNav() -> some View {
+        modifier(AutoNav())
+    }
+}
+
 struct BookList_Previews: PreviewProvider {
     static var previews: some View {
         BookList()
@@ -303,5 +308,31 @@ struct BookList_Previews: PreviewProvider {
         BookList()
             .environment(\.managedObjectContext,BookPersistenceController.preview.container.viewContext)
             .preferredColorScheme(.dark)
+    }
+}
+
+struct AddBookView: View {
+    @State private var handMove = false
+    
+    var body: some View {
+        VStack (spacing: 20){
+            Image(systemName: "plus.circle")
+                .font(.system(size: 50))
+                .foregroundColor(.accentColor)
+                .overlay(
+                    Image(systemName: "hand.point.up.left")
+                        .font(.system(size: 100))
+                        .foregroundColor(.gray.opacity(handMove ? 0.6:0.85))
+                        .offset(x: handMove ? 150 : 50,y: handMove ? 150 : 50)
+                )
+                .onAppear(perform: {
+                    withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)){
+                        handMove.toggle()
+                    }
+                })
+            
+            Text("Tap here to add a book")
+                .font(.title)
+        }
     }
 }

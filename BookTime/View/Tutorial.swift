@@ -54,20 +54,20 @@ struct Tutorial: View {
                     
                     
                     if(currentPage > 0){
-                        ExtractedView(index:1, content: String(localized: "Enter the information of the book you are reading into the device.") )
+                        TutorialPage(index:1, content: String(localized: "Enter the information of the book you are reading into the device.") )
                     }
                     
                     if(currentPage > 1){
                         if UIDevice.current.userInterfaceIdiom == .phone {
-                            ExtractedView(index:2,content: String(localized: "Place the device horizontally and start timing."))
+                            TutorialPage(index:2,content: String(localized: "Place the device horizontally and start timing."))
                         }else{
-                            ExtractedView(index:2,content: String(localized: "Turn on the timer mode while reading the paper book, or use the split screen mode to time the e-book reading."))
+                            TutorialPage(index:2,content: String(localized: "Turn on the timer mode while reading the paper book, or use the split screen mode to time the e-book reading."))
                         }
                         
                     }
                     
                     if(currentPage > 2){
-                        ExtractedView(index:3,content: String(localized: "Get into the habit of punching in every day to achieve results."))
+                        TutorialPage(index:3,content: String(localized: "Get into the habit of punching in every day to achieve results."))
                     }
                     
                     
@@ -129,7 +129,7 @@ struct Tutorial_Previews: PreviewProvider {
     }
 }
 
-struct ExtractedView: View {
+struct TutorialPage: View {
     var index:Int
     var content :String
     
