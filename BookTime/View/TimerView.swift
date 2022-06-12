@@ -294,9 +294,8 @@ struct TimerView: View {
             UIDevice.current.isBatteryMonitoringEnabled = false
             
             timer.upstream.connect().cancel()
-            
             if isRemind {
-                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0)
+                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0 || BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes > 0)
             }
             
         })
@@ -493,7 +492,7 @@ struct ClockView: View {
                         
                     }
                     .padding(.bottom, -width*2.5)
-                    .animation(.default,value: isShowProgress)
+                    .animation(.easeIn(duration: 0.25),value: isShowProgress)
                     
                     ,alignment:.bottom
                 )

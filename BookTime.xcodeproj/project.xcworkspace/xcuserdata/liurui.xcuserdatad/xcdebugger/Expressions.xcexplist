@@ -41,13 +41,13 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -76,6 +76,23 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #8 in TimerView.body.getter:TimerView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "reminDateMin">
+            </PersistentString>
+            <PersistentString
+               value = "thisMinute">
+            </PersistentString>
+            <PersistentString
+               value = "isRemind">
+            </PersistentString>
+            <PersistentString
+               value = "reminDateHour">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
@@ -84,13 +101,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #2 in TimerView.body.getter:TimerView.swift">
-      </ContextState>
-      <ContextState
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
             <PersistentString
                value = "longHit">
@@ -102,7 +116,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -113,6 +127,9 @@
                value = "searchText.isEmpty">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in TimerView.body.getter:TimerView.swift">
       </ContextState>
       <ContextState
          contextName = "closure #6 in closure #1 in Setting.body.getter:Setting.swift">
@@ -139,24 +156,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "WithFrameModifier.body(content:):AlertToast.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "withFrame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newOrientation.isPortrait">
+               value = "newOrientation">
             </PersistentString>
             <PersistentString
                value = "orientation.isPortrait">
             </PersistentString>
             <PersistentString
-               value = "newOrientation">
+               value = "newOrientation.isPortrait">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WithFrameModifier.body(content:):AlertToast.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "withFrame">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
