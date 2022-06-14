@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830935D7279F9F37006F8F56 /* ActivityView.swift */; };
+		830F9F5F28572F0600339AEF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		8317F89A2772FE5C00864D2F /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317F8992772FE5C00864D2F /* Tools.swift */; };
 		831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831939052802682A0011AA3C /* TagLabelStyle.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
@@ -159,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				830F9F5F28572F0600339AEF /* CloudKit.framework in Frameworks */,
 				83D53FF9282906B300A72716 /* SwiftUI.framework in Frameworks */,
 				83D53FF8282906B300A72716 /* WidgetKit.framework in Frameworks */,
 			);
@@ -652,7 +654,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -688,7 +690,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -723,7 +725,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;
@@ -753,7 +755,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;

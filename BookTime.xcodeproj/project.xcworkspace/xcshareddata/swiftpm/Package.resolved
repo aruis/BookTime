@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/aruis/FlipView.git",
       "state" : {
-        "revision" : "58639cbe8c92446fdcb5b1d2ef60cfe365d0affe",
-        "version" : "1.22.9"
+        "revision" : "faae9c1c9a4972a70973acffcf7d3af2ef0dbc2c",
+        "version" : "1.22.11"
       }
     },
     {

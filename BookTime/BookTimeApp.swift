@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 @main
 struct BookTimeApp: App {
@@ -42,6 +43,7 @@ struct BookTimeApp: App {
             }
             .onAppear(){
                 showWalkthrough = hasViewdWalkthrough ? false : true
+                WidgetCenter.shared.reloadAllTimelines()
 //                showWalkthrough = true
             }
 

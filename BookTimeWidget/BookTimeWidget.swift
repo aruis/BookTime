@@ -9,8 +9,11 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
+        
+    let keyStore = NSUbiquitousKeyValueStore()
+    
     func placeholder(in context: Context) -> BookTimeWidgetEntry {
-        BookTimeWidgetEntry(date: Date(), latReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
+        BookTimeWidgetEntry(date: Date(), lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
@@ -18,15 +21,23 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        let nextUpdateDate = Calendar.current.date(byAdding: .day, value: 1, to: Date().start())!
+        let now = Date()
+        let nextUpdateDate = Calendar.current.date(byAdding: .day, value: 1, to: now.start())!
 
-        let timeline = Timeline(entries: [buildEntry()], policy: .after(nextUpdateDate))
+        var entries:[BookTimeWidgetEntry] = []
+        
+        for i in 1...23{
+            let entryDate = Calendar.current.date(byAdding: .hour, value: i, to: now)!
+            entries.append(buildEntry(entryDate))
+        }
+        
+        let timeline = Timeline(entries: entries, policy: .after(nextUpdateDate))
         
         completion(timeline)
     }
     
     func buildEntry(_ date:Date? = nil)->BookTimeWidgetEntry{
-        
+                                
         let userDefaults =  UserDefaults(suiteName: "group.com.aruistar.BookTime")
         var now = Date()
         
@@ -34,20 +45,38 @@ struct Provider: TimelineProvider {
             now = date
         }
         
+        
+        
         if let userDefaults = userDefaults {
-                                    
-            var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
-            let targetMinPerday  = userDefaults.integer(forKey: "targetMinPerday")
-            let lastReadDateString = userDefaults.string(forKey: "lastReadDateString")
-            let latReadDate:Date? =  userDefaults.object(forKey: "lastReadDate") as? Date
 
-            if(lastReadDateString != now.format("YYYY-MM-dd")){
+            var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
+            var targetMinPerday  = userDefaults.integer(forKey: "targetMinPerday")
+            let lastReadDateString = userDefaults.string(forKey: "lastReadDateString")
+            var lastReadDate:Date? =  userDefaults.object(forKey: "lastReadDate") as? Date
+
+            if lastReadDateString != now.format("YYYY-MM-dd"){ // 不是今天的
                 todayReadMin = 0
             }
+
             
-            return BookTimeWidgetEntry(date: now,latReadDate:latReadDate, todayReadMin: todayReadMin,targetMinPerday: targetMinPerday)
-        }else{
-            return BookTimeWidgetEntry(date: now,latReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
+            let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as! Int?
+            
+            if let todayReadMinCloud = todayReadMinCloud {
+                let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as! Int
+                let lastReadDateStringCloud = keyStore.string(forKey: "lastReadDateString")
+                let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date
+
+                if lastReadDateStringCloud == now.format("YYYY-MM-dd") && todayReadMinCloud > todayReadMin{
+                    todayReadMin = todayReadMinCloud
+                    targetMinPerday = targetMinPerdayCloud
+                    lastReadDate = lastReadDateCloud
+                }
+            }
+            
+
+            return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDate, todayReadMin: todayReadMin,targetMinPerday: targetMinPerday)
+        } else{
+            return BookTimeWidgetEntry(date: now,lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
         }
        
     }
@@ -56,7 +85,7 @@ struct Provider: TimelineProvider {
 struct BookTimeWidgetEntry: TimelineEntry {
     let date: Date
     
-    let latReadDate:Date?
+    let lastReadDate:Date?
     let todayReadMin:Int
     let targetMinPerday:Int
 }
@@ -126,10 +155,10 @@ struct BookTimeWidgetEntryView : View {
                 }else{
                     Text("No Reading Today")
                         .font(.system(.title2,design: .rounded))
-                    if let latReadDate = entry.latReadDate{
+                    if let lastReadDate = entry.lastReadDate{
                         HStack(spacing:0){
                             Text("Since Last:")
-                            Text(latReadDate,style: .relative)
+                            Text(lastReadDate,style: .relative)
                         }
                         .font(.system(.caption,design: .rounded))
                         .opacity(0.8)
@@ -230,7 +259,7 @@ struct BookTimeWidget: Widget {
 
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),latReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90))
+        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }

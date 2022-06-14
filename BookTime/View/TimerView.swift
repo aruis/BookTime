@@ -13,6 +13,7 @@ import FlipView
 import PacmanProgress
 
 struct TimerView: View {
+    let keyStore = NSUbiquitousKeyValueStore()
     
     @AppStorage("isRemind") var isRemind = false
     
@@ -298,6 +299,10 @@ struct TimerView: View {
                 NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0 || BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes > 0)
             }
             
+            keyStore.synchronize()
+            
+            WidgetCenter.shared.reloadAllTimelines()
+            
         })
         .onReceive(timer, perform: { now in
             //            count += 10
@@ -349,7 +354,13 @@ struct TimerView: View {
             UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
             UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
             UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now, forKey: "lastReadDate")
+            
             WidgetCenter.shared.reloadAllTimelines()
+            
+            keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
+            keyStore.set(targetMinPerday, forKey: "targetMinPerday")
+            keyStore.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
+            keyStore.set(now, forKey: "lastReadDate")                        
             
             DispatchQueue.main.async {
                 do{
