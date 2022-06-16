@@ -21,6 +21,7 @@ struct TimerView: View {
     @AppStorage("remindDateMin") var reminDateMin = -1
     
     let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    let timer2 = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var count = 0
     
     @Environment(\.managedObjectContext) var context
@@ -137,6 +138,13 @@ struct TimerView: View {
             let min = String( thisMinute.asString().split(separator: ":")[1])
             let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
             
+            // 今日已阅读
+            //                let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+            //
+            //                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+            //                let hour = String( thisMinute.asString().split(separator: ":")[0])
+            //                let min = String( thisMinute.asString().split(separator: ":")[1])
+            
             let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
             let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
                         
@@ -179,6 +187,7 @@ struct TimerView: View {
                             dismiss()
                         }, label: {
                             Image(systemName: "clear")
+                                .frame(width: 28, height: 28)
                         })
                         .font(.title2)
                         .buttonStyle(.bordered)
@@ -198,10 +207,14 @@ struct TimerView: View {
                             ZStack(alignment: .bottomTrailing){
                                 if  verticalSizeClass == .compact{
                                     Image( systemName: "iphone")
+                                        .frame(width: 28, height: 28)
                                     Image( systemName: "iphone.landscape").opacity(0.35)
+                                        .frame(width: 28, height: 28)
                                 }else{
                                     Image( systemName: "iphone.landscape")
+                                        .frame(width: 28, height: 28)
                                     Image( systemName: "iphone").opacity(0.35)
+                                        .frame(width: 28, height: 28)
                                 }
                                 
                             }
@@ -217,11 +230,13 @@ struct TimerView: View {
                         }else{
                             oldLight = UIScreen.main.brightness
                             UIScreen.main.brightness = CGFloat(0.05)
+                            
                         }
                         lowLight.toggle()
                         
                     }, label: {
                         Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
+                            .frame(width: 28, height: 28)
                     })
                     .font(.title2)
                     .buttonStyle(.bordered)
@@ -302,6 +317,11 @@ struct TimerView: View {
             keyStore.synchronize()
             
             WidgetCenter.shared.reloadAllTimelines()
+            
+        })
+        .onReceive(timer2, perform: {now in
+            
+            print(now)
             
         })
         .onReceive(timer, perform: { now in

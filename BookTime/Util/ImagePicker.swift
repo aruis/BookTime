@@ -47,16 +47,16 @@ struct ImagePicker:UIViewControllerRepresentable{
                 let saveImage = UIImage(data: image.aspectFittedToHeight(400).jpegData(compressionQuality: 0.85)!) ?? UIImage()
                 parent.selectedImage = saveImage
                 
-                let size = saveImage.size
+//                let size = saveImage.size
+//
+//                let cropRect = CGRect(
+//                    x: size.width * 0.1,
+//                    y: size.height * 0.1,
+//                    width: size.width * 0.8,
+//                    height: size.height * 0.8
+//                ).integral
                 
-                let cropRect = CGRect(
-                    x: size.width * 0.1,
-                    y: size.height * 0.1,
-                    width: size.width * 0.8,
-                    height: size.height * 0.8
-                ).integral
-                
-                guard let cgImage =  saveImage.cgImage?.cropping(to: cropRect) else {return}
+                guard let cgImage =  saveImage.cgImage else {return}
 
                 // Create a new image-request handler.
                 let requestHandler = VNImageRequestHandler(cgImage: cgImage)
