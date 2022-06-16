@@ -20,8 +20,8 @@ struct TimerView: View {
     @AppStorage("remindDateHour") var reminDateHour = -1
     @AppStorage("remindDateMin") var reminDateMin = -1
     
-    let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-    let timer2 = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     @State private var count = 0
     
     @Environment(\.managedObjectContext) var context
@@ -37,6 +37,8 @@ struct TimerView: View {
     @State private var thisMinute:Int  = 0
     
     @State private var beginDate  = Date()
+    
+    @State private var readSecond = 0
     
     @State private var showRealTime = false
     
@@ -132,17 +134,16 @@ struct TimerView: View {
             let ss = String(dataArr[2])
 
             // 本次阅读时间
-            let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
 
-            let thisS = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+            let thisS = "\(readSecond%60)".count == 1 ? "0\(readSecond%60)" : "\(readSecond%60)"
             let thisH = String( thisMinute.asString().split(separator: ":")[0])
             let thisM = String( thisMinute.asString().split(separator: ":")[1])
             let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
-            
+                                                
             // 今日已阅读时间
             let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
             
-            let todayS = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+            let todayS = thisS
             let todayH = String( thisMinute.asString().split(separator: ":")[0])
             let todayM = String( thisMinute.asString().split(separator: ":")[1])
                         
@@ -297,7 +298,6 @@ struct TimerView: View {
             AlertToast( type: .complete(.green), title: String(localized: "Today's goal has been reached"))
         }
         .onAppear(perform: {
-            
             UIApplication.shared.isIdleTimerDisabled = true
             UIDevice.current.isBatteryMonitoringEnabled = true
             oldLight = UIScreen.main.brightness
@@ -311,8 +311,6 @@ struct TimerView: View {
             DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
                 isShowProgress = false
             })
-
-            
         })
         .onDisappear(perform: {
             UIScreen.main.brightness = oldLight
@@ -329,33 +327,16 @@ struct TimerView: View {
             WidgetCenter.shared.reloadAllTimelines()
             
         })
-        .onReceive(timer2, perform: {now in
-            
-            print(now)
-            
-        })
-        .onReceive(timer, perform: { now in
-            //            count += 10
-            
-            //            let nowStr = now.format("mm:ss")
-            //            if (nowStr == "29:59" || nowStr == "59:59" ) && tabSelected != .time {
-            //                lastShowTab = tabSelected
-            //                tabSelected  = .time
-            //                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-            //                    changeTabAuto = true
-            //                })
-            //            }
-            //
-            //            if (nowStr == "31:00" || nowStr == "01:00" ) && changeTabAuto {
-            //                if let lastShowTab = lastShowTab {
-            //                    tabSelected = lastShowTab
-            //                }
-            //                changeTabAuto = false
-            //            }
-            
-            thisMinute += 1
-            
-            print("thisMinute: \(thisMinute)")
+        .onReceive(timer, perform: { now in            
+            readSecond += 1
+                        
+                        
+            if readSecond%60 != 0 {
+                return
+            } else {
+                self.thisMinute += 1
+            }
+                        
             
             let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
             
@@ -390,7 +371,7 @@ struct TimerView: View {
             keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
             keyStore.set(targetMinPerday, forKey: "targetMinPerday")
             keyStore.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
-            keyStore.set(now, forKey: "lastReadDate")                        
+            keyStore.set(now, forKey: "lastReadDate")
             
             DispatchQueue.main.async {
                 do{
@@ -399,10 +380,13 @@ struct TimerView: View {
                     print(error)
                 }
             }
+
             
+
         })
         
     }
+    
 }
 
 struct TimerView_Previews: PreviewProvider {

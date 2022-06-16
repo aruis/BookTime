@@ -41,10 +41,10 @@
          contextName = "closure #8 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "thisMinute">
+               value = "reminDateMin">
             </PersistentString>
             <PersistentString
-               value = "reminDateMin">
+               value = "thisMinute">
             </PersistentString>
             <PersistentString
                value = "isRemind">
@@ -82,13 +82,13 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -112,7 +112,7 @@
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
             <PersistentString
                value = "longHit">
@@ -124,7 +124,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -167,13 +167,13 @@
          contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newOrientation.isPortrait">
+               value = "newOrientation">
             </PersistentString>
             <PersistentString
                value = "orientation.isPortrait">
             </PersistentString>
             <PersistentString
-               value = "newOrientation">
+               value = "newOrientation.isPortrait">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -182,6 +182,14 @@
          <PersistentStrings>
             <PersistentString
                value = "withFrame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in TimerView.body.getter:TimerView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "components.minute">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
