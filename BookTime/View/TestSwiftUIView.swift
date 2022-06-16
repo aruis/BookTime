@@ -11,6 +11,35 @@ struct TestSwiftUIView: View {
     var body: some View {
         HStack{
             
+            Circle()
+                .frame(width: 50, height: 50)
+                .foregroundColor(.blue)
+                .overlay(
+                    Image(systemName:"clear")
+                        .font(.title2)
+                )
+                .onTapGesture {
+                    
+                }
+
+            Circle()
+                .frame(width: 50, height: 50)
+                .foregroundColor(.blue)
+                .overlay(
+                    ZStack(alignment: .bottomTrailing){
+                            Image( systemName: "iphone")
+                            Image( systemName: "iphone.landscape")
+                                .opacity(0.35)
+                        
+                    }
+                    .font(.title2)
+
+                )
+                .onTapGesture {
+                    
+                }
+
+            
             Button(action: {
                 
             }, label: {
@@ -24,8 +53,16 @@ struct TestSwiftUIView: View {
             Button(action: {
                 
             }, label: {
-                Image(systemName:"iphone")
-                    .frame(width: 28, height: 28)
+                ZStack(alignment: .bottomTrailing){
+                    
+                        Image( systemName: "iphone")
+                          
+                        Image( systemName: "iphone.landscape")
+                            .opacity(0.35)
+                    
+                }
+
+
             })
             .font(.title2)
             .buttonStyle(.bordered)

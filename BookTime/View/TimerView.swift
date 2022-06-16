@@ -124,31 +124,37 @@ struct TimerView: View {
         TimelineView(.periodic(from: beginDate, by: 1)) { context in
             let date = context.date
             
-            
+            // 当前时间
             let dataArr  = date.format("HH:mm:ss").split(separator: ":")
             
             let hh = String(dataArr[0])
             let mm = String(dataArr[1])
             let ss = String(dataArr[2])
 
+            // 本次阅读时间
             let components = Calendar.current.dateComponents([.hour,.minute,.second], from: beginDate, to: date)
 
-            let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
-            let hour = String( thisMinute.asString().split(separator: ":")[0])
-            let min = String( thisMinute.asString().split(separator: ":")[1])
+            let thisS = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+            let thisH = String( thisMinute.asString().split(separator: ":")[0])
+            let thisM = String( thisMinute.asString().split(separator: ":")[1])
             let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
             
-            // 今日已阅读
-            //                let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
-            //
-            //                let s = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
-            //                let hour = String( thisMinute.asString().split(separator: ":")[0])
-            //                let min = String( thisMinute.asString().split(separator: ":")[1])
-            
+            // 今日已阅读时间
             let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
-            let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
+            
+            let todayS = "\(components.second!)".count == 1 ? "0\(components.second!)" : "\(components.second!)"
+            let todayH = String( thisMinute.asString().split(separator: ":")[0])
+            let todayM = String( thisMinute.asString().split(separator: ":")[1])
                         
-            ClockView(hour: showRealTime ? hh : hour, min: showRealTime ? mm : min, second: showRealTime ? ss : s,headTitle: date.dayString(), batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging,progress: .constant(process),isShowProgress:$isShowProgress,clockTap:{
+            let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
+            
+            let hour = isShowProgress ? todayH : showRealTime ? hh : thisH
+            let min = isShowProgress ? todayM : showRealTime ? mm : thisM
+            let second = isShowProgress ? todayS : showRealTime ? ss : thisS
+            
+            let title = isShowProgress ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed")  :  date.dayString()
+                        
+            ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging,progress: .constant(process),isShowProgress:$isShowProgress,clockTap:{
                 showRealTime.toggle()
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })
@@ -161,6 +167,8 @@ struct TimerView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
                             isShowProgress = false
                         })
+                    } else {
+                        isShowProgress = false
                     }
                     
 
@@ -179,72 +187,74 @@ struct TimerView: View {
             
         })
         .overlay{
-            VStack {
-                Spacer()
+            
+            GeometryReader{geometry in
                 HStack(spacing:15){
                     if handShowTimer{
-                        Button(action: {
-                            dismiss()
-                        }, label: {
-                            Image(systemName: "clear")
-                                .frame(width: 28, height: 28)
-                        })
-                        .font(.title2)
-                        .buttonStyle(.bordered)
-                        
+                        Circle()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.clock)
+                            .overlay(
+                                Image(systemName:"clear")
+                                    .font(.title2)
+                                    .foregroundColor(.clockText)
+                            )
+                            .onTapGesture {
+                                dismiss()
+                            }
                         
                     }
                     
                     if handShowTimer && UIDevice.current.userInterfaceIdiom == .phone {
-                        Button(action: {
-                            if  verticalSizeClass == .compact{
-                                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                            }else{
-                                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-                            }
-                            
-                        }, label: {
-                            ZStack(alignment: .bottomTrailing){
-                                if  verticalSizeClass == .compact{
-                                    Image( systemName: "iphone")
-                                        .frame(width: 28, height: 28)
-                                    Image( systemName: "iphone.landscape").opacity(0.35)
-                                        .frame(width: 28, height: 28)
-                                }else{
-                                    Image( systemName: "iphone.landscape")
-                                        .frame(width: 28, height: 28)
-                                    Image( systemName: "iphone").opacity(0.35)
-                                        .frame(width: 28, height: 28)
+                        Circle()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.clock)
+                            .overlay(
+                                ZStack(alignment: .bottomTrailing){
+                                    if  verticalSizeClass == .compact{
+                                        Image( systemName: "iphone")
+                                        Image( systemName: "iphone.landscape").opacity(0.35)
+                                    }else{
+                                        Image( systemName: "iphone.landscape")
+                                        Image( systemName: "iphone").opacity(0.35)
+                                    }
                                 }
-                                
+                                .font(.title2)
+                                .foregroundColor(.clockText)
+                            )
+                            .onTapGesture {
+                                if  verticalSizeClass == .compact{
+                                    UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                                }else{
+                                    UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+                                }
+
                             }
-                            
-                        })
-                        .font(.title2)
-                        .buttonStyle(.bordered)
                     }
                     
-                    Button(action: {
-                        if lowLight{
-                            UIScreen.main.brightness = oldLight
-                        }else{
-                            oldLight = UIScreen.main.brightness
-                            UIScreen.main.brightness = CGFloat(0.05)
-                            
+                    Circle()
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(.clock)
+                        .overlay(
+                            Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
+                                .font(.title2)
+                                .foregroundColor(.clockText)
+                        )
+                        .onTapGesture {
+                            if lowLight{
+                                UIScreen.main.brightness = oldLight
+                            }else{
+                                oldLight = UIScreen.main.brightness
+                                UIScreen.main.brightness = CGFloat(0.05)
+                                
+                            }
+                            lowLight.toggle()
                         }
-                        lowLight.toggle()
                         
-                    }, label: {
-                        Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
-                            .frame(width: 28, height: 28)
-                    })
-                    .font(.title2)
-                    .buttonStyle(.bordered)
-                    
                     
                 }
+                .position(x: geometry.size.width/2, y: geometry.size.height/8 * 7)
             }
-            .padding(.bottom,45)
             .opacity(isShowButtons ? 1 : 0)
             .animation(.default, value: isShowButtons)
             

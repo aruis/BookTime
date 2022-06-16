@@ -168,13 +168,6 @@ struct Statistics: View {
                 }
                 
             }
-
-//            GroupBox(label: Label("Data for the last 30 days",systemImage: "chart.bar")
-//                .font(.footnote), content: {
-//
-//                        
-//            })
-            
             
             GroupBox(label: Label(totalTitle,systemImage: "clock")
                         .font(.footnote)
