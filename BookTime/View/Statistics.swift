@@ -109,23 +109,6 @@ struct Statistics: View {
         }
     }
     
-    let columnGrid = [
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20)
-    ]
-
-    let iPadCcolumnGrid = [
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20),
-        GridItem(.flexible(),spacing: 20)
-    ]
-
     
     @ViewBuilder
     var reportView:some View{
@@ -224,7 +207,7 @@ struct Statistics: View {
                 GroupBox(label: Label("Finished Book",systemImage: "books.vertical")
                             .font(.footnote)
                 ){
-                    LazyVGrid(columns: UIDevice.current.userInterfaceIdiom == .phone ? columnGrid : iPadCcolumnGrid,spacing: 15) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 85),spacing: 20),],spacing: 15) {
                         ForEach(readedBooks){book in
                             if let imageData = book.image{
                                 Image(uiImage: UIImage(data: imageData) ?? UIImage())
