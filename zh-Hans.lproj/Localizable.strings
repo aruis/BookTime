@@ -116,6 +116,12 @@
 /* No comment provided by engineer. */
 "Finished" = "已读完";
 
+"Archive" = "已归档";
+
+"Archive the Book" = "归档此书";
+
+"Unarchive the Book" = "撤销归档";
+
 /* No comment provided by engineer. */
 "Finished Book" = "读完的书";
 

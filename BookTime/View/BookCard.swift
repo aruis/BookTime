@@ -140,7 +140,12 @@ struct BookCard: View {
                         generator.notificationOccurred(.success)
                         downTrigger+=1
                         book.doneTime = Date()
+                        book.status = BookStatus.readed.rawValue
+                    }else{
+                        book.status = BookStatus.reading.rawValue
                     }
+                    
+                    
                 }
                 .animation(.easeInOut, value: isDone)
                 

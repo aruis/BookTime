@@ -354,6 +354,7 @@ struct Setting: View {
                                 let doneTime =  dateFormatter.date(from: String(cells[9]))
                                 let rating = Int16( cells[10]) ?? 0
                                 let readDays = Int16(cells[11]) ?? 0
+                                let status = Int16(cells[13]) ?? 1
                                 
                                 let matchBook = books.first(where: {$0.id == id})
                                 
@@ -366,6 +367,7 @@ struct Setting: View {
                                         book.isDone = isDone
                                         book.rating = rating
                                         book.readDays = readDays
+                                        book.status = status
                                         
                                     }
                                 } else {//书不存在
@@ -382,6 +384,7 @@ struct Setting: View {
                                     book.doneTime = doneTime
                                     book.rating = rating
                                     book.readDays = readDays
+                                    book.status = status
                                     
                                     if(cells.count == 13){
                                         book.tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
@@ -459,7 +462,7 @@ struct Setting: View {
     }
     
     func exportData(){
-        var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays,tags\n"
+        var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays,tags,status\n"
         for book in books{
             str.append("\(book.id),")
             str.append("\(book.name.replacingOccurrences(of: ",", with: monkeyStr)),")
@@ -491,7 +494,8 @@ struct Setting: View {
             if let tags = book.tags{
                 str.append("\(tags.replacingOccurrences(of: ",", with: monkeyStr))")
             }
-            
+            str.append(",")
+            str.append("\(book.status)")
             
             str.append("\n")
         }

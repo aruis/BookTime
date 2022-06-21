@@ -17,27 +17,27 @@ struct BookList: View {
     
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \Book.isDone, ascending: true),
+        NSSortDescriptor(keyPath: \Book.status, ascending: true),
         //        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false),
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
     ])
     var books: FetchedResults<Book>
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \Book.isDone, ascending: true),
+        NSSortDescriptor(keyPath: \Book.status, ascending: true),
         //        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false),
         NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
     ])
     var booksAll: FetchedResults<Book>
     
     @SectionedFetchRequest(
-        sectionIdentifier: \.isDone,
+        sectionIdentifier: \.status,
         sortDescriptors: [
-            SortDescriptor(\Book.isDone, order: .forward),
+            SortDescriptor(\Book.status, order: .forward),
             //            SortDescriptor(\Book.lastReadTime, order: .forward),
             SortDescriptor(\Book.createTime, order: .reverse)
         ])
-    private var booksGroup: SectionedFetchResults<Bool, Book>
+    private var booksGroup: SectionedFetchResults<Int16, Book>
     
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
     var logs: FetchedResults<ReadLog>
@@ -53,7 +53,7 @@ struct BookList: View {
     @State private var selectTag:Tag? = nil
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
-        
+    
     
     @ViewBuilder
     func itemInList(book:Book) -> some View{
@@ -80,6 +80,30 @@ struct BookList: View {
                 }
             }
             
+            Button(role: .cancel, action: {
+                if  book.status != BookStatus.archive.rawValue {
+                    book.status = BookStatus.archive.rawValue
+                }else{
+                    book.status = BookStatus.reading.rawValue
+                }
+                
+                DispatchQueue.main.async {
+                    do{
+                        try context.save()
+                    }catch{
+                        print(error)
+                    }
+                }
+                
+                generator.notificationOccurred(.warning)
+                
+            })  {
+                HStack{
+                    Text(book.status != BookStatus.archive.rawValue ? "Archive the Book" : "Unarchive the Book")
+                    Image(systemName: "archivebox")
+                }
+            }
+            
             Button(role: .destructive, action: {
                 self.showAlert = true
                 wantDelete = book
@@ -96,6 +120,25 @@ struct BookList: View {
         .listRowSeparator(.hidden)
     }
     
+    
+    func getSectionHeader(iStatus:Int16) -> String{
+        let status = BookStatus(rawValue: iStatus)
+        
+        if let status = status {
+            switch status {
+            case .reading:
+                return String(localized: "Unfinished")
+            case .readed:
+                return String(localized: "Finished")
+            case .archive:
+                return String(localized: "Archive")
+            }
+        }else{
+            return String(localized: "Unfinished")
+        }
+        
+    }
+    
     var body: some View {
         NavigationView {
             if UIDevice.current.userInterfaceIdiom == .phone && booksAll.count == 0 {
@@ -108,22 +151,25 @@ struct BookList: View {
                 List{
                     if searchText.isEmpty {
                         ForEach(booksGroup) { section in
-                            Section(header: Text((section.id ? String(localized: "Finished") : String(localized: "Unfinished")) + "·\(section.count)" ).monospacedDigit() ) {
+                            Section(header: Text(getSectionHeader(iStatus: section.id  ) + "·\(section.count)" ).monospacedDigit() ) {
                                 ForEach(section) { book in
                                     itemInList(book:book)
                                 }
+                                
                             }
                         }
-
+                        
+                        
                     }else{
                         ForEach(books) { book in
                             itemInList(book:book)
                         }
-
+                        
                     }
                     
                 }
-//                .listStyle(.automatic)
+                
+                //                .listStyle(.automatic)
                 .listStyle(.sidebar)
                 .navigationTitle("My Bookshelf")
                 .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
@@ -192,11 +238,11 @@ struct BookList: View {
                                 }, label: {
                                     Label("-",systemImage: selectTag == nil ?  "checkmark" : "")
                                 })
-
+                                
                                 
                             } label:{
                                 Label(selectTag?.name ?? "",systemImage: selectTag != nil ? "tag.fill" :"tag")
-                                        .labelStyle(.titleAndIcon)
+                                    .labelStyle(.titleAndIcon)
                             }
                         }
                     }
@@ -222,12 +268,14 @@ struct BookList: View {
         }
         .task {
             initTags()
+            isDone2status()
             
             let readMinToday =  BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
             
             UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readMinToday, forKey: "todayReadMin")
             UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
             WidgetCenter.shared.reloadAllTimelines()
+            
         }
         
     }
@@ -246,7 +294,29 @@ struct BookList: View {
                 }
             }
         })
-
+        
+    }
+    
+    func isDone2status(){
+        
+        
+        booksAll.forEach{book in
+            if book.status != BookStatus.archive.rawValue{
+                book.status  = book.isDone ? BookStatus.readed.rawValue : BookStatus.reading.rawValue
+            }
+            
+        }
+        
+        
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
+        }
+        
+        
     }
     
     func delete(book:Book?){
