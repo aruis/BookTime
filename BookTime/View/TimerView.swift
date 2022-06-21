@@ -327,7 +327,7 @@ struct TimerView: View {
             WidgetCenter.shared.reloadAllTimelines()
             
         })
-        .onReceive(timer, perform: { now in            
+        .onReceive(timer, perform: { now in
             readSecond += 1
                         
                         
@@ -494,7 +494,7 @@ struct ClockView: View {
                 .onTapGesture {
                     clockTap()
                 }
-                .overlay(
+                .overlay(alignment:.top){
                     VStack{
                         HStack{
                             Text(headTitle)
@@ -506,21 +506,21 @@ struct ClockView: View {
                         .font(.system(.subheadline,design:.rounded))
                     }
                         .padding(.top, -30)
-                    ,alignment:.top
-                )
-                .overlay(
+                    
+                }
+                .overlay(alignment: .bottom){
                     
                     VStack{
                         if isShowProgress{
                             PacmanProgress(progress: $progress,displayType: .mini(pacmanColor: .accentColor,dotColor: .clockText))
                         }
-                        
+
                     }
-                    .padding(.bottom, -width*2.5)
+                    .padding(.bottom, -25)
                     .animation(.easeIn(duration: 0.25),value: isShowProgress)
                     
-                    ,alignment:.bottom
-                )
+                   
+                }
                 
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }
