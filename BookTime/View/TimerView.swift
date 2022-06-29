@@ -70,6 +70,8 @@ struct TimerView: View {
     
     @State private var isShowProgress = true
     
+    @State private var landscapeRight:Bool?
+    
     var body: some View {
 //        TabView(selection: $tabSelected){
 //            TimelineView(.periodic(from: beginDate, by: 1)) { context in
@@ -202,6 +204,14 @@ struct TimerView: View {
                             )
                             .onTapGesture {
                                 dismiss()
+                                
+                                if let landscapeRight = landscapeRight {
+                                    if landscapeRight{
+                                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                                        self.landscapeRight = false                                        
+                                    }
+                                }
+                                
                             }
                         
                     }
@@ -226,8 +236,10 @@ struct TimerView: View {
                             .onTapGesture {
                                 if  verticalSizeClass == .compact{
                                     UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                                    landscapeRight = false
                                 }else{
                                     UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+                                    landscapeRight = true
                                 }
 
                             }

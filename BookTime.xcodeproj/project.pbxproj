@@ -642,7 +642,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -659,7 +659,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.22.6;
+				MARKETING_VERSION = 1.22.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -678,7 +678,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -695,7 +695,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.22.6;
+				MARKETING_VERSION = 1.22.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -713,7 +713,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;
@@ -725,7 +725,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.22.6;
+				MARKETING_VERSION = 1.22.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime.BookTimeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -743,7 +743,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;
@@ -755,7 +755,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.22.6;
+				MARKETING_VERSION = 1.22.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime.BookTimeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

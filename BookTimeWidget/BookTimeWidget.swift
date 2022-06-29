@@ -45,8 +45,6 @@ struct Provider: TimelineProvider {
             now = date
         }
         
-        
-        
         if let userDefaults = userDefaults {
 
             var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
