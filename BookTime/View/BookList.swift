@@ -117,6 +117,51 @@ struct BookList: View {
                 
             }
         }
+        .swipeActions(edge: .leading, allowsFullSwipe: true, content: {
+            Button(action: {
+                self.bookViewModel.setBook(book: book)
+                self.showNewBook = true
+                //                                self.showError.toggle()
+            }) {
+                Image(systemName: "pencil.circle")
+            }
+            .tint(.blue)
+            
+        })
+        .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
+            Button(role: .destructive, action: {
+                self.showAlert = true
+                wantDelete = book
+                generator.notificationOccurred(.warning)
+                
+            })  {
+                Image(systemName: "trash")
+            }
+
+            
+            Button {
+                if  book.status != BookStatus.archive.rawValue {
+                    book.status = BookStatus.archive.rawValue
+                }else{
+                    book.status = BookStatus.reading.rawValue
+                }
+                
+                DispatchQueue.main.async {
+                    do{
+                        try context.save()
+                    }catch{
+                        print(error)
+                    }
+                }
+                
+                generator.notificationOccurred(.warning)
+
+            }label: {
+                Image(systemName: "archivebox")
+            }
+            .tint(.orange)
+                        
+        })
         .listRowSeparator(.hidden)
     }
     
