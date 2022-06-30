@@ -48,7 +48,7 @@ struct Tutorial: View {
                         
                         VStack {
                             Text("BookTime").font(.largeTitle)
-                            Text("Return to reading").font(.subheadline)
+                            Text("Track your reading time").font(.subheadline)
                         }
                     }
                     
