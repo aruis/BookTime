@@ -50,7 +50,7 @@ struct Provider: TimelineProvider {
             var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
             var targetMinPerday  = userDefaults.integer(forKey: "targetMinPerday")
             let lastReadDateString = userDefaults.string(forKey: "lastReadDateString")
-            var lastReadDate:Date? =  userDefaults.object(forKey: "lastReadDate") as? Date
+            var lastReadDate =  userDefaults.object(forKey: "lastReadDate") as! Date
 
             if lastReadDateString != now.format("YYYY-MM-dd"){ // 不是今天的
                 todayReadMin = 0
@@ -62,13 +62,17 @@ struct Provider: TimelineProvider {
             if let todayReadMinCloud = todayReadMinCloud {
                 let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as! Int
                 let lastReadDateStringCloud = keyStore.string(forKey: "lastReadDateString")
-                let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date
+                let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as! Date
 
                 if lastReadDateStringCloud == now.format("YYYY-MM-dd") && todayReadMinCloud > todayReadMin{
                     todayReadMin = todayReadMinCloud
-                    targetMinPerday = targetMinPerdayCloud
+                    targetMinPerday = targetMinPerdayCloud                    
+                }
+                
+                if lastReadDateCloud > lastReadDate {
                     lastReadDate = lastReadDateCloud
                 }
+
             }
             
 
