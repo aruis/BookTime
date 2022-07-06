@@ -66,7 +66,7 @@ struct Provider: TimelineProvider {
 
                 if lastReadDateStringCloud == now.format("YYYY-MM-dd") && todayReadMinCloud > todayReadMin{
                     todayReadMin = todayReadMinCloud
-                    targetMinPerday = targetMinPerdayCloud                    
+                    targetMinPerday = targetMinPerdayCloud
                 }
                 
                 if lastReadDateCloud > lastReadDate {
