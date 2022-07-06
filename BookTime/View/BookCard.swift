@@ -139,12 +139,7 @@ struct BookCard: View {
                     if(isDone){
                         generator.notificationOccurred(.success)
                         downTrigger+=1
-                        book.doneTime = Date()
-                        book.status = BookStatus.readed.rawValue
-                    }else{
-                        book.status = BookStatus.reading.rawValue
                     }
-                    
                     
                 }
                 .animation(.easeInOut, value: isDone)
@@ -241,6 +236,12 @@ struct BookCard: View {
         .onDisappear(perform: {
             if book.isDone != self.isDone{
                 book.isDone = self.isDone
+                if(isDone){
+                    book.doneTime = Date()
+                    book.status = BookStatus.readed.rawValue
+                }else{
+                    book.status = BookStatus.reading.rawValue
+                }
                 save()
             }            
         })
