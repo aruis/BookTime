@@ -416,7 +416,7 @@ struct Statistics: View {
                     let begin = lastHitDay.start()
                     let end = log.day.start()
                     let components = NSCalendar.current.dateComponents([.day], from: begin , to: end)
-                    if(components.day == 1){ //间隔一天，连续的
+                    if(components.day == 0 || components.day == 1){ //间隔一天，连续的
                         longHit += 1
                     }else{
                         longHit = 1

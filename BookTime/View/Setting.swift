@@ -23,7 +23,9 @@ struct Setting: View {
     @FetchRequest(entity: Book.entity(), sortDescriptors:[])
     var books: FetchedResults<Book>
     
-    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
+    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
+        NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
+    ])
     var logs: FetchedResults<ReadLog>
     
     @AppStorage("isRemind") var isRemind = false
