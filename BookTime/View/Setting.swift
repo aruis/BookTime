@@ -356,7 +356,9 @@ struct Setting: View {
                                 let doneTime =  dateFormatter.date(from: String(cells[9]))
                                 let rating = Int16( cells[10]) ?? 0
                                 let readDays = Int16(cells[11]) ?? 0
+                                let tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
                                 let status = Int16(cells[13]) ?? 1
+                                
                                 
                                 let matchBook = books.first(where: {$0.id == id})
                                 
@@ -371,7 +373,9 @@ struct Setting: View {
                                         book.readDays = readDays
                                         book.status = status
                                         
+                                        book.tags = tags
                                     }
+                                                                        
                                 } else {//书不存在
                                     let book  = Book(context: context)
                                     book.id = id
@@ -387,11 +391,8 @@ struct Setting: View {
                                     book.rating = rating
                                     book.readDays = readDays
                                     book.status = status
-                                    
-                                    if(cells.count == 13){
-                                        book.tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
-                                    }
-                                    
+                                    book.tags = tags
+                                                                        
                                     importBookCount+=1
                                 }
                                                                 
