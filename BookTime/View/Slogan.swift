@@ -10,10 +10,9 @@ import SwiftUI
 struct Slogan: View {
     var title:String
     var unit:String
-    
-//    var value:String
-    
     @Binding var value: Int
+    
+    var isRendererImage:Bool
     
     var body: some View {
         HStack(alignment: .firstTextBaseline){
@@ -21,11 +20,14 @@ struct Slogan: View {
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
-            RollingText(font: .largeTitle, weight: .medium, value: $value)
+            if(isRendererImage){
+                Text("\(value)")
+                    .font(.largeTitle)
+            }else{
+                RollingText(font: .largeTitle, weight: .medium, value: $value)
+            }
             
-//            Text(value)
-//                .font(.largeTitle)
-//                .animation(.default, value: value)
+            
             
             
             Text(unit)

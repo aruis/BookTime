@@ -111,22 +111,29 @@ struct Statistics: View {
     
     
     @ViewBuilder
-    var reportView:some View{
+    func reportView(isRendererImage:Bool = false) -> some View{
         VStack{
             HStack{
                 GroupBox(label: Label("Total Reading Days",systemImage: "target").font(.footnote)){
-                    RollingText(font: .largeTitle, weight: .medium, value: $totalReadDay)
-                        .frame(height: 100)
-//                    Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
+                    if(isRendererImage){
+                        Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
+                    }else{
+                        RollingText(font: .largeTitle, weight: .medium, value: $totalReadDay)
+                            .frame(height: 100)
+                    }
+                    
                 }
                 
                 
                 GroupBox(label: Label("Consecutive Check-In Days",systemImage: "checkmark.circle")
                             .font(.footnote)
                 ){
-                    RollingText(font: .largeTitle, weight: .medium, value: $longHit)
-                        .frame(height: 100)
-//                    Text("\(longHit)").font(.largeTitle).frame(height: 100)
+                    if(isRendererImage){
+                        Text("\(longHit)").font(.largeTitle).frame(height: 100)
+                    }else{
+                        RollingText(font: .largeTitle, weight: .medium, value: $longHit)
+                            .frame(height: 100)
+                    }
                 }
             }
             
@@ -177,18 +184,18 @@ struct Statistics: View {
             ){
                 TabView(selection: $sumType){
                     
-                    Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks)
+                    Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
                         .id(1).tag(SumType.all)
                     
                     
                     
-                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks)
+                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
                         .id(2) .tag(SumType.year)
                     
                     
                     
                     
-                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks)
+                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
                         .id(3) .tag(SumType.month)
                     
                     
@@ -226,13 +233,13 @@ struct Statistics: View {
     }
     
     @ViewBuilder
-    var exportBox:some View{
+    func exportBox(isRendererImage:Bool = false) -> some View{
         //        VStack{
         VStack(){
             VStack{
                 Text("BookTime").font(.system(.title,design: .rounded))
                 Text("Reading Timing Buddy").font(.subheadline).opacity(0.8)
-                reportView
+                reportView(isRendererImage:true)
                     .frame(width:380)
                 
                 
@@ -271,7 +278,7 @@ struct Statistics: View {
             //            ScrollView{
             
             ScrollView {
-                reportView
+                reportView()
                 .padding()
                 .navigationTitle("Achievement")
                 //                .navigationBarTitleDisplayMode(.inline)
@@ -297,7 +304,7 @@ struct Statistics: View {
                     .task {
                         DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
 //                            shareImage = ImageRenderer(content: exportBox).uiImage ?? UIImage()
-                            shareImage = exportBox.snapshot()
+                            shareImage = exportBox(isRendererImage: true).snapshot()
                             self.showToast = false
                         })
                         
@@ -477,11 +484,13 @@ struct Report: View{
     
     @Binding var isShowReadedBooks:Bool
     
+    var isRendererImage:Bool
+    
     
     var body: some View{
         VStack ( spacing:15) {
-            Slogan(title: String(localized: "A Total of",comment: "累计阅读") , unit: String(localized:"Minutes of Reading",comment: "分钟" )  , value: $totalReadMin)
-            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"Books in Total" ,comment: "本书")  , value: $totalReadBook)
+            Slogan(title: String(localized: "A Total of",comment: "累计阅读") , unit: String(localized:"Minutes of Reading",comment: "分钟" )  , value: $totalReadMin,isRendererImage:isRendererImage)
+            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"Books in Total" ,comment: "本书")  , value: $totalReadBook,isRendererImage:isRendererImage)
         }
         
     }

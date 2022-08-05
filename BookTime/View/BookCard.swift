@@ -102,8 +102,8 @@ struct BookCard: View {
                     
                     if book.readMinutes > 0{
                         VStack{
-                            Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: $book.readDays)
-                            Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: $book.readMinutes)
+                            Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: $book.readDays,isRendererImage: false)
+                            Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: $book.readMinutes,isRendererImage: false)
                         }
                     }
                     
