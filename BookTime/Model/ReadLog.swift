@@ -9,5 +9,5 @@ import CoreData
 
 class ReadLog:NSManagedObject{    
     @NSManaged var day:Date
-    @NSManaged var readMinutes:Int16
+    @NSManaged var readMinutes:Int
 }

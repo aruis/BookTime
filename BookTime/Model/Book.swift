@@ -19,13 +19,13 @@ class Book:NSManagedObject , Identifiable{
     
     @NSManaged var status: Int16
     
-    @NSManaged var readMinutes: Int64
+    @NSManaged var readMinutes: Int
     @NSManaged var createTime: Date
     @NSManaged var firstReadTime: Date?
     @NSManaged var lastReadTime: Date?
     @NSManaged var doneTime: Date?
-    @NSManaged var rating: Int16
-    @NSManaged var readDays: Int16
+    @NSManaged var rating: Int
+    @NSManaged var readDays: Int
 }
 
 enum BookStatus:Int16{

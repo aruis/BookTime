@@ -57,7 +57,7 @@ class BookPersistenceController {
             let d =  Calendar.current.date(byAdding: .day, value: 0 - i, to: now)!.start()
             
             let readLog = ReadLog(context: viewContext)
-            readLog.readMinutes =  Int16.random(in: 5...60)
+            readLog.readMinutes =  Int.random(in: 5...60)
             readLog.day = d
         }
         

@@ -33,6 +33,7 @@
 		83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */; };
 		838316112803DA3100869E1D /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 838316102803DA3100869E1D /* AlertToast */; };
 		838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 838316132803FE4800869E1D /* ConfettiSwiftUI */; };
+		838850AF289D01C2000640D8 /* RollingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838850AE289D01C2000640D8 /* RollingText.swift */; };
 		838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838B8ABC2769B47700B8E87A /* ViewExt.swift */; };
 		83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		8392C5F32848A8D300755F28 /* FlipView in Frameworks */ = {isa = PBXBuildFile; productRef = 8392C5F22848A8D300755F28 /* FlipView */; };
@@ -116,6 +117,7 @@
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
 		83795625284DF4F800CE6382 /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeFileDoc.swift; sourceTree = "<group>"; };
+		838850AE289D01C2000640D8 /* RollingText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RollingText.swift; sourceTree = "<group>"; };
 		838B8ABC2769B47700B8E87A /* ViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
 		8392247D2827A7EA00303541 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		8392247F2827A7EA00303541 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -252,6 +254,7 @@
 		83731CA82755D37C00305305 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				838850AE289D01C2000640D8 /* RollingText.swift */,
 				83731CA92755D39A00305305 /* BookList.swift */,
 				83731CAB2755D45D00305305 /* BookListItem.swift */,
 				835A3CDF275652CA00672F98 /* NewBook.swift */,
@@ -469,6 +472,7 @@
 				8317F89A2772FE5C00864D2F /* Tools.swift in Sources */,
 				83731C9F2755D0D700305305 /* BookTime.xcdatamodeld in Sources */,
 				83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */,
+				838850AF289D01C2000640D8 /* RollingText.swift in Sources */,
 				835B845B2760A04600F9BAE8 /* DateExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

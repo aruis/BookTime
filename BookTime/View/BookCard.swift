@@ -91,7 +91,7 @@ struct BookCard: View {
                                     if book.rating == 1 && index == 0 {
                                         book.rating = 0
                                     }else{
-                                        book.rating = Int16(index+1)
+                                        book.rating = index+1
                                     }
                                     save()
                                 }
@@ -102,8 +102,8 @@ struct BookCard: View {
                     
                     if book.readMinutes > 0{
                         VStack{
-                            Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: String( book.readDays))
-                            Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: String( book.readMinutes))
+                            Slogan(title: String(localized: "Reading for",comment: "fredingForDay"), unit: String(localized: "day"), value: $book.readDays)
+                            Slogan(title:  String(localized: "Reading for",comment: "fredingForMin"), unit: String(localized: "min"), value: $book.readMinutes)
                         }
                     }
                     

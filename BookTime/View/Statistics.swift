@@ -24,21 +24,21 @@ struct Statistics: View {
     ])
     var books: FetchedResults<Book>
     
-    @State private var todayReadMin:Int16 = 0
+    @State private var todayReadMin:Int = 0
     
     
     @State private var totalReadDay = 0
-    @State private var totalReadMin:Int64 = 0
+    @State private var totalReadMin = 0
     @State private var totalReadBook = 0
     @State private var longHit = 0
     
     @State private var totalReadDay_year = 0
-    @State private var totalReadMin_year:Int64 = 0
+    @State private var totalReadMin_year = 0
     @State private var totalReadBook_year = 0
     @State private var longHit_year = 0
     
     @State private var totalReadDay_month = 0
-    @State private var totalReadMin_month:Int64 = 0
+    @State private var totalReadMin_month = 0
     @State private var totalReadBook_month = 0
     @State private var longHit_month = 0
     
@@ -115,23 +115,25 @@ struct Statistics: View {
         VStack{
             HStack{
                 GroupBox(label: Label("Total Reading Days",systemImage: "target").font(.footnote)){
-                    Text("\(totalReadDay)").font(.largeTitle)
+                    RollingText(font: .largeTitle, weight: .medium, value: $totalReadDay)
                         .frame(height: 100)
+//                    Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
                 }
                 
                 
                 GroupBox(label: Label("Consecutive Check-In Days",systemImage: "checkmark.circle")
                             .font(.footnote)
                 ){
-                    Text("\(longHit)").font(.largeTitle)
+                    RollingText(font: .largeTitle, weight: .medium, value: $longHit)
                         .frame(height: 100)
+//                    Text("\(longHit)").font(.largeTitle).frame(height: 100)
                 }
             }
             
             
             GroupBox(label:Label("\( Int( round( process * 100))) % of the Plan Completed",systemImage: "goforward").font(.footnote)){
                 HStack{
-                    Text( "**\(todayReadMin)** Minutes Today")
+                    Text( "\(todayReadMin) Minutes Today")
                         .font(.system(.title2,design: .rounded))
                     
                     Spacer()
@@ -175,18 +177,18 @@ struct Statistics: View {
             ){
                 TabView(selection: $sumType){
                     
-                    Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: totalReadMin, totalReadBook: totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks)
+                    Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks)
                         .id(1).tag(SumType.all)
                     
                     
                     
-                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: totalReadMin_year, totalReadBook: totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks)
+                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks)
                         .id(2) .tag(SumType.year)
                     
                     
                     
                     
-                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: totalReadMin_month, totalReadBook: totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks)
+                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks)
                         .id(3) .tag(SumType.month)
                     
                     
@@ -294,6 +296,7 @@ struct Statistics: View {
                     }
                     .task {
                         DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+//                            shareImage = ImageRenderer(content: exportBox).uiImage ?? UIImage()
                             shareImage = exportBox.snapshot()
                             self.showToast = false
                         })
@@ -368,7 +371,7 @@ struct Statistics: View {
                 
                 if( Date().format("YYYY") == log.day.format("YYYY")) {
                     totalReadDay_year += 1
-                    totalReadMin_year += Int64( log.readMinutes)
+                    totalReadMin_year +=  log.readMinutes
                     
                     if let lastHitDay = lastHitDay_year {
                         let begin = lastHitDay.start()
@@ -389,7 +392,7 @@ struct Statistics: View {
                 }
                 if( Date().format("YYYY-MM") == log.day.format("YYYY-MM")) {
                     totalReadDay_month += 1
-                    totalReadMin_month += Int64( log.readMinutes)
+                    totalReadMin_month += log.readMinutes
                     
                     if let lastHitDay = lastHitDay_month {
                         let begin = lastHitDay.start()
@@ -410,7 +413,7 @@ struct Statistics: View {
                 }
                 
                 totalReadDay += 1
-                totalReadMin += Int64( log.readMinutes)
+                totalReadMin += log.readMinutes
                 
                 if let lastHitDay = lastHitDay {
                     let begin = lastHitDay.start()
@@ -464,11 +467,11 @@ struct Statistics: View {
 
 struct Report: View{
     
-    var todayReadMin:Int16
+    var todayReadMin:Int
     
     var totalReadDay:Int
-    var totalReadMin:Int64
-    var totalReadBook:Int
+    @Binding var totalReadMin:Int
+    @Binding var totalReadBook:Int
     
     var longHit:Int
     
@@ -477,8 +480,8 @@ struct Report: View{
     
     var body: some View{
         VStack ( spacing:15) {
-            Slogan(title: String(localized: "A Total of",comment: "累计阅读") , unit: String(localized:"Minutes of Reading",comment: "分钟" )  , value: String( totalReadMin))
-            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"Books in Total" ,comment: "本书")  , value: String(totalReadBook))
+            Slogan(title: String(localized: "A Total of",comment: "累计阅读") , unit: String(localized:"Minutes of Reading",comment: "分钟" )  , value: $totalReadMin)
+            Slogan(title: String(localized: "Read",comment: "读完了"  ) , unit: String(localized:"Books in Total" ,comment: "本书")  , value: $totalReadBook)
         }
         
     }

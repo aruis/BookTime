@@ -64,7 +64,7 @@ struct Setting: View {
     
     @Environment(\.scenePhase) var scenePhase
     
-    @State private var todayReadMin:Int16 = 0
+    @State private var todayReadMin:Int = 0
     
     private var greeting:String{
         get {
@@ -349,13 +349,13 @@ struct Setting: View {
                                 let author = cells[2].replacingOccurrences(of: monkeyStr, with: ",")
                                 let image = Data(base64Encoded: String(cells[3])) ?? UIImage(named: "camera")!.pngData()!
                                 let isDone = cells[4] == "true"
-                                let readMinutes = Int64( cells[5]) ?? 0
+                                let readMinutes = Int( cells[5]) ?? 0
                                 let createTime =  dateFormatter.date(from: String(cells[6]))
                                 let firstReadTime =  dateFormatter.date(from: String(cells[7]))
                                 let lastReadTime =  dateFormatter.date(from: String(cells[8]))
                                 let doneTime =  dateFormatter.date(from: String(cells[9]))
-                                let rating = Int16( cells[10]) ?? 0
-                                let readDays = Int16(cells[11]) ?? 0
+                                let rating = Int( cells[10]) ?? 0
+                                let readDays = Int(cells[11]) ?? 0
                                 let tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
                                 let status = Int16(cells[13]) ?? 1
                                 
@@ -398,7 +398,7 @@ struct Setting: View {
                                                                 
                             }else{ // 日志信息
                                 let day = dateFormatter.date(from: String(cells[0]))
-                                let readMinutes = Int16(cells[1]) ?? 0
+                                let readMinutes = Int(cells[1]) ?? 0
                                 
                                 if let day = day {
                                     let matchLog = logs.first(where: {$0.day == day})
@@ -582,13 +582,13 @@ struct Setting: View {
             book.author = bookRecord.object(forKey: "author") as? String
             
             book.isDone = bookRecord.object(forKey: "isDone") as! Bool
-            book.readMinutes = bookRecord.object(forKey: "readMinutes") as! Int64
+            book.readMinutes = bookRecord.object(forKey: "readMinutes") as! Int
             book.createTime = bookRecord.object(forKey: "createTime") as! Date
             book.firstReadTime = bookRecord.object(forKey: "firstReadTime") as? Date
             book.lastReadTime = bookRecord.object(forKey: "lastReadTime") as? Date
             book.doneTime = bookRecord.object(forKey: "doneTime") as? Date
-            book.rating = bookRecord.object(forKey: "rating") as! Int16
-            book.readDays = bookRecord.object(forKey: "readDays") as! Int16
+            book.rating = bookRecord.object(forKey: "rating") as! Int
+            book.readDays = bookRecord.object(forKey: "readDays") as! Int
             book.tags = bookRecord.object(forKey: "tags") as? String
             
             let imageFile:CKAsset? = bookRecord.object(forKey: "image") as? CKAsset
@@ -603,7 +603,7 @@ struct Setting: View {
         for logRecord in logRecords {
             let log = ReadLog(context:context)
             log.day = logRecord.object(forKey: "day") as! Date
-            log.readMinutes = logRecord.object(forKey: "readMinutes") as! Int16
+            log.readMinutes = logRecord.object(forKey: "readMinutes") as! Int
         }
         
         
