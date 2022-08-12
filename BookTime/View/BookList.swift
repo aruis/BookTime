@@ -317,9 +317,13 @@ struct BookList: View {
             
             let readMinToday =  BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
             
-            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readMinToday, forKey: "todayReadMin")
-            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
-            WidgetCenter.shared.reloadAllTimelines()
+            let userDefaults = UserDefaults(suiteName:"group.com.aruistar.BookTime")
+            
+            if let userDefaults = userDefaults {
+                userDefaults.set(readMinToday, forKey: "todayReadMin")
+                userDefaults.set(targetMinPerday, forKey: "targetMinPerday")
+                WidgetCenter.shared.reloadAllTimelines()
+            }            
             
         }
         

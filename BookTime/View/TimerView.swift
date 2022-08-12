@@ -333,9 +333,7 @@ struct TimerView: View {
             if isRemind {
                 NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0 || BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes > 0)
             }
-            
-            keyStore.synchronize()
-            
+                                    
             WidgetCenter.shared.reloadAllTimelines()
             
         })
@@ -373,10 +371,16 @@ struct TimerView: View {
                 showToast = true
             }
             
-            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(readLog.readMinutes, forKey: "todayReadMin")
-            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(targetMinPerday, forKey: "targetMinPerday")
-            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
-            UserDefaults(suiteName:"group.com.aruistar.BookTime")!.set(now, forKey: "lastReadDate")
+            let userDefaults = UserDefaults(suiteName:"group.com.aruistar.BookTime")
+            
+            if let userDefaults = userDefaults {
+                userDefaults.set(readLog.readMinutes, forKey: "todayReadMin")
+                userDefaults.set(targetMinPerday, forKey: "targetMinPerday")
+                userDefaults.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
+                userDefaults.set(now, forKey: "lastReadDate")
+
+            }
+            
             
             WidgetCenter.shared.reloadAllTimelines()
             
@@ -384,6 +388,8 @@ struct TimerView: View {
             keyStore.set(targetMinPerday, forKey: "targetMinPerday")
             keyStore.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
             keyStore.set(now, forKey: "lastReadDate")
+            
+            keyStore.synchronize()
             
             DispatchQueue.main.async {
                 do{

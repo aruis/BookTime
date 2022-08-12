@@ -62,9 +62,3 @@ class BookViewModel: ObservableObject{
         self.image = UIImage(named: "camera")!
     }
 }
-
-
-struct Tag:Identifiable{
-    let name:String
-    var id:String{name}    
-}

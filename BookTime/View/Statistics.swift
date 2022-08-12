@@ -327,13 +327,9 @@ struct Statistics: View {
             todayReadMin = 0
         })
         .task {
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.25, execute: {
-                withAnimation(.easeInOut){
-                    todayReadMin = BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
-                }
-                
-            })
-            initAllLog()
+            withAnimation(.easeInOut){
+                initAllLog()
+            }            
         }
 
         
@@ -397,6 +393,7 @@ struct Statistics: View {
                     lastHitDay_year = log.day
                     
                 }
+                
                 if( Date().format("YYYY-MM") == log.day.format("YYYY-MM")) {
                     totalReadDay_month += 1
                     totalReadMin_month += log.readMinutes
@@ -417,6 +414,10 @@ struct Statistics: View {
                     
                     lastHitDay_month = log.day
                     
+                }
+                
+                if(Date().start() == log.day.start()){
+                    todayReadMin = log.readMinutes
                 }
                 
                 totalReadDay += 1

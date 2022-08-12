@@ -37,7 +37,6 @@ struct Provider: TimelineProvider {
     }
     
     func buildEntry(_ date:Date? = nil)->BookTimeWidgetEntry{
-                                
         let userDefaults =  UserDefaults(suiteName: "group.com.aruistar.BookTime")
         var now = Date()
         
