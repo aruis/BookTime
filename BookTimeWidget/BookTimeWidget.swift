@@ -124,6 +124,12 @@ struct BookTimeWidgetEntryView : View {
         }
     }
     
+    
+    var remainDays:Int {
+        let today = Date()
+        let allDays = Date(Date().format("yyyy") + "-12-31").dayOfYear
+        return allDays - today.dayOfYear
+    }
 
 
     @ViewBuilder
@@ -163,10 +169,10 @@ struct BookTimeWidgetEntryView : View {
     }
 
     @ViewBuilder
-    var mediumView:some View{
+    func mediumView(isInLarge:Bool = false) -> some View{
         HStack{
             
-            VStack(alignment: .leading,spacing: 2){
+            VStack(alignment: .leading,spacing: 4){
                 if entry.todayReadMin > 0 {
                     Text("\(entry.todayReadMin) Minutes Today")
                         .font(.system(.title2,design: .rounded))
@@ -181,6 +187,11 @@ struct BookTimeWidgetEntryView : View {
                         .font(.system(.caption,design: .rounded))
                         .opacity(0.8)
                     }
+                }
+                
+                if(isInLarge){
+                    Text("\(remainDays) days left this year")
+                        .opacity(0.8)
                 }
                 
                 
@@ -245,7 +256,7 @@ struct BookTimeWidgetEntryView : View {
             .clipShape(Rectangle())
             .padding(10)
 
-            mediumView
+            mediumView(isInLarge: true)
         }
         .padding(.vertical,10)
 
@@ -279,7 +290,7 @@ struct BookTimeWidgetEntryView : View {
         case .systemSmall:
             smallView
         case .systemMedium:
-            mediumView
+            mediumView()
         case .systemLarge:
             largeView
 

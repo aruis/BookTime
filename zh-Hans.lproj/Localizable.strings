@@ -18,6 +18,8 @@
 /* No comment provided by engineer. */
 "%lld Minutes Today" = "今日已阅读 %lld 分";
 
+"%lld days left this year" = "本年度仅剩余%lld天";
+
 "%lld Min" = "%lld 分";
 
 "Reading Reminder" = "读书提醒";
