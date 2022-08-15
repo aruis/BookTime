@@ -47,9 +47,12 @@ struct RollingText: View {
         .onAppear {
             // MARK: Loading Range
             animationRange = Array(repeating: 0, count: "\(value)".count)
+            
+            let v = value
+            
             // Starting With Little Delay
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.06){
-                updateText()
+                updateText(v)
             }
         }
         .onChange(of: value) { newValue in
@@ -74,9 +77,10 @@ struct RollingText: View {
         }
     }
     
-    func updateText(){
-        let stringValue = "\(value)"
-        for (index,value) in zip(0..<stringValue.count, stringValue){
+    func updateText(_ v:Int? = nil){
+        let nv = v ?? value
+        let stringValue = "\(nv)"
+        for (index,nv) in zip(0..<stringValue.count, stringValue){
             // If First Value = 1
             // Then Offset will be Applied for -1
             // So the text will move up to show 1 Value
@@ -87,7 +91,7 @@ struct RollingText: View {
             // Total = 1.5
             fraction = (fraction > 0.5 ? 0.5 : fraction)
             withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1 + fraction, blendDuration: 1 + fraction)){
-                animationRange[index] = (String(value) as NSString).integerValue
+                animationRange[index] = (String(nv) as NSString).integerValue
             }
         }
     }
