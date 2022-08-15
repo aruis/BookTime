@@ -26,4 +26,17 @@ extension Date {
         calendar.timeZone = NSTimeZone.local
         return calendar.startOfDay(for: self)
     }
+    
+    var dayOfYear: Int {
+        return Calendar.current.ordinality(of: .day, in: .year, for: self)!
+    }
+    
+    init (_ str:String){
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd"
+           
+           let target = dateFormatter.date(from: String(str))!
+           self.init(timeIntervalSince1970: target.timeIntervalSince1970)
+    }
+
 }

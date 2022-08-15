@@ -15,6 +15,8 @@ struct BookList: View {
     let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
     
+    let keyStore = NSUbiquitousKeyValueStore()
+    
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \Book.status, ascending: true),
@@ -39,8 +41,11 @@ struct BookList: View {
         ])
     private var booksGroup: SectionedFetchResults<Int16, Book>
     
-    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[])
+    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
+        NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
+    ],predicate:NSPredicate(format: "readMinutes > 0"))
     var logs: FetchedResults<ReadLog>
+
     
     @Environment(\.managedObjectContext) var context
     
@@ -322,8 +327,32 @@ struct BookList: View {
             if let userDefaults = userDefaults {
                 userDefaults.set(readMinToday, forKey: "todayReadMin")
                 userDefaults.set(targetMinPerday, forKey: "targetMinPerday")
-                WidgetCenter.shared.reloadAllTimelines()
-            }            
+            }
+            
+            var logInYear =  keyStore.array(forKey: "logInYear")
+            
+            if let _ = logInYear {
+                let dayIndex = Date().dayOfYear
+                [Int](repeating: 0, count: 366).forEach{it in
+                    if(it >= dayIndex){
+                        logInYear![it] = 0
+                    }
+                }
+                
+            }else{
+                logInYear = [Int](repeating: 0, count: 366)
+            }
+            
+            for log:ReadLog in logs{
+                if(log.readMinutes>0 && Date().format("YYYY") == log.day.format("YYYY") ){
+                    logInYear![log.day.dayOfYear-1] = log.readMinutes
+                }
+            }
+            
+            keyStore.set(logInYear, forKey: "logInYear")
+            keyStore.synchronize()
+            
+            WidgetCenter.shared.reloadAllTimelines()
             
         }
         
@@ -381,22 +410,7 @@ struct BookList: View {
             }
         }
     }
-    
-    func local2Cloud() async{
-        await  ctrl.cleanCloud()
-        
-        for book in books{
-            ctrl.saveBookInICloud(book: book)
-        }
-        
-        for log in logs{
-            ctrl.saveLogInICloud(log: log)
-        }
-        
-        ctrl.tapLastBackuptime()
-        
-    }
-    
+       
     
     
 }

@@ -365,6 +365,8 @@ struct TimerView: View {
             book.lastReadTime = now
             readLog.readMinutes += 1
             
+         
+            
             if(targetMinPerday>0 && targetMinPerday == readLog.readMinutes){
                 generator.notificationOccurred(.success)
                 isHit = true
@@ -378,18 +380,25 @@ struct TimerView: View {
                 userDefaults.set(targetMinPerday, forKey: "targetMinPerday")
                 userDefaults.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
                 userDefaults.set(now, forKey: "lastReadDate")
-
             }
             
             
-            WidgetCenter.shared.reloadAllTimelines()
+            var logInYear =  keyStore.array(forKey: "logInYear")
+            
+            if var _ = logInYear {
+                let dayIndex = now.dayOfYear
+                logInYear![dayIndex] = readLog.readMinutes                
+            }
             
             keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
             keyStore.set(targetMinPerday, forKey: "targetMinPerday")
             keyStore.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
             keyStore.set(now, forKey: "lastReadDate")
+            keyStore.set(logInYear, forKey: "logInYear")
             
             keyStore.synchronize()
+            
+            WidgetCenter.shared.reloadAllTimelines()
             
             DispatchQueue.main.async {
                 do{

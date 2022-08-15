@@ -53,7 +53,7 @@
 		83D53FF9282906B300A72716 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392247F2827A7EA00303541 /* SwiftUI.framework */; };
 		83D53FFC282906B300A72716 /* BookTimeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D53FFB282906B300A72716 /* BookTimeWidget.swift */; };
 		83D53FFE282906B400A72716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D53FFD282906B400A72716 /* Assets.xcassets */; };
-		83D54002282906B400A72716 /* BookTimeWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 83D53FF7282906B300A72716 /* BookTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		83D54002282906B400A72716 /* BookTimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 83D53FF7282906B300A72716 /* BookTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		83D540072829080200A72716 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B845A2760A04600F9BAE8 /* DateExt.swift */; };
 		83D540082829095D00A72716 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 839B9C2527734802001094C6 /* Localizable.strings */; };
 		83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FC0BCD277B0212004C6C27 /* Tutorial.swift */; };
@@ -70,15 +70,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8392248D2827A7EB00303541 /* Embed App Extensions */ = {
+		8392248D2827A7EB00303541 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				83D54002282906B400A72716 /* BookTimeWidgetExtension.appex in Embed App Extensions */,
+				83D54002282906B400A72716 /* BookTimeWidgetExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		839BF17D282CB0F2001E2A4E /* Embed Watch Content */ = {
@@ -338,7 +338,7 @@
 				83731C8B2755D0D600305305 /* Sources */,
 				83731C8C2755D0D600305305 /* Frameworks */,
 				83731C8D2755D0D600305305 /* Resources */,
-				8392248D2827A7EB00303541 /* Embed App Extensions */,
+				8392248D2827A7EB00303541 /* Embed Foundation Extensions */,
 				839BF17D282CB0F2001E2A4E /* Embed Watch Content */,
 			);
 			buildRules = (
@@ -382,7 +382,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					83731C8E2755D0D600305305 = {
 						CreatedOnToolsVersion = 13.1;
@@ -582,6 +582,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -620,9 +621,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -634,6 +636,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

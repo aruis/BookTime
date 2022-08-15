@@ -329,7 +329,7 @@ struct Statistics: View {
         .task {
             withAnimation(.easeInOut){
                 initAllLog()
-            }            
+            }
         }
 
         

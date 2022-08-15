@@ -126,7 +126,7 @@ class BookPersistenceController {
     func cleanTodayLog(){
         todayLog = nil
     }
-    
+        
     func getAllTags() -> [Tag]{
         var tags:[Tag] = []
         

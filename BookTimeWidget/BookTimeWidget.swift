@@ -13,7 +13,7 @@ struct Provider: TimelineProvider {
     let keyStore = NSUbiquitousKeyValueStore()
     
     func placeholder(in context: Context) -> BookTimeWidgetEntry {
-        BookTimeWidgetEntry(date: Date(), lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
+        BookTimeWidgetEntry(date: Date(), lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear:  [Int](repeating: 0, count: 365))
     }
 
     func getSnapshot(in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
@@ -58,10 +58,13 @@ struct Provider: TimelineProvider {
             
             let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as! Int?
             
+            var logInYear:[Int] = []
+            
             if let todayReadMinCloud = todayReadMinCloud {
                 let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as! Int
                 let lastReadDateStringCloud = keyStore.string(forKey: "lastReadDateString")
                 let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as! Date
+                logInYear = keyStore.object(forKey: "logInYear") as! [Int]
 
                 if lastReadDateStringCloud == now.format("YYYY-MM-dd") && todayReadMinCloud > todayReadMin{
                     todayReadMin = todayReadMinCloud
@@ -75,9 +78,9 @@ struct Provider: TimelineProvider {
             }
             
 
-            return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDate, todayReadMin: todayReadMin,targetMinPerday: targetMinPerday)
+            return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDate, todayReadMin: todayReadMin,targetMinPerday: targetMinPerday,logInYear: logInYear)
         } else{
-            return BookTimeWidgetEntry(date: now,lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45)
+            return BookTimeWidgetEntry(date: now,lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear: [Int](repeating: 0, count: 365))
         }
        
     }
@@ -89,6 +92,7 @@ struct BookTimeWidgetEntry: TimelineEntry {
     let lastReadDate:Date?
     let todayReadMin:Int
     let targetMinPerday:Int
+    let logInYear:[Int]
 }
 
 
@@ -108,6 +112,19 @@ struct BookTimeWidgetEntryView : View {
     
     var entry: Provider.Entry
     let circleDia = 130.0
+    var targetMinPerday:Int
+    
+    init(entry:BookTimeWidgetEntry){
+        self.entry = entry
+        
+        if(entry.targetMinPerday>0){
+            targetMinPerday = entry.targetMinPerday
+        }else{
+            targetMinPerday = 45
+        }
+    }
+    
+
 
     @ViewBuilder
     var smallView:some View{
@@ -211,17 +228,64 @@ struct BookTimeWidgetEntryView : View {
         .padding(.leading, 12)
     }
 
+    @ViewBuilder
+    var largeView:some View{
+        VStack{
+            
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 8),spacing: 3),],spacing: 3) {
+                ForEach(0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1),id: \.self){index in
+                    Rectangle()
+                        .frame(width: 8,height: 8)
+                        .foregroundColor(Color("AccentColor").opacity(squareOpacity(entry.logInYear[index])))
+//                        .foregroundColor(Color("AccentColor").opacity(1.0))
+                        
+                    
+                }
+            }
+            .clipShape(Rectangle())
+            .padding(10)
+
+            mediumView
+        }
+        .padding(.vertical,10)
+
+    }
+                                         
+    
+    func squareOpacity(_ min:Int) -> Double{
+        if min == 0{
+            return 0.1
+        }else {
+            let per =  Double(min)/Double(targetMinPerday)
+            if per < 0.3 {
+                return 0.3
+            } else if per >= 1.0{
+                return 1.0
+            }else {
+                return per
+            }
+        }
+        
+    }
+    
+
+                                         
+                                        
+    
 
     
     var body: some View {
         switch self.family {
-           case .systemSmall:
-             smallView
-           case .systemMedium:
-             mediumView
-           default:
-             smallView
-           }
+        case .systemSmall:
+            smallView
+        case .systemMedium:
+            mediumView
+        case .systemLarge:
+            largeView
+
+        default:
+            smallView
+        }
 
         
 //        VStack{
@@ -254,13 +318,13 @@ struct BookTimeWidget: Widget {
         }        
         .configurationDisplayName("BookTime")
         .description("Reading timing buddy")
-        .supportedFamilies([.systemMedium,.systemSmall])
+        .supportedFamilies([.systemMedium,.systemSmall,.systemLarge])
     }
 }
 
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90))
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
+        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
+            .previewContext(WidgetPreviewContext(family: .systemLarge))
     }
 }
