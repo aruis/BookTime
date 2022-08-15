@@ -241,12 +241,12 @@ struct BookTimeWidgetEntryView : View {
 
     @ViewBuilder
     var largeView:some View{
-        VStack{
+        VStack(spacing:0){
             
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 8),spacing: 3),],spacing: 3) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 9),spacing: 2),],spacing: 2) {
                 ForEach(0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1),id: \.self){index in
                     Rectangle()
-                        .frame(width: 8,height: 8)
+                        .frame(width: 9,height: 9)
                         .foregroundColor(Color("AccentColor").opacity(squareOpacity(entry.logInYear[index])))
 //                        .foregroundColor(Color("AccentColor").opacity(1.0))
                         
