@@ -319,36 +319,25 @@ struct BookList: View {
         .task {
             initTags()
             isDone2status()
+                        
             
-            let readMinToday =  BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
+            var logInYear =  [Int](repeating: 0, count: 366)
+                        
+            let thisYear = Date().format("YYYY")
+            let today =  Date().format("YYYY-MM-dd")
             
-            let userDefaults = UserDefaults(suiteName:"group.com.aruistar.BookTime")
-            
-            if let userDefaults = userDefaults {
-                userDefaults.set(readMinToday, forKey: "todayReadMin")
-                userDefaults.set(targetMinPerday, forKey: "targetMinPerday")
-            }
-            
-            var logInYear =  keyStore.array(forKey: "logInYear")
-            
-            if let _ = logInYear {
-                let dayIndex = Date().dayOfYear
-                [Int](repeating: 0, count: 366).forEach{it in
-                    if(it >= dayIndex){
-                        logInYear![it] = 0
-                    }
-                }
-                
-            }else{
-                logInYear = [Int](repeating: 0, count: 366)
-            }
+            var todayReadMin = 0
             
             for log:ReadLog in logs{
-                if(log.readMinutes>0 && Date().format("YYYY") == log.day.format("YYYY") ){
-                    logInYear![log.day.dayOfYear-1] = log.readMinutes
+                if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
+                    logInYear[log.day.dayOfYear-1] = log.readMinutes
+                }
+                if(today == log.day.format("YYYY-MM-dd") && log.readMinutes > todayReadMin){
+                    todayReadMin = log.readMinutes
                 }
             }
             
+            keyStore.set(todayReadMin, forKey: "todayReadMin")
             keyStore.set(logInYear, forKey: "logInYear")
             keyStore.synchronize()
             

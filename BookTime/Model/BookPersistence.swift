@@ -171,13 +171,23 @@ class BookPersistenceController {
         
         
         fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
-        fetchReq.fetchLimit = 1
+        
         
         do {
-            let today =  try context.fetch(fetchReq).first
-            if let today = (today as? ReadLog){
-                self.todayLog = today
-                return today
+            let todays = try context.fetch(fetchReq)
+            if todays.count > 0 {
+                var maxToday:ReadLog?
+                
+                todays.forEach{ it in
+                    let log:ReadLog = it as! ReadLog
+                    if log.readMinutes >= maxToday?.readMinutes ?? 0{
+                        maxToday = log
+                    }
+                }
+                
+                self.todayLog = maxToday
+                return maxToday!
+
             } else {
                 let readLog = ReadLog(context: context)
                 readLog.readMinutes = 0

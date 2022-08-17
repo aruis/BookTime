@@ -125,7 +125,7 @@ struct Statistics: View {
                 }
                 
                 
-                GroupBox(label: Label("Consecutive Check-In Days",systemImage: "checkmark.circle")
+                GroupBox(label: Label("Persevere days",systemImage: "checkmark.circle")
                             .font(.footnote)
                 ){
                     if(isRendererImage){

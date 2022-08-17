@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CloudKit
+import WidgetKit
 import UniformTypeIdentifiers
 import AlertToast
 
@@ -113,7 +114,7 @@ struct Setting: View {
             return Double(targetMinPerday)
         }, set: {
             targetMinPerday = Int($0)
-            store.set(Int64( targetMinPerday), forKey: "targetMinPerday")
+            store.set(targetMinPerday, forKey: "targetMinPerday")
         })
     }
     
@@ -652,8 +653,14 @@ struct Setting: View {
         ctrl.cleanTodayLog()
         
         store.removeObject(forKey: "targetMinPerday")
-        UserDefaults.standard.removeSuite(named: "group.com.aruistar.BookTime")
+        store.removeObject(forKey: "todayReadMin")        
+        store.removeObject(forKey: "lastReadDate")
         
+        store.removeObject(forKey: "logInYear")
+                
+        
+        store.synchronize()
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func showToast(_ text:String){

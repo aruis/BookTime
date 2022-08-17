@@ -373,26 +373,18 @@ struct TimerView: View {
                 showToast = true
             }
             
-            let userDefaults = UserDefaults(suiteName:"group.com.aruistar.BookTime")
-            
-            if let userDefaults = userDefaults {
-                userDefaults.set(readLog.readMinutes, forKey: "todayReadMin")
-                userDefaults.set(targetMinPerday, forKey: "targetMinPerday")
-                userDefaults.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
-                userDefaults.set(now, forKey: "lastReadDate")
-            }
-            
             
             var logInYear =  keyStore.array(forKey: "logInYear")
             
             if var _ = logInYear {
                 let dayIndex = now.dayOfYear
-                logInYear![dayIndex] = readLog.readMinutes                
+                if readLog.readMinutes > logInYear![dayIndex] as! Int {
+                    logInYear![dayIndex] = readLog.readMinutes
+                }
             }
             
             keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
-            keyStore.set(targetMinPerday, forKey: "targetMinPerday")
-            keyStore.set(now.format("YYYY-MM-dd"), forKey: "lastReadDateString")
+            keyStore.set(targetMinPerday, forKey: "targetMinPerday")            
             keyStore.set(now, forKey: "lastReadDate")
             keyStore.set(logInYear, forKey: "logInYear")
             

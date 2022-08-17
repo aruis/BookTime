@@ -37,50 +37,25 @@ struct Provider: TimelineProvider {
     }
     
     func buildEntry(_ date:Date? = nil)->BookTimeWidgetEntry{
-        let userDefaults =  UserDefaults(suiteName: "group.com.aruistar.BookTime")
+        
         var now = Date()
         
         if let date = date {
             now = date
         }
         
-        if let userDefaults = userDefaults {
+        let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as? Int
+        
+        let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
+        
+        if let todayReadMinCloud = todayReadMinCloud {
+            let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as? Int ?? 45
+            let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date ?? nil
+                        
+            return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDateCloud, todayReadMin: todayReadMinCloud,targetMinPerday: targetMinPerdayCloud,logInYear: logInYear)
 
-            var todayReadMin  = userDefaults.integer(forKey: "todayReadMin")
-            var targetMinPerday  = userDefaults.integer(forKey: "targetMinPerday")
-            let lastReadDateString = userDefaults.string(forKey: "lastReadDateString")
-            var lastReadDate =  userDefaults.object(forKey: "lastReadDate") as! Date
-
-            if lastReadDateString != now.format("YYYY-MM-dd"){ // 不是今天的
-                todayReadMin = 0
-            }
-
-            
-            let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as! Int?
-            
-            var logInYear:[Int] = []
-            
-            if let todayReadMinCloud = todayReadMinCloud {
-                let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as! Int
-                let lastReadDateStringCloud = keyStore.string(forKey: "lastReadDateString")
-                let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as! Date
-                logInYear = keyStore.object(forKey: "logInYear") as! [Int]
-
-                if lastReadDateStringCloud == now.format("YYYY-MM-dd") && todayReadMinCloud > todayReadMin{
-                    todayReadMin = todayReadMinCloud
-                    targetMinPerday = targetMinPerdayCloud
-                }
-                
-                if lastReadDateCloud > lastReadDate {
-                    lastReadDate = lastReadDateCloud
-                }
-
-            }
-            
-
-            return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDate, todayReadMin: todayReadMin,targetMinPerday: targetMinPerday,logInYear: logInYear)
         } else{
-            return BookTimeWidgetEntry(date: now,lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear: [Int](repeating: 0, count: 365))
+            return BookTimeWidgetEntry(date: now,lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear: logInYear)
         }
        
     }
@@ -191,6 +166,7 @@ struct BookTimeWidgetEntryView : View {
                 
                 if(isInLarge){
                     Text("\(remainDays) days left this year")
+                        .font(.system(.caption,design: .rounded))
                         .opacity(0.8)
                 }
                 
@@ -256,6 +232,7 @@ struct BookTimeWidgetEntryView : View {
             .clipShape(Rectangle())
             .padding(10)
 
+            Spacer()
             mediumView(isInLarge: true)
         }
         .padding(.vertical,10)
