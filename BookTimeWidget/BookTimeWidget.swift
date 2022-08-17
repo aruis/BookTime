@@ -238,6 +238,46 @@ struct BookTimeWidgetEntryView : View {
         .padding(.vertical,10)
 
     }
+    
+    @ViewBuilder
+    var circularView:some View{
+
+            
+            ZStack{
+                Circle()
+                    .trim(from: 0.0, to:1.0)
+                    .stroke(.white, style: StrokeStyle(lineWidth: 12, lineCap: .round))
+//                    .frame(width:100)
+                    .rotationEffect(.degrees(-90))
+                    .opacity(0.3)
+                //                        .opacity(0)
+//                    .padding()
+                
+                Circle()
+                    .trim(from: 0.0, to: process)
+                //                        .trim(from: 0.0,to:  1.0)
+                    .stroke( AngularGradient(
+                        gradient: Gradient(colors: [.white,.white]),
+                        center: .center,
+                        startAngle: .degrees(0),
+                        endAngle: .degrees( 360 * process )
+                    ), style: StrokeStyle(lineWidth: 12, lineCap: .butt))
+//                    .frame(width:100)
+                    .rotationEffect(.degrees(-90))
+//                    .padding()
+                
+                
+                
+            }
+//            .padding(4)
+//            .frame(width: 100,height: 100)
+            .overlay{
+                Text("\(entry.todayReadMin)")
+                    .font(.system(.headline ,design: .rounded).bold())
+            }
+        
+
+    }
                                          
     
     func squareOpacity(_ min:Int) -> Double{
@@ -270,6 +310,8 @@ struct BookTimeWidgetEntryView : View {
             mediumView()
         case .systemLarge:
             largeView
+        case .accessoryCircular:
+            circularView
 
         default:
             smallView
@@ -300,19 +342,34 @@ struct BookTimeWidgetEntryView : View {
 struct BookTimeWidget: Widget {
     let kind: String = "BookTimeWidget"
 
+    var families: [WidgetFamily] {
+        var f: [WidgetFamily] = [.systemMedium,.systemSmall,.systemLarge,]
+        if #available(iOSApplicationExtension 16.0, *) {
+            f.append(.accessoryCircular)
+        }
+        return f
+    }
+    
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             BookTimeWidgetEntryView(entry: entry)
         }        
         .configurationDisplayName("BookTime")
         .description("Reading timing buddy")
-        .supportedFamilies([.systemMedium,.systemSmall,.systemLarge])
+        .supportedFamilies(families)
     }
 }
 
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
-            .previewContext(WidgetPreviewContext(family: .systemLarge))
+        if #available(iOSApplicationExtension 16.0, *) {
+            BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
+                .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+        } else {
+            BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+
+            // Fallback on earlier versions
+        }
     }
 }
