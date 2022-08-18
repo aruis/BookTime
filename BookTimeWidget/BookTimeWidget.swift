@@ -48,10 +48,18 @@ struct Provider: TimelineProvider {
         
         let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
         
-        if let todayReadMinCloud = todayReadMinCloud {
+        if var todayReadMinCloud = todayReadMinCloud {
             let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as? Int ?? 45
             let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date ?? nil
-                        
+            
+            if let lastReadDateCloud = lastReadDateCloud {
+                if lastReadDateCloud.format("YYYY-MM-dd") != now.format("YYYY-MM-dd") {
+                    todayReadMinCloud = 0
+                }
+            }else{
+                todayReadMinCloud = 0
+            }
+            
             return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDateCloud, todayReadMin: todayReadMinCloud,targetMinPerday: targetMinPerdayCloud,logInYear: logInYear)
 
         } else{
@@ -272,8 +280,13 @@ struct BookTimeWidgetEntryView : View {
 //            .padding(4)
 //            .frame(width: 100,height: 100)
             .overlay{
-                Text("\(entry.todayReadMin)")
-                    .font(.system(.headline ,design: .rounded).bold())
+                VStack{
+                    Text("\(entry.todayReadMin)")
+                        .font(.system(.headline ,design: .rounded).bold())
+                    Text("min")
+                        .font(.footnote.bold())
+                }
+                
             }
         
 
@@ -363,7 +376,7 @@ struct BookTimeWidget: Widget {
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
         if #available(iOSApplicationExtension 16.0, *) {
-            BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
+            BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 125,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
                 .previewContext(WidgetPreviewContext(family: .accessoryCircular))
         } else {
             BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
