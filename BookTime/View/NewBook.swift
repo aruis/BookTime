@@ -64,6 +64,22 @@ struct NewBook: View {
                         .onTapGesture {
                             self.showPhotoOptins.toggle()
                         }
+                        .confirmationDialog("Choose a picture as the cover of the book", isPresented: $showPhotoOptins , titleVisibility: .visible){
+                            Button("Camera"){
+                                self.photoSource = .camera
+                            }
+                            
+                            if false && VNDocumentCameraViewController.isSupported{
+                                Button("AI Camera"){
+                                    self.photoSource = .documentScan
+                                }
+                            }
+                            
+                            Button("Photo Library"){
+                                self.photoSource = .photoLibrary
+                            }
+
+                        }
                     
                     VStack(alignment: .leading) {
                         Text("Title")
@@ -172,7 +188,7 @@ struct NewBook: View {
                     }
                     
                     
-                    
+                                        
                     //                    FormTextField(label: "书名", placeholder: "请填入书名", value: $bookViewModel.name)
                     //
                     //                    FormTextField(label: "作者", placeholder: "请输入作者名", value: $bookViewModel.author)
@@ -236,43 +252,43 @@ struct NewBook: View {
                 
             }
 
-            .actionSheet(isPresented: $showPhotoOptins){
-                if false && VNDocumentCameraViewController.isSupported{
-                    return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
-                                        message: nil,
-                                        buttons: [
-                                            .default(Text("Camera")){
-                                                self.photoSource = .camera
-                                            },
-                                            .default(Text("AI Camera")){
-                                                self.photoSource = .documentScan
-                                            },
-                                            .default(Text("Photo Library")){
-                                                self.photoSource = .photoLibrary
-                                            },
-                                            .cancel(Text("Cancel"))
-                                            
-                                        ]
-                    )
-                    
-                }
-                else{
-                    return   ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
-                                         message: nil,
-                                         buttons: [
-                                            .default(Text("Camera")){
-                                                self.photoSource = .camera
-                                            },
-                                            .default(Text("Photo Library")){
-                                                self.photoSource = .photoLibrary
-                                            },
-                                            .cancel(Text("Cancel"))
-                                            
-                                         ]
-                    )
-                    
-                }
-            }
+//            .actionSheet(isPresented: $showPhotoOptins){
+//                if false && VNDocumentCameraViewController.isSupported{
+//                    return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
+//                                        message: nil,
+//                                        buttons: [
+//                                            .default(Text("Camera")){
+//                                                self.photoSource = .camera
+//                                            },
+//                                            .default(Text("AI Camera")){
+//                                                self.photoSource = .documentScan
+//                                            },
+//                                            .default(Text("Photo Library")){
+//                                                self.photoSource = .photoLibrary
+//                                            },
+//                                            .cancel(Text("Cancel"))
+//
+//                                        ]
+//                    )
+//
+//                }
+//                else{
+//                    return   ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
+//                                         message: nil,
+//                                         buttons: [
+//                                            .default(Text("Camera")){
+//                                                self.photoSource = .camera
+//                                            },
+//                                            .default(Text("Photo Library")){
+//                                                self.photoSource = .photoLibrary
+//                                            },
+//                                            .cancel(Text("Cancel"))
+//
+//                                         ]
+//                    )
+//
+//                }
+//            }
             .fullScreenCover(item: $photoSource){source in
                 switch source {
                 case .documentScan: ScanDocumentView(recognizedText: $recognizedText,selectedImage: $bookViewModel.image)
