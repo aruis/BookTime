@@ -22,18 +22,32 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         let now = Date()
-        let nextUpdateDate = Calendar.current.date(byAdding: .day, value: 1, to: now.start())!
+        let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
 
-        var entries:[BookTimeWidgetEntry] = []
+        let entries:[BookTimeWidgetEntry] = [
+            buildEntry(now),
+            buildEntry(nextUpdateDate)
+        ]
         
-        for i in 1...23{
-            let entryDate = Calendar.current.date(byAdding: .hour, value: i, to: now)!
-            entries.append(buildEntry(entryDate))
-        }
+//        for i in 1...23{
+//            let entryDate = Calendar.current.date(byAdding: .hour, value: i, to: now)!
+//            entries.append(buildEntry(entryDate))
+//        }
         
-        let timeline = Timeline(entries: entries, policy: .after(nextUpdateDate))
+        let timeline = Timeline(entries: entries, policy: .atEnd)
         
         completion(timeline)
+    }
+    
+    func isSameDay(date1: Date, date2: Date) -> Bool {
+        return Calendar.current.isDate(date1, equalTo: date2, toGranularity: .day)
+        
+//        let diff = Calendar.current.dateComponents([.day], from: date1, to: date2)
+//        if diff.day == 0 {
+//            return true
+//        } else {
+//            return false
+//        }
     }
     
     func buildEntry(_ date:Date? = nil)->BookTimeWidgetEntry{
@@ -44,7 +58,7 @@ struct Provider: TimelineProvider {
             now = date
         }
         
-        let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as? Int
+        let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as? Int                
         
         let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
         
@@ -53,9 +67,13 @@ struct Provider: TimelineProvider {
             let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date ?? nil
             
             if let lastReadDateCloud = lastReadDateCloud {
-                if lastReadDateCloud.format("YYYY-MM-dd") != now.format("YYYY-MM-dd") {
+                if  !Calendar.current.isDateInToday(lastReadDateCloud){
                     todayReadMinCloud = 0
                 }
+                
+//                if !isSameDay(date1: lastReadDateCloud, date2: now) {
+//                    todayReadMinCloud = 0
+//                }
             }else{
                 todayReadMinCloud = 0
             }

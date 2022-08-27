@@ -323,8 +323,7 @@ struct BookList: View {
             
             var logInYear =  [Int](repeating: 0, count: 366)
                         
-            let thisYear = Date().format("YYYY")
-            let today =  Date().format("YYYY-MM-dd")
+            let thisYear = Date().format("YYYY")            
             
             var todayReadMin = 0
             
@@ -332,7 +331,7 @@ struct BookList: View {
                 if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
                     logInYear[log.day.dayOfYear-1] = log.readMinutes
                 }
-                if(today == log.day.format("YYYY-MM-dd") && log.readMinutes > todayReadMin){
+                if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
                     todayReadMin = log.readMinutes
                 }
             }

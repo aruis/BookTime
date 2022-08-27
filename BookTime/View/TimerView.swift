@@ -356,7 +356,7 @@ struct TimerView: View {
             }
             book.readMinutes += 1
             if let lastReadTime = book.lastReadTime {
-                if(lastReadTime.format("YYYY-MM-dd") != now.format("YYYY-MM-dd")){
+                if(!Calendar.current.isDateInToday(lastReadTime)){
                     book.readDays += 1
                 }
             }else{
@@ -379,7 +379,7 @@ struct TimerView: View {
             if var _ = logInYear {
                 let dayIndex = now.dayOfYear
                 if readLog.readMinutes > logInYear![dayIndex] as! Int {
-                    logInYear![dayIndex] = readLog.readMinutes
+                    logInYear![dayIndex-1] = readLog.readMinutes
                 }
             }
             
