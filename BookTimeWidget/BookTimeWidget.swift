@@ -386,7 +386,7 @@ struct BookTimeWidget: Widget {
             BookTimeWidgetEntryView(entry: entry)
         }        
         .configurationDisplayName("BookTime")
-        .description("Reading timing buddy")
+        .description("Track your reading time")
         .supportedFamilies(families)
     }
 }

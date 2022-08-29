@@ -183,7 +183,14 @@ struct BookCard: View {
             .toolbar(content: {
                 if(isDone){
                     Button(action: {
-                        shareImage = exportBox.snapshot()
+                        if #available(iOS 16.0, *) {
+                            var renderer = ImageRenderer(content: exportBox)
+                            renderer.proposedSize = ProposedViewSize(width: 400, height: 400)
+                            shareImage = renderer.uiImage ?? UIImage()
+                        } else {
+                            shareImage =  exportBox.snapshot()
+                        }
+
                         showOptions = true
                     }){
                         Image(systemName: "square.and.arrow.up")

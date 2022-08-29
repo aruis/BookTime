@@ -10,8 +10,6 @@
 /* No comment provided by engineer. */
 "Clear All Data" = "清除所有数据";
 
-"Reading timing buddy" = "您的阅读计时伴侣";
-
 /* No comment provided by engineer. */
 "**%d** Minutes Today" = "今日已阅读 **%d** 分钟";
 
@@ -203,8 +201,8 @@
 /* No comment provided by engineer. */
 "Tab the book cover and start timing" = "点击书籍封面，开始计时";
 
-/* No comment provided by engineer. */
-"Reading Timing Buddy" = "读书计时伴侣";
+
+
 
 "Turn on the timer mode while reading the paper book, or use the split screen mode to time the e-book reading." = "阅读纸质书的同时开启计时模式，或者用分屏模式给电子书阅读计时。";
 

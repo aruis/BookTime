@@ -329,6 +329,7 @@ struct Setting: View {
                     
                     //trying to get access to url contents
                     if (CFURLStartAccessingSecurityScopedResource(selectedFile as CFURL)) {
+//                    if selectedFile.startAccessingSecurityScopedResource() {
                         
                         guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
                         
@@ -441,7 +442,7 @@ struct Setting: View {
                     }
                 } catch {
                     // Handle failure.
-//                    print(error.localizedDescription)
+                    print(error.localizedDescription)
                 }
             }
         }

@@ -114,7 +114,8 @@ struct Statistics: View {
     func reportView(isRendererImage:Bool = false) -> some View{
         VStack{
             HStack{
-                GroupBox(label: Label("Total Reading Days",systemImage: "target").font(.footnote)){
+//                String(localized: "\(todayReadMin) Minutes Today")
+                GroupBox(label: Label(String(localized: "Total Reading Days"),systemImage: "target").font(.footnote)){
                     if(isRendererImage){
                         Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
                     }else{
@@ -125,7 +126,7 @@ struct Statistics: View {
                 }
                 
                 
-                GroupBox(label: Label("Persevere days",systemImage: "checkmark.circle")
+                GroupBox(label: Label(String(localized: "Persevere days"),systemImage: "checkmark.circle")
                             .font(.footnote)
                 ){
                     if(isRendererImage){
@@ -138,9 +139,9 @@ struct Statistics: View {
             }
             
             
-            GroupBox(label:Label("\( Int( round( process * 100))) % of the Plan Completed",systemImage: "goforward").font(.footnote)){
+            GroupBox(label:Label(String(localized: "\( Int( round( process * 100))) % of the Plan Completed"),systemImage: "goforward").font(.footnote)){
                 HStack{
-                    Text( "\(todayReadMin) Minutes Today")
+                    Text(String(localized: "\(todayReadMin) Minutes Today"))
                         .font(.system(.title2,design: .rounded))
                     
                     Spacer()
@@ -178,35 +179,57 @@ struct Statistics: View {
                 
             }
             
-            GroupBox(label: Label(totalTitle,systemImage: "clock")
-                        .font(.footnote)
-                        .animation(.easeIn, value: sumType)
-            ){
-                TabView(selection: $sumType){
-                    
-                    Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                        .id(1).tag(SumType.all)
-                    
-                    
-                    
-                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                        .id(2) .tag(SumType.year)
-                    
-                    
-                    
-                    
-                    Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                        .id(3) .tag(SumType.month)
-                    
-                    
+            if isRendererImage {
+                GroupBox(label: Label(totalTitle,systemImage: "clock")
+                    .font(.footnote)
+                    .animation(.easeIn, value: sumType)
+                ){
+                    switch sumType{
+                    case .all :
+                        Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            .id(1).tag(SumType.all)
+                    case .year:
+                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            .id(2) .tag(SumType.year)
+                    case .month:
+                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            .id(3) .tag(SumType.month)
+                    }
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .animation(.easeInOut, value: sumType)
-                .frame( height: 100)
+
+            }else {
+                GroupBox(label: Label(totalTitle,systemImage: "clock")
+                            .font(.footnote)
+                            .animation(.easeIn, value: sumType)
+                ){
+                    TabView(selection: $sumType){
+                        
+                        Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            .id(1).tag(SumType.all)
+                        
+                        
+                        
+                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            .id(2) .tag(SumType.year)
+                        
+                        
+                        
+                        
+                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            .id(3) .tag(SumType.month)
+                        
+                        
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .animation(.easeInOut, value: sumType)
+                    .frame( height: 100)
+                }
+
             }
+            
 
             if readedBooks.count > 0 {
-                GroupBox(label: Label("Finished Book",systemImage: "books.vertical")
+                GroupBox(label: Label(String(localized: "Finished Book"),systemImage: "books.vertical")
                             .font(.footnote)
                 ){
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 85),spacing: 20),],spacing: 15) {
@@ -238,7 +261,7 @@ struct Statistics: View {
         VStack(){
             VStack{
                 Text("BookTime").font(.system(.title,design: .rounded))
-                Text("Reading Timing Buddy").font(.subheadline).opacity(0.8)
+                Text(String(localized: "Track your reading time")).font(.subheadline).opacity(0.8)
                 reportView(isRendererImage:true)
                     .frame(width:380)
                 
@@ -302,9 +325,13 @@ struct Statistics: View {
                         }
                     }
                     .task {
-                        DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-//                            shareImage = ImageRenderer(content: exportBox).uiImage ?? UIImage()
-                            shareImage = exportBox(isRendererImage: true).snapshot()
+                        DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+                            if #available(iOS 16.0, *) {
+                                shareImage = ImageRenderer(content: exportBox(isRendererImage: true)).uiImage ?? UIImage()
+                            } else {
+                                shareImage = exportBox(isRendererImage: true).snapshot()
+                            }
+
                             self.showToast = false
                         })
                         
