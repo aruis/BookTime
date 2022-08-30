@@ -268,45 +268,19 @@ struct BookTimeWidgetEntryView : View {
     @ViewBuilder
     var circularView:some View{
 
-            
-            ZStack{
-                Circle()
-                    .trim(from: 0.0, to:1.0)
-                    .stroke(.white, style: StrokeStyle(lineWidth: 12, lineCap: .round))
-//                    .frame(width:100)
-                    .rotationEffect(.degrees(-90))
-                    .opacity(0.3)
-                //                        .opacity(0)
-//                    .padding()
-                
-                Circle()
-                    .trim(from: 0.0, to: process)
-                //                        .trim(from: 0.0,to:  1.0)
-                    .stroke( AngularGradient(
-                        gradient: Gradient(colors: [.white,.white]),
-                        center: .center,
-                        startAngle: .degrees(0),
-                        endAngle: .degrees( 360 * process )
-                    ), style: StrokeStyle(lineWidth: 12, lineCap: .butt))
-//                    .frame(width:100)
-                    .rotationEffect(.degrees(-90))
-//                    .padding()
-                
-                
-                
-            }
-//            .padding(4)
-//            .frame(width: 100,height: 100)
-            .overlay{
+        if #available(iOSApplicationExtension 16.0, *) {                                   
+            Gauge(value: process, label: {
                 VStack{
                     Text("\(entry.todayReadMin)")
                         .font(.system(.headline ,design: .rounded).bold())
                     Text("min")
                         .font(.footnote.bold())
                 }
-                
-            }
-        
+
+            })
+            .gaugeStyle(.accessoryCircularCapacity)
+            
+        }
 
     }
                                          
