@@ -27,6 +27,10 @@ struct Statistics: View {
     ])
     var books: FetchedResults<Book>
     
+    @State private var showBook:Book?
+    
+    @State private var showCover = false
+    
     @State private var todayReadMin:Int = 0
     
     
@@ -209,7 +213,6 @@ struct Statistics: View {
             if isRendererImage {
                 GroupBox(label: Label(totalTitle,systemImage: "clock")
                     .font(.footnote)
-                    .animation(.easeIn, value: sumType)
                 ){
                     
                         switch sumType{
@@ -231,25 +234,25 @@ struct Statistics: View {
             }else {
                 GroupBox(label: Label(totalTitle,systemImage: "clock")
                             .font(.footnote)
-                            .animation(.easeIn, value: sumType)
                 ){
                     
                     VStack{
                         if #available(iOS 16.0, *) {
-                            Chart {
-                                
-                                ForEach(chartLogs,id:\.day){
-                                    BarMark(
-                                        x: .value("Day", $0.day,unit:.day),
-                                        y: .value("Value", $0.readMinutes)
-                                    )
+                            if totalReadDay > 7  {
+                                Chart {
+                                    
+                                    ForEach(chartLogs,id:\.day){
+                                        BarMark(
+                                            x: .value("Day", $0.day,unit:.day),
+                                            y: .value("Value", $0.readMinutes)
+                                        )
+                                    }
+                                    
+                                    
                                 }
-                                
-                              
+                                .frame(height: 160)
+                                .animation(.easeOut, value: sumType)
                             }
-                            .frame(height: 160)
-                            .animation(.easeIn, value: sumType)
-
                         }
 
                         TabView(selection: $sumType){
@@ -295,6 +298,7 @@ struct Statistics: View {
                                             .stroke(Color("image.border"), lineWidth: 1)
                                     )
                                     .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+                                    
                             }
                         }
                     }
@@ -379,7 +383,9 @@ struct Statistics: View {
                     .task {
                         DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
                             if #available(iOS 16.0, *) {
-                                shareImage = ImageRenderer(content: exportBox(isRendererImage: true)).uiImage ?? UIImage()
+                                let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
+                                renderer.scale = 2
+                                shareImage = renderer.uiImage ?? UIImage()
                             } else {
                                 shareImage = exportBox(isRendererImage: true).snapshot()
                             }
@@ -398,6 +404,14 @@ struct Statistics: View {
                 }
                 
             }
+            .fullScreenCover(isPresented:  $showCover, content: {
+                if let showBook = showBook{
+                    BookCard(book:showBook)
+                }else{
+                    Text("No book")
+                    
+                }
+            })
             
             
         }

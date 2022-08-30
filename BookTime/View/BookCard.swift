@@ -184,8 +184,8 @@ struct BookCard: View {
                 if(isDone){
                     Button(action: {
                         if #available(iOS 16.0, *) {
-                            var renderer = ImageRenderer(content: exportBox)
-                            renderer.proposedSize = ProposedViewSize(width: 400, height: 400)
+                            let renderer = ImageRenderer(content: exportBox)
+                            renderer.scale = 2
                             shareImage = renderer.uiImage ?? UIImage()
                         } else {
                             shareImage =  exportBox.snapshot()
