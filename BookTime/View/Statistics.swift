@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AlertToast
+import Charts
 
 struct Statistics: View {
     @AppStorage("targetMinPerday") var targetMinPerday = 45
@@ -14,9 +15,11 @@ struct Statistics: View {
     @Environment(\.managedObjectContext) var context
     @Environment(\.colorScheme) var colorScheme
     
+    let keyStore = NSUbiquitousKeyValueStore()
+    
     @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
         NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
-    ],predicate:NSPredicate(format: "readMinutes > 0"))
+    ])
     var logs: FetchedResults<ReadLog>
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
@@ -94,6 +97,7 @@ struct Statistics: View {
                     case .all:
                         _books.append(book)
                     case .year:
+                        
                         if(Date().format("YYYY") == book.doneTime?.format("YYYY")) {
                             _books.append(book)
                         }
@@ -108,6 +112,28 @@ struct Statistics: View {
             return _books
         }
     }
+    
+    var chartLogs:[Log]{
+        let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
+        
+        switch sumType{
+        case .all:
+            return logs.map{Log(day: $0.day, readMinutes: $0.readMinutes)}
+        case .year:
+           return  (0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1)).map{
+                Log(day: Date(Date().format("yyyy") + "-01-01").advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[$0])
+            }
+                        
+        case .month:
+                        
+            let mounthFirst = Date(Date().format("yyyy-MM") + "-01")
+            return  (0...Date().getDaysInMonth()).map{
+                Log(day: mounthFirst.advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[mounthFirst.dayOfYear +  $0])
+             }
+
+        }
+    }
+        
     
     
     @ViewBuilder
@@ -179,22 +205,27 @@ struct Statistics: View {
                 
             }
             
+            
             if isRendererImage {
                 GroupBox(label: Label(totalTitle,systemImage: "clock")
                     .font(.footnote)
                     .animation(.easeIn, value: sumType)
                 ){
-                    switch sumType{
-                    case .all :
-                        Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                            .id(1).tag(SumType.all)
-                    case .year:
-                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                            .id(2) .tag(SumType.year)
-                    case .month:
-                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                            .id(3) .tag(SumType.month)
-                    }
+                    
+                        switch sumType{
+                        case .all :
+                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                                .id(1).tag(SumType.all)
+                        case .year:
+                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                                .id(2) .tag(SumType.year)
+                        case .month:
+                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                                .id(3) .tag(SumType.month)
+                        }
+                        
+                    
+                    
                 }
 
             }else {
@@ -202,27 +233,48 @@ struct Statistics: View {
                             .font(.footnote)
                             .animation(.easeIn, value: sumType)
                 ){
-                    TabView(selection: $sumType){
-                        
-                        Report( todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                            .id(1).tag(SumType.all)
-                        
-                        
-                        
-                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                            .id(2) .tag(SumType.year)
-                        
-                        
-                        
-                        
-                        Report(  todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                            .id(3) .tag(SumType.month)
-                        
-                        
+                    
+                    VStack{
+                        if #available(iOS 16.0, *) {
+                            Chart {
+                                
+                                ForEach(chartLogs,id:\.day){
+                                    BarMark(
+                                        x: .value("Day", $0.day,unit:.day),
+                                        y: .value("Value", $0.readMinutes)
+                                    )
+                                }
+                                
+                              
+                            }
+                            .frame(height: 160)
+                            .animation(.easeIn, value: sumType)
+
+                        }
+
+                        TabView(selection: $sumType){
+                            
+                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                                .id(1).tag(SumType.all)
+                            
+                            
+                            
+                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                                .id(2) .tag(SumType.year)
+                            
+                            
+                            
+                            
+                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                                .id(3) .tag(SumType.month)
+                            
+                            
+                        }
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        .animation(.easeInOut, value: sumType)
+                        .frame( height: 100)
+
                     }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .animation(.easeInOut, value: sumType)
-                    .frame( height: 100)
                 }
 
             }
@@ -525,3 +577,7 @@ struct Report: View{
 }
 
 
+struct Log{
+    let day:Date
+    let readMinutes:Int
+}

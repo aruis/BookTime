@@ -18,7 +18,7 @@ struct Slogan: View {
         HStack(alignment: .firstTextBaseline){
             Text(title)
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .opacity(0.75)
             
             if(isRendererImage){
                 Text("\(value)")
