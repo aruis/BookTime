@@ -479,7 +479,7 @@ struct ClockView: View {
                             .frame(width: width, height: width*2)
                         
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
 
 
                     HStack(spacing: -gap ){
@@ -491,9 +491,7 @@ struct ClockView: View {
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
-
-
+                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
 
 
                     
@@ -506,7 +504,7 @@ struct ClockView: View {
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
 
 
                 }

@@ -81,6 +81,7 @@ struct BookListItem: View {
             .padding(.top,10)
             
         }
+        .padding(.vertical,2)
 //        .frame(height:120)
         
     }
