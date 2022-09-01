@@ -132,7 +132,7 @@ struct Statistics: View {
                         
             let mounthFirst = Date(Date().format("yyyy-MM") + "-01")
             return  (0...Date().getDaysInMonth()).map{
-                Log(day: mounthFirst.advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[mounthFirst.dayOfYear +  $0])
+                Log(day: mounthFirst.advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[mounthFirst.dayOfYear +  $0 - 1])
              }
 
         }

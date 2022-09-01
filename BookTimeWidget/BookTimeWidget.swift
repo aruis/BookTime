@@ -268,7 +268,7 @@ struct BookTimeWidgetEntryView : View {
     @ViewBuilder
     var circularView:some View{
 
-        if #available(iOSApplicationExtension 16.0, *) {                                   
+        if #available(iOSApplicationExtension 16.0, *) {
             Gauge(value: process, label: {
                 VStack{
                     Text("\(entry.todayReadMin)")
