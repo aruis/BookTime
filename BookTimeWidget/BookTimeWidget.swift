@@ -164,7 +164,7 @@ struct BookTimeWidgetEntryView : View {
         .frame(width: circleDia,height: circleDia)
         .overlay{
             Text("\(entry.todayReadMin) Min")
-                .font(.system(.headline ,design: .rounded).bold())
+                .font(.system(.subheadline ,design: .rounded).bold())
         }
 
     }
@@ -234,7 +234,7 @@ struct BookTimeWidgetEntryView : View {
             .frame(width: circleDia,height: circleDia)
             .overlay{
                 Text("\(Int( round( process * 100)))%")
-                    .font(.system(.headline ,design: .rounded).bold())
+                    .font(.system(.subheadline ,design: .rounded).bold())
             }
             
         }
