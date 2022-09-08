@@ -58,31 +58,20 @@ struct Provider: TimelineProvider {
             now = date
         }
         
-        let todayReadMinCloud  =  keyStore.object(forKey: "todayReadMin") as? Int                
         
         let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
         
-        if var todayReadMinCloud = todayReadMinCloud {
-            let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as? Int ?? 45
-            let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date ?? nil
-            
-            if let lastReadDateCloud = lastReadDateCloud {
-                if  !Calendar.current.isDateInToday(lastReadDateCloud){
-                    todayReadMinCloud = 0
-                }
-                
-//                if !isSameDay(date1: lastReadDateCloud, date2: now) {
-//                    todayReadMinCloud = 0
-//                }
-            }else{
-                todayReadMinCloud = 0
-            }
-            
-            return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDateCloud, todayReadMin: todayReadMinCloud,targetMinPerday: targetMinPerdayCloud,logInYear: logInYear)
+        
+        let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as? Int ?? 45
+        let lastReadDateCloud =  keyStore.object(forKey: "lastReadDate") as? Date ?? nil
+        
+        let dayIndex = now.dayOfYear
+        let todayReadMinCloud = logInYear[dayIndex-1]
+        
+        
+        return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDateCloud, todayReadMin: todayReadMinCloud,targetMinPerday: targetMinPerdayCloud,logInYear: logInYear)
 
-        } else{
-            return BookTimeWidgetEntry(date: now,lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear: logInYear)
-        }
+       
        
     }
 }
@@ -358,7 +347,10 @@ struct BookTimeWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             BookTimeWidgetEntryView(entry: entry)
-        }        
+                .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
+                .background(Color("WidgetBackground"))
+        }
+        
         .configurationDisplayName("BookTime")
         .description("Track your reading time")
         .supportedFamilies(families)

@@ -509,7 +509,8 @@ struct Statistics: View {
                     
                 }
                 
-                if(Date().start() == log.day.start()){
+                
+                if Calendar.current.isDate(Date(), equalTo: log.day, toGranularity: .day) {
                     todayReadMin = log.readMinutes
                 }
                 
