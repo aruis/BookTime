@@ -300,10 +300,19 @@ struct BookTimeWidgetEntryView : View {
         switch self.family {
         case .systemSmall:
             smallView
+                .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
+                .background(Color("WidgetBackground"))
+
         case .systemMedium:
             mediumView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
+                .background(Color("WidgetBackground"))
+
         case .systemLarge:
             largeView
+                .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
+                .background(Color("WidgetBackground"))
+
         case .accessoryCircular:
             circularView
 
@@ -347,8 +356,6 @@ struct BookTimeWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             BookTimeWidgetEntryView(entry: entry)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
-                .background(Color("WidgetBackground"))
         }
         
         .configurationDisplayName("BookTime")
