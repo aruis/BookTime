@@ -12,6 +12,7 @@
 		830F9F5F28572F0600339AEF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
 		8317F89A2772FE5C00864D2F /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317F8992772FE5C00864D2F /* Tools.swift */; };
 		831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831939052802682A0011AA3C /* TagLabelStyle.swift */; };
+		831C1F9128D17878006C5E0D /* BookCardExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831C1F9028D17878006C5E0D /* BookCardExport.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
 		832729522852F06800451B3B /* PacmanProgress in Frameworks */ = {isa = PBXBuildFile; productRef = 832729512852F06800451B3B /* PacmanProgress */; };
 		833F9D36282B586F006F19AE /* NotificationTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F9D35282B586F006F19AE /* NotificationTool.swift */; };
@@ -98,6 +99,7 @@
 		830935D7279F9F37006F8F56 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		8317F8992772FE5C00864D2F /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		831939052802682A0011AA3C /* TagLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabelStyle.swift; sourceTree = "<group>"; };
+		831C1F9028D17878006C5E0D /* BookCardExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCardExport.swift; sourceTree = "<group>"; };
 		8320045D2759B71900EB64FC /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		8338BEAE2773552E00D51AFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		833F9D35282B586F006F19AE /* NotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTool.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				83FC0BCD277B0212004C6C27 /* Tutorial.swift */,
 				830935D7279F9F37006F8F56 /* ActivityView.swift */,
 				8301421B285AD0F700E91808 /* TestSwiftUIView.swift */,
+				831C1F9028D17878006C5E0D /* BookCardExport.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 			files = (
 				836E80EC28A62C760043A5FF /* Tag.swift in Sources */,
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
+				831C1F9128D17878006C5E0D /* BookCardExport.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
 				83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */,
@@ -660,8 +664,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTime/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "如果要拍照作为图书封面，您需要给我授权。";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "如果要选择相册里的图片作为封面，您需要给我授权。";
+				INFOPLIST_KEY_NSCameraUsageDescription = "BookTime 需要您的拍照授权";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "BookTime 需要您的相册授权";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -699,8 +703,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTime/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "如果要拍照作为图书封面，您需要给我授权。";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "如果要选择相册里的图片作为封面，您需要给我授权。";
+				INFOPLIST_KEY_NSCameraUsageDescription = "BookTime 需要您的拍照授权";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "BookTime 需要您的相册授权";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

@@ -27,8 +27,6 @@ struct Statistics: View {
     ])
     var books: FetchedResults<Book>
     
-    @State private var showBook:Book?
-    
     @State private var showCover = false
     
     @State private var todayReadMin:Int = 0
@@ -58,6 +56,8 @@ struct Statistics: View {
     @State private var isShowReadedBooks  = false
     @State private var showOptions = false
     @State private var shareImage:UIImage? = nil
+    
+    @State private var selectBookID:String = ""
     
     enum SumType: String,CaseIterable{
         case all
@@ -112,7 +112,7 @@ struct Statistics: View {
                     }
                 }
             }
-            
+                        
             return _books
         }
     }
@@ -282,7 +282,7 @@ struct Statistics: View {
 
             }
             
-
+           
             if readedBooks.count > 0 {
                 GroupBox(label: Label(String(localized: "Finished Book"),systemImage: "books.vertical")
                             .font(.footnote)
@@ -298,6 +298,11 @@ struct Statistics: View {
                                             .stroke(Color("image.border"), lineWidth: 1)
                                     )
                                     .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+                                    .onTapGesture(perform: {
+//                                        selectBookIndex = readedBooks.firstIndex(of: book)!
+                                        selectBookID = book.id
+                                        showCover = true
+                                    })
                                     
                             }
                         }
@@ -404,17 +409,42 @@ struct Statistics: View {
                 }
                 
             }
-            .fullScreenCover(isPresented:  $showCover, content: {
-                if let showBook = showBook{
-                    BookCard(book:showBook)
-                }else{
-                    Text("No book")
-                    
-                }
-            })
             
             
         }
+        .fullScreenCover(isPresented:  $showCover, content: {
+            TabView(selection: $selectBookID){
+//                ForEach(readedBooks.indices){i in
+//                    BookCardExport(book: readedBooks[i])
+//                        .tag(i)
+//                }
+
+                
+                ForEach(readedBooks){book in
+                    BookCardExport(book: book)
+                        .tag(book.id)
+
+                }
+
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+
+            .onTapGesture(perform: {
+                showCover = false
+                
+                
+                
+            })
+            .gesture(DragGesture().onEnded{value in
+                
+                if value.translation.height > 20 {
+                    showCover = false
+                }
+                
+            })
+
+        })
+
         .navigationViewStyle(.stack)
         .onAppear(perform: {
             todayReadMin = 0
@@ -427,6 +457,8 @@ struct Statistics: View {
 
         
     }
+        
+    
     
     func initAllLog(){
         
