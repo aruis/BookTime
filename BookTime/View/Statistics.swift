@@ -413,27 +413,19 @@ struct Statistics: View {
             
         }
         .fullScreenCover(isPresented:  $showCover, content: {
-            TabView(selection: $selectBookID){
-//                ForEach(readedBooks.indices){i in
-//                    BookCardExport(book: readedBooks[i])
-//                        .tag(i)
-//                }
-
-                
-                ForEach(readedBooks){book in
-                    BookCardExport(book: book)
-                        .tag(book.id)
-
+            GeometryReader{reader in
+                let scale = reader.size.height / 400 * 0.618
+                TabView(selection: $selectBookID){
+                    ForEach(readedBooks){book in
+                        BookCardExport(book: book)
+                            .scaleEffect(scale)
+                            .tag(book.id)
+                    }
                 }
-
-            }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            }            
             .onTapGesture(perform: {
                 showCover = false
-                
-                
-                
             })
             .gesture(DragGesture().onEnded{value in
                 

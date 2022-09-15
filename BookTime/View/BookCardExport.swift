@@ -12,6 +12,7 @@ struct BookCardExport: View {
     var book: Book
     
     var body: some View {
+        
         ZStack{
             Image(uiImage: UIImage(data: book.image) ?? UIImage())
                 .resizable()
@@ -92,14 +93,6 @@ struct BookCardExport: View {
                 .foregroundColor(.black)
         )
         .ignoresSafeArea()
-
-    }
-}
-
-struct BookCardExport_Previews: PreviewProvider {
-    static var previews: some View {
-//        let book = Book(entity: <#T##NSEntityDescription#>, insertInto: <#T##NSManagedObjectContext?#>)
-//        BookCardExport(book:)
-        Text("")
+                
     }
 }
