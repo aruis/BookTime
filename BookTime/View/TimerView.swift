@@ -194,75 +194,122 @@ struct TimerView: View {
             GeometryReader{geometry in
                 HStack(spacing:15){
                     if handShowTimer{
-                        Circle()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.clock)
-                            .overlay(
-                                Image(systemName:"clear")
-                                    .font(.title2)
-                                    .foregroundColor(.clockText)
-                            )
-                            .onTapGesture {
-                                dismiss()
-                                
-                                if let landscapeRight = landscapeRight {
-                                    if landscapeRight{
-                                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                                        self.landscapeRight = false                                        
-                                    }
+                        
+                        Button{
+                            dismiss()
+                            
+                            if let landscapeRight = landscapeRight {
+                                if landscapeRight{
+                                    UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                                    self.landscapeRight = false
                                 }
-                                
                             }
+
+                        } label: {
+                            Image(systemName:"clear")
+                                
+                                .padding()
+                                .frame(width: 50, height: 50)
+                                .font(.title2)
+                                .foregroundColor(.clockText)
+                                .background(Color.clock)
+                                .clipShape(Circle())
+
+                        }
+                        
+//                        Circle()
+//                            .frame(width: 50, height: 50)
+//                            .foregroundColor(.clock)
+//                            .overlay(
+//                                Image(systemName:"clear")
+//                                    .font(.title2)
+//                                    .foregroundColor(.clockText)
+//                            )
+//                            .onTapGesture {
+//                                dismiss()
+//
+//                                if let landscapeRight = landscapeRight {
+//                                    if landscapeRight{
+//                                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+//                                        self.landscapeRight = false
+//                                    }
+//                                }
+//
+//                            }
                         
                     }
                     
                     if handShowTimer && UIDevice.current.userInterfaceIdiom == .phone {
-                        Circle()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.clock)
-                            .overlay(
-                                ZStack(alignment: .bottomTrailing){
-                                    if  verticalSizeClass == .compact{
-                                        Image( systemName: "iphone")
-                                        Image( systemName: "iphone.landscape").opacity(0.35)
-                                    }else{
-                                        Image( systemName: "iphone.landscape")
-                                        Image( systemName: "iphone").opacity(0.35)
-                                    }
-                                }
-                                .font(.title2)
-                                .foregroundColor(.clockText)
-                            )
-                            .onTapGesture {
-                                if  verticalSizeClass == .compact{
+                        
+                        Button{
+                            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                            
+                            if  verticalSizeClass == .compact{
+                                if #available(iOS 16.0, *) {
+                                    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+                                } else {
+                                    // Fallback on earlier versions
                                     UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                                    landscapeRight = false
-                                }else{
+                                }
+                                                                
+                                landscapeRight = false
+                            }else{
+
+                                if #available(iOS 16.0, *) {
+                                    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
+                                } else {
+                                    // Fallback on earlier versions
                                     UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-                                    landscapeRight = true
                                 }
 
+//
+                                landscapeRight = true
                             }
+
+                        }label: {
+                            ZStack(alignment: .bottomTrailing){
+                                if  verticalSizeClass == .compact{
+                                    Image( systemName: "iphone")
+                                    Image( systemName: "iphone.landscape").opacity(0.35)
+                                }else{
+                                    Image( systemName: "iphone.landscape")
+                                    Image( systemName: "iphone").opacity(0.35)
+                                }
+                            }
+                            
+                            .padding()
+                            .frame(width: 50, height: 50)
+                            .font(.title2)
+                            .foregroundColor(.clockText)
+                            .background(Color.clock)
+                            .clipShape(Circle())
+
+                        }
+                        
                     }
                     
-                    Circle()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.clock)
-                        .overlay(
-                            Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
-                                .font(.title2)
-                                .foregroundColor(.clockText)
-                        )
-                        .onTapGesture {
-                            if lowLight{
-                                UIScreen.main.brightness = oldLight
-                            }else{
-                                oldLight = UIScreen.main.brightness
-                                UIScreen.main.brightness = CGFloat(0.05)
-                                
-                            }
-                            lowLight.toggle()
+                    Button{
+                        if lowLight{
+                            UIScreen.main.brightness = oldLight
+                        }else{
+                            oldLight = UIScreen.main.brightness
+                            UIScreen.main.brightness = CGFloat(0.05)
+                            
                         }
+                        lowLight.toggle()
+
+                    } label: {
+                        Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
+                            
+                            .padding()
+                            .frame(width: 50, height: 50)
+                            .font(.title2)
+                            .foregroundColor(.clockText)
+                            .background(Color.clock)
+                            .clipShape(Circle())
+
+                    }
+                    
                         
                     
                 }
