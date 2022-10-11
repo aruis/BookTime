@@ -200,42 +200,23 @@ struct TimerView: View {
                             
                             if let landscapeRight = landscapeRight {
                                 if landscapeRight{
-                                    UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                                    
+                                    if #available(iOS 16.0, *) {
+                                        windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+                                    } else {
+                                        // Fallback on earlier versions
+                                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                                    }
+                                                                        
                                     self.landscapeRight = false
                                 }
                             }
 
                         } label: {
                             Image(systemName:"clear")
-                                
-                                .padding()
-                                .frame(width: 50, height: 50)
-                                .font(.title2)
-                                .foregroundColor(.clockText)
-                                .background(Color.clock)
-                                .clipShape(Circle())
-
                         }
-                        
-//                        Circle()
-//                            .frame(width: 50, height: 50)
-//                            .foregroundColor(.clock)
-//                            .overlay(
-//                                Image(systemName:"clear")
-//                                    .font(.title2)
-//                                    .foregroundColor(.clockText)
-//                            )
-//                            .onTapGesture {
-//                                dismiss()
-//
-//                                if let landscapeRight = landscapeRight {
-//                                    if landscapeRight{
-//                                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-//                                        self.landscapeRight = false
-//                                    }
-//                                }
-//
-//                            }
+                        .buttonStyle(TimerButtonStyle())
                         
                     }
                     
@@ -276,15 +257,8 @@ struct TimerView: View {
                                     Image( systemName: "iphone").opacity(0.35)
                                 }
                             }
-                            
-                            .padding()
-                            .frame(width: 50, height: 50)
-                            .font(.title2)
-                            .foregroundColor(.clockText)
-                            .background(Color.clock)
-                            .clipShape(Circle())
-
                         }
+                        .buttonStyle(TimerButtonStyle())
                         
                     }
                     
@@ -300,15 +274,8 @@ struct TimerView: View {
 
                     } label: {
                         Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
-                            
-                            .padding()
-                            .frame(width: 50, height: 50)
-                            .font(.title2)
-                            .foregroundColor(.clockText)
-                            .background(Color.clock)
-                            .clipShape(Circle())
-
                     }
+                    .buttonStyle(TimerButtonStyle())
                     
                         
                     
@@ -453,6 +420,19 @@ struct TimerView: View {
         
     }
     
+}
+
+struct TimerButtonStyle:ButtonStyle{
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .frame(width: 50, height: 50)
+            .font(.title2)
+            .foregroundColor(.clockText)
+            .background(Color.clock)
+            .clipShape(Circle())
+
+    }
 }
 
 struct TimerView_Previews: PreviewProvider {
