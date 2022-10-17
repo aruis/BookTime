@@ -83,22 +83,41 @@ struct BookCard: View {
                     HStack(spacing:10){
                         ForEach(0...4,id: \.self) {index in
                             Image(systemName: book.rating > index ? "star.fill" : "star")
-                                .font(.title2)
-                                .foregroundColor(Color("AccentColor"))
+//                                .font(.title2)
+                                .resizable()
+                                .foregroundColor(.accentColor)
+                                .scaledToFit()
+                                .frame(width: 30,height: 30)
                                 .onTapGesture {
                                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                     
-                                    if book.rating == 1 && index == 0 {
+                                    if  book.rating == index+1 {
                                         book.rating = 0
                                     }else{
                                         book.rating = index+1
                                     }
+                                                                       
                                     save()
                                 }
+                            
                             
                         }
                     }.opacity(isDone ? 1 : 0)
                         .animation(.default, value: isDone)
+                        .gesture(DragGesture().onChanged{value in
+                            let x =  value.location.x
+                            if(x <= 0 ){
+                                book.rating = 0
+                            }else if (x > 150){
+                                book.rating = 5
+                            } else{
+                                book.rating = Int(x / 40) + 1
+                            }
+                        }.onEnded{value in
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            save()
+                        })
+
                     
                     if book.readMinutes > 0{
                         VStack{
