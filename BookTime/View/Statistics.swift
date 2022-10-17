@@ -37,15 +37,16 @@ struct Statistics: View {
     @State private var totalReadBook = 0
     @State private var longHit = 0
     
-    @State private var totalReadDay_year = 0
     @State private var totalReadMin_year = 0
     @State private var totalReadBook_year = 0
-    @State private var longHit_year = 0
+    @State private var totalReadDay_year = 0
     
-    @State private var totalReadDay_month = 0
     @State private var totalReadMin_month = 0
     @State private var totalReadBook_month = 0
-    @State private var longHit_month = 0
+    @State private var totalReadDay_month = 0
+    
+    @State private var totalReadMin_custom = 0
+    @State private var totalReadBook_custom = 0
     
     @State private var isShowMonth = false
     @State private var isShowYear = false
@@ -59,10 +60,14 @@ struct Statistics: View {
     
     @State private var selectBookID:String = ""
     
+    @State private var customDateBegin:Date = Date().start()
+    @State private var customDateEnd:Date = Date().start()
+    
     enum SumType: String,CaseIterable{
         case all
         case year
         case month
+        case custom
     }
     
     @State private var sumType = SumType.year
@@ -87,6 +92,8 @@ struct Statistics: View {
                 return String(localized: "This Year")
             case .month:
                 return String(localized: "This Month")
+            case .custom:
+                return String("\(customDateBegin.text()) / \(customDateEnd.text())")
             }
         }
     }
@@ -109,10 +116,15 @@ struct Statistics: View {
                         if(Date().format("YYYY-MM") == book.doneTime?.format("YYYY-MM")) {
                             _books.append(book)
                         }
+                    case .custom:
+                        if book.doneTime! >= customDateBegin && book.doneTime! <= customDateEnd {
+                            _books.append(book)
+                        }
+                        
                     }
                 }
             }
-                        
+            
             return _books
         }
     }
@@ -124,27 +136,46 @@ struct Statistics: View {
         case .all:
             return logs.map{Log(day: $0.day, readMinutes: $0.readMinutes)}
         case .year:
-           return  (0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1)).map{
+            return  (0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1)).map{
                 Log(day: Date(Date().format("yyyy") + "-01-01").advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[$0])
             }
-                        
         case .month:
-                        
             let mounthFirst = Date(Date().format("yyyy-MM") + "-01")
             return  (0...Date().getDaysInMonth()).map{
                 Log(day: mounthFirst.advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[mounthFirst.dayOfYear +  $0 - 1])
-             }
-
+            }
+        case .custom:
+            return logs.filter{
+                return  $0.day >= customDateBegin && $0.day <= customDateEnd
+            }
+            .map{Log(day: $0.day, readMinutes: $0.readMinutes)}
+            
         }
     }
+    
+    func processCustom(){
+        totalReadMin_custom = 0
+        totalReadBook_custom = 0
         
+        logs.filter{
+            $0.day >= customDateBegin && $0.day <= customDateEnd
+        }.forEach{
+            totalReadMin_custom += $0.readMinutes
+        }
+        
+        totalReadBook_custom =   books.filter{
+            $0.isDone && $0.doneTime! >= customDateBegin && $0.doneTime! <= customDateEnd
+        }.count
+        
+    }
+    
     
     
     @ViewBuilder
     func reportView(isRendererImage:Bool = false) -> some View{
         VStack{
             HStack{
-//                String(localized: "\(todayReadMin) Minutes Today")
+                //                String(localized: "\(todayReadMin) Minutes Today")
                 GroupBox(label: Label(String(localized: "Total Reading Days"),systemImage: "target").font(.footnote)){
                     if(isRendererImage){
                         Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
@@ -157,7 +188,7 @@ struct Statistics: View {
                 
                 
                 GroupBox(label: Label(String(localized: "Persevere days"),systemImage: "checkmark.circle")
-                            .font(.footnote)
+                    .font(.footnote)
                 ){
                     if(isRendererImage){
                         Text("\(longHit)").font(.largeTitle).frame(height: 100)
@@ -214,78 +245,108 @@ struct Statistics: View {
                 GroupBox(label: Label(totalTitle,systemImage: "clock")
                     .font(.footnote)
                 ){
-                    
+                    Group{
                         switch sumType{
                         case .all :
-                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                                .id(1).tag(SumType.all)
+                            Report(totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, isRendererImage:isRendererImage)
                         case .year:
-                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                                .id(2) .tag(SumType.year)
+                            Report(totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, isRendererImage:isRendererImage)
+                            
                         case .month:
-                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
-                                .id(3) .tag(SumType.month)
+                            Report(totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, isRendererImage:isRendererImage)
+                        case .custom:
+                            Report(totalReadMin: $totalReadMin_custom, totalReadBook: $totalReadBook_custom, isRendererImage:isRendererImage)
                         }
-                        
+                    }
+                    .frame(height:100)
                     
                     
                 }
-
+                
+                
             }else {
                 GroupBox(label: Label(totalTitle,systemImage: "clock")
-                            .font(.footnote)
+                    .font(.footnote)
                 ){
                     
                     VStack{
                         if #available(iOS 16.0, *) {
-                            if totalReadDay > 7  {
-                                Chart {
-                                    
-                                    ForEach(chartLogs,id:\.day){
-                                        BarMark(
-                                            x: .value("Day", $0.day,unit:.day),
-                                            y: .value("Value", $0.readMinutes)
-                                        )
-                                    }
-                                    
-                                    
+                            
+                            Chart {
+                                
+                                ForEach(chartLogs,id:\.day){
+                                    BarMark(
+                                        x: .value("Day", $0.day,unit:.day),
+                                        y: .value("Value", $0.readMinutes)
+                                    )
                                 }
-                                .frame(height: 160)
-                                .animation(.easeOut, value: sumType)
+                                
+                                
                             }
+                            .frame(height: 160)
+                            .animation(.easeOut, value: sumType)
+                            .animation(.easeOut, value: customDateBegin)
+                            .animation(.easeOut, value: customDateEnd)
+                            
                         }
-
+                        
                         TabView(selection: $sumType){
                             
-                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay, totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, longHit: longHit,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            Report(totalReadMin: $totalReadMin, totalReadBook: $totalReadBook, isRendererImage:isRendererImage)
                                 .id(1).tag(SumType.all)
                             
-                            
-                            
-                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_year, totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, longHit: longHit_year,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            Report(totalReadMin: $totalReadMin_year, totalReadBook: $totalReadBook_year, isRendererImage:isRendererImage)
                                 .id(2) .tag(SumType.year)
                             
-                            
-                            
-                            
-                            Report(todayReadMin: todayReadMin, totalReadDay: totalReadDay_month, totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, longHit: longHit_month,isShowReadedBooks:$isShowReadedBooks,isRendererImage:isRendererImage)
+                            Report(totalReadMin: $totalReadMin_month, totalReadBook: $totalReadBook_month, isRendererImage:isRendererImage)
                                 .id(3) .tag(SumType.month)
                             
+                            VStack{
+                                HStack(alignment:.center,spacing: 4){
+                                    DatePicker("", selection: $customDateBegin,displayedComponents:.date)
+                                    
+                                    DatePicker("", selection: $customDateEnd,displayedComponents:.date)
+                                }
+                                .overlay{
+                                    Text("-")
+                                }
+                                .onChange(of: customDateBegin, perform: { date in
+                                    if customDateBegin > customDateEnd {
+                                        customDateEnd = customDateBegin
+                                    }
+                                    
+                                    processCustom()
+                                    
+                                })
+                                .onChange(of: customDateEnd, perform: { date in
+                                    if customDateBegin > customDateEnd {
+                                        customDateBegin = customDateEnd
+                                    }
+                                    
+                                    processCustom()
+                                })
+                                
+                                
+                                Report(totalReadMin: $totalReadMin_custom, totalReadBook: $totalReadBook_custom, isRendererImage:isRendererImage)
+                                
+                            }
+                            .id(4).tag(SumType.custom)
                             
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         .animation(.easeInOut, value: sumType)
-                        .frame( height: 100)
-
+                        //                        .frame(height: 150)
+                        .frame( height: sumType == .custom ? 200 : 100)
+                        
                     }
                 }
-
+                
             }
             
-           
+            
             if readedBooks.count > 0 {
                 GroupBox(label: Label(String(localized: "Finished Book"),systemImage: "books.vertical")
-                            .font(.footnote)
+                    .font(.footnote)
                 ){
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 85),spacing: 20),],spacing: 15) {
                         ForEach(readedBooks){book in
@@ -299,18 +360,18 @@ struct Statistics: View {
                                     )
                                     .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
                                     .onTapGesture(perform: {
-//                                        selectBookIndex = readedBooks.firstIndex(of: book)!
+                                        //                                        selectBookIndex = readedBooks.firstIndex(of: book)!
                                         selectBookID = book.id
                                         showCover = true
                                     })
-                                    
+                                
                             }
                         }
                     }
                     .padding(8)
                     .animation(.easeInOut, value: sumType)
                 }
-
+                
             }
         }
         
@@ -347,12 +408,12 @@ struct Statistics: View {
                     .foregroundColor(Color("AccentColor"))
             )
         }
-//        .foregroundColor(.white)
-        .padding()        
+        //        .foregroundColor(.white)
+        .padding()
         .ignoresSafeArea()
         
     }
-        
+    
     var body: some View {
         
         
@@ -363,50 +424,50 @@ struct Statistics: View {
             
             ScrollView {
                 reportView()
-                .padding()
-                .navigationTitle("Achievement")
+                    .padding()
+                    .navigationTitle("Achievement")
                 //                .navigationBarTitleDisplayMode(.inline)
-                .toolbar(content: {
-                    Button(action: {
-                        showOptions = true
-                    }){
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                })
-                .sheet(isPresented: $showOptions) {
-                    
-                    VStack{
-                        if let image = shareImage {
-                            ActivityView(activityItems: [image])
-                        }else{
-                            Text("")
-                                .toast(isPresenting: $showToast){
-                                    AlertToast(type: .loading, title: "Rendering image")
-                                }
+                    .toolbar(content: {
+                        Button(action: {
+                            showOptions = true
+                        }){
+                            Image(systemName: "square.and.arrow.up")
                         }
-                    }
-                    .task {
-                        DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
-                            if #available(iOS 16.0, *) {
-                                let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
-                                renderer.scale = 2
-                                shareImage = renderer.uiImage ?? UIImage()
-                            } else {
-                                shareImage = exportBox(isRendererImage: true).snapshot()
+                    })
+                    .sheet(isPresented: $showOptions) {
+                        
+                        VStack{
+                            if let image = shareImage {
+                                ActivityView(activityItems: [image])
+                            }else{
+                                Text("")
+                                    .toast(isPresenting: $showToast){
+                                        AlertToast(type: .loading, title: "Rendering image")
+                                    }
                             }
-
-                            self.showToast = false
+                        }
+                        .task {
+                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+                                if #available(iOS 16.0, *) {
+                                    let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
+                                    renderer.scale = 2
+                                    shareImage = renderer.uiImage ?? UIImage()
+                                } else {
+                                    shareImage = exportBox(isRendererImage: true).snapshot()
+                                }
+                                
+                                self.showToast = false
+                            })
+                            
+                        }
+                        .onAppear() {
+                            self.showToast = true
+                        }
+                        .onDisappear(perform: {
+                            shareImage = nil
                         })
                         
                     }
-                    .onAppear() {
-                        self.showToast = true
-                    }
-                    .onDisappear(perform: {
-                        shareImage = nil
-                    })
-                    
-                }
                 
             }
             
@@ -423,7 +484,7 @@ struct Statistics: View {
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            }            
+            }
             .onTapGesture(perform: {
                 showCover = false
             })
@@ -434,9 +495,9 @@ struct Statistics: View {
                 }
                 
             })
-
+            
         })
-
+        
         .navigationViewStyle(.stack)
         .onAppear(perform: {
             todayReadMin = 0
@@ -446,44 +507,30 @@ struct Statistics: View {
                 initAllLog()
             }
         }
-
+        
         
     }
-        
+    
     
     
     func initAllLog(){
-        
-        
         
         totalReadDay = 0
         totalReadMin = 0
         totalReadBook = 0
         longHit = 0
+        
         totalReadDay_year = 0
         totalReadMin_year = 0
         totalReadBook_year = 0
-        longHit_year = 0
+        
         totalReadDay_month = 0
         totalReadMin_month = 0
         totalReadBook_month = 0
-        longHit_month = 0
-        
-        //        isShowYear = false
-        //        isShowMonth = false
-        //
-        //        totalReadDay = 0
-        //        totalReadMin = 0
-        //        totalReadBook = 0
-        //
-        //        longHit = 0
-        
         
         
         
         var lastHitDay:Date? = nil
-        var lastHitDay_month:Date? = nil
-        var lastHitDay_year:Date? = nil
         
         for log:ReadLog in logs{
             
@@ -492,45 +539,15 @@ struct Statistics: View {
                 if( Date().format("YYYY") == log.day.format("YYYY")) {
                     totalReadDay_year += 1
                     totalReadMin_year +=  log.readMinutes
-                    
-                    if let lastHitDay = lastHitDay_year {
-                        let begin = lastHitDay.start()
-                        let end = log.day.start()
-                        let components = NSCalendar.current.dateComponents([.day], from: begin , to: end)
-                        if(components.day == 1){ //间隔一天，连续的
-                            longHit_year += 1
-                        }else{
-                            longHit_year = 1
-                        }
-                        
-                    }else{
-                        longHit_year = 1
-                    }
-                    
-                    lastHitDay_year = log.day
-                    
                 }
                 
                 if( Date().format("YYYY-MM") == log.day.format("YYYY-MM")) {
-                    totalReadDay_month += 1
-                    totalReadMin_month += log.readMinutes
-                    
-                    if let lastHitDay = lastHitDay_month {
-                        let begin = lastHitDay.start()
-                        let end = log.day.start()
-                        let components = NSCalendar.current.dateComponents([.day], from: begin , to: end)
-                        if(components.day == 1){ //间隔一天，连续的
-                            longHit_month += 1
-                        }else{
-                            longHit_month = 1
-                        }
-                        
-                    }else{
-                        longHit_month = 1
+                    if(totalReadDay_month == 0){
+                        customDateBegin = log.day
                     }
                     
-                    lastHitDay_month = log.day
-                    
+                    totalReadDay_month += 1
+                    totalReadMin_month += log.readMinutes
                 }
                 
                 
@@ -576,6 +593,11 @@ struct Statistics: View {
                 }
             }
         }
+        
+        if !logs.isEmpty {
+            customDateEnd = logs[logs.count-1].day
+            processCustom()
+        }
     }
     
     
@@ -593,15 +615,8 @@ struct Statistics: View {
 
 struct Report: View{
     
-    var todayReadMin:Int
-    
-    var totalReadDay:Int
     @Binding var totalReadMin:Int
     @Binding var totalReadBook:Int
-    
-    var longHit:Int
-    
-    @Binding var isShowReadedBooks:Bool
     
     var isRendererImage:Bool
     
