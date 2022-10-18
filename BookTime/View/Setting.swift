@@ -19,7 +19,7 @@ struct Setting: View {
     
     @Environment(\.managedObjectContext) var context
     
-    let store = NSUbiquitousKeyValueStore()
+    let keyStore = NSUbiquitousKeyValueStore()
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[])
     var books: FetchedResults<Book>
@@ -37,6 +37,9 @@ struct Setting: View {
     @State private var remindDate = Date().start()
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
+    @State private var _targetReadMin:CGFloat = 0
+    
+    @AppStorage("todayReadMin") var todayReadMin = 0
     //    @AppStorage("useiCloud") var useiCloud = false
     private var useiCloud = false
     @AppStorage("isFirstBookCard") var isFirstBookCard = true
@@ -65,7 +68,7 @@ struct Setting: View {
     
     @Environment(\.scenePhase) var scenePhase
     
-    @State private var todayReadMin:Int = 0
+    
     
     private var greeting:String{
         get {
@@ -73,7 +76,7 @@ struct Setting: View {
                 return ""
             }
             
-            let value = targetMinPerday
+            let value = _targetReadMin
             if(value > 240){
                 return "书籍是人类进步的阶梯，\n但阶梯不是目的，两侧的风景才是。"
             }
@@ -114,7 +117,7 @@ struct Setting: View {
             return Double(targetMinPerday)
         }, set: {
             targetMinPerday = Int($0)
-            store.set(targetMinPerday, forKey: "targetMinPerday")
+            keyStore.set(targetMinPerday, forKey: "targetMinPerday")
         })
     }
     
@@ -123,26 +126,38 @@ struct Setting: View {
             
             VStack {
                 VStack(){
-                    Text(targetMinPerday.asString())
+                    Text(Int(_targetReadMin).asString())
                         .font(.system(size: 100)).fontWeight(.light).monospacedDigit()
                     
                     Text(greeting)
                         .font(.subheadline)
                         .multilineTextAlignment(.center)
                         .opacity(sliderIsChange ? 0 : 1)
+//                        .animation(.default, value: targetMinPerday)
                     
                     
                 }
                 .frame(height:170,alignment: .top)
-                .animation(.default, value: targetMinPerday)
+                
                 
                 Form {
                     
                     Section(header: Text("Daily reading goal")) {
-                        Slider(value: intProxy, in: 0...360, step: 5,onEditingChanged: { editing in
+                        Slider(value: $_targetReadMin, in: 0...360, step: 5,onEditingChanged: { editing in
                             self.sliderIsChange = editing
+                            if !editing{
+                                targetMinPerday = Int(_targetReadMin)
+                                keyStore.set(targetMinPerday, forKey: "targetMinPerday")
+                            }
                         })
-
+                        .onAppear{
+                            _targetReadMin = CGFloat(targetMinPerday)
+                        }
+                        .onChange(of: _targetReadMin, perform: {value in
+                            if Int(value) % 60 == 0 {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            }
+                        })
                                                 
                         Toggle("Reading Reminder", isOn: $isRemind).onChange(of: isRemind, perform: {value in
                             if value{
@@ -450,11 +465,9 @@ struct Setting: View {
         .task {
             checkIfICloudCanUse()
         }
-        .onAppear{
-            let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
-            todayReadMin = readLog.readMinutes
+        .onDisappear{
+            keyStore.synchronize()
         }
-        
         
     }
     
@@ -523,7 +536,7 @@ struct Setting: View {
     }
     
     func getTargetMinPerdayFromICloud(){
-        let minute = store.longLong(forKey: "targetMinPerday")
+        let minute = keyStore.longLong(forKey: "targetMinPerday")
         if(minute>0){
             targetMinPerday = Int(minute)
         }
@@ -645,6 +658,8 @@ struct Setting: View {
         cleanLocal()
         showDeleteAllSucToast = true
         targetMinPerday = 45
+        _targetReadMin = 45
+        todayReadMin = 0
         isFirstBookCard = true
         hasViewdWalkthrough = false
         isRemind = false
@@ -653,14 +668,14 @@ struct Setting: View {
         NotificationTool.cancel()
         ctrl.cleanTodayLog()
         
-        store.removeObject(forKey: "targetMinPerday")
-        store.removeObject(forKey: "todayReadMin")        
-        store.removeObject(forKey: "lastReadDate")
+        keyStore.removeObject(forKey: "targetMinPerday")
+        keyStore.removeObject(forKey: "todayReadMin")        
+        keyStore.removeObject(forKey: "lastReadDate")
         
-        store.removeObject(forKey: "logInYear")
+        keyStore.removeObject(forKey: "logInYear")
                 
         
-        store.synchronize()
+        keyStore.synchronize()
         WidgetCenter.shared.reloadAllTimelines()
     }
     
