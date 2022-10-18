@@ -65,29 +65,31 @@ struct BookCard: View {
                         if !tagString.isEmpty {
                             HStack{
                                 ForEach( tagString.split(separator: ",").map({Tag(name: String($0))})){tag in
-                                
-                                        Text(tag.name)
-                                            .padding(3)
-                                            .padding(.horizontal,5)
-                                            .background(.gray.opacity(0.2))
-                                            .clipShape(Capsule())
-                                            .font(.subheadline)
-                                
+                                    
+                                    Text(tag.name)
+                                        .padding(3)
+                                        .padding(.horizontal,5)
+                                        .background(.gray.opacity(0.2))
+                                        .clipShape(Capsule())
+                                        .font(.subheadline)
+                                    
                                 }
                             }
                         }
                         
                     }
-
+                    
                     
                     HStack(spacing:10){
                         ForEach(0...4,id: \.self) {index in
                             Image(systemName: book.rating > index ? "star.fill" : "star")
-//                                .font(.title2)
+                            //                                .font(.title2)
                                 .resizable()
                                 .foregroundColor(.accentColor)
                                 .scaledToFit()
                                 .frame(width: 30,height: 30)
+                                .scaleEffect(book.rating == index+1 ? 1.25 : 1.0)
+                                .animation(.linear(duration: 0.1), value: book.rating)
                                 .onTapGesture {
                                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                     
@@ -96,7 +98,7 @@ struct BookCard: View {
                                     }else{
                                         book.rating = index+1
                                     }
-                                                                       
+                                    
                                     save()
                                 }
                             
@@ -106,18 +108,22 @@ struct BookCard: View {
                         .animation(.default, value: isDone)
                         .gesture(DragGesture().onChanged{value in
                             let x =  value.location.x
+                            var target = 0
                             if(x <= 0 ){
-                                book.rating = 0
+                                target = 0
                             }else if (x > 150){
-                                book.rating = 5
+                                target = 5
                             } else{
-                                book.rating = Int(x / 40) + 1
+                                target = Int(x / 40) + 1
+                            }
+                            if( book.rating !=  target){
+                                book.rating = target
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             }
                         }.onEnded{value in
-                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             save()
                         })
-
+                    
                     
                     if book.readMinutes > 0{
                         VStack{
@@ -211,7 +217,7 @@ struct BookCard: View {
                         } else {
                             shareImage =  exportBox.snapshot()
                         }
-
+                        
                         showOptions = true
                     }){
                         Image(systemName: "square.and.arrow.up")
@@ -271,7 +277,7 @@ struct BookCard: View {
                     book.status = BookStatus.reading.rawValue
                 }
                 save()
-            }            
+            }
         })
         .fullScreenCover(isPresented: $showTimer, content: {
             TimerView(book: book,handShowTimer: $handShowTimer)
