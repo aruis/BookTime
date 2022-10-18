@@ -304,10 +304,7 @@ struct Statistics: View {
                             VStack{
                                 HStack(alignment:.center){
                                     DatePicker("", selection: $customDateBegin,in: ...Date(), displayedComponents:.date)
-//                                    Text("/").padding(0)
-//                                        .padding(.leading,6)
                                     DatePicker("-", selection: $customDateEnd,in: ...Date(), displayedComponents:.date)
-//                                        .background(.black.opacity(0.3))
                                 }
                                 .onChange(of: customDateBegin, perform: { date in
                                     if customDateBegin > customDateEnd {

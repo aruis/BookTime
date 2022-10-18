@@ -10,11 +10,16 @@ import WidgetKit
 
 @main
 struct BookTimeApp: App {
+    
+    @AppStorage("targetMinPerday") var targetMinPerday = 45
+    @AppStorage("todayReadMin") var todayReadMin = 0
+    
     @State private var selectedTabIndex = 0
     let bookPersistenceController = BookPersistenceController.shared
-
+    
     @AppStorage("hasViewdWalkthrough") var hasViewdWalkthrough = false
     @State private var showWalkthrough = false
+    
     
     
     var body: some Scene {
@@ -28,7 +33,16 @@ struct BookTimeApp: App {
                 
                 Statistics()
                     .tabItem {
-                        Label("Achievement",systemImage:"target")
+                        Label{
+                            Text("Achievement")
+                        }icon: {
+                            if #available(iOS 16.0, *) {
+                                Image(systemName: "target",variableValue: CGFloat(todayReadMin)/CGFloat(targetMinPerday))
+                            } else {
+                                Image(systemName: "target")
+                            }
+                        }
+                        //                        Label("Achievement",systemImage:"target")
                     }
                     .tag(1)
                 
@@ -44,12 +58,12 @@ struct BookTimeApp: App {
             .onAppear(){
                 showWalkthrough = hasViewdWalkthrough ? false : true
                 WidgetCenter.shared.reloadAllTimelines()
-//                showWalkthrough = true
+                //                showWalkthrough = true
             }
-
+            
             // show tutorial
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
-//            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
+            //            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
         }
     }
 }

@@ -11,6 +11,7 @@ import CloudKit
 import WidgetKit
 
 struct BookList: View {
+    @AppStorage("todayReadMin") var todayReadMin = 0
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     let ctrl = BookPersistenceController.shared
     let generator = UINotificationFeedbackGenerator()
@@ -325,7 +326,7 @@ struct BookList: View {
                         
             let thisYear = Date().format("YYYY")            
             
-            var todayReadMin = 0
+            todayReadMin = 0
             
             for log:ReadLog in logs{
                 if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){

@@ -29,6 +29,7 @@ struct TimerView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
+    @AppStorage("todayReadMin") var todayReadMin = 0
     
     @State private var orientation = UIDeviceOrientation.unknown
     
@@ -397,6 +398,7 @@ struct TimerView: View {
                 }
             }
             
+            todayReadMin = readLog.readMinutes
             keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
             keyStore.set(targetMinPerday, forKey: "targetMinPerday")            
             keyStore.set(now, forKey: "lastReadDate")
