@@ -235,6 +235,18 @@ struct Setting: View {
                             Label(String(localized:"Clear All Data") + (useiCloud ? String(localized: "(Include iCloud)")  :""),systemImage: "exclamationmark.triangle.fill")
                                 .foregroundColor(.red.opacity(0.85))
                         }
+                        .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCleanSheet, titleVisibility : .visible, actions: {
+                            Button("I want to clear all data", role: .destructive) {
+                                Task{
+                                    await cleanAllData()
+                                }
+                            }
+                            
+                            Button("Cancel", role: .cancel) {
+                                self.showCleanSheet = false
+                            }
+                        })
+
 
 
                         
@@ -278,17 +290,6 @@ struct Setting: View {
                     AlertToast( type: .complete(.green), title: String(localized: "All data has been deleted" ,comment: "所有数据已删除") )
                 }
             }
-            .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCleanSheet, titleVisibility : .visible, actions: {
-                Button("I want to clear all data", role: .destructive) {
-                    Task{
-                        await cleanAllData()
-                    }
-                }
-                
-                Button("Cancel", role: .cancel) {
-                    self.showCleanSheet = false
-                }
-            })
             .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCloudSheet, titleVisibility : .visible, actions: {
                 Button("Overwrite local data to the cloud", role: .destructive) {
                     Task{

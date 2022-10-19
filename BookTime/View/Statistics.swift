@@ -302,9 +302,11 @@ struct Statistics: View {
                                 .id(3) .tag(SumType.month)
                             
                             VStack{
-                                HStack(alignment:.center){
+                                HStack(){
+                                    Spacer()
                                     DatePicker("", selection: $customDateBegin,in: ...Date(), displayedComponents:.date)
                                     DatePicker("-", selection: $customDateEnd,in: ...Date(), displayedComponents:.date)
+                                    Spacer()
                                 }
                                 .onChange(of: customDateBegin, perform: { date in
                                     if customDateBegin > customDateEnd {
