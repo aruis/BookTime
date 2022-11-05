@@ -4,3 +4,5 @@
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "If you need to pick a picture in the photo library as the book cover, you need to grant the App to access to the photo library.";
 
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Please give me permission to write pictures into your album.";
