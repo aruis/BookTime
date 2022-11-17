@@ -158,7 +158,7 @@ struct TimerView: View {
             
             let title = isShowProgress ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed")  :  date.dayString()
                         
-            ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging,progress: .constant(process),isShowProgress:$isShowProgress,clockTap:{
+            ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging,progress: .constant(process),isShowProgress:$isShowProgress,isShowButtons: $isShowButtons, clockTap:{
                 showRealTime.toggle()
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })
@@ -179,6 +179,7 @@ struct TimerView: View {
                 }
 
         }
+        .preferredColorScheme(.light)
         .ignoresSafeArea()
         .gesture(DragGesture().onEnded{value in
             
@@ -463,6 +464,8 @@ struct ClockView: View {
     
     @Binding var isShowProgress:Bool
     
+    @Binding var isShowButtons:Bool
+    
     var clockTap:()->()
     
     var batteryImg:Image{
@@ -551,7 +554,8 @@ struct ClockView: View {
                         .foregroundColor(.clockText)
                         .font(.system(.subheadline,design:.rounded))
                     }
-                        .padding(.top, -30)
+                    .padding(.top, -30)
+                    .opacity(isShowProgress || isShowButtons ? 1 : 0)
                     
                 }
                 .overlay(alignment: .bottom){
