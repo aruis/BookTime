@@ -439,22 +439,25 @@ struct AddBookView: View {
     var body: some View {
         VStack (spacing: 20){
             Image(systemName: "plus.circle")
-                .font(.system(size: 50))
+                .font(.system(size: 70))
+//                .frame(width: 250,height: 250)
                 .foregroundColor(.accentColor)
-                .overlay(
-                    Image(systemName: "hand.point.up.left")
+                .overlay(alignment:.bottomTrailing){
+                    Image(systemName: "hand.point.up.left.fill")
                         .font(.system(size: 100))
-                        .foregroundColor(.gray.opacity(handMove ? 0.6:0.85))
+                        .shadow(radius: 3,x: 3,y: 3)
+                    //                        .foregroundColor(.yellow)
+                    //                        .opacity(1)
                         .offset(x: handMove ? 150 : 50,y: handMove ? 150 : 50)
-                )
+                }
                 .onAppear(perform: {
-                    withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)){
+                    withAnimation(.easeInOut(duration: 2).repeatForever()){
                         handMove.toggle()
                     }
                 })
             
             Text("Tap here to add a book")
-                .font(.title)
+                .font(.largeTitle)
         }
     }
 }

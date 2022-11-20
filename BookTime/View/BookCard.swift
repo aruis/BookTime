@@ -140,7 +140,7 @@ struct BookCard: View {
                 ZStack{
                     RoundedRectangle(cornerRadius: isDone ? 25:5)
                         .frame(width: isDone ? 50:250, height: 50)
-                        .foregroundColor(isDone ? .green : .gray)
+                        .foregroundColor(isDone ? .green : Color(UIColor.systemGray5))
                         .overlay(
                             //                                Text("")
                             Image(systemName: "checkmark")
@@ -155,7 +155,7 @@ struct BookCard: View {
                         .opacity(isDone ? 0 : 1)
                         .fixedSize()
                     
-                        .foregroundColor(.white)
+//                        .foregroundColor(.white)
                 }
                 .frame(minWidth: 0,maxWidth: .infinity)
                 .frame(height:80)
