@@ -69,7 +69,7 @@ struct NewBook: View {
                                 self.photoSource = .camera
                             }
                             
-                            if false && VNDocumentCameraViewController.isSupported{
+                            if VNDocumentCameraViewController.isSupported{
                                 Button("AI Camera"){
                                     self.photoSource = .documentScan
                                 }

@@ -161,7 +161,8 @@ class BookPersistenceController {
     
     func checkAndBuildTodayLog() -> ReadLog{
         if let todayLog = todayLog {
-            if(todayLog.day.format( "YYYY-MM-dd") == Date().format( "YYYY-MM-dd")){
+        
+            if todayLog.day.isSameDay(Date()) && todayLog.readMinutes > 0{
                 return todayLog
             }
         }
@@ -171,23 +172,28 @@ class BookPersistenceController {
         
         
         fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
-        
-        
+                
         do {
             let todays = try context.fetch(fetchReq)
             if todays.count > 0 {
-                var maxToday:ReadLog?
+                
+                var logs:[ReadLog] = []
+                var totalReadMin = 0
                 
                 todays.forEach{ it in
                     let log:ReadLog = it as! ReadLog
-                    if log.readMinutes >= maxToday?.readMinutes ?? 0{
-                        maxToday = log
-                    }
+                    totalReadMin += log.readMinutes
+                    logs.append(log)
                 }
                 
-                self.todayLog = maxToday
-                return maxToday!
-
+                logs.first!.readMinutes = totalReadMin
+                
+                while logs.count > 1{
+                    context.delete(logs.removeLast())
+                }
+                
+                self.todayLog = logs.first
+                return self.todayLog!
             } else {
                 let readLog = ReadLog(context: context)
                 readLog.readMinutes = 0

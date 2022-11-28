@@ -55,4 +55,7 @@ extension Date {
         return numDays
     }
 
+    func isSameDay(_ date2:Date) -> Bool{
+        return Calendar.current.isDate(self, equalTo: date2, toGranularity: .day)
+    }
 }

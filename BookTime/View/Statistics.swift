@@ -526,8 +526,8 @@ struct Statistics: View {
         totalReadMin_month = 0
         totalReadBook_month = 0
         
-        
-        
+        todayReadMin = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+                
         var lastHitDay:Date? = nil
         
         for log:ReadLog in logs{
@@ -547,12 +547,7 @@ struct Statistics: View {
                     totalReadDay_month += 1
                     totalReadMin_month += log.readMinutes
                 }
-                
-                
-                if Calendar.current.isDate(Date(), equalTo: log.day, toGranularity: .day) {
-                    todayReadMin = log.readMinutes
-                }
-                
+                                                                
                 totalReadDay += 1
                 totalReadMin += log.readMinutes
                 
