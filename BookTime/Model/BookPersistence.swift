@@ -161,7 +161,6 @@ class BookPersistenceController {
     
     func checkAndBuildTodayLog() -> ReadLog{
         if let todayLog = todayLog {
-        
             if todayLog.day.isSameDay(Date()) && todayLog.readMinutes > 0{
                 return todayLog
             }
