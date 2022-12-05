@@ -168,7 +168,7 @@ struct TimerView: View {
                 .onTapGesture {
                     if !isShowProgress {
                         isShowProgress = true
-                        DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
+                        DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
                             isShowProgress = false
                         })
                     } else {
@@ -336,7 +336,7 @@ struct TimerView: View {
                 isHit = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now()+3, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
                 isShowProgress = false
             })
         })

@@ -280,11 +280,19 @@ struct BookCard: View {
             }
         })
         .fullScreenCover(isPresented: $showTimer, content: {
-            TimerView(book: book,handShowTimer: $handShowTimer)
-                .onAppear(perform: {
-                    generator.notificationOccurred(.success)
-                })
-            
+            if #available(iOS 16.0, *) {
+                TimerView(book: book,handShowTimer: $handShowTimer)
+                    .persistentSystemOverlays(.hidden)
+                    .onAppear(perform: {
+                        generator.notificationOccurred(.success)
+                    })
+            } else {
+                TimerView(book: book,handShowTimer: $handShowTimer)
+                    .onAppear(perform: {
+                        generator.notificationOccurred(.success)
+                    })
+
+            }            
             
         })
         
