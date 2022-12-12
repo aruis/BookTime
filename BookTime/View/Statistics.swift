@@ -270,25 +270,21 @@ struct Statistics: View {
                 ){
                     
                     VStack{
-                        if #available(iOS 16.0, *) {
+                        Chart {
                             
-                            Chart {
-                                
-                                ForEach(chartLogs,id:\.day){
-                                    BarMark(
-                                        x: .value("Day", $0.day,unit:.day),
-                                        y: .value("Value", $0.readMinutes)
-                                    )
-                                }
-                                
-                                
+                            ForEach(chartLogs,id:\.day){
+                                BarMark(
+                                    x: .value("Day", $0.day,unit:.day),
+                                    y: .value("Value", $0.readMinutes)
+                                )
                             }
-                            .frame(height: 160)
-                            .animation(.easeOut, value: sumType)
-                            .animation(.easeOut, value: customDateBegin)
-                            .animation(.easeOut, value: customDateEnd)
+                            
                             
                         }
+                        .frame(height: 160)
+                        .animation(.easeOut, value: sumType)
+                        .animation(.easeOut, value: customDateBegin)
+                        .animation(.easeOut, value: customDateEnd)
                         
                         TabView(selection: $sumType){
                             
@@ -446,13 +442,9 @@ struct Statistics: View {
                         }
                         .task {
                             DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
-                                if #available(iOS 16.0, *) {
-                                    let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
-                                    renderer.scale = 2
-                                    shareImage = renderer.uiImage ?? UIImage()
-                                } else {
-                                    shareImage = exportBox(isRendererImage: true).snapshot()
-                                }
+                                let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
+                                renderer.scale = 2
+                                shareImage = renderer.uiImage ?? UIImage()
                                 
                                 self.showToast = false
                             })
@@ -527,7 +519,7 @@ struct Statistics: View {
         totalReadBook_month = 0
         
         todayReadMin = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
-                
+        
         var lastHitDay:Date? = nil
         
         for log:ReadLog in logs{
@@ -547,7 +539,7 @@ struct Statistics: View {
                     totalReadDay_month += 1
                     totalReadMin_month += log.readMinutes
                 }
-                                                                
+                
                 totalReadDay += 1
                 totalReadMin += log.readMinutes
                 

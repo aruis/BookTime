@@ -203,14 +203,8 @@ struct TimerView: View {
                             if let landscapeRight = landscapeRight {
                                 if landscapeRight{
                                     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                                    
-                                    if #available(iOS 16.0, *) {
-                                        windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-                                    } else {
-                                        // Fallback on earlier versions
-                                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                                    }
-                                                                        
+                                    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+                                                                                                            
                                     self.landscapeRight = false
                                 }
                             }
@@ -228,24 +222,10 @@ struct TimerView: View {
                             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                             
                             if  verticalSizeClass == .compact{
-                                if #available(iOS 16.0, *) {
-                                    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-                                } else {
-                                    // Fallback on earlier versions
-                                    UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                                }
-                                                                
+                                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
                                 landscapeRight = false
                             }else{
-
-                                if #available(iOS 16.0, *) {
-                                    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
-                                } else {
-                                    // Fallback on earlier versions
-                                    UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-                                }
-
-//
+                                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
                                 landscapeRight = true
                             }
 

@@ -9,30 +9,30 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-        
+    
     let keyStore = NSUbiquitousKeyValueStore()
     
     func placeholder(in context: Context) -> BookTimeWidgetEntry {
         BookTimeWidgetEntry(date: Date(), lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear:  [Int](repeating: 0, count: 365))
     }
-
+    
     func getSnapshot(in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
         completion(buildEntry())
     }
-
+    
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         let now = Date()
         let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
-
+        
         let entries:[BookTimeWidgetEntry] = [
             buildEntry(now),
             buildEntry(nextUpdateDate)
         ]
         
-//        for i in 1...23{
-//            let entryDate = Calendar.current.date(byAdding: .hour, value: i, to: now)!
-//            entries.append(buildEntry(entryDate))
-//        }
+        //        for i in 1...23{
+        //            let entryDate = Calendar.current.date(byAdding: .hour, value: i, to: now)!
+        //            entries.append(buildEntry(entryDate))
+        //        }
         
         let timeline = Timeline(entries: entries, policy: .atEnd)
         
@@ -42,12 +42,12 @@ struct Provider: TimelineProvider {
     func isSameDay(date1: Date, date2: Date) -> Bool {
         return Calendar.current.isDate(date1, equalTo: date2, toGranularity: .day)
         
-//        let diff = Calendar.current.dateComponents([.day], from: date1, to: date2)
-//        if diff.day == 0 {
-//            return true
-//        } else {
-//            return false
-//        }
+        //        let diff = Calendar.current.dateComponents([.day], from: date1, to: date2)
+        //        if diff.day == 0 {
+        //            return true
+        //        } else {
+        //            return false
+        //        }
     }
     
     func buildEntry(_ date:Date? = nil)->BookTimeWidgetEntry{
@@ -70,9 +70,9 @@ struct Provider: TimelineProvider {
         
         
         return BookTimeWidgetEntry(date: now,lastReadDate:lastReadDateCloud, todayReadMin: todayReadMinCloud,targetMinPerday: targetMinPerdayCloud,logInYear: logInYear)
-
-       
-       
+        
+        
+        
     }
 }
 
@@ -120,8 +120,8 @@ struct BookTimeWidgetEntryView : View {
         let allDays = Date(Date().format("yyyy") + "-12-31").dayOfYear
         return allDays - today.dayOfYear
     }
-
-
+    
+    
     @ViewBuilder
     var smallView:some View{
         ZStack{
@@ -155,9 +155,9 @@ struct BookTimeWidgetEntryView : View {
             Text("\(entry.todayReadMin) Min")
                 .font(.system(.subheadline ,design: .rounded).bold())
         }
-
+        
     }
-
+    
     @ViewBuilder
     func mediumView(isInLarge:Bool = false) -> some View{
         HStack{
@@ -186,7 +186,7 @@ struct BookTimeWidgetEntryView : View {
                 }
                 
                 
-//                Text("\(Int( round( process * 100))) % of the Plan Completed")
+                //                Text("\(Int( round( process * 100))) % of the Plan Completed")
                 
             }
             
@@ -229,7 +229,7 @@ struct BookTimeWidgetEntryView : View {
         }
         .padding(.leading, 12)
     }
-
+    
     @ViewBuilder
     var largeView:some View{
         VStack(spacing:0){
@@ -239,40 +239,34 @@ struct BookTimeWidgetEntryView : View {
                     Rectangle()
                         .frame(width: 9,height: 9)
                         .foregroundColor(Color("AccentColor").opacity(squareOpacity(entry.logInYear[index])))
-//                        .foregroundColor(Color("AccentColor").opacity(1.0))
-                        
+                    //                        .foregroundColor(Color("AccentColor").opacity(1.0))
+                    
                     
                 }
             }
             .clipShape(Rectangle())
             .padding(10)
-
+            
             Spacer()
             mediumView(isInLarge: true)
         }
         .padding(.vertical,10)
-
     }
     
     @ViewBuilder
     var circularView:some View{
-
-        if #available(iOSApplicationExtension 16.0, *) {
-            Gauge(value: process, label: {
-                VStack{
-                    Text("\(entry.todayReadMin)")
-                        .font(.system(.headline ,design: .rounded).bold())
-                    Text("min")
-                        .font(.footnote.bold())
-                }
-
-            })
-            .gaugeStyle(.accessoryCircularCapacity)
+        Gauge(value: process, label: {
+            VStack{
+                Text("\(entry.todayReadMin)")
+                    .font(.system(.headline ,design: .rounded).bold())
+                Text("min")
+                    .font(.footnote.bold())
+            }
             
-        }
-
+        })
+        .gaugeStyle(.accessoryCircularCapacity)
     }
-                                         
+    
     
     func squareOpacity(_ min:Int) -> Double{
         if min == 0{
@@ -289,68 +283,58 @@ struct BookTimeWidgetEntryView : View {
         }
         
     }
-    
-
-                                         
-                                        
-    
-
-    
+            
     var body: some View {
         switch self.family {
         case .systemSmall:
             smallView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
                 .background(Color("WidgetBackground"))
-
+            
         case .systemMedium:
             mediumView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
                 .background(Color("WidgetBackground"))
-
+            
         case .systemLarge:
             largeView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
                 .background(Color("WidgetBackground"))
-
+            
         case .accessoryCircular:
             circularView
-
+            
         default:
             smallView
         }
-
         
-//        VStack{
-//            let encodedData  = UserDefaults(suiteName: "group.com.aruistar.BookTime")!.object(forKey: "sharedata") as? Data
-//            /* Decoding it using JSONDecoder*/
-//            if let carEncoded = encodedData {
-//                 let carDecoded = try? JSONDecoder().decode(ShareData.self, from: carEncoded)
-//                if let car = carDecoded{
-//                    Text("\(car.todayReadMin)")
-//                    // You successfully retrieved your car object!
-//                }
-//            }
-//
-//
-//            Text(entry.date, style: .time)
-//        }.onAppear{
-//        }
         
-
+        //        VStack{
+        //            let encodedData  = UserDefaults(suiteName: "group.com.aruistar.BookTime")!.object(forKey: "sharedata") as? Data
+        //            /* Decoding it using JSONDecoder*/
+        //            if let carEncoded = encodedData {
+        //                 let carDecoded = try? JSONDecoder().decode(ShareData.self, from: carEncoded)
+        //                if let car = carDecoded{
+        //                    Text("\(car.todayReadMin)")
+        //                    // You successfully retrieved your car object!
+        //                }
+        //            }
+        //
+        //
+        //            Text(entry.date, style: .time)
+        //        }.onAppear{
+        //        }
+        
+        
         
     }
 }
 @main
 struct BookTimeWidget: Widget {
     let kind: String = "BookTimeWidget"
-
+    
     var families: [WidgetFamily] {
-        var f: [WidgetFamily] = [.systemMedium,.systemSmall,.systemLarge,]
-        if #available(iOSApplicationExtension 16.0, *) {
-            f.append(.accessoryCircular)
-        }
-        return f
+        return [.systemMedium,.systemSmall,.systemLarge,.accessoryCircular]
     }
     
     var body: some WidgetConfiguration {
@@ -366,14 +350,8 @@ struct BookTimeWidget: Widget {
 
 struct BookTimeWidget_Previews: PreviewProvider {
     static var previews: some View {
-        if #available(iOSApplicationExtension 16.0, *) {
-            BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 125,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
-                .previewContext(WidgetPreviewContext(family: .accessoryCircular))
-        } else {
-            BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 25,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
-                .previewContext(WidgetPreviewContext(family: .systemMedium))
-
-            // Fallback on earlier versions
-        }
+        BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 125,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
+            .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+        
     }
 }

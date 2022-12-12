@@ -210,13 +210,9 @@ struct BookCard: View {
                     let exportBox = BookCardExport(book: book)
                     
                     Button(action: {
-                        if #available(iOS 16.0, *) {
-                            let renderer = ImageRenderer(content: exportBox)
-                            renderer.scale = 2
-                            shareImage = renderer.uiImage ?? UIImage()
-                        } else {
-                            shareImage =  exportBox.snapshot()
-                        }
+                        let renderer = ImageRenderer(content: exportBox)
+                        renderer.scale = 2
+                        shareImage = renderer.uiImage ?? UIImage()
                         
                         showOptions = true
                     }){
@@ -280,20 +276,11 @@ struct BookCard: View {
             }
         })
         .fullScreenCover(isPresented: $showTimer, content: {
-            if #available(iOS 16.0, *) {
-                TimerView(book: book,handShowTimer: $handShowTimer)
-                    .persistentSystemOverlays(.hidden)
-                    .onAppear(perform: {
-                        generator.notificationOccurred(.success)
-                    })
-            } else {
-                TimerView(book: book,handShowTimer: $handShowTimer)
-                    .onAppear(perform: {
-                        generator.notificationOccurred(.success)
-                    })
-
-            }            
-            
+            TimerView(book: book,handShowTimer: $handShowTimer)
+                .persistentSystemOverlays(.hidden)
+                .onAppear(perform: {
+                    generator.notificationOccurred(.success)
+                })
         })
         
         //                .toolbar {

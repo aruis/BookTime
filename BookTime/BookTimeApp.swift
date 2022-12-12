@@ -36,11 +36,7 @@ struct BookTimeApp: App {
                         Label{
                             Text("Achievement")
                         }icon: {
-                            if #available(iOS 16.0, *) {
-                                Image(systemName: "target",variableValue: CGFloat(todayReadMin)/CGFloat(targetMinPerday))
-                            } else {
-                                Image(systemName: "target")
-                            }
+                            Image(systemName: "target",variableValue: CGFloat(todayReadMin)/CGFloat(targetMinPerday))                            
                         }
                         //                        Label("Achievement",systemImage:"target")
                     }
