@@ -27,9 +27,7 @@ struct BookList: View {
     var books: FetchedResults<Book>
     
     @FetchRequest(entity: Book.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \Book.status, ascending: true),
-        //        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false),
-        NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
+        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false)
     ])
     var booksAll: FetchedResults<Book>
     
@@ -46,7 +44,7 @@ struct BookList: View {
         NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
     ],predicate:NSPredicate(format: "readMinutes > 0"))
     var logs: FetchedResults<ReadLog>
-
+    
     
     @Environment(\.managedObjectContext) var context
     
@@ -60,15 +58,15 @@ struct BookList: View {
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
+    @State private var columnVisibility = NavigationSplitViewVisibility.automatic
     
     @ViewBuilder
     func itemInList(book:Book) -> some View{
         ZStack(alignment: .leading){
-            NavigationLink(
-                destination: BookCard(book:book)
-            ){
+            NavigationLink(value: book){
                 EmptyView()
-            }.opacity(0)
+            }
+            .opacity(0)
             
             BookListItem(book: book)
             
@@ -143,7 +141,7 @@ struct BookList: View {
             })  {
                 Image(systemName: "trash")
             }
-
+            
             
             Button {
                 if  book.status != BookStatus.archive.rawValue {
@@ -161,12 +159,12 @@ struct BookList: View {
                 }
                 
                 generator.notificationOccurred(.warning)
-
+                
             }label: {
                 Image(systemName: "archivebox")
             }
             .tint(.orange)
-                        
+            
         })
         .listRowSeparator(.hidden)
     }
@@ -191,14 +189,20 @@ struct BookList: View {
     }
     
     var body: some View {
-        NavigationView {
-            if UIDevice.current.userInterfaceIdiom == .phone && booksAll.count == 0 {
-                AddBookView()
-                    .onTapGesture {
-                        bookViewModel.clean()
-                        self.showNewBook = true
-                    }
-            } else {
+        if booksAll.count == 0 {
+            AddBookView()
+                .onTapGesture {
+                    bookViewModel.clean()
+                    self.showNewBook = true
+                }
+                .sheet(isPresented: $showNewBook){
+                    NewBook(bookViewModel:bookViewModel,tags: tags)
+                        .onDisappear(perform: {
+                            initTags()
+                        })
+                }
+        }else{
+            NavigationSplitView(columnVisibility: $columnVisibility) {
                 List{
                     if searchText.isEmpty {
                         ForEach(booksGroup) { section in
@@ -219,9 +223,12 @@ struct BookList: View {
                     }
                     
                 }
+                .navigationDestination(for: Book.self, destination: {book in
+                    BookCard(book:book)
+                })
                 
-                //                .listStyle(.automatic)
-                .listStyle(.sidebar)
+                //                .listStyle(.grouped)
+                //                .listStyle(.sidebar)
                 .navigationTitle("My Bookshelf")
                 .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
                     //                    index
@@ -302,48 +309,82 @@ struct BookList: View {
                 }
                 
                 
+                
+                
+            } detail:{
+                
+                
+                Button(action: {
+                    columnVisibility = .doubleColumn
+                }) {
+                    Text("Please select a book.")
+                        .bold()
+                        .font(.largeTitle)
+                }
+                .tint(.accentColor)
+                .buttonStyle(.bordered)
+//                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+               
+
+                
+                   
+                       
+//                        .foregroundColor(.white)
+//                        .padding(Edge.Set.vertical,8)
+//                        .padding(Edge.Set.horizontal,14)
+//
+//                        .background(Color.accentColor)
+//                        .clipShape(
+//                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                        )
+                
+                
+//                .clipShape(RoundedRectangle(cornerRadius: 25, style: .cornerSize))
+                
+//                    .background(Color(UIColor(<#T##SwiftUI.Color#>)))
+//
+            }
+            .sheet(isPresented: $showNewBook){
+                NewBook(bookViewModel:bookViewModel,tags: tags)
+                    .onDisappear(perform: {
+                        initTags()
+                    })
             }
             
-            AddBookView()
-                .onTapGesture {
-                    bookViewModel.clean()
-                    self.showNewBook = true
+            .task {
+                initTags()
+                isDone2status()
+                
+                
+                var logInYear =  [Int](repeating: 0, count: 366)
+                
+                let thisYear = Date().format("YYYY")
+                
+                todayReadMin = 0
+                
+                for log:ReadLog in logs{
+                    if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
+                        logInYear[log.day.dayOfYear-1] = log.readMinutes
+                    }
+                    if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
+                        todayReadMin = log.readMinutes
+                    }
                 }
-        }
-        .autoNav()
-        .sheet(isPresented: $showNewBook){
-            NewBook(bookViewModel:bookViewModel,tags: tags)
-                .onDisappear(perform: {
-                    initTags()
-                })
-        }
-        .task {
-            initTags()
-            isDone2status()
-                        
-            
-            var logInYear =  [Int](repeating: 0, count: 366)
-                        
-            let thisYear = Date().format("YYYY")            
-            
-            todayReadMin = 0
-            
-            for log:ReadLog in logs{
-                if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
-                    logInYear[log.day.dayOfYear-1] = log.readMinutes
-                }
-                if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
-                    todayReadMin = log.readMinutes
-                }
+                
+                keyStore.set(todayReadMin, forKey: "todayReadMin")
+                keyStore.set(logInYear, forKey: "logInYear")
+                keyStore.synchronize()
+                
+                WidgetCenter.shared.reloadAllTimelines()
+                
             }
             
-            keyStore.set(todayReadMin, forKey: "todayReadMin")
-            keyStore.set(logInYear, forKey: "logInYear")
-            keyStore.synchronize()
-            
-            WidgetCenter.shared.reloadAllTimelines()
-            
         }
+        
+        //        .autoNav()
+        
         
     }
     
@@ -367,23 +408,25 @@ struct BookList: View {
     func isDone2status(){
         
         
+        var change = false
+        
         booksAll.forEach{book in
             if book.status != BookStatus.archive.rawValue{
+                change = true
                 book.status  = book.isDone ? BookStatus.readed.rawValue : BookStatus.reading.rawValue
             }
             
         }
         
-        
-        DispatchQueue.main.async {
-            do{
-                try context.save()
-            }catch{
-                print(error)
+        if change {
+            DispatchQueue.main.async {
+                do{
+                    try context.save()
+                }catch{
+                    print(error)
+                }
             }
         }
-        
-        
     }
     
     func delete(book:Book?){
@@ -399,7 +442,7 @@ struct BookList: View {
             }
         }
     }
-       
+    
     
     
 }
@@ -437,27 +480,31 @@ struct AddBookView: View {
     @State private var handMove = false
     
     var body: some View {
-        VStack (spacing: 20){
+        
             Image(systemName: "plus.circle")
                 .font(.system(size: 70))
-//                .frame(width: 250,height: 250)
                 .foregroundColor(.accentColor)
+                .overlay(alignment: .bottom){
+                    Text("Tap here to add a book")
+                        .frame(width: 300)
+                        .font(.largeTitle)
+                        .offset(y:60)
+                }
                 .overlay(alignment:.bottomTrailing){
                     Image(systemName: "hand.point.up.left.fill")
                         .font(.system(size: 100))
                         .shadow(radius: 3,x: 3,y: 3)
-                    //                        .foregroundColor(.yellow)
-                    //                        .opacity(1)
-                        .offset(x: handMove ? 150 : 50,y: handMove ? 150 : 50)
+                        .foregroundColor(Color(uiColor: .lightGray))                    
+                        .offset(x: handMove ? 125 : 55,y: handMove ? 125 : 55)
                 }
+
                 .onAppear(perform: {
-                    withAnimation(.easeInOut(duration: 2).repeatForever()){
+                    withAnimation(.easeOut(duration: 2).repeatForever()){
                         handMove.toggle()
                     }
                 })
             
-            Text("Tap here to add a book")
-                .font(.largeTitle)
-        }
+           
+        
     }
 }

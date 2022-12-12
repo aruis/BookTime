@@ -37,7 +37,7 @@ struct BookTimeApp: App {
                             Text("Achievement")
                         }icon: {
                             Image(systemName: "target",variableValue: CGFloat(todayReadMin)/CGFloat(targetMinPerday))
-                        }                        
+                        }
                     }
                     .tag(1)
                 

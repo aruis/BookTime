@@ -6,13 +6,13 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -20,7 +20,7 @@
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
             <PersistentString
                value = "longHit">
@@ -32,7 +32,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -48,10 +48,10 @@
          contextName = "closure #8 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "thisMinute">
+               value = "reminDateMin">
             </PersistentString>
             <PersistentString
-               value = "reminDateMin">
+               value = "thisMinute">
             </PersistentString>
             <PersistentString
                value = "isRemind">
@@ -189,13 +189,13 @@
          contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newOrientation.isPortrait">
+               value = "newOrientation">
             </PersistentString>
             <PersistentString
                value = "orientation.isPortrait">
             </PersistentString>
             <PersistentString
-               value = "newOrientation">
+               value = "newOrientation.isPortrait">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -215,6 +215,14 @@
             </PersistentString>
             <PersistentString
                value = "log.day.format(&quot;YYYY&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #4 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "columnVisibility">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -265,10 +273,10 @@
          contextName = "closure #1 in closure #1 in closure #1 in closure #5 in closure #1 in Statistics.reportView(isRendererImage:):Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "selectBookIndex">
+               value = "selectBookID">
             </PersistentString>
             <PersistentString
-               value = "selectBookID">
+               value = "selectBookIndex">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -362,7 +370,7 @@
                value = "Date().dayOfYear">
             </PersistentString>
             <PersistentString
-               value = "customDateBegin">
+               value = "logInYear[243]">
             </PersistentString>
             <PersistentString
                value = "Date().getDaysInMonth()">
@@ -374,7 +382,7 @@
                value = "logInYear[mounthFirst.dayOfYear]">
             </PersistentString>
             <PersistentString
-               value = "logInYear[243]">
+               value = "customDateBegin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
