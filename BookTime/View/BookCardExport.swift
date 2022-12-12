@@ -36,7 +36,7 @@ struct BookCardExport: View {
                                 }
                             }
                             
-                            if ( Locale.current.languageCode == "zh"){
+                            if (Locale.current.language.languageCode == "zh"){
                                 HStack(spacing:0){
                                     Text("阅读")
                                     Text("**\(book.readDays)**")
