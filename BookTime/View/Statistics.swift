@@ -36,6 +36,7 @@ struct Statistics: View {
     @State private var totalReadMin = 0
     @State private var totalReadBook = 0
     @State private var longHit = 0
+    @State private var fishDay = 0
     
     @State private var totalReadMin_year = 0
     @State private var totalReadBook_year = 0
@@ -141,7 +142,7 @@ struct Statistics: View {
             }
         case .month:
             let mounthFirst = Date(Date().format("yyyy-MM") + "-01")
-            return  (0...Date().getDaysInMonth()).map{
+            return  (0...(Date().getDaysInMonth()-1)).map{
                 Log(day: mounthFirst.advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[mounthFirst.dayOfYear +  $0 - 1])
             }
         case .custom:
@@ -176,25 +177,45 @@ struct Statistics: View {
         VStack{
             HStack{
                 //                String(localized: "\(todayReadMin) Minutes Today")
-                GroupBox(label: Label(String(localized: "Total Reading Days"),systemImage: "target").font(.footnote)){
-                    if(isRendererImage){
-                        Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
-                    }else{
-                        RollingText(font: .largeTitle, weight: .medium, value: $totalReadDay)
-                            .frame(height: 100)
+                GroupBox(label: Label(String(localized: "Total Reading"),systemImage: "target").font(.footnote)){
+                    HStack(alignment:.firstTextBaseline,spacing:2){
+                        if(isRendererImage){
+                            Text("\(totalReadDay)").font(.largeTitle).frame(height: 100)
+                        }else{
+                            RollingText(font: .largeTitle, weight: .medium, value: $totalReadDay)
+                                .frame(height: 100)
+                        }
+                        if(totalReadDay>1){
+                            Text(String(localized: "Days")).font(.footnote)
+                        }else{
+                            Text(String(localized: "Day")).font(.footnote)
+                        }
+                        
                     }
                     
                 }
                 
                 
-                GroupBox(label: Label(String(localized: "Persevere days"),systemImage: "checkmark.circle")
+                GroupBox(label: Label(String(localized:fishDay > 0 ? "Unread" :"Persisted"),systemImage:fishDay > 0 ? "fish.circle": "checkmark.circle")
                     .font(.footnote)
                 ){
-                    if(isRendererImage){
-                        Text("\(longHit)").font(.largeTitle).frame(height: 100)
-                    }else{
-                        RollingText(font: .largeTitle, weight: .medium, value: $longHit)
-                            .frame(height: 100)
+                    HStack(alignment:.firstTextBaseline,spacing:2){
+                        if(isRendererImage){
+                            Text( "\(fishDay > 0 ? fishDay : longHit)").font(.largeTitle).frame(height: 100)
+                        }else{
+                            if fishDay > 0{
+                                RollingText(font: .largeTitle, weight: .medium, value: $fishDay)
+                                    .frame(height: 100)
+                            }else{
+                                RollingText(font: .largeTitle, weight: .medium, value: $longHit)
+                                    .frame(height: 100)
+                            }
+                        }
+                        if(fishDay>1 || longHit>1){
+                            Text(String(localized: "Days")).font(.footnote)
+                        }else{
+                            Text(String(localized: "Day")).font(.footnote)
+                        }
                     }
                 }
             }
@@ -561,6 +582,12 @@ struct Statistics: View {
             }
             
         }
+        
+        if let lastHitDay{
+            let components = Calendar.current.dateComponents([.day], from: lastHitDay, to: .now)
+            fishDay = components.day ?? 0
+        }
+        
         
         for book:Book in books{
             if let doneTime = book.doneTime {
