@@ -311,6 +311,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #1 in RollingText.updateText(_:):RollingText.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "animationRange">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in closure #1 in closure #1 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString

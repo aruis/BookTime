@@ -530,6 +530,7 @@ struct Statistics: View {
         totalReadMin = 0
         totalReadBook = 0
         longHit = 0
+        fishDay = 0
         
         totalReadDay_year = 0
         totalReadMin_year = 0

@@ -91,7 +91,9 @@ struct RollingText: View {
             // Total = 1.5
             fraction = (fraction > 0.5 ? 0.5 : fraction)
             withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1 + fraction, blendDuration: 1 + fraction)){
-                animationRange[index] = (String(nv) as NSString).integerValue
+                if animationRange.count > index{
+                    animationRange[index] = (String(nv) as NSString).integerValue
+                }                
             }
         }
     }
