@@ -57,6 +57,8 @@
 		83D54002282906B400A72716 /* BookTimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 83D53FF7282906B300A72716 /* BookTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		83D540072829080200A72716 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B845A2760A04600F9BAE8 /* DateExt.swift */; };
 		83D540082829095D00A72716 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 839B9C2527734802001094C6 /* Localizable.strings */; };
+		83EBA338299E526400D76D91 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EBA337299E526400D76D91 /* ProgressRingView.swift */; };
+		83EBA339299E526400D76D91 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EBA337299E526400D76D91 /* ProgressRingView.swift */; };
 		83FC0BCE277B0212004C6C27 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FC0BCD277B0212004C6C27 /* Tutorial.swift */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +146,7 @@
 		83D53FFD282906B400A72716 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83D53FFF282906B400A72716 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83D54006282906BC00A72716 /* BookTimeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookTimeWidgetExtension.entitlements; sourceTree = "<group>"; };
+		83EBA337299E526400D76D91 /* ProgressRingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProgressRingView.swift; path = ../../../../../Downloads/SwiftUIProgressRing/SwiftUIProgressRing/ProgressRingView.swift; sourceTree = "<group>"; };
 		83FC0BCD277B0212004C6C27 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -259,6 +262,7 @@
 		83731CA82755D37C00305305 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				83EBA337299E526400D76D91 /* ProgressRingView.swift */,
 				838850AE289D01C2000640D8 /* RollingText.swift */,
 				83731CA92755D39A00305305 /* BookList.swift */,
 				83731CAB2755D45D00305305 /* BookListItem.swift */,
@@ -474,6 +478,7 @@
 				8301421C285AD0F700E91808 /* TestSwiftUIView.swift in Sources */,
 				830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */,
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
+				83EBA338299E526400D76D91 /* ProgressRingView.swift in Sources */,
 				839B4E67275758C600AB05AF /* ImagePicker.swift in Sources */,
 				83731CA72755D1BF00305305 /* Book.swift in Sources */,
 				83502578275B012200EF9C5C /* Setting.swift in Sources */,
@@ -490,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				839BF13C282CA139001E2A4E /* Tools.swift in Sources */,
+				83EBA339299E526400D76D91 /* ProgressRingView.swift in Sources */,
 				83D53FFC282906B300A72716 /* BookTimeWidget.swift in Sources */,
 				83D540072829080200A72716 /* DateExt.swift in Sources */,
 			);

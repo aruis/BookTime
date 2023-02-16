@@ -101,7 +101,7 @@ struct BookTimeWidgetEntryView : View {
     @Environment(\.widgetFamily) var family: WidgetFamily
     
     var entry: Provider.Entry
-    let circleDia = 130.0
+    let circleDia = 108.0
     var targetMinPerday:Int
     
     init(entry:BookTimeWidgetEntry){
@@ -124,33 +124,12 @@ struct BookTimeWidgetEntryView : View {
     
     @ViewBuilder
     var smallView:some View{
-        ZStack{
-            Circle()
-                .trim(from: 0.0, to:1.0)
-                .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 12, lineCap: CGLineCap.round))
-                .frame(width:circleDia)
-                .rotationEffect(.degrees(-90))
-                .opacity(0.25)
-            //                        .opacity(0)
-                .padding()
-            
-            Circle()
-                .trim(from: 0.0, to: process)
-            //                        .trim(from: 0.0,to:  1.0)
-                .stroke( AngularGradient(
-                    gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                    center: .center,
-                    startAngle: .degrees(0),
-                    endAngle: .degrees( 360 * process )
-                ), style: StrokeStyle(lineWidth: 12, lineCap: CGLineCap.round))
-                .frame(width:circleDia)
-                .rotationEffect(.degrees(-90))
-                .padding()
-            
-            
-            
-        }
-        .frame(width: circleDia,height: circleDia)
+        
+        ProgressRingView(progress: .constant(process),
+                         thickness: 12,
+                         width: circleDia,
+                         gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")])
+        )
         .overlay{
             Text("\(entry.todayReadMin) Min")
                 .font(.system(.subheadline ,design: .rounded).bold())
@@ -194,33 +173,11 @@ struct BookTimeWidgetEntryView : View {
             Spacer()
             
             
-            ZStack{
-                Circle()
-                    .trim(from: 0.0, to:1.0)
-                    .stroke(Color("AccentColor"), style: StrokeStyle(lineWidth: 12, lineCap: CGLineCap.round))
-                    .frame(width:circleDia)
-                    .rotationEffect(.degrees(-90))
-                    .opacity(0.25)
-                //                        .opacity(0)
-                    .padding()
-                
-                Circle()
-                    .trim(from: 0.0, to: process)
-                //                        .trim(from: 0.0,to:  1.0)
-                    .stroke( AngularGradient(
-                        gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")]),
-                        center: .center,
-                        startAngle: .degrees(0),
-                        endAngle: .degrees( 360 * process )
-                    ), style: StrokeStyle(lineWidth: 12, lineCap: CGLineCap.round))
-                    .frame(width:circleDia)
-                    .rotationEffect(.degrees(-90))
-                    .padding()
-                
-                
-                
-            }
-            .frame(width: circleDia,height: circleDia)
+            ProgressRingView(progress: .constant(process),
+                             thickness: 12,
+                             width: circleDia,
+                             gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")])
+            )
             .overlay{
                 Text("\(Int( round( process * 100)))%")
                     .font(.system(.subheadline ,design: .rounded).bold())
@@ -228,6 +185,7 @@ struct BookTimeWidgetEntryView : View {
             
         }
         .padding(.leading, 12)
+        .padding(.trailing,20)
     }
     
     @ViewBuilder
@@ -251,6 +209,7 @@ struct BookTimeWidgetEntryView : View {
             mediumView(isInLarge: true)
         }
         .padding(.vertical,10)
+        .padding(.bottom,15)
     }
     
     @ViewBuilder
