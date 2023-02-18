@@ -487,7 +487,7 @@ struct AddBookView: View {
                 .overlay(alignment: .bottom){
                     Text("Tap here to add a book")
                         .frame(width: 300)
-                        .font(.largeTitle)
+                        .font(.title)
                         .offset(y:60)
                 }
                 .overlay(alignment:.bottomTrailing){

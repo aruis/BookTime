@@ -215,7 +215,9 @@
 "Read" = "读完了";
 
 /* No comment provided by engineer. */
-"Read a New Book" = "读一本新书";
+"Add a New Book" = "读一本新书";
+
+"Set the book cover" = "设置书籍封面";
 
 /* fredingForDay */
 "Reading for" = "已阅读";

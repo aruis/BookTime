@@ -17,7 +17,7 @@ struct NewBook: View {
         case author
         case tag
     }
-
+    
     
     
     @Environment(\.managedObjectContext) var context
@@ -54,13 +54,23 @@ struct NewBook: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .center){
-                    Image(uiImage: bookViewModel.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(minWidth: 0,maxWidth: 180)
-                        .padding()
-                        .shadow(color: Color( "image.border"), radius: 20)
+                VStack{
+                    HStack(alignment:.top, spacing:0){
+                        VStack(spacing: 8){
+                            Image(uiImage: bookViewModel.image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(minWidth: 0,maxWidth: 100)
+                                .shadow(color: Color( "image.border"), radius: 10)
+                               
+                            
+                            Text("Set the book cover")
+                                .font(.caption)
+                                .foregroundColor(Color(.darkGray))
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal,10)
                         .onTapGesture {
                             self.showPhotoOptins.toggle()
                         }
@@ -69,72 +79,97 @@ struct NewBook: View {
                                 self.photoSource = .camera
                             }
                             
-//                            if VNDocumentCameraViewController.isSupported{
-//                                Button("AI Camera"){
-//                                    self.photoSource = .documentScan
-//                                }
-//                            }
+                            //                            if VNDocumentCameraViewController.isSupported{
+                            //                                Button("AI Camera"){
+                            //                                    self.photoSource = .documentScan
+                            //                                }
+                            //                            }
                             
                             Button("Photo Library"){
                                 self.photoSource = .photoLibrary
                             }
-
-                        }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Title")
-                            .font(.system(.headline,design: .rounded))
-                            .foregroundColor(Color(.darkGray))
-                        
-                        TextField("Please enter the title of the book",text: $bookViewModel.name)
-                            .font(.system(size:20,weight: .semibold,design: .rounded))
-                            .padding(.horizontal)
-                            .padding(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color(.systemGray5),lineWidth: 1)
-                            )
-                            .padding(.vertical,10)
-                        //                            .textInputAutocapitalization(.words)
-                            .submitLabel(.next)
-                            .onSubmit {
-                                focusInput = .author
-                            }
-                                           
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Author")
-                            .font(.system(.headline,design: .rounded))
-                            .foregroundColor(Color(.darkGray))
-                        
-                        TextField("Please enter the author name",text: $bookViewModel.author)
-                            .font(.system(size:20,weight: .semibold,design: .rounded))
-                            .padding(.horizontal)
-                            .padding(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color(.systemGray5),lineWidth: 1)
-                            )
-                            .padding(.vertical,10)
-                        //                            .textInputAutocapitalization(.words)
-                            .focused($focusInput,equals: .author)
-                            .submitLabel(.next)
-                            .onSubmit {
-                                focusInput = .tag
-                            }
-
-                        
-                        
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Tags")
-                            .font(.system(.headline,design: .rounded))
-                            .foregroundColor(Color(.darkGray))
-                        
-                        HStack{
                             
+                        }
+                        
+                        VStack(spacing: 16) {
+                            TextField("Please enter the title of the book",text: $bookViewModel.name)
+                                .font(.system(size:16,weight: .semibold,design: .rounded))
+                                .padding(.vertical,10)
+                                .padding(.horizontal,8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(focusInput == .name ? Color.accentColor : Color(.systemGray5),lineWidth: 1)
+                                )
+                                .focused($focusInput,equals: .name)
+                                .textInputAutocapitalization(.words)
+                                .submitLabel(.next)
+                                .onSubmit {
+                                    focusInput = .author
+                                }
+                            
+                            TextField("Please enter the author name",text: $bookViewModel.author)
+                                .font(.system(size:16,weight: .semibold,design: .rounded))
+                                .padding(.vertical,10)
+                                .padding(.horizontal,8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(focusInput == .author ? Color.accentColor : Color(.systemGray5),lineWidth: 1)
+                                )
+                                .textInputAutocapitalization(.words)
+                                .focused($focusInput,equals: .author)
+                                .submitLabel(.next)
+                                .onSubmit {
+                                    focusInput = .tag
+                                }
+                            
+                            
+                            TextField("Please enter a tag",text: $tagInput)
+                                .font(.system(size:16,weight: .semibold,design: .rounded))
+                                .padding(.vertical,10)
+                                .padding(.horizontal,8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(focusInput == .tag ? Color.accentColor : Color(.systemGray5),lineWidth: 1)
+                                )
+                                .overlay(
+                                    
+                                    HStack(){
+                                        Spacer()
+                                        
+                                        if tagInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                                            Button(action:addTag, label: {
+                                                Label("",systemImage: "plus.circle")
+                                            })
+                                        }
+                                    }
+                                    
+                                )
+                                
+                                .textInputAutocapitalization(.words)
+                                .focused($focusInput,equals: .tag)
+                            
+                                .onSubmit{
+                                    if tryAddTag() {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                            focusInput = .tag
+                                        }
+                                    }else if( save()){
+                                        dismiss()
+                                    }
+                                    
+                                }
+                            
+                            
+                            
+                            
+                        }
+                        .padding(.horizontal,12)
+                    }
+//                    .padding(16)
+                    
+                    HStack{
+                       
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 80),spacing: 2),],spacing: 4) {
                             ForEach(bookViewModel.tags){item in
                                 Button(action: {
                                     bookViewModel.tags.removeAll(where: {$0.name == item.name})
@@ -144,61 +179,21 @@ struct NewBook: View {
                                     
                                 })
                                 .buttonStyle(.bordered)
+//                                .background(Color.white)
+//                                .foregroundColor(.gray)
+
                                 
                             }
                         }
-
-                        
-                        TextField("Please enter a tag",text: $tagInput)
-                            .font(.system(size:20,weight: .semibold,design: .rounded))
-                            .padding(.horizontal)
-                            .padding(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color(.systemGray5),lineWidth: 1)
-                            )
-                            .overlay(
-                                
-                                HStack(){
-                                    Spacer()
-                                    
-                                    if tagInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
-                                        Button(action:addTag, label: {
-                                            Label("",systemImage: "plus.circle")
-                                        })
-                                    }
-                                }
-                                
-                            )
-                            .padding(.vertical,10)
-                        //                            .textInputAutocapitalization(.words)
-                            .focused($focusInput,equals: .tag)
-//                            .submitLabel(.done)
-                            .onSubmit{
-                                addTag()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    focusInput = .tag
-                                }
-                                
-                            }
-                            
-                        
-                        
-                        
+                        .padding(8)
+                       
+                       
                     }
-                    
-                    
-                                        
-                    //                    FormTextField(label: "书名", placeholder: "请填入书名", value: $bookViewModel.name)
-                    //
-                    //                    FormTextField(label: "作者", placeholder: "请输入作者名", value: $bookViewModel.author)
-                    
-                    Spacer()
+
                 }
-                .padding(10)
-                
+                .padding(12)
             }
-            .navigationTitle(bookViewModel.book == nil ? "Read a New Book":"Modify the Book")
+            .navigationTitle(bookViewModel.book == nil ? "Add a New Book":"Modify the Book")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
@@ -251,44 +246,47 @@ struct NewBook: View {
                 }
                 
             }
-
-//            .actionSheet(isPresented: $showPhotoOptins){
-//                if false && VNDocumentCameraViewController.isSupported{
-//                    return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
-//                                        message: nil,
-//                                        buttons: [
-//                                            .default(Text("Camera")){
-//                                                self.photoSource = .camera
-//                                            },
-//                                            .default(Text("AI Camera")){
-//                                                self.photoSource = .documentScan
-//                                            },
-//                                            .default(Text("Photo Library")){
-//                                                self.photoSource = .photoLibrary
-//                                            },
-//                                            .cancel(Text("Cancel"))
-//
-//                                        ]
-//                    )
-//
-//                }
-//                else{
-//                    return   ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
-//                                         message: nil,
-//                                         buttons: [
-//                                            .default(Text("Camera")){
-//                                                self.photoSource = .camera
-//                                            },
-//                                            .default(Text("Photo Library")){
-//                                                self.photoSource = .photoLibrary
-//                                            },
-//                                            .cancel(Text("Cancel"))
-//
-//                                         ]
-//                    )
-//
-//                }
-//            }
+            .onAppear{
+                focusInput = .name
+            }
+            
+            //            .actionSheet(isPresented: $showPhotoOptins){
+            //                if false && VNDocumentCameraViewController.isSupported{
+            //                    return  ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
+            //                                        message: nil,
+            //                                        buttons: [
+            //                                            .default(Text("Camera")){
+            //                                                self.photoSource = .camera
+            //                                            },
+            //                                            .default(Text("AI Camera")){
+            //                                                self.photoSource = .documentScan
+            //                                            },
+            //                                            .default(Text("Photo Library")){
+            //                                                self.photoSource = .photoLibrary
+            //                                            },
+            //                                            .cancel(Text("Cancel"))
+            //
+            //                                        ]
+            //                    )
+            //
+            //                }
+            //                else{
+            //                    return   ActionSheet(title: Text("Choose a picture as the cover of the book").font(.system(.title)),
+            //                                         message: nil,
+            //                                         buttons: [
+            //                                            .default(Text("Camera")){
+            //                                                self.photoSource = .camera
+            //                                            },
+            //                                            .default(Text("Photo Library")){
+            //                                                self.photoSource = .photoLibrary
+            //                                            },
+            //                                            .cancel(Text("Cancel"))
+            //
+            //                                         ]
+            //                    )
+            //
+            //                }
+            //            }
             .fullScreenCover(item: $photoSource){source in
                 switch source {
                 case .documentScan: ScanDocumentView(recognizedText: $recognizedText,selectedImage: $bookViewModel.image)
@@ -303,6 +301,16 @@ struct NewBook: View {
         
     }
     
+    private func tryAddTag() -> Bool{
+        let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        if tagString.isEmpty {
+            return false
+        } else {
+            addTag()
+            return true
+        }
+    }
+    
     private func addTag(){
         let tagString = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
         tagString.split(separator: ",").forEach{
@@ -314,7 +322,6 @@ struct NewBook: View {
             }
         }
         tagInput = ""
-
     }
     
     private func save() -> Bool{
@@ -352,7 +359,7 @@ struct NewBook: View {
             })
             book.tags = tag
         }
-                        
+        
         do{
             try context.save()
         }catch{

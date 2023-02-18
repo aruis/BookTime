@@ -12,8 +12,10 @@ struct TagLabelStyle: LabelStyle {
         HStack(alignment: .center, spacing: 4) {
             configuration.title
             configuration.icon
-                .opacity(0.35)
+//                .foregroundColor(.accentColor)
+                .opacity(0.65)
                 
         }
+        .clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
