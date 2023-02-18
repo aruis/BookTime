@@ -353,9 +353,9 @@ struct BookList: View {
                     })
             }
             
-            .task {
+            .task {                
                 initTags()
-                isDone2status()
+//                isDone2status()
                 
                 
                 var logInYear =  [Int](repeating: 0, count: 366)
@@ -405,29 +405,29 @@ struct BookList: View {
         
     }
     
-    func isDone2status(){
-        
-        
-        var change = false
-        
-        booksAll.forEach{book in
-            if book.status != BookStatus.archive.rawValue{
-                change = true
-                book.status  = book.isDone ? BookStatus.readed.rawValue : BookStatus.reading.rawValue
-            }
-            
-        }
-        
-        if change {
-            DispatchQueue.main.async {
-                do{
-                    try context.save()
-                }catch{
-                    print(error)
-                }
-            }
-        }
-    }
+//    func isDone2status(){
+//
+//
+//        var change = false
+//
+//        booksAll.forEach{book in
+//            if book.status != BookStatus.archive.rawValue{
+//                change = true
+//                book.status  = book.isDone ? BookStatus.readed.rawValue : BookStatus.reading.rawValue
+//            }
+//
+//        }
+//
+//        if change {
+//            DispatchQueue.main.async {
+//                do{
+//                    try context.save()
+//                }catch{
+//                    print(error)
+//                }
+//            }
+//        }
+//    }
     
     func delete(book:Book?){
         if let book = book{

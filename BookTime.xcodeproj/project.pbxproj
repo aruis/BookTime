@@ -52,6 +52,8 @@
 		83B03AD827698032005B4700 /* Slogan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B03AD727698032005B4700 /* Slogan.swift */; };
 		83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */; };
 		83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2692762053E001E8E0E /* ImageExt.swift */; };
+		83CCFB0729A04B11006612AC /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCFB0629A04B11006612AC /* Icon.swift */; };
+		83CCFB0929A073E1006612AC /* MainTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCFB0829A073E1006612AC /* MainTab.swift */; };
 		83D53FF8282906B300A72716 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392247D2827A7EA00303541 /* WidgetKit.framework */; };
 		83D53FF9282906B300A72716 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392247F2827A7EA00303541 /* SwiftUI.framework */; };
 		83D53FFC282906B300A72716 /* BookTimeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D53FFB282906B300A72716 /* BookTimeWidget.swift */; };
@@ -140,6 +142,8 @@
 		83B03AD727698032005B4700 /* Slogan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slogan.swift; sourceTree = "<group>"; };
 		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
+		83CCFB0629A04B11006612AC /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
+		83CCFB0829A073E1006612AC /* MainTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab.swift; sourceTree = "<group>"; };
 		83CE2E84277AD28F00ADD42F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		83CE5BF7277DF4A00041D919 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83D53FF7282906B300A72716 /* BookTimeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BookTimeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -277,6 +281,8 @@
 				830935D7279F9F37006F8F56 /* ActivityView.swift */,
 				8301421B285AD0F700E91808 /* TestSwiftUIView.swift */,
 				831C1F9028D17878006C5E0D /* BookCardExport.swift */,
+				83CCFB0629A04B11006612AC /* Icon.swift */,
+				83CCFB0829A073E1006612AC /* MainTab.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -457,6 +463,7 @@
 				8320045E2759B71900EB64FC /* Statistics.swift in Sources */,
 				831C1F9128D17878006C5E0D /* BookCardExport.swift in Sources */,
 				83731CAC2755D45D00305305 /* BookListItem.swift in Sources */,
+				83CCFB0929A073E1006612AC /* MainTab.swift in Sources */,
 				83492C7F275624F2006B5FF2 /* IntExt.swift in Sources */,
 				83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */,
 				83731CAA2755D39A00305305 /* BookList.swift in Sources */,
@@ -476,6 +483,7 @@
 				835A3CE0275652CA00672F98 /* NewBook.swift in Sources */,
 				833F9D36282B586F006F19AE /* NotificationTool.swift in Sources */,
 				8301421C285AD0F700E91808 /* TestSwiftUIView.swift in Sources */,
+				83CCFB0729A04B11006612AC /* Icon.swift in Sources */,
 				830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */,
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
 				8327824D299E607B00A21782 /* ProgressRingView.swift in Sources */,

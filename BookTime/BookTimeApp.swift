@@ -6,57 +6,55 @@
 //
 
 import SwiftUI
-import WidgetKit
+
 
 @main
 struct BookTimeApp: App {
     
-    @AppStorage("targetMinPerday") var targetMinPerday = 45
-    @AppStorage("todayReadMin") var todayReadMin = 0
     
-    @State private var selectedTabIndex = 0
     let bookPersistenceController = BookPersistenceController.shared
     
-    @AppStorage("hasViewdWalkthrough") var hasViewdWalkthrough = false
-    @State private var showWalkthrough = false
     
+    @State var iconSize = 120.0
+    @State var deltaAngle = 0.0
     
+    @State var hideSplashtop = false
+    
+    @State var isShowSplashtop = true
+    @State var isShowMainTab = false
     
     var body: some Scene {
+        
         WindowGroup {
-            TabView(selection: $selectedTabIndex){
-                BookList()
-                    .tabItem {
-                        Label("Bookshelf",systemImage: "books.vertical")
-                    }
-                    .tag(0)
+            ZStack{
+                if isShowMainTab {
+                    MainTab()
+                }
                 
-                Statistics()
-                    .tabItem {
-                        Label{
-                            Text("Achievement")
-                        }icon: {
-                            Image(systemName: "target",variableValue: CGFloat(todayReadMin)/CGFloat(targetMinPerday))
-                        }
-                    }
-                    .tag(1)
-                
-                Setting()
-                    .tabItem{
-                        Label("Setting",systemImage: "gearshape")
-                    }
-                    .tag(2)
-            }
-            .sheet(isPresented: $showWalkthrough){
-                Tutorial()
-            }
-            .onAppear(){
-                showWalkthrough = hasViewdWalkthrough ? false : true
-                WidgetCenter.shared.reloadAllTimelines()
-                //                showWalkthrough = true
+                if isShowSplashtop {
+                    Icon(iconSize:$iconSize,deltaAngle:$deltaAngle)
+                        .opacity(hideSplashtop ? 0 : 1)
+                        .onAppear{
+                            withAnimation(.easeInOut(duration: 0.8).delay(0.2)){
+                                iconSize = 960
+                                deltaAngle = 35
+                            }
+                            
+                            withAnimation(.easeInOut(duration: 0.3).delay(0.7)){
+                                hideSplashtop = true
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.01, execute: {
+                                isShowMainTab = true
+                            })
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                isShowSplashtop = false
+                            })
+                        }     
+                }
             }
             
-            // show tutorial
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
             //            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
         }
