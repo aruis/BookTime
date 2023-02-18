@@ -11,8 +11,9 @@ struct TagLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack(alignment: .center, spacing: 4) {
             configuration.title
+                .font(.callout)
             configuration.icon
-//                .foregroundColor(.accentColor)
+                .font(.caption2)
                 .opacity(0.65)
                 
         }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Icon: View {
     
+    let aspectRatio  = 8.0
     let bgColor = Color(red:2,green: 5,blue: 22)
     let paperColor = Color.white
     let spineColor = Color(red: 250, green: 144, blue: 63)
@@ -39,16 +40,16 @@ struct Icon: View {
                     .fill(coverColor)
                     .frame(width: iconSize)
                 
-                RoundedRectangle(cornerRadius: iconSize/12)
+                RoundedRectangle(cornerRadius: iconSize/aspectRatio/2)
                     .fill(spineColor)
-                    .frame(width: iconSize,height: iconSize/6)
-                    .position(x: size.width/2 + iconSize/2 - iconSize/12,y: size.height/2)
+                    .frame(width: iconSize,height: iconSize/aspectRatio)
+                    .position(x: size.width/2 + iconSize/2 - iconSize/aspectRatio/2,y: size.height/2)
                     .rotationEffect(Angle(degrees: hourAngle))
                 
-                RoundedRectangle(cornerRadius: iconSize/12)
+                RoundedRectangle(cornerRadius: iconSize/aspectRatio/2)
                     .fill(paperColor)
-                    .frame(width: iconSize,height: iconSize/6)
-                    .position(x: size.width/2 + iconSize/2 - iconSize/12,y: size.height/2)
+                    .frame(width: iconSize,height: iconSize/aspectRatio)
+                    .position(x: size.width/2 + iconSize/2 - iconSize/aspectRatio/2,y: size.height/2)
                     .rotationEffect(Angle(degrees: minAngle))
                 
             }
@@ -110,6 +111,6 @@ struct Pie: Shape {
 
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
-        Icon(iconSize: .constant(300.0),deltaAngle:.constant(0.0))
+        Icon(iconSize: .constant(120),deltaAngle:.constant(0.0))
     }
 }

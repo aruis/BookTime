@@ -178,7 +178,7 @@ struct NewBook: View {
                                         .labelStyle(TagLabelStyle())
                                     
                                 })
-                                .buttonStyle(.bordered)
+                                .buttonStyle(.bordered)                                
 //                                .background(Color.white)
 //                                .foregroundColor(.gray)
 
