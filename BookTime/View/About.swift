@@ -10,13 +10,12 @@ import StoreKit
 
 struct About: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
         
         NavigationView {
             ScrollView{
-                VStack (spacing: 20){
+                VStack (alignment:.trailing, spacing: 10){
                     Text("""
            The idea💡 for creating this app came from my daughter👧🏻 who is in the second grade of elementary school. She has an assignment that requires 30 minutes of reading every day. With this app, I can better urge her to read and clock in.
            The teacher counts the children's reading volume every semester and asks parents to make a record of their children's reading, so this app has helped me a lot, because her annual reading volume is about 100 books, it is really difficult for me to keep track of it. Record her reading progress. Now, I only need to export the reading data from the App.
@@ -24,30 +23,25 @@ struct About: View {
            Finally, I hope you like this App, and I wish you always enjoy the fun of reading ❤️
     """)
                     //                .font(.caption)
-                        .lineSpacing(4)
+                    .lineSpacing(4)
                     //                .lineLimit(10)
                     
-                    HStack{
-                        Button(action: {
-                            if let scene = UIApplication.shared.connectedScenes
-                                .first(where: { $0.activationState == .foregroundActive })
-                                as? UIWindowScene {
-                                SKStoreReviewController.requestReview(in: scene)
-                            }
-                        }){
-                            Text("Looking forward to your evaluation\(Image(systemName: "face.smiling"))")
-                        }
-                    }.frame(minWidth:0,maxWidth: .infinity)
+                    Text("- at the end of 2021.")
+                    //                        .multilineTextAlignment(.trailing)
                     
                     
-                    Spacer()
-                    if verticalSizeClass == .compact {
-                        Button(action: {
-                            dismiss()
-                        }){
-                            Image(systemName: "xmark.circle").font(.title)
+                    Button(action: {
+                        if let scene = UIApplication.shared.connectedScenes
+                            .first(where: { $0.activationState == .foregroundActive })
+                            as? UIWindowScene {
+                            SKStoreReviewController.requestReview(in: scene)
                         }
+                    }){
+                        Text("Looking forward to your evaluation\(Image(systemName: "face.smiling"))")
                     }
+                    
+                                        
+                    Spacer()
                     
                 }
                 .padding()
@@ -62,7 +56,7 @@ struct About: View {
                 }
                 
             }
-
+            
             
         }
         
