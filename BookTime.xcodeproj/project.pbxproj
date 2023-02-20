@@ -33,6 +33,7 @@
 		83731CA72755D1BF00305305 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA62755D1BF00305305 /* Book.swift */; };
 		83731CAA2755D39A00305305 /* BookList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CA92755D39A00305305 /* BookList.swift */; };
 		83731CAC2755D45D00305305 /* BookListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83731CAB2755D45D00305305 /* BookListItem.swift */; };
+		83752DC929A208E4007157CA /* AddBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83752DC829A208E4007157CA /* AddBook.swift */; };
 		83795626284DF4F800CE6382 /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83795625284DF4F800CE6382 /* ColorExt.swift */; };
 		83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */; };
 		838316112803DA3100869E1D /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 838316102803DA3100869E1D /* AlertToast */; };
@@ -124,6 +125,7 @@
 		83731CA62755D1BF00305305 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		83731CA92755D39A00305305 /* BookList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookList.swift; sourceTree = "<group>"; };
 		83731CAB2755D45D00305305 /* BookListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListItem.swift; sourceTree = "<group>"; };
+		83752DC829A208E4007157CA /* AddBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBook.swift; sourceTree = "<group>"; };
 		83795625284DF4F800CE6382 /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		83817D3827A52A7E00A8CD96 /* BookTimeFileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTimeFileDoc.swift; sourceTree = "<group>"; };
 		838850AE289D01C2000640D8 /* RollingText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RollingText.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				831C1F9028D17878006C5E0D /* BookCardExport.swift */,
 				83CCFB0629A04B11006612AC /* Icon.swift */,
 				83CCFB0829A073E1006612AC /* MainTab.swift */,
+				83752DC829A208E4007157CA /* AddBook.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				83955FEB275EFB43004408C3 /* About.swift in Sources */,
 				831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */,
 				83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */,
+				83752DC929A208E4007157CA /* AddBook.swift in Sources */,
 				83B03AD827698032005B4700 /* Slogan.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */,
@@ -671,7 +675,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 58;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -711,7 +715,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 58;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -750,7 +754,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 58;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;
@@ -782,7 +786,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 58;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;

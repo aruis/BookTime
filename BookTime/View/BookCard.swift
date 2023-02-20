@@ -22,8 +22,7 @@ struct BookCard: View {
     @State private var handShowTimer:Bool = false
     @State private var showTimer:Bool = false
     @State private var showAlert:Bool = false
-    @State private var showBatterySheet:Bool = false
-    @State private var showToast = false
+    @State private var showBatterySheet:Bool = false    
     @State private var showOptions = false
     
     
@@ -226,10 +225,6 @@ struct BookCard: View {
                     ActivityView(activityItems: [image])
                 }
             }
-            .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
-                AlertToast( type: .complete(.green), title: String(localized: "Saved to album",comment: "导出成功\n去相册看看吧"))
-            }
-            
             
             
             ConfettiCannon(counter: $downTrigger,num:36,radius: 700)

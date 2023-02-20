@@ -26,11 +26,12 @@ struct BookTimeApp: App {
     var body: some Scene {
         
         WindowGroup {
+//            AddBook()
             ZStack{
                 if isShowMainTab {
                     MainTab()
                 }
-                
+
                 if isShowSplashtop {
                     Icon(iconSize:$iconSize,deltaAngle:$deltaAngle)
                         .opacity(hideSplashtop ? 0 : 1)
@@ -39,19 +40,19 @@ struct BookTimeApp: App {
                                 iconSize = 960
                                 deltaAngle = 35
                             }
-                            
+
                             withAnimation(.easeInOut(duration: 0.3).delay(0.7)){
                                 hideSplashtop = true
                             }
-                            
+
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.01, execute: {
                                 isShowMainTab = true
                             })
-                            
+
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                 isShowSplashtop = false
                             })
-                        }     
+                        }
                 }
             }
             
