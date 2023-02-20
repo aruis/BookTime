@@ -22,7 +22,7 @@ struct BookCard: View {
     @State private var handShowTimer:Bool = false
     @State private var showTimer:Bool = false
     @State private var showAlert:Bool = false
-    @State private var showBatterySheet:Bool = false    
+    @State private var showBatterySheet:Bool = false
     @State private var showOptions = false
     
     
