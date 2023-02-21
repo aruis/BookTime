@@ -50,13 +50,9 @@ struct Statistics: View {
     @State private var totalReadBook_custom = 0
     
     @State private var isShowMonth = false
-    @State private var isShowYear = false
-    
-    @State private var showToast = false
-    @State private var isLoading = false
+    @State private var isShowYear = false    
     
     @State private var isShowReadedBooks  = false
-    @State private var showOptions = false
     @State private var shareImage:UIImage? = nil
     
     @State private var selectBookID:String = ""
@@ -403,7 +399,8 @@ struct Statistics: View {
                     .foregroundColor(Color("AccentColor"))
             )
         }
-        //        .foregroundColor(.white)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 10.0))
         .padding()
         .ignoresSafeArea()
         
@@ -423,42 +420,13 @@ struct Statistics: View {
                     .navigationTitle("Achievement")
                 //                .navigationBarTitleDisplayMode(.inline)
                     .toolbar(content: {
-                        Button(action: {
-                            showOptions = true
-                        }){
-                            Image(systemName: "square.and.arrow.up")
-                        }
+                        ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime"))
+//                        Button(action: {
+//                            showOptions = true
+//                        }){
+//                            Image(systemName: "square.and.arrow.up")
+//                        }
                     })
-                    .sheet(isPresented: $showOptions) {
-                        
-                        VStack{
-                            if let image = shareImage {
-                                ActivityView(activityItems: [image])
-                            }else{
-                                Text("")
-                                    .toast(isPresenting: $showToast){
-                                        AlertToast(type: .loading, title: "Rendering image")
-                                    }
-                            }
-                        }
-                        .task {
-                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
-                                let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
-                                renderer.scale = 2
-                                shareImage = renderer.uiImage ?? UIImage()
-                                
-                                self.showToast = false
-                            })
-                            
-                        }
-                        .onAppear() {
-                            self.showToast = true
-                        }
-                        .onDisappear(perform: {
-                            shareImage = nil
-                        })
-                        
-                    }
                 
             }
             
@@ -502,7 +470,12 @@ struct Statistics: View {
         
     }
     
-    
+    @MainActor
+    private func generateSnapshot() -> UIImage {
+        let renderer = ImageRenderer(content: exportBox(isRendererImage: true))
+        renderer.scale = 2
+        return  renderer.uiImage ?? UIImage()
+    }
     
     func initAllLog(){
         

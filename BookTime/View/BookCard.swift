@@ -22,8 +22,7 @@ struct BookCard: View {
     @State private var handShowTimer:Bool = false
     @State private var showTimer:Bool = false
     @State private var showAlert:Bool = false
-    @State private var showBatterySheet:Bool = false
-    @State private var showOptions = false
+    @State private var showBatterySheet:Bool = false    
     
     
     @State var downTrigger:Int = 0
@@ -206,27 +205,11 @@ struct BookCard: View {
             .padding(10)
             .toolbar(content: {
                 if(isDone){
-                    let exportBox = BookCardExport(book: book)
-                    
-                    Button(action: {
-                        let renderer = ImageRenderer(content: exportBox)
-                        renderer.scale = 2
-                        shareImage = renderer.uiImage ?? UIImage()
-                        
-                        showOptions = true
-                    }){
-                        Image(systemName: "square.and.arrow.up")
-                    }
+                    ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime"))
                 }
                 
             })
-            .sheet(isPresented: $showOptions) {
-                if let image = shareImage {
-                    ActivityView(activityItems: [image])
-                }
-            }
-            
-            
+                        
             ConfettiCannon(counter: $downTrigger,num:36,radius: 700)
             
         }
@@ -304,6 +287,16 @@ struct BookCard: View {
         
         
     }
+    
+
+    @MainActor
+    private func generateSnapshot() -> UIImage {
+        let exportBox = BookCardExport(book: book)
+        let renderer = ImageRenderer(content: exportBox)
+        renderer.scale = 2
+        return  renderer.uiImage ?? UIImage()
+    }
+    
     
     func save(){
         DispatchQueue.main.async {
