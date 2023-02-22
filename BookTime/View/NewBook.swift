@@ -246,9 +246,9 @@ struct NewBook: View {
                 }
                 
             }
-            .onAppear{
-                focusInput = .name
-            }
+//            .onAppear{
+//                focusInput = .name
+//            }
             
             //            .actionSheet(isPresented: $showPhotoOptins){
             //                if false && VNDocumentCameraViewController.isSupported{

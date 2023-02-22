@@ -36,16 +36,16 @@ struct BookTimeApp: App {
                     Icon(iconSize:$iconSize,deltaAngle:$deltaAngle)
                         .opacity(hideSplashtop ? 0 : 1)
                         .onAppear{
-                            withAnimation(.easeInOut(duration: 0.8).delay(0.2)){
+                            withAnimation(.easeInOut(duration: 0.9).delay(0.25)){
                                 iconSize = 960
                                 deltaAngle = 35
                             }
 
-                            withAnimation(.easeInOut(duration: 0.3).delay(0.7)){
+                            withAnimation(.easeIn(duration: 0.35).delay(0.8)){
                                 hideSplashtop = true
                             }
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.01, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.18, execute: {
                                 isShowMainTab = true
                             })
 
