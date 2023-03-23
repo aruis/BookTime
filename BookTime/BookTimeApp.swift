@@ -23,6 +23,8 @@ struct BookTimeApp: App {
     @State var isShowSplashtop = true
     @State var isShowMainTab = false
     
+    let transitionTime = 1.0
+    
     var body: some Scene {
         
         WindowGroup {
@@ -34,22 +36,22 @@ struct BookTimeApp: App {
 
                 if isShowSplashtop {
                     Icon(iconSize:$iconSize,deltaAngle:$deltaAngle)
-                        .opacity(hideSplashtop ? 0 : 1)
+                        .opacity(hideSplashtop ? 0 : 1)                        
                         .onAppear{
-                            withAnimation(.easeInOut(duration: 0.9).delay(0.25)){
-                                iconSize = 960
+                            withAnimation(.easeIn(duration: 0.9 * transitionTime ).delay(0.25 * transitionTime)){
+                                iconSize = 1960
                                 deltaAngle = 35
                             }
 
-                            withAnimation(.easeIn(duration: 0.35).delay(0.8)){
+                            withAnimation(.easeIn(duration: 0.35 * transitionTime).delay(0.8 * transitionTime)){
                                 hideSplashtop = true
                             }
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.18, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.18 * transitionTime, execute: {
                                 isShowMainTab = true
                             })
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2 * transitionTime, execute: {
                                 isShowSplashtop = false
                             })
                         }

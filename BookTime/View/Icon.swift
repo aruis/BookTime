@@ -70,6 +70,31 @@ struct Icon: View {
     
 }
 
+struct ShowIcon : View{
+    @State var size = 220.0
+    @State var angle = 0.0
+    @State var alpha = 1.0
+    
+    
+    var body:some View{
+        VStack{
+            Slider(value: $size, in: 60...360)
+            Slider(value: $angle, in: -60...60)
+            Slider(value: $alpha, in: 0...1)
+            
+            Spacer()
+            
+            Icon(iconSize: $size,deltaAngle:$angle)
+                .opacity(alpha)
+                .animation(.default, value: size)
+            //                .animation(.default, value: angle)
+            
+            Spacer()
+        }
+        
+    }
+}
+
 struct Pie: Shape {
     var startAngle: Angle
     var endAngle: Angle
@@ -111,6 +136,6 @@ struct Pie: Shape {
 
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
-        Icon(iconSize: .constant(120),deltaAngle:.constant(0.0))
+        ShowIcon()
     }
 }
