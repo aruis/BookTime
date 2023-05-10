@@ -33,6 +33,7 @@ struct NewBook: View {
     @State private var recognizedText = "Tap button to start scanning"
     
     @State private var textInPhoto:String = ""
+    @State private var textInPhotoList:[String] = []
     
     
     @State private var tagInput:String = ""
@@ -227,22 +228,18 @@ struct NewBook: View {
                     
                     ScrollView(.horizontal){
                         HStack{
-                            ForEach(tags){x in
-                                if focusInput == .tag && bookViewModel.tags.first(where:{ tag in
-                                    tag.name == x.name
-                                }) == nil {
-                                    Button(x.name) {
-                                        bookViewModel.tags.append(x)
+                            if focusInput == .tag {
+                                ForEach(tags){x in
+                                    if bookViewModel.tags.first(where:{ tag in
+                                        tag.name == x.name
+                                    }) == nil {
+                                        Button(x.name) {
+                                            bookViewModel.tags.append(x)
+                                        }
                                     }
                                 }
-                            }
-                            
-                            
-                            ForEach(
-                                textInPhoto.split(separator: ",")
-                                    .map{String($0)}
-                                ,id:\.self){x in
-                                    if focusInput != .tag {
+                            } else if textInPhotoList.count > 0{
+                                ForEach(textInPhotoList,id:\.self){x in
                                         Button(x) {
                                             if focusInput == .author {
                                                 bookViewModel.author += x
@@ -250,8 +247,10 @@ struct NewBook: View {
                                                 bookViewModel.name += x
                                             }
                                         }
+                                        
                                     }
-                                }
+                                
+                            }
                         }
                         
                     }
@@ -311,6 +310,9 @@ struct NewBook: View {
                 AlertToast(displayMode: .banner(.pop), type: .systemImage("exclamationmark.circle.fill", .orange), title: String(localized: "You haven't entered the title of the book yet"))
             }
         }
+        .onChange(of: textInPhoto, perform: {value in
+            textInPhotoList = value.split(separator: ",").map{String($0)}
+        })
         
     }
     
