@@ -256,17 +256,8 @@ struct BookList: View {
                     //                    }
                     //                })
                     .toolbar{
-                        Button(action: {
-                            bookViewModel.clean()
-                            self.showNewBook = true
-                        }){
-                            Image(systemName: "plus")
-                        }
                         
-                    }
-                    .toolbar{
-                        
-                        ToolbarItem(placement: .navigation){
+                        ToolbarItem(placement: .cancellationAction){
                             if !tags.isEmpty{
                                 Menu {
                                     
@@ -300,7 +291,14 @@ struct BookList: View {
                             }
                         }
                         
-                        
+                        ToolbarItem(placement: .primaryAction){
+                            Button(action: {
+                                bookViewModel.clean()
+                                self.showNewBook = true
+                            }){
+                                Image(systemName: "plus")
+                            }
+                        }
                     }
                     
                     
@@ -371,7 +369,8 @@ struct BookList: View {
                 
             }
         }
-        .sheet(isPresented: $showNewBook){
+//        sheet
+        .fullScreenCover(isPresented: $showNewBook){
             NewBook(bookViewModel:bookViewModel,tags: tags)
                 .presentationDetents([.medium])
                 .onDisappear(perform: {

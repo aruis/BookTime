@@ -196,18 +196,31 @@ struct NewBook: View {
             .navigationTitle(bookViewModel.book == nil ? "Add a New Book":"Modify the Book")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
-                Button(action: {
-                    
-                    //                    print(recognizedText)
-                    if( save()){
+                ToolbarItem(placement: .cancellationAction){
+                    Button(action: {
                         dismiss()
+                    }){
+                        Text("Cancel")                            
                     }
-                    
-                }){
-                    Text("Save")
-                        .font(.headline)
-                    //                        .foregroundColor(Color("NavigationBarTitle"))
+
                 }
+                
+                ToolbarItem(placement: .primaryAction){
+                    Button(action: {
+                        
+                        //                    print(recognizedText)
+                        if( save()){
+                            dismiss()
+                        }
+                        
+                    }){
+                        Text("Save")
+                            .font(.headline)
+                        //                        .foregroundColor(Color("NavigationBarTitle"))
+                    }
+
+                }
+                
             }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
