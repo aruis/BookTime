@@ -14,6 +14,7 @@
 		831939062802682A0011AA3C /* TagLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831939052802682A0011AA3C /* TagLabelStyle.swift */; };
 		831C1F9128D17878006C5E0D /* BookCardExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831C1F9028D17878006C5E0D /* BookCardExport.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
+		832169932A0B42C700DB6721 /* Image2Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832169922A0B42C700DB6721 /* Image2Text.swift */; };
 		832729522852F06800451B3B /* PacmanProgress in Frameworks */ = {isa = PBXBuildFile; productRef = 832729512852F06800451B3B /* PacmanProgress */; };
 		8327824D299E607B00A21782 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8327824C299E607B00A21782 /* ProgressRingView.swift */; };
 		8327824E299E607B00A21782 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8327824C299E607B00A21782 /* ProgressRingView.swift */; };
@@ -106,6 +107,7 @@
 		831939052802682A0011AA3C /* TagLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabelStyle.swift; sourceTree = "<group>"; };
 		831C1F9028D17878006C5E0D /* BookCardExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCardExport.swift; sourceTree = "<group>"; };
 		8320045D2759B71900EB64FC /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
+		832169922A0B42C700DB6721 /* Image2Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image2Text.swift; sourceTree = "<group>"; };
 		8327824C299E607B00A21782 /* ProgressRingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
 		8338BEAE2773552E00D51AFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		833F9D35282B586F006F19AE /* NotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTool.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */,
 				8317F8992772FE5C00864D2F /* Tools.swift */,
 				833F9D35282B586F006F19AE /* NotificationTool.swift */,
+				832169922A0B42C700DB6721 /* Image2Text.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				83B03AD827698032005B4700 /* Slogan.swift in Sources */,
 				839B4E692757648200AB05AF /* BookCard.swift in Sources */,
 				83817D3927A52A7E00A8CD96 /* BookTimeFileDoc.swift in Sources */,
+				832169932A0B42C700DB6721 /* Image2Text.swift in Sources */,
 				835E822F276338D10079FF99 /* ReadLog.swift in Sources */,
 				83731C9C2755D0D700305305 /* BookPersistence.swift in Sources */,
 				83731C932755D0D600305305 /* BookTimeApp.swift in Sources */,

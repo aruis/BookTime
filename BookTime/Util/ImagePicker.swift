@@ -56,43 +56,18 @@ struct ImagePicker:UIViewControllerRepresentable{
 //                    height: size.height * 0.8
 //                ).integral
                 
-                guard let cgImage =  saveImage.cgImage else {return}
-
-                // Create a new image-request handler.
-                let requestHandler = VNImageRequestHandler(cgImage: cgImage)
-
-                // Create a new request to recognize text.
-                let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-                
-                request.recognitionLevel = .accurate
-                request.recognitionLanguages = ["zh_CN", "en_US","en_GB"]
-
-                do {
-                    // Perform the text-recognition request.
-                    try requestHandler.perform([request])
-                } catch {
-                    print("Unable to perform the requests: \(error).")
-                }
+                Image2Text.request(saveImage: saveImage)
+                    .sink(receiveCompletion: { completion in
+                    }, receiveValue: { someValue in
+                        // do what you want with the resulting value passed down
+                        // be aware that depending on the publisher, this closure
+                        // may be invoked multiple times.
+                        self.parent.textInPhoto = someValue
+                    })
                 
             }
             parent.dismiss()
         }
         
-        func recognizeTextHandler(request: VNRequest, error: Error?) {
-            guard let observations =
-                    request.results as? [VNRecognizedTextObservation] else {
-                return
-            }
-            let recognizedStrings = observations.compactMap { observation in
-                // Return the string of the top VNRecognizedText instance.
-                return observation.topCandidates(1).first?.string
-            }.joined(separator: ",")
-            
-            // Process the recognized strings.
-//            print(recognizedStrings)
-            
-            parent.textInPhoto = recognizedStrings
-//            processResults(recognizedStrings)
-        }
     }
 }

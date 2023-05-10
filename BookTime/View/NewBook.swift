@@ -80,11 +80,11 @@ struct NewBook: View {
                                 self.photoSource = .camera
                             }
                             
-                            //                            if VNDocumentCameraViewController.isSupported{
-                            //                                Button("AI Camera"){
-                            //                                    self.photoSource = .documentScan
-                            //                                }
-                            //                            }
+                            if VNDocumentCameraViewController.isSupported{
+                                Button("AI Camera [Beta]"){
+                                    self.photoSource = .documentScan
+                                }
+                            }
                             
                             Button("Photo Library"){
                                 self.photoSource = .photoLibrary
@@ -301,7 +301,7 @@ struct NewBook: View {
             //            }
             .fullScreenCover(item: $photoSource){source in
                 switch source {
-                case .documentScan: ScanDocumentView(recognizedText: $recognizedText,selectedImage: $bookViewModel.image)
+                case .documentScan: ScanDocumentView(selectedImage: $bookViewModel.image,textInPhoto: $textInPhoto)
                 case .photoLibrary: ImagePicker(sourceType: .photoLibrary, selectedImage: $bookViewModel.image,textInPhoto:$textInPhoto).ignoresSafeArea()
                 case .camera: ImagePicker(sourceType: .camera, selectedImage: $bookViewModel.image,textInPhoto:$textInPhoto).ignoresSafeArea()
                 }
