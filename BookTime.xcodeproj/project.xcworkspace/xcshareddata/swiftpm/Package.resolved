@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/aruis/PacmanProgress.git",
       "state" : {
-        "revision" : "8ef612927b631a58eefa6b2183ca729282b8de98",
-        "version" : "1.22.7"
+        "revision" : "182f13d9b21f20c84f1f902e5c09062bef7d7d88",
+        "version" : "1.23.1"
       }
     }
   ],

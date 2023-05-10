@@ -341,22 +341,23 @@ struct Statistics: View {
                 ){
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 85),spacing: 20),],spacing: 15) {
                         ForEach(readedBooks){book in
-                            if let imageData = book.image{
-                                Image(uiImage: UIImage(data: imageData) ?? UIImage())
-                                    .resizable()
-                                    .scaledToFill()
-                                    .overlay(
-                                        Rectangle()
-                                            .stroke(Color("image.border"), lineWidth: 1)
-                                    )
-                                    .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
-                                    .onTapGesture(perform: {
-                                        //                                        selectBookIndex = readedBooks.firstIndex(of: book)!
-                                        selectBookID = book.id
-                                        showCover = true
-                                    })
+                            let imageData = book.image
+                            
+                            Image(uiImage: UIImage(data: imageData) ?? UIImage())
+                                .resizable()
+                                .scaledToFill()
+                                .overlay(
+                                    Rectangle()
+                                        .stroke(Color("image.border"), lineWidth: 1)
+                                )
+                                .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+                                .onTapGesture(perform: {
+                                    //                                        selectBookIndex = readedBooks.firstIndex(of: book)!
+                                    selectBookID = book.id
+                                    showCover = true
+                                })
                                 
-                            }
+                            
                         }
                     }
                     .padding(8)

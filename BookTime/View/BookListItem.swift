@@ -13,21 +13,22 @@ struct BookListItem: View {
     var body: some View {
         
         HStack(alignment: .top) {
-            if let imageData = book.image{
-                Image(uiImage: UIImage(data: imageData) ?? UIImage())
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 85, height: 115 , alignment: .center)
-                    .clipped()
-//                    .cornerRadius(12)
-                    .overlay(
-                        Rectangle()
-                            .stroke(Color("image.border"), lineWidth: 1)
-                    )
-                    .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
-                    
-//                    .shadow(radius: 10)
-            }
+            let imageData = book.image
+            
+            Image(uiImage: UIImage(data: imageData) ?? UIImage())
+                .resizable()
+                .scaledToFill()
+                .frame(width: 85, height: 115 , alignment: .center)
+                .clipped()
+            //                    .cornerRadius(12)
+                .overlay(
+                    Rectangle()
+                        .stroke(Color("image.border"), lineWidth: 1)
+                )
+                .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
+            
+            //                    .shadow(radius: 10)
+            
             
             
             VStack(alignment: .leading,spacing: 6) {
