@@ -15,6 +15,7 @@
 		831C1F9128D17878006C5E0D /* BookCardExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831C1F9028D17878006C5E0D /* BookCardExport.swift */; };
 		8320045E2759B71900EB64FC /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320045D2759B71900EB64FC /* Statistics.swift */; };
 		832169932A0B42C700DB6721 /* Image2Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832169922A0B42C700DB6721 /* Image2Text.swift */; };
+		832169962A0B912F00DB6721 /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 832169952A0B912F00DB6721 /* WhatsNewKit */; };
 		832729522852F06800451B3B /* PacmanProgress in Frameworks */ = {isa = PBXBuildFile; productRef = 832729512852F06800451B3B /* PacmanProgress */; };
 		8327824D299E607B00A21782 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8327824C299E607B00A21782 /* ProgressRingView.swift */; };
 		8327824E299E607B00A21782 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8327824C299E607B00A21782 /* ProgressRingView.swift */; };
@@ -165,6 +166,7 @@
 			files = (
 				832729522852F06800451B3B /* PacmanProgress in Frameworks */,
 				838316142803FE4800869E1D /* ConfettiSwiftUI in Frameworks */,
+				832169962A0B912F00DB6721 /* WhatsNewKit in Frameworks */,
 				83924E64276CDB7E002D0678 /* CloudKit.framework in Frameworks */,
 				8392C5F32848A8D300755F28 /* FlipView in Frameworks */,
 				838316112803DA3100869E1D /* AlertToast in Frameworks */,
@@ -371,6 +373,7 @@
 				838316132803FE4800869E1D /* ConfettiSwiftUI */,
 				8392C5F22848A8D300755F28 /* FlipView */,
 				832729512852F06800451B3B /* PacmanProgress */,
+				832169952A0B912F00DB6721 /* WhatsNewKit */,
 			);
 			productName = BookTime;
 			productReference = 83731C8F2755D0D600305305 /* BookTime.app */;
@@ -426,6 +429,7 @@
 				838316122803FE4800869E1D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				8392C5F12848A8D300755F28 /* XCRemoteSwiftPackageReference "FlipView" */,
 				832729502852F06800451B3B /* XCRemoteSwiftPackageReference "PacmanProgress" */,
+				832169942A0B912F00DB6721 /* XCRemoteSwiftPackageReference "WhatsNewKit" */,
 			);
 			productRefGroup = 83731C902755D0D600305305 /* Products */;
 			projectDirPath = "";
@@ -847,6 +851,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		832169942A0B912F00DB6721 /* XCRemoteSwiftPackageReference "WhatsNewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/WhatsNewKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		832729502852F06800451B3B /* XCRemoteSwiftPackageReference "PacmanProgress" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/aruis/PacmanProgress.git";
@@ -882,6 +894,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		832169952A0B912F00DB6721 /* WhatsNewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 832169942A0B912F00DB6721 /* XCRemoteSwiftPackageReference "WhatsNewKit" */;
+			productName = WhatsNewKit;
+		};
 		832729512852F06800451B3B /* PacmanProgress */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 832729502852F06800451B3B /* XCRemoteSwiftPackageReference "PacmanProgress" */;

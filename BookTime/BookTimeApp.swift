@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import WhatsNewKit
 
 @main
 struct BookTimeApp: App {
@@ -23,6 +23,51 @@ struct BookTimeApp: App {
     @State var isShowSplashtop = true
     @State var isShowMainTab = false
     
+    var whatsNewCollection: WhatsNewCollection {[
+        WhatsNew(
+            version: "2.23.3",
+            title: WhatsNew.Title(text: WhatsNew.Text(String(localized: "What's New"))),
+            features: [
+                .init(
+                    image: .init(
+                        systemName: "heart.fill",
+                        foregroundColor: .red
+                    ),
+                    title: WhatsNew.Text(String(localized: "Heartfelt Update:")),
+                    subtitle: WhatsNew.Text(String(localized:"Added AI camera, available for testing."))
+                ),
+                .init(
+                    image: .init(
+                        systemName: "star.fill",
+                        foregroundColor: .accentColor
+                    ),
+                    title: WhatsNew.Text(String(localized: "Important Enhancements:")),
+                    subtitle: WhatsNew.Text(String(localized:"Automatically display update log when launching the app."))
+                ),
+
+                .init(
+                    image: .init(
+                        systemName: "terminal.fill",
+                        foregroundColor: .blue
+                    ),
+                    title: WhatsNew.Text(String(localized: "Bug Fixes:")),
+                    subtitle: WhatsNew.Text(String(localized:"Fixed syntax issues in the code.\nCorrected the issue where on iOS, adding a new book was not possible to select book title, author name, and tags from OCR content due to an iOS bug."))
+                )
+
+
+            ],
+            primaryAction: WhatsNew.PrimaryAction(
+                title: WhatsNew.Text(String(localized: "Continue")),
+//                  backgroundColor: .accentColor,
+//                  foregroundColor: .white,
+                  hapticFeedback: .notification(.success)
+            )
+
+        )
+    ]}
+
+
+    
     let transitionTime = 1.0
     
     var body: some Scene {
@@ -32,6 +77,7 @@ struct BookTimeApp: App {
             ZStack{
                 if isShowMainTab {
                     MainTab()
+                        .whatsNewSheet()
                 }
 
                 if isShowSplashtop {
@@ -57,8 +103,18 @@ struct BookTimeApp: App {
                         }
                 }
             }
-            
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
+            .environment(
+                               \.whatsNew,
+                               WhatsNewEnvironment(
+                                   // Specify in which way the presented WhatsNew Versions are stored.
+                                   // In default the `UserDefaultsWhatsNewVersionStore` is used.
+                                   versionStore: UserDefaultsWhatsNewVersionStore(),
+//                                   versionStore: InMemoryWhatsNewVersionStore(),
+                                   // Pass a `WhatsNewCollectionProvider` or an array of WhatsNew instances
+                                   whatsNewCollection: whatsNewCollection
+                               )
+                           )
             //            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
         }
     }

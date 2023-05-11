@@ -285,3 +285,19 @@
 "Trend" = "趋势";
 
 "Please select a book." = "请选择一本书";
+
+"Continue" = "继续";
+
+"What's New" = "本次更新";
+
+"Heartfelt Update:" = "走心更新：";
+
+"Important Enhancements:" = "重要改进：";
+
+"Bug Fixes:" = "问题修复：";
+
+"Added AI camera, available for testing." = "新增 AI 相机，开放测试使用。";
+
+"Automatically display update log when launching the app." = "增加了启动App时自动展示更新日志。";
+
+"Fixed syntax issues in the code.\nCorrected the issue where on iOS, adding a new book was not possible to select book title, author name, and tags from OCR content due to an iOS bug." = "修复 代码中遗留的语法问题\n修正 因iOS自身bug导致的新增书籍时无法从OCR内容中选择书名、作者名、标签的问题。";

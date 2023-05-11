@@ -10,10 +10,10 @@ import SwiftUI
 struct Icon: View {
     
     let aspectRatio  = 8.0
-    let bgColor = Color(red:2,green: 5,blue: 22)
-    let paperColor = Color.white
-    let spineColor = Color(red: 250, green: 144, blue: 63)
-    let coverColor = Color(red: 207, green: 34, blue: 7)
+    static let bgColor = Color(red:2,green: 5,blue: 22)
+    static let paperColor = Color.white
+    static let spineColor = Color(red: 250, green: 144, blue: 63)
+    static let coverColor = Color(red: 207, green: 34, blue: 7)
     
     @Binding var iconSize:Double
     @Binding var deltaAngle:Double
@@ -37,17 +37,17 @@ struct Icon: View {
             let size = geometry.size
             ZStack{
                 Pie(startAngle: Angle(degrees: minAngle), endAngle: Angle(degrees: hourAngle), clockwise: false)
-                    .fill(coverColor)
+                    .fill(Icon.coverColor)
                     .frame(width: iconSize)
                 
                 RoundedRectangle(cornerRadius: iconSize/aspectRatio/2)
-                    .fill(spineColor)
+                    .fill(Icon.spineColor)
                     .frame(width: iconSize,height: iconSize/aspectRatio)
                     .position(x: size.width/2 + iconSize/2 - iconSize/aspectRatio/2,y: size.height/2)
                     .rotationEffect(Angle(degrees: hourAngle))
                 
                 RoundedRectangle(cornerRadius: iconSize/aspectRatio/2)
-                    .fill(paperColor)
+                    .fill(Icon.paperColor)
                     .frame(width: iconSize,height: iconSize/aspectRatio)
                     .position(x: size.width/2 + iconSize/2 - iconSize/aspectRatio/2,y: size.height/2)
                     .rotationEffect(Angle(degrees: minAngle))
@@ -56,7 +56,7 @@ struct Icon: View {
             
         }
         .frame(width: iconSize,height: iconSize)
-        .background(bgColor)
+        .background(Icon.bgColor)
         .clipShape(
             RoundedRectangle(cornerRadius: 16)
         )
