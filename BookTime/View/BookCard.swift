@@ -102,7 +102,9 @@ struct BookCard: View {
                             
                             
                         }
-                    }.opacity(isDone ? 1 : 0)
+                    }
+                    .padding(10)
+                    .opacity(isDone ? 1 : 0)
                         .animation(.default, value: isDone)
                         .gesture(DragGesture().onChanged{value in
                             let x =  value.location.x
