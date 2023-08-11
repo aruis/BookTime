@@ -354,9 +354,10 @@ struct Statistics: View {
                                 )
                                 .shadow(color: Color( "image.border"), radius: 5,x:2,y:2)
                                 .onTapGesture(perform: {
-                                    //                                        selectBookIndex = readedBooks.firstIndex(of: book)!
-                                    selectBookID = book.id
-                                    showCover = true
+                                    if !isRendererImage{
+                                        selectBookID = book.id
+                                        showCover = true
+                                    }
                                 })
                                 
                             
@@ -437,10 +438,12 @@ struct Statistics: View {
         }
         .sheet(isPresented: $showSharePic){
             ScrollView{
-                VStack(spacing: 20){
+                VStack(){
                     exportBox(isRendererImage: true,isShow: true)
                     
                     Color.accentColor.frame(height:1)
+                        .padding(.top,0)
+                        .padding(.bottom,30)
                                                     
                     ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime")){
                         Label( "Share",systemImage:"square.and.arrow.up.circle")
@@ -455,7 +458,7 @@ struct Statistics: View {
             
         }
 
-        .fullScreenCover(isPresented:  $showCover, content: {
+        .sheet(isPresented:  $showCover, content: {
             GeometryReader{reader in
                 let scale = reader.size.height / 400 * 0.618
                 TabView(selection: $selectBookID){
@@ -467,16 +470,6 @@ struct Statistics: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
-            .onTapGesture(perform: {
-                showCover = false
-            })
-            .gesture(DragGesture().onEnded{value in
-                
-                if value.translation.height > 20 {
-                    showCover = false
-                }
-                
-            })
             
         })
         
