@@ -21,6 +21,7 @@ struct BookCard: View {
     
     @State private var handShowTimer:Bool = false
     @State private var showTimer:Bool = false
+    @State private var showSharePic:Bool = false
     @State private var showAlert:Bool = false
     @State private var showBatterySheet:Bool = false    
     
@@ -85,7 +86,7 @@ struct BookCard: View {
                                 .resizable()
                                 .foregroundColor(.accentColor)
                                 .scaledToFit()
-                                .frame(width: 30,height: 30)
+                                .frame(width: 40,height: 40)
                                 .scaleEffect(book.rating == index+1 ? 1.25 : 1.0)
                                 .animation(.linear(duration: 0.1), value: book.rating)
                                 .onTapGesture {
@@ -207,7 +208,13 @@ struct BookCard: View {
             .padding(10)
             .toolbar(content: {
                 if(isDone){
-                    ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime"))
+                    Button{
+                        showSharePic = true
+                    }label:{
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    
+//                    ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime"))
                 }
                 
             })
@@ -262,6 +269,18 @@ struct BookCard: View {
                     generator.notificationOccurred(.success)
                 })
         })
+        .sheet(isPresented: $showSharePic){
+            VStack(spacing: 30){
+                BookCardExport(book: book)
+                ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime")){
+                    Label( "Share",systemImage:"square.and.arrow.up.circle")
+                        .font(.largeTitle)
+                        .labelStyle(.iconOnly)
+                        
+                }
+            }
+            
+        }
         
         //                .toolbar {
         //                    ToolbarItem(placement: .navigationBarTrailing) {

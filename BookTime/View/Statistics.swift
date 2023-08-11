@@ -53,6 +53,8 @@ struct Statistics: View {
     @State private var isShowYear = false    
     
     @State private var isShowReadedBooks  = false
+    @State private var showSharePic  = false
+    
     @State private var shareImage:UIImage? = nil
     
     @State private var selectBookID:String = ""
@@ -370,7 +372,7 @@ struct Statistics: View {
     }
     
     @ViewBuilder
-    func exportBox(isRendererImage:Bool = false) -> some View{
+    func exportBox(isRendererImage:Bool = false,isShow:Bool = false) -> some View{
         //        VStack{
         VStack(){
             VStack{
@@ -395,12 +397,14 @@ struct Statistics: View {
             }
             .padding()
             .overlay(
-                RoundedRectangle(cornerRadius: 10.0)
-                    .stroke(lineWidth: 3.0)
-                    .foregroundColor(Color("AccentColor"))
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .stroke(lineWidth: 3.0)
+                        .foregroundColor(Color("AccentColor"))
+                        .opacity(isShow ? 0 : 1)
             )
         }
-        .background(Color.white)
+        .preferredColorScheme(.light)
+//        .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
         .padding()
         .ignoresSafeArea()
@@ -419,20 +423,38 @@ struct Statistics: View {
                 reportView()
                     .padding()
                     .navigationTitle("Achievement")
-                //                .navigationBarTitleDisplayMode(.inline)
                     .toolbar(content: {
-                        ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime"))
-//                        Button(action: {
-//                            showOptions = true
-//                        }){
-//                            Image(systemName: "square.and.arrow.up")
-//                        }
+                            Button{
+                                showSharePic = true
+                            }label:{
+                                Image(systemName: "square.and.arrow.up")
+                            }
                     })
                 
             }
             
             
         }
+        .sheet(isPresented: $showSharePic){
+            ScrollView{
+                VStack(spacing: 20){
+                    exportBox(isRendererImage: true,isShow: true)
+                    
+                    Color.accentColor.frame(height:1)
+                                                    
+                    ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime")){
+                        Label( "Share",systemImage:"square.and.arrow.up.circle")
+                            .font(.largeTitle)
+                            .labelStyle(.iconOnly)
+                            
+                    }
+                }
+                
+
+            }
+            
+        }
+
         .fullScreenCover(isPresented:  $showCover, content: {
             GeometryReader{reader in
                 let scale = reader.size.height / 400 * 0.618
