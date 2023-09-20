@@ -184,8 +184,9 @@ struct BookTimeWidgetEntryView : View {
             }
             
         }
-        .padding(.leading, 12)
-        .padding(.trailing,20)
+
+//        .padding(.leading, 12)
+//        .padding(.trailing,20)
     }
     
     @ViewBuilder
@@ -203,13 +204,13 @@ struct BookTimeWidgetEntryView : View {
                 }
             }
             .clipShape(Rectangle())
-            .padding(10)
+//            .padding(10)
             
             Spacer()
             mediumView(isInLarge: true)
         }
-        .padding(.vertical,10)
-        .padding(.bottom,15)
+//        .padding(.vertical,10)
+//        .padding(.bottom,15)
     }
     
     @ViewBuilder
@@ -248,43 +249,26 @@ struct BookTimeWidgetEntryView : View {
         case .systemSmall:
             smallView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
-                .background(Color("WidgetBackground"))
+                .widgetBackground(Color("WidgetBackground"))
             
         case .systemMedium:
             mediumView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
-                .background(Color("WidgetBackground"))
+                .widgetBackground(Color("WidgetBackground"))
             
         case .systemLarge:
             largeView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)    // << here !!
-                .background(Color("WidgetBackground"))
+                .widgetBackground(Color("WidgetBackground"))
             
         case .accessoryCircular:
             circularView
+                .widgetBackground(Color("WidgetBackground"))
             
         default:
             smallView
         }
-        
-        
-        //        VStack{
-        //            let encodedData  = UserDefaults(suiteName: "group.com.aruistar.BookTime")!.object(forKey: "sharedata") as? Data
-        //            /* Decoding it using JSONDecoder*/
-        //            if let carEncoded = encodedData {
-        //                 let carDecoded = try? JSONDecoder().decode(ShareData.self, from: carEncoded)
-        //                if let car = carDecoded{
-        //                    Text("\(car.todayReadMin)")
-        //                    // You successfully retrieved your car object!
-        //                }
-        //            }
-        //
-        //
-        //            Text(entry.date, style: .time)
-        //        }.onAppear{
-        //        }
-        
-        
+                
         
     }
 }
@@ -312,5 +296,17 @@ struct BookTimeWidget_Previews: PreviewProvider {
         BookTimeWidgetEntryView(entry: BookTimeWidgetEntry(date: Date(),lastReadDate: Date().start(), todayReadMin: 125,targetMinPerday: 90,logInYear: [Int](repeating: 0, count: 366)))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
         
+    }
+}
+
+extension View {
+    func widgetBackground(_ backgroundView: some View) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            return containerBackground(for: .widget) {
+                backgroundView
+            }
+        } else {
+            return background(backgroundView).padding(15)
+        }
     }
 }
