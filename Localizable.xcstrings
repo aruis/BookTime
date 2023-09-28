@@ -1,0 +1,1217 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "       The idea💡 for creating this app came from my daughter👧🏻 who is in the second grade of elementary school. She has an assignment that requires 30 minutes of reading every day. With this app, I can better urge her to read and clock in.\n       The teacher counts the children's reading volume every semester and asks parents to make a record of their children's reading, so this app has helped me a lot, because her annual reading volume is about 100 books, it is really difficult for me to keep track of it. Record her reading progress. Now, I only need to export the reading data from the App.\n       This App also helped me develop the habit of reading every day. You can find my [Reading Sharing Video](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833) here. You are also welcome to send [mail](mailto:cheetah_chugs.0g@icloud.com) to me to communicate anything you want to communicate.\n       Finally, I hope you like this App, and I wish you always enjoy the fun of reading ❤️" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "          创作这个App的💡来源于我正在上小学二年级的👧🏻，她有项作业是每天要阅读30分钟，有了这个App，我就能更好地督促她读书打卡了。\n          老师每学期都要统计孩子的阅读量，要求家长做好孩子的阅读记录，所以这个App可帮了我大忙了，因为她每年的阅读量都在百本左右，我平时真的很难持续跟踪记录她的阅读进度。现在，我只要从App导出阅读数据就可以了。\n          这款App也帮我养成每天坚持阅读的习惯，您可以在这里找到我的[读书分享视频](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833)。也欢迎您发[邮件](mailto:cheetah_chugs.0g@icloud.com)给我，交流任何你想交流的事情。\n          最后，希望您喜欢这款App，也祝您能够一直享受阅读的乐趣❤️\n\n    "
+          }
+        }
+      }
+    },
+    " days" : {
+
+    },
+    " minutes in " : {
+
+    },
+    "-" : {
+
+    },
+    "- at the end of 2021." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—— 什么都想学的老刘，于2021年末"
+          }
+        }
+      }
+    },
+    "(Include iCloud)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "（含iCloud）"
+          }
+        }
+      }
+    },
+    "[Don't show again.]" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[不再提示]"
+          }
+        }
+      }
+    },
+    "《" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "》" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "**%d** Minutes Today" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日已阅读 **%d** 分钟"
+          }
+        }
+      }
+    },
+    "**%lld**" : {
+
+    },
+    "**%lld**分钟" : {
+
+    },
+    "%f" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld %% of the Plan Completed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成计划的 %lld %%"
+          }
+        }
+      }
+    },
+    "%lld book has been imported" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 条书籍信息已导入"
+          }
+        }
+      }
+    },
+    "%lld days left this year" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本年度仅剩余%lld天"
+          }
+        }
+      }
+    },
+    "%lld Min" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 分"
+          }
+        }
+      }
+    },
+    "%lld Minutes Today" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日已阅读%lld分"
+          }
+        }
+      }
+    },
+    "%lld%%" : {
+
+    },
+    "%lld%% %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld%% %2$@"
+          }
+        }
+      }
+    },
+    "~" : {
+
+    },
+    "8" : {
+
+    },
+    "A Total of" : {
+      "comment" : "累计阅读",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "累计阅读"
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关于"
+          }
+        }
+      }
+    },
+    "About data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数据相关"
+          }
+        }
+      }
+    },
+    "Achievement" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成就"
+          }
+        }
+      }
+    },
+    "Add a New Book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "读一本新书"
+          }
+        }
+      }
+    },
+    "Added AI camera, available for testing." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增 AI 相机，开放测试使用。"
+          }
+        }
+      }
+    },
+    "After turning off iCloud, delete the data on iCloud at the same time?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭iCloud后，同时删除iCloud上的数据？"
+          }
+        }
+      }
+    },
+    "AI Camera [Beta]" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 相机 [Beta]"
+          }
+        }
+      }
+    },
+    "All" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "迄今为止"
+          }
+        }
+      }
+    },
+    "All data has been deleted" : {
+      "comment" : "所有数据已删除",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所有数据已删除"
+          }
+        }
+      }
+    },
+    "Archive" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已归档"
+          }
+        }
+      }
+    },
+    "Archive the Book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "归档此书"
+          }
+        }
+      }
+    },
+    "Author" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "作者"
+          }
+        }
+      }
+    },
+    "Automatically display update log when launching the app." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "增加了启动App时自动展示更新日志。"
+          }
+        }
+      }
+    },
+    "Books in Total" : {
+      "comment" : "本书",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本书"
+          }
+        }
+      }
+    },
+    "Bookshelf" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "书架"
+          }
+        }
+      }
+    },
+    "BookTime" : {
+
+    },
+    "Bug Fixes:" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "问题修复："
+          }
+        }
+      }
+    },
+    "Camera" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "相机"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "Choose a picture as the cover of the book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择一张图片作为本书封面"
+          }
+        }
+      }
+    },
+    "Clear All Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除所有数据"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "继续"
+          }
+        }
+      }
+    },
+    "Daily reading goal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每日阅读目标"
+          }
+        }
+      }
+    },
+    "Data in iCloud has been deleted" : {
+      "comment" : "iCloud数据已删除",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud数据已删除"
+          }
+        }
+      }
+    },
+    "Data is priceless, please choose carefully!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数据无价，请谨慎选择！"
+          }
+        }
+      }
+    },
+    "day" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天"
+          }
+        }
+      }
+    },
+    "Day" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天"
+          }
+        }
+      }
+    },
+    "days" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天"
+          }
+        }
+      }
+    },
+    "Days" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        }
+      }
+    },
+    "Delete the Book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除本书"
+          }
+        }
+      }
+    },
+    "Delete this book (unrecoverable)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除本书（不可恢复）"
+          }
+        }
+      }
+    },
+    "End reading" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "结束阅读"
+          }
+        }
+      }
+    },
+    "Enter the information of the book you are reading into the device." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选一本书，把信息录入设备。"
+          }
+        }
+      }
+    },
+    "Export Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出数据"
+          }
+        }
+      }
+    },
+    "Finished" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已读完"
+          }
+        }
+      }
+    },
+    "Finished Book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "读完的书"
+          }
+        }
+      }
+    },
+    "Finished Reading" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我已读完"
+          }
+        }
+      }
+    },
+    "Fixed syntax issues in the code.\nCorrected the issue where on iOS, adding a new book was not possible to select book title, author name, and tags from OCR content due to an iOS bug." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修复 代码中遗留的语法问题\n修正 因iOS自身bug导致的新增书籍时无法从OCR内容中选择书名、作者名、标签的问题。"
+          }
+        }
+      }
+    },
+    "Get into the habit of punching in every day to achieve results." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "养成每日打卡习惯，达成成就。"
+          }
+        }
+      }
+    },
+    "GET STARTED" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始吧"
+          }
+        }
+      }
+    },
+    "Heartfelt Update:" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "走心更新："
+          }
+        }
+      }
+    },
+    "I want to clear all data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我要清除所有数据"
+          }
+        }
+      }
+    },
+    "iCloud is not enabled on your device" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud在您的设备上未启用"
+          }
+        }
+      }
+    },
+    "Import Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入数据"
+          }
+        }
+      }
+    },
+    "Important Enhancements:" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重要改进："
+          }
+        }
+      }
+    },
+    "Keep" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保留"
+          }
+        }
+      }
+    },
+    "Longest consecutive hits for" : {
+      "comment" : "最长连续打卡",
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最长连续打卡"
+          }
+        }
+      }
+    },
+    "Looking forward to your evaluation%@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待您的评价%@"
+          }
+        }
+      }
+    },
+    "min" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分"
+          }
+        }
+      }
+    },
+    "Minutes of Reading" : {
+      "comment" : "分钟",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分钟"
+          }
+        }
+      }
+    },
+    "Modify the Book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修改此书"
+          }
+        }
+      }
+    },
+    "My Bookshelf" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的书架"
+          }
+        }
+      }
+    },
+    "NEXT" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "继续"
+          }
+        }
+      }
+    },
+    "No Reading Today" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日未阅读"
+          }
+        }
+      }
+    },
+    "Overwrite cloud data to local" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "云端向本地覆盖"
+          }
+        }
+      }
+    },
+    "Overwrite local data to the cloud" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本地向覆盖云端"
+          }
+        }
+      }
+    },
+    "Persisted" : {
+      "extractionState" : "migrated",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已坚持"
+          }
+        }
+      }
+    },
+    "Photo Library" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "相册"
+          }
+        }
+      }
+    },
+    "Place the device horizontally and start timing." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "横置手机进入计时模式。"
+          }
+        }
+      }
+    },
+    "Please enter a tag" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请输入标签"
+          }
+        }
+      }
+    },
+    "Please enter the author name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请输入作者名"
+          }
+        }
+      }
+    },
+    "Please enter the title of the book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请填入书名"
+          }
+        }
+      }
+    },
+    "Please place the device horizontally and start timing" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请横置设备，开始计时"
+          }
+        }
+      }
+    },
+    "Please select a book." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择一本书"
+          }
+        }
+      }
+    },
+    "Read" : {
+      "comment" : "读完了",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "读完了"
+          }
+        }
+      }
+    },
+    "Read " : {
+
+    },
+    "Reading for" : {
+      "comment" : "fredingForDay",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已阅读"
+          }
+        }
+      }
+    },
+    "Reading Reminder" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "阅读定时提醒"
+          }
+        }
+      }
+    },
+    "Reminder Time" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提醒时间"
+          }
+        }
+      }
+    },
+    "Rendering image" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图片渲染中..."
+          }
+        }
+      }
+    },
+    "Return to reading" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回归阅读"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
+    },
+    "Saved to album" : {
+      "comment" : "导出成功\n去相册看看吧",
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出成功\n去相册看看吧"
+          }
+        }
+      }
+    },
+    "Search by book title" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按书名搜索"
+          }
+        }
+      }
+    },
+    "Select a photo" : {
+
+    },
+    "Set the book cover" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置书籍封面"
+          }
+        }
+      }
+    },
+    "Setting" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
+          }
+        }
+      }
+    },
+    "Share" : {
+
+    },
+    "Since Last:" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "距上次："
+          }
+        }
+      }
+    },
+    "Skip" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跳过"
+          }
+        }
+      }
+    },
+    "Synchronization complete" : {
+      "comment" : "同步完成",
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步完成"
+          }
+        }
+      }
+    },
+    "Tab the book cover and start timing" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点击书籍封面，开始计时"
+          }
+        }
+      }
+    },
+    "Tags" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标签"
+          }
+        }
+      }
+    },
+    "Tap here to add a book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点此添加一本书"
+          }
+        }
+      }
+    },
+    "This Month" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本月"
+          }
+        }
+      }
+    },
+    "This Year" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本年"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标题"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日"
+          }
+        }
+      }
+    },
+    "Today's goal has been reached" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日目标已达成"
+          }
+        }
+      }
+    },
+    "Total Reading" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总阅读"
+          }
+        }
+      }
+    },
+    "Track your reading time" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跟踪您的阅读时间"
+          }
+        }
+      }
+    },
+    "Trend" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "趋势"
+          }
+        }
+      }
+    },
+    "Turn on the timer mode while reading the paper book, or use the split screen mode to time the e-book reading." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "阅读纸质书的同时开启计时模式，或者用分屏模式给电子书阅读计时。"
+          }
+        }
+      }
+    },
+    "Unarchive the Book" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "撤销归档"
+          }
+        }
+      }
+    },
+    "Unfinished" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未读完"
+          }
+        }
+      }
+    },
+    "Unread" : {
+      "extractionState" : "migrated",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已摸鱼"
+          }
+        }
+      }
+    },
+    "Value" : {
+
+    },
+    "Welcome to BookTime." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "欢迎使用 BookTime"
+          }
+        }
+      }
+    },
+    "What's New" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本次更新"
+          }
+        }
+      }
+    },
+    "You have been reading for" : {
+      "comment" : "今天是您坚持阅读的第",
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天是您坚持阅读的第"
+          }
+        }
+      }
+    },
+    "You haven't entered the title of the book yet" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您还没有输入书名哦"
+          }
+        }
+      }
+    },
+    "You haven't read today. Take some time to read.😄" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天还没有阅读哦，快点来读书吧。😄"
+          }
+        }
+      }
+    },
+    "Your data is automatically syncing via iCloud" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的数据已通过iCloud自动同步"
+          }
+        }
+      }
+    },
+    "天，共计" : {
+
+    },
+    "阅读" : {
+
+    }
+  },
+  "version" : "1.0"
+}

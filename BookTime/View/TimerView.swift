@@ -476,47 +476,48 @@ struct ClockView: View {
                 let width =  geometry.frame(in: .global).size.width/9
                 let particles = width/20
                 let gap = particles/2
+                let flipGap:CGFloat = geometry.frame(in: .global).size.width > geometry.frame(in: .global).size.height ? 3 : 1
                      
                 
                 HStack(spacing: width/4 ){
 
                     HStack(spacing: -gap ){
                         
-                        FlipView(.constant(hour[0]), flipColor: .constant(.clock))
+                        FlipView(.constant(hour[0]), flipColor: .constant(.clock),gap: flipGap)
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                         
-                        FlipView(.constant(hour[1]), flipColor: .constant(.clock))
+                        FlipView(.constant(hour[1]), flipColor: .constant(.clock),gap: flipGap)
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                         
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: width/2, style: .continuous))
 
 
                     HStack(spacing: -gap ){
-                        FlipView(.constant(min[0]), flipColor: .constant(.clock))
+                        FlipView(.constant(min[0]), flipColor: .constant(.clock),gap: flipGap)
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                         
-                        FlipView(.constant(min[1]), flipColor: .constant(.clock))
+                        FlipView(.constant(min[1]), flipColor: .constant(.clock),gap: flipGap)
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: width/2, style: .continuous))
 
 
                     
                     HStack(spacing: -gap ){
-                        FlipView(.constant(second[0]), flipColor: .constant(.clock))
+                        FlipView(.constant(second[0]), flipColor: .constant(.clock),gap: flipGap)
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                         
-                        FlipView(.constant(second[1]), flipColor: .constant(.clock))
+                        FlipView(.constant(second[1]), flipColor: .constant(.clock),gap: flipGap)
                             .foregroundColor(.clockText)
                             .frame(width: width, height: width*2)
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: width/2, style: .continuous))
 
 
                 }
@@ -535,6 +536,7 @@ struct ClockView: View {
                         .font(.system(.subheadline,design:.rounded))
                     }
                     .padding(.top, -30)
+                    .padding(.horizontal,1)
                     .opacity(isShowProgress || isShowButtons ? 1 : 0)
                     
                 }
