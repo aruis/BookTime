@@ -217,6 +217,7 @@
       }
     },
     "Added AI camera, available for testing." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -299,6 +300,7 @@
       }
     },
     "Automatically display update log when launching the app." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -330,7 +332,14 @@
       }
     },
     "BookTime" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BookTime"
+          }
+        }
+      }
     },
     "Bug Fixes:" : {
       "localizations" : {
@@ -556,6 +565,7 @@
       }
     },
     "Fixed syntax issues in the code.\nCorrected the issue where on iOS, adding a new book was not possible to select book title, author name, and tags from OCR content due to an iOS bug." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -586,6 +596,7 @@
       }
     },
     "Heartfelt Update:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -841,7 +852,14 @@
       }
     },
     "Read " : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "读了"
+          }
+        }
+      }
     },
     "Reading for" : {
       "comment" : "fredingForDay",
@@ -929,7 +947,14 @@
       }
     },
     "Select a photo" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择一张照片"
+          }
+        }
+      }
     },
     "Set the book cover" : {
       "localizations" : {
@@ -952,7 +977,14 @@
       }
     },
     "Share" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享"
+          }
+        }
+      }
     },
     "Since Last:" : {
       "localizations" : {
@@ -1013,6 +1045,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "点此添加一本书"
+          }
+        }
+      }
+    },
+    "The widget is compatible with the latest version of API of iOS17.\nFixed the problem that the book rating point with three stars cannot respond." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "小组件兼容iOS17最新版的API\n修正书籍评分点三星无法响应的问题"
           }
         }
       }
@@ -1160,6 +1202,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "本次更新"
+          }
+        }
+      }
+    },
+    "You can preview related images before sharing them." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享相关图片前可以先预览其效果"
           }
         }
       }

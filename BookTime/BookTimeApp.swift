@@ -25,24 +25,24 @@ struct BookTimeApp: App {
     
     var whatsNewCollection: WhatsNewCollection {[
         WhatsNew(
-            version: "2.23.3",
+            version: "2.23.4",
             title: WhatsNew.Title(text: WhatsNew.Text(String(localized: "What's New"))),
             features: [
-                .init(
-                    image: .init(
-                        systemName: "heart.fill",
-                        foregroundColor: .red
-                    ),
-                    title: WhatsNew.Text(String(localized: "Heartfelt Update:")),
-                    subtitle: WhatsNew.Text(String(localized:"Added AI camera, available for testing."))
-                ),
+//                .init(
+//                    image: .init(
+//                        systemName: "heart.fill",
+//                        foregroundColor: .red
+//                    ),
+//                    title: WhatsNew.Text(String(localized: "Heartfelt Update:")),
+//                    subtitle: WhatsNew.Text(String(localized:"Added AI camera, available for testing."))
+//                ),
                 .init(
                     image: .init(
                         systemName: "star.fill",
                         foregroundColor: .accentColor
                     ),
                     title: WhatsNew.Text(String(localized: "Important Enhancements:")),
-                    subtitle: WhatsNew.Text(String(localized:"Automatically display update log when launching the app."))
+                    subtitle: WhatsNew.Text(String(localized:"You can preview related images before sharing them."))
                 ),
 
                 .init(
@@ -51,7 +51,7 @@ struct BookTimeApp: App {
                         foregroundColor: .blue
                     ),
                     title: WhatsNew.Text(String(localized: "Bug Fixes:")),
-                    subtitle: WhatsNew.Text(String(localized:"Fixed syntax issues in the code.\nCorrected the issue where on iOS, adding a new book was not possible to select book title, author name, and tags from OCR content due to an iOS bug."))
+                    subtitle: WhatsNew.Text(String(localized:"The widget is compatible with the latest version of API of iOS17.\nFixed the problem that the book rating point with three stars cannot respond."))
                 )
 
 
