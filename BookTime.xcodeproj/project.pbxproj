@@ -56,6 +56,7 @@
 		83B03AD827698032005B4700 /* Slogan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B03AD727698032005B4700 /* Slogan.swift */; };
 		83BFC2682761EB5D001E8E0E /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */; };
 		83BFC26A2762053E001E8E0E /* ImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFC2692762053E001E8E0E /* ImageExt.swift */; };
+		83C3D3472AFA36C900E3070D /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C3D3462AFA36C900E3070D /* AppData.swift */; };
 		83CCFB0729A04B11006612AC /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCFB0629A04B11006612AC /* Icon.swift */; };
 		83CCFB0929A073E1006612AC /* MainTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCFB0829A073E1006612AC /* MainTab.swift */; };
 		83D53FF8282906B300A72716 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392247D2827A7EA00303541 /* WidgetKit.framework */; };
@@ -146,6 +147,7 @@
 		83B03AD727698032005B4700 /* Slogan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slogan.swift; sourceTree = "<group>"; };
 		83BFC2672761EB5D001E8E0E /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		83BFC2692762053E001E8E0E /* ImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExt.swift; sourceTree = "<group>"; };
+		83C3D3462AFA36C900E3070D /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		83CCFB0629A04B11006612AC /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		83CCFB0829A073E1006612AC /* MainTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab.swift; sourceTree = "<group>"; };
 		83CE2E84277AD28F00ADD42F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				83731C9B2755D0D700305305 /* BookPersistence.swift */,
 				835E822E276338D10079FF99 /* ReadLog.swift */,
 				836E80EB28A62C760043A5FF /* Tag.swift */,
+				83C3D3462AFA36C900E3070D /* AppData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				833F9D36282B586F006F19AE /* NotificationTool.swift in Sources */,
 				8301421C285AD0F700E91808 /* TestSwiftUIView.swift in Sources */,
 				83CCFB0729A04B11006612AC /* Icon.swift in Sources */,
+				83C3D3472AFA36C900E3070D /* AppData.swift in Sources */,
 				830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */,
 				838B8ABD2769B47700B8E87A /* ViewExt.swift in Sources */,
 				8327824D299E607B00A21782 /* ProgressRingView.swift in Sources */,

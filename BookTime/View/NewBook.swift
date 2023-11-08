@@ -19,6 +19,7 @@ struct NewBook: View {
     }
     
     
+    @EnvironmentObject var appData: AppData
     
     @Environment(\.managedObjectContext) var context
     @Environment(\.dismiss) var dismiss
@@ -37,8 +38,6 @@ struct NewBook: View {
     
     
     @State private var tagInput:String = ""
-    
-    @State public var tags:[Tag]
     
     @FocusState private var focusInput:FocusInput?
     
@@ -222,14 +221,12 @@ struct NewBook: View {
 
                 }
                 
-            }
-            .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     
                     ScrollView(.horizontal){
                         HStack{
                             if focusInput == .tag {
-                                ForEach(tags){x in
+                                ForEach(appData.tags){x in
                                     if bookViewModel.tags.first(where:{ tag in
                                         tag.name == x.name
                                     }) == nil {
@@ -256,8 +253,9 @@ struct NewBook: View {
                     }
                     
                 }
-                
+
             }
+
 //            .onAppear{
 //                focusInput = .name
 //            }

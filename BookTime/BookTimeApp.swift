@@ -13,7 +13,7 @@ struct BookTimeApp: App {
     
     
     let bookPersistenceController = BookPersistenceController.shared
-    
+    let appData = AppData()
     
     @State var iconSize = 120.0
     @State var deltaAngle = 0.0
@@ -103,6 +103,7 @@ struct BookTimeApp: App {
                         }
                 }
             }
+            .environmentObject(appData)
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
             .environment(
                                \.whatsNew,

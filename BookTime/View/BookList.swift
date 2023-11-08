@@ -11,6 +11,8 @@ import CloudKit
 import WidgetKit
 
 struct BookList: View {
+    @EnvironmentObject var appData: AppData
+    
     @AppStorage("todayReadMin") var todayReadMin = 0
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     let ctrl = BookPersistenceController.shared
@@ -53,7 +55,7 @@ struct BookList: View {
     @State private var searchText = ""
     @State private var showAlert:Bool = false
     @State private var wantDelete:Book? = nil
-    @State private var tags:[Tag] = []
+//    @State private var tags:[Tag] = []
     @State private var selectTag:Tag? = nil
     
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
@@ -72,7 +74,7 @@ struct BookList: View {
             
         }
         .contextMenu {
-            
+
             Button(action: {
                 self.bookViewModel.setBook(book: book)
                 self.showNewBook = true
@@ -229,6 +231,7 @@ struct BookList: View {
                         //                    index
                         Button("Delete this book (unrecoverable)", role: .destructive) {
                             delete(book: wantDelete)
+                            initTags()
                         }
                         Button("Cancel", role: .cancel) {
                             self.showAlert = false
@@ -258,10 +261,10 @@ struct BookList: View {
                     .toolbar{
                         
                         ToolbarItem(placement: .cancellationAction){
-                            if !tags.isEmpty{
+                            if !appData.tags.isEmpty{
                                 Menu {
                                     
-                                    ForEach(tags){tag in
+                                    ForEach(appData.tags){tag in
                                         Button( action: {
                                             selectTag = tag
                                             
@@ -370,12 +373,11 @@ struct BookList: View {
             }
         }
 //        sheet
-        .fullScreenCover(isPresented: $showNewBook){
-            NewBook(bookViewModel:bookViewModel,tags: tags)
-                .presentationDetents([.medium])
-                .onDisappear(perform: {
-                    initTags()
-                })
+        .sheet(isPresented: $showNewBook,onDismiss: {
+            initTags()
+        }){
+            NewBook(bookViewModel:bookViewModel)
+                .presentationDetents([.large])
         }
         //        .autoNav()
         
@@ -383,15 +385,15 @@ struct BookList: View {
     }
     
     func initTags(){
-        tags.removeAll()
+        appData.tags.removeAll()
         booksAll.forEach({book in
             if let tagString = book.tags ,!tagString.isEmpty {
                 tagString.split(separator: ",").forEach{
                     let _tag = Tag(name: String($0))
-                    if(tags.firstIndex(where: { tag in
+                    if(appData.tags.firstIndex(where: { tag in
                         tag.name == _tag.name
                     }) == nil){
-                        tags.append(_tag)
+                        appData.tags.append(_tag)
                     }
                 }
             }
