@@ -58,6 +58,8 @@ struct BookList: View {
 //    @State private var tags:[Tag] = []
     @State private var selectTag:Tag? = nil
     
+    @State private var selectBook:Book?
+    
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
     @State private var columnVisibility = NavigationSplitViewVisibility.automatic
@@ -200,7 +202,7 @@ struct BookList: View {
                     }
             } else {
                 NavigationSplitView(columnVisibility: $columnVisibility) {
-                    List{
+                    List(selection: $selectBook){
                         if searchText.isEmpty {
                             ForEach(booksGroup) { section in
                                 Section(header: Text(getSectionHeader(iStatus: section.id  ) + "·\(section.count)" ).monospacedDigit() ) {
@@ -220,9 +222,9 @@ struct BookList: View {
                         }
                         
                     }
-                    .navigationDestination(for: Book.self, destination: {book in
-                        BookCard(book:book)
-                    })
+//                    .navigationDestination(for: Book.self, destination: {book in
+//                        BookCard(book:book)
+//                    })
                     
                     //                .listStyle(.grouped)
                     //                .listStyle(.sidebar)
@@ -308,20 +310,24 @@ struct BookList: View {
                     
                     
                 } detail:{
-                    
-                    
-                    Button(action: {
-                        columnVisibility = .doubleColumn
-                    }) {
-                        Text("Please select a book.")
-                            .bold()
-                            .font(.largeTitle)
+                    if let selectBook{
+                        BookCard(book:selectBook)
+                    }else{
+                        Button(action: {
+                            columnVisibility = .doubleColumn
+                        }) {
+                            Text("Please select a book.")
+                                .bold()
+                                .font(.largeTitle)
+                        }
+                        .tint(.accentColor)
+                        .buttonStyle(.bordered)
+                        //                .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+
                     }
-                    .tint(.accentColor)
-                    .buttonStyle(.bordered)
-                    //                .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.large)
+                    
                     
                     
                     
