@@ -6,13 +6,13 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -20,7 +20,7 @@
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
             <PersistentString
                value = "longHit">
@@ -32,7 +32,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -48,10 +48,10 @@
          contextName = "closure #8 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "thisMinute">
+               value = "reminDateMin">
             </PersistentString>
             <PersistentString
-               value = "reminDateMin">
+               value = "thisMinute">
             </PersistentString>
             <PersistentString
                value = "isRemind">
@@ -109,6 +109,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #3 in closure #1 in BookList.body.getter:BookList.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "showNewBook">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
@@ -161,19 +169,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in BookList.isDone2status():BookList.swift">
+         contextName = "closure #1 in closure #1 in closure #1 in closure #3 in closure #1 in NewBook.body.getter:NewBook.swift">
          <PersistentStrings>
             <PersistentString
-               value = "book.isDone">
+               value = "focusInput">
             </PersistentString>
             <PersistentString
-               value = "book.isDone ? BookStatus.readed.rawValue : BookStatus.reading.rawValue">
-            </PersistentString>
-            <PersistentString
-               value = "book.name">
-            </PersistentString>
-            <PersistentString
-               value = "book.status">
+               value = "tags">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -189,24 +191,30 @@
          contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newOrientation.isPortrait">
+               value = "newOrientation">
             </PersistentString>
             <PersistentString
                value = "orientation.isPortrait">
             </PersistentString>
             <PersistentString
-               value = "newOrientation">
+               value = "newOrientation.isPortrait">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in closure #1 in closure #1 in closure #3 in closure #1 in NewBook.body.getter:NewBook.swift">
+         contextName = "closure #1 in BookList.isDone2status():BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = "focusInput">
+               value = "book.isDone">
             </PersistentString>
             <PersistentString
-               value = "tags">
+               value = "book.isDone ? BookStatus.readed.rawValue : BookStatus.reading.rawValue">
+            </PersistentString>
+            <PersistentString
+               value = "book.name">
+            </PersistentString>
+            <PersistentString
+               value = "book.status">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -298,10 +306,10 @@
          contextName = "closure #1 in closure #1 in closure #1 in closure #5 in closure #1 in Statistics.reportView(isRendererImage:):Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "selectBookIndex">
+               value = "selectBookID">
             </PersistentString>
             <PersistentString
-               value = "selectBookID">
+               value = "selectBookIndex">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -403,7 +411,7 @@
                value = "Date().dayOfYear">
             </PersistentString>
             <PersistentString
-               value = "customDateBegin">
+               value = "mounthFirst.dayOfYear ">
             </PersistentString>
             <PersistentString
                value = "logInYear[243]">
@@ -415,7 +423,7 @@
                value = "logInYear[mounthFirst.dayOfYear]">
             </PersistentString>
             <PersistentString
-               value = "mounthFirst.dayOfYear ">
+               value = "customDateBegin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

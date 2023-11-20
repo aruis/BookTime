@@ -55,7 +55,7 @@ struct BookList: View {
     @State private var searchText = ""
     @State private var showAlert:Bool = false
     @State private var wantDelete:Book? = nil
-//    @State private var tags:[Tag] = []
+    //    @State private var tags:[Tag] = []
     @State private var selectTag:Tag? = nil
     
     @State private var selectBook:Book?
@@ -80,7 +80,6 @@ struct BookList: View {
             Button(action: {
                 self.bookViewModel.setBook(book: book)
                 self.showNewBook = true
-                //                                self.showError.toggle()
             }) {
                 HStack {
                     Text("Modify the Book")
@@ -89,9 +88,6 @@ struct BookList: View {
             }
             
             Button(role: .cancel, action: {
-                if  book.status != BookStatus.archive.rawValue {
-                    book.status = BookStatus.archive.rawValue
-                }else{
                 if  book.status != BookStatus.archive.rawValue {
                     book.status = BookStatus.archive.rawValue
                 }else{
@@ -205,7 +201,7 @@ struct BookList: View {
                     }
             } else {
                 NavigationSplitView(columnVisibility: $columnVisibility) {
-                    List(selection: $selectBook){
+                    List{
                         if searchText.isEmpty {
                             ForEach(booksGroup) { section in
                                 Section(header: Text(getSectionHeader(iStatus: section.id  ) + "·\(section.count)" ).monospacedDigit() ) {
@@ -225,9 +221,15 @@ struct BookList: View {
                         }
                         
                     }
-//                    .navigationDestination(for: Book.self, destination: {book in
-//                        BookCard(book:book)
-//                    })
+                    .navigationDestination(for: Book.self, destination: {book in
+                        BookCard(book:book)
+                    })
+                    .navigationDestination(isPresented: $showNewBook){
+                        NewBook(bookViewModel:bookViewModel)
+                            .onDisappear{
+                                initTags()
+                            }
+                    }
                     
                     //                .listStyle(.grouped)
                     //                .listStyle(.sidebar)
@@ -313,9 +315,7 @@ struct BookList: View {
                     
                     
                 } detail:{
-                    if let selectBook{
-                        BookCard(book:selectBook)
-                    }else{
+                    if selectBook == nil {
                         Button(action: {
                             columnVisibility = .doubleColumn
                         }) {
@@ -328,11 +328,8 @@ struct BookList: View {
                         //                .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
                         .controlSize(.large)
-
+                        
                     }
-                    
-                    
-                    
                     
                     
                     
@@ -381,14 +378,6 @@ struct BookList: View {
                 
             }
         }
-//        sheet
-        .sheet(isPresented: $showNewBook,onDismiss: {
-            initTags()
-        }){
-            NewBook(bookViewModel:bookViewModel)
-                .presentationDetents([.large])
-        }
-        //        .autoNav()
         
         
     }
