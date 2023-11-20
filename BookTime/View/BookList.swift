@@ -201,7 +201,7 @@ struct BookList: View {
                     }
             } else {
                 NavigationSplitView(columnVisibility: $columnVisibility) {
-                    List{
+                    List(selection: $selectBook){
                         if searchText.isEmpty {
                             ForEach(booksGroup) { section in
                                 Section(header: Text(getSectionHeader(iStatus: section.id  ) + "·\(section.count)" ).monospacedDigit() ) {
@@ -221,9 +221,9 @@ struct BookList: View {
                         }
                         
                     }
-                    .navigationDestination(for: Book.self, destination: {book in
-                        BookCard(book:book)
-                    })
+//                    .navigationDestination(for: Book.self, destination: {book in
+//                        BookCard(book:book)
+//                    })
                     .navigationDestination(isPresented: $showNewBook){
                         NewBook(bookViewModel:bookViewModel)
                             .onDisappear{
@@ -315,7 +315,9 @@ struct BookList: View {
                     
                     
                 } detail:{
-                    if selectBook == nil {
+                    if let selectBook {
+                        BookCard(book:selectBook)
+                    } else {
                         Button(action: {
                             columnVisibility = .doubleColumn
                         }) {

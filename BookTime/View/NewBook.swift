@@ -52,7 +52,7 @@ struct NewBook: View {
     
     
     var body: some View {
-                
+        
         VStack{
             HStack(alignment:.top, spacing:0){
                 VStack(spacing: 8){
@@ -67,8 +67,7 @@ struct NewBook: View {
                         .font(.caption)
                         .foregroundColor(Color(.darkGray))
                     
-                    Spacer()
-                }
+                }                
                 .padding(.horizontal,10)
                 .onTapGesture {
                     self.showPhotoOptins.toggle()
@@ -166,28 +165,27 @@ struct NewBook: View {
             }
             //                    .padding(16)
             
-            HStack{
-                
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 80),spacing: 2),],spacing: 4) {
-                    ForEach(bookViewModel.tags){item in
-                        Button(action: {
-                            bookViewModel.tags.removeAll(where: {$0.name == item.name})
-                        }, label: {
-                            Label(item.name, systemImage: "multiply")
-                                .labelStyle(TagLabelStyle())
-                            
-                        })
-                        .buttonStyle(.bordered)
-                        //                                .background(Color.white)
-                        //                                .foregroundColor(.gray)
+            
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80),spacing: 2),],spacing: 4) {
+                ForEach(bookViewModel.tags){item in
+                    Button(action: {
+                        bookViewModel.tags.removeAll(where: {$0.name == item.name})
+                    }, label: {
+                        Label(item.name, systemImage: "multiply")
+                            .labelStyle(TagLabelStyle())
                         
-                        
-                    }
+                    })
+                    .buttonStyle(.bordered)
+                    //                                .background(Color.white)
+                    //                                .foregroundColor(.gray)
+                    
+                    
                 }
-                .padding(8)
-                
-                
             }
+            .padding(8)
+            
+            
+            Spacer()
             
         }
         .padding(12)
@@ -205,7 +203,7 @@ struct NewBook: View {
                     
                 }){
                     Text("Save")
-//                        .font(.headline)
+                    //                        .font(.headline)
                     //                        .foregroundColor(Color("NavigationBarTitle"))
                 }
                 
