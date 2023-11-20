@@ -92,6 +92,9 @@ struct BookList: View {
                 if  book.status != BookStatus.archive.rawValue {
                     book.status = BookStatus.archive.rawValue
                 }else{
+                if  book.status != BookStatus.archive.rawValue {
+                    book.status = BookStatus.archive.rawValue
+                }else{
                     book.status = BookStatus.reading.rawValue
                 }
                 
