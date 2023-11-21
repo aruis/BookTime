@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "a_girl_readbook.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "a_girl_readbook.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
