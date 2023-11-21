@@ -21,18 +21,6 @@ struct BookList: View {
     let keyStore = NSUbiquitousKeyValueStore()
     
     
-    @FetchRequest(entity: Book.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \Book.status, ascending: true),
-        //        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false),
-        NSSortDescriptor(keyPath: \Book.createTime, ascending: false)
-    ])
-    var books: FetchedResults<Book>
-    
-    @FetchRequest(entity: Book.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \Book.lastReadTime, ascending: false)
-    ])
-    var booksAll: FetchedResults<Book>
-    
     @SectionedFetchRequest(
         sectionIdentifier: \.status,
         sortDescriptors: [
@@ -76,7 +64,7 @@ struct BookList: View {
             
         }
         .contextMenu {
-
+            
             Button(action: {
                 self.bookViewModel.setBook(book: book)
                 self.showNewBook = true
@@ -192,212 +180,199 @@ struct BookList: View {
     }
     
     var body: some View {
-        Group{
-            if booksAll.count == 0 {
-                AddBookView()
-                    .onTapGesture {
-                        bookViewModel.clean()
-                        self.showNewBook = true
-                    }
-            } else {
-                NavigationSplitView(columnVisibility: $columnVisibility) {
-                    List(selection: $selectBook){
-                        if searchText.isEmpty {
-                            ForEach(booksGroup) { section in
-                                Section(header: Text(getSectionHeader(iStatus: section.id  ) + "·\(section.count)" ).monospacedDigit() ) {
-                                    ForEach(section) { book in
-                                        itemInList(book:book)
-                                    }
-                                    
-                                }
-                            }
-                            
-                            
-                        }else{
-                            ForEach(books) { book in
+        
+        
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            List(selection: $selectBook){
+                    ForEach(booksGroup) { section in
+                        Section(header: Text(getSectionHeader(iStatus: section.id  ) + "·\(section.count)" ).monospacedDigit() ) {
+                            ForEach(section) { book in
                                 itemInList(book:book)
                             }
                             
                         }
-                        
                     }
-//                    .navigationDestination(for: Book.self, destination: {book in
-//                        BookCard(book:book)
-//                    })
-                    .navigationDestination(isPresented: $showNewBook){
-                        NewBook(bookViewModel:bookViewModel)
-                            .onDisappear{
-                                initTags()
-                            }
-                    }
-                    
-                    //                .listStyle(.grouped)
-                    //                .listStyle(.sidebar)
-                    .navigationTitle("My Bookshelf")
-                    .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
-                        //                    index
-                        Button("Delete this book (unrecoverable)", role: .destructive) {
-                            delete(book: wantDelete)
-                            initTags()
-                        }
-                        Button("Cancel", role: .cancel) {
-                            self.showAlert = false
-                        }
-                    })
-                    .navigationBarTitleDisplayMode(.automatic)
-                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
-                    .onChange(of: searchText){ searchText in
-                        let predicate = searchText.isEmpty
-                        ? NSPredicate(value: true)
-                        : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
-                        
-                        books.nsPredicate = predicate
-                    }
-                    //                .toolbar(content: {
-                    //                    ToolbarItem(placement: .bottomBar){
-                    //                        if MyTool.checkAndBuildTodayLog(context: context).readMinutes > 0{
-                    //                            Text("今日阅读时长：\(MyTool.checkAndBuildTodayLog(context: context).readMinutes)分钟")
-                    //                        }else if(books.count>0){
-                    //                            Text("今天还没有开始阅读呦")
-                    //                        }else{
-                    //
-                    //                        }
-                    //
-                    //                    }
-                    //                })
-                    .toolbar{
-                        
-                        ToolbarItem(placement: .cancellationAction){
-                            if !appData.tags.isEmpty{
-                                Menu {
-                                    
-                                    ForEach(appData.tags){tag in
-                                        Button( action: {
-                                            selectTag = tag
-                                            
-                                            let predicate = NSPredicate(format: "tags CONTAINS[c] %@ ", tag.name+",")
-                                            booksGroup.nsPredicate = predicate
-                                            
-                                        },label: {
-                                            Label(tag.name,systemImage: selectTag?.name == tag.name ?  "checkmark" : "")
-                                        })
-                                    }
-                                    
-                                    Button(action: {
-                                        selectTag = nil
-                                        
-                                        let predicate = NSPredicate(value: true)
-                                        booksGroup.nsPredicate = predicate
-                                        
-                                    }, label: {
-                                        Label("-",systemImage: selectTag == nil ?  "checkmark" : "")
-                                    })
-                                    
-                                    
-                                } label:{
-                                    Label(selectTag?.name ?? "",systemImage: selectTag != nil ? "tag.fill" :"tag")
-                                        .labelStyle(.titleAndIcon)
-                                }
-                            }
-                        }
-                        
-                        ToolbarItem(placement: .primaryAction){
-                            Button(action: {
-                                bookViewModel.clean()
-                                self.showNewBook = true
-                            }){
-                                Image(systemName: "plus")
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                    
-                } detail:{
-                    if let selectBook {
-                        BookCard(book:selectBook)
-                    } else {
-                        Button(action: {
-                            columnVisibility = .doubleColumn
-                        }) {
-                            Text("Please select a book.")
-                                .bold()
-                                .font(.largeTitle)
-                        }
-                        .tint(.accentColor)
-                        .buttonStyle(.bordered)
-                        //                .buttonStyle(.borderedProminent)
-                        .buttonBorderShape(.capsule)
-                        .controlSize(.large)
-                        
-                    }
-                    
-                    
-                    
-                    //                        .foregroundColor(.white)
-                    //                        .padding(Edge.Set.vertical,8)
-                    //                        .padding(Edge.Set.horizontal,14)
-                    //
-                    //                        .background(Color.accentColor)
-                    //                        .clipShape(
-                    //                            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    //                        )
-                    
-                    
-                    //                .clipShape(RoundedRectangle(cornerRadius: 25, style: .cornerSize))
-                    
-                    //                    .background(Color(UIColor(<#T##SwiftUI.Color#>)))
-                    //
-                }
-                .task {
-                    initTags()
-                    //                isDone2status()
-                    
-                    
-                    var logInYear =  [Int](repeating: 0, count: 366)
-                    
-                    let thisYear = Date().format("YYYY")
-                    
-                    todayReadMin = 0
-                    
-                    for log:ReadLog in logs{
-                        if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
-                            logInYear[log.day.dayOfYear-1] = log.readMinutes
-                        }
-                        if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
-                            todayReadMin = log.readMinutes
-                        }
-                    }
-                    
-                    keyStore.set(todayReadMin, forKey: "todayReadMin")
-                    keyStore.set(logInYear, forKey: "logInYear")
-                    keyStore.synchronize()
-                    
-                    WidgetCenter.shared.reloadAllTimelines()
-                    
-                }
                 
             }
+            //                    .navigationDestination(for: Book.self, destination: {book in
+            //                        BookCard(book:book)
+            //                    })
+            .navigationDestination(isPresented: $showNewBook){
+                NewBook(bookViewModel:bookViewModel)
+                    .onDisappear{
+                        initTags()
+                    }
+            }
+            
+            //                .listStyle(.grouped)
+            //                .listStyle(.sidebar)
+            .navigationTitle("My Bookshelf")
+            .confirmationDialog("Cancel", isPresented: $showAlert, actions: {
+                //                    index
+                Button("Delete this book (unrecoverable)", role: .destructive) {
+                    delete(book: wantDelete)
+                    initTags()
+                }
+                Button("Cancel", role: .cancel) {
+                    self.showAlert = false
+                }
+            })
+            .navigationBarTitleDisplayMode(.automatic)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
+            .onChange(of: searchText){ searchText in
+                let predicate = searchText.isEmpty
+                ? NSPredicate(value: true)
+                : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
+                
+                booksGroup.nsPredicate = predicate
+            }
+            .overlay{
+                if  booksGroup.count == 0 && searchText.isEmpty  {
+                    AddBookView()
+                        .onTapGesture {
+                            bookViewModel.clean()
+                            self.showNewBook = true
+                        }
+                }
+            }
+            .toolbar{                
+                ToolbarItem(placement: .cancellationAction){
+                    if !appData.tags.isEmpty{
+                        Menu {
+                            
+                            ForEach(appData.tags){tag in
+                                Button( action: {
+                                    selectTag = tag
+                                    
+                                    let predicate = NSPredicate(format: "tags CONTAINS[c] %@ ", tag.name+",")
+                                    booksGroup.nsPredicate = predicate
+                                    
+                                },label: {
+                                    Label(tag.name,systemImage: selectTag?.name == tag.name ?  "checkmark" : "")
+                                })
+                            }
+                            
+                            Button(action: {
+                                selectTag = nil
+                                
+                                let predicate = NSPredicate(value: true)
+                                booksGroup.nsPredicate = predicate
+                                
+                            }, label: {
+                                Label("-",systemImage: selectTag == nil ?  "checkmark" : "")
+                            })
+                            
+                            
+                        } label:{
+                            Label(selectTag?.name ?? "",systemImage: selectTag != nil ? "tag.fill" :"tag")
+                                .labelStyle(.titleAndIcon)
+                        }
+                    }
+                }
+                
+                ToolbarItem(placement: .primaryAction){
+                    Button(action: {
+                        bookViewModel.clean()
+                        self.showNewBook = true
+                    }){
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            
+            
+            
+            
+        } detail:{
+            if let selectBook {
+                BookCard(book:selectBook)
+            } else {
+                Button(action: {
+                    columnVisibility = .doubleColumn
+                }) {
+                    Text("Please select a book.")
+                        .bold()
+                        .font(.largeTitle)
+                }
+                .tint(.accentColor)
+                .buttonStyle(.bordered)
+                //                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+                
+            }
+            
+            
+            
+            //                        .foregroundColor(.white)
+            //                        .padding(Edge.Set.vertical,8)
+            //                        .padding(Edge.Set.horizontal,14)
+            //
+            //                        .background(Color.accentColor)
+            //                        .clipShape(
+            //                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+            //                        )
+            
+            
+            //                .clipShape(RoundedRectangle(cornerRadius: 25, style: .cornerSize))
+            
+            //                    .background(Color(UIColor(<#T##SwiftUI.Color#>)))
+            //
         }
+        .task(priority: .low) {
+            initTags()
+            //                isDone2status()
+            
+            
+            var logInYear =  [Int](repeating: 0, count: 366)
+            
+            let thisYear = Date().format("YYYY")
+            
+            todayReadMin = 0
+            
+            for log:ReadLog in logs{
+                if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
+                    logInYear[log.day.dayOfYear-1] = log.readMinutes
+                }
+                if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
+                    todayReadMin = log.readMinutes
+                }
+            }
+            
+            keyStore.set(todayReadMin, forKey: "todayReadMin")
+            keyStore.set(logInYear, forKey: "logInYear")
+            keyStore.synchronize()
+            
+            WidgetCenter.shared.reloadAllTimelines()
+            
+        }
+        
+        
+        
         
         
     }
     
     func initTags(){
         appData.tags.removeAll()
-        booksAll.forEach({book in
-            if let tagString = book.tags ,!tagString.isEmpty {
-                tagString.split(separator: ",").forEach{
-                    let _tag = Tag(name: String($0))
-                    if(appData.tags.firstIndex(where: { tag in
-                        tag.name == _tag.name
-                    }) == nil){
-                        appData.tags.append(_tag)
+        
+        booksGroup.forEach{
+            $0.forEach{book in
+                if let tagString = book.tags ,!tagString.isEmpty {
+                    tagString.split(separator: ",").forEach{
+                        let _tag = Tag(name: String($0))
+                        if(appData.tags.firstIndex(where: { tag in
+                            tag.name == _tag.name
+                        }) == nil){
+                            appData.tags.append(_tag)
+                        }
                     }
                 }
             }
-        })
+            
+        }
+        
+        //        booksAll.forEach()
         
     }
     
