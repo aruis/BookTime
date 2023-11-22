@@ -278,14 +278,11 @@ struct BookList: View {
                         Image(systemName: "plus")
                     }
                 }
-            }
-            
-            
-            
-            
+            }            
         } detail:{
             if let selectBook {
                 BookCard(book:selectBook)
+                    .id(selectBook.id)
             } else {
                 Button(action: {
                     columnVisibility = .doubleColumn
