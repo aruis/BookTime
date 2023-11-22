@@ -167,6 +167,17 @@ struct BookCard: View {
                         downTrigger+=1
                     }
                     
+                    book.isDone = isDone
+                    
+                    if(isDone){
+                        book.doneTime = Date()
+                        book.status = BookStatus.readed.rawValue
+                    }else{
+                        book.status = BookStatus.reading.rawValue
+                    }
+                                                            
+                    save()
+
                 }
                 .animation(.easeInOut, value: isDone)
                 
@@ -249,18 +260,6 @@ struct BookCard: View {
         .onAppear(perform: {
             self.isDone = book.isDone
             UIDevice.current.isBatteryMonitoringEnabled = true
-        })
-        .onDisappear(perform: {
-            if book.isDone != self.isDone{
-                book.isDone = self.isDone
-                if(isDone){
-                    book.doneTime = Date()
-                    book.status = BookStatus.readed.rawValue
-                }else{
-                    book.status = BookStatus.reading.rawValue
-                }
-                save()
-            }
         })
         .fullScreenCover(isPresented: $showTimer, content: {
             TimerView(book: book,handShowTimer: $handShowTimer)
