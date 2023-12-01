@@ -25,78 +25,77 @@ struct BookTimeApp: App {
     
     var whatsNewCollection: WhatsNewCollection {[
         WhatsNew(
-            version: "2.23.4",
+            version: "2.23.5",
             title: WhatsNew.Title(text: WhatsNew.Text(String(localized: "What's New"))),
             features: [
-//                .init(
-//                    image: .init(
-//                        systemName: "heart.fill",
-//                        foregroundColor: .red
-//                    ),
-//                    title: WhatsNew.Text(String(localized: "Heartfelt Update:")),
-//                    subtitle: WhatsNew.Text(String(localized:"Added AI camera, available for testing."))
-//                ),
+                //                .init(
+                //                    image: .init(
+                //                        systemName: "heart.fill",
+                //                        foregroundColor: .red
+                //                    ),
+                //                    title: WhatsNew.Text(String(localized: "Heartfelt Update:")),
+                //                    subtitle: WhatsNew.Text(String(localized:"Added AI camera, available for testing."))
+                //                ),
                 .init(
                     image: .init(
                         systemName: "star.fill",
                         foregroundColor: .accentColor
                     ),
                     title: WhatsNew.Text(String(localized: "Important Enhancements:")),
-                    subtitle: WhatsNew.Text(String(localized:"You can preview related images before sharing them."))
+                    subtitle: WhatsNew.Text(String(localized:"Optimized the UI details of some pages."))
                 ),
-
-                .init(
-                    image: .init(
-                        systemName: "terminal.fill",
-                        foregroundColor: .blue
-                    ),
-                    title: WhatsNew.Text(String(localized: "Bug Fixes:")),
-                    subtitle: WhatsNew.Text(String(localized:"The widget is compatible with the latest version of API of iOS17.\nFixed the problem that the book rating point with three stars cannot respond."))
-                )
-
-
+                
+                    .init(
+                        image: .init(
+                            systemName: "terminal.fill",
+                            foregroundColor: .blue
+                        ),
+                        title: WhatsNew.Text(String(localized: "Bug Fixes:")),
+                        subtitle: WhatsNew.Text(String(localized:"Improved interaction logic on iPad.\nFixed the bug that OCR content and tags cannot be selected on the book editing page after iOS17."))
+                    )
+                
+                
             ],
             primaryAction: WhatsNew.PrimaryAction(
                 title: WhatsNew.Text(String(localized: "Continue")),
-//                  backgroundColor: .accentColor,
-//                  foregroundColor: .white,
-                  hapticFeedback: .notification(.success)
+                //                  backgroundColor: .accentColor,
+                //                  foregroundColor: .white,
+                hapticFeedback: .notification(.success)
             )
-
+            
         )
     ]}
-
-
+    
+    
     
     let transitionTime = 1.0
     
     var body: some Scene {
         
-        WindowGroup {
-//            AddBook()
+        WindowGroup {            
             ZStack{
                 if isShowMainTab {
                     MainTab()
                         .whatsNewSheet()
                 }
-
+                
                 if isShowSplashtop {
                     Icon(iconSize:$iconSize,deltaAngle:$deltaAngle)
-                        .opacity(hideSplashtop ? 0 : 1)                        
+                        .opacity(hideSplashtop ? 0 : 1)
                         .onAppear{
                             withAnimation(.easeIn(duration: 0.9 * transitionTime ).delay(0.25 * transitionTime)){
                                 iconSize = 1960
                                 deltaAngle = 35
                             }
-
+                            
                             withAnimation(.easeIn(duration: 0.35 * transitionTime).delay(0.8 * transitionTime)){
                                 hideSplashtop = true
                             }
-
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.18 * transitionTime, execute: {
                                 isShowMainTab = true
                             })
-
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2 * transitionTime, execute: {
                                 isShowSplashtop = false
                             })
@@ -105,17 +104,16 @@ struct BookTimeApp: App {
             }
             .environmentObject(appData)
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
-            .environment(
-                               \.whatsNew,
-                               WhatsNewEnvironment(
-                                   // Specify in which way the presented WhatsNew Versions are stored.
-                                   // In default the `UserDefaultsWhatsNewVersionStore` is used.
-                                   versionStore: UserDefaultsWhatsNewVersionStore(),
-//                                   versionStore: InMemoryWhatsNewVersionStore(),
-                                   // Pass a `WhatsNewCollectionProvider` or an array of WhatsNew instances
-                                   whatsNewCollection: whatsNewCollection
-                               )
-                           )
+            .environment(\.whatsNew,
+                          WhatsNewEnvironment(
+                            // Specify in which way the presented WhatsNew Versions are stored.
+                            // In default the `UserDefaultsWhatsNewVersionStore` is used.
+                            versionStore: UserDefaultsWhatsNewVersionStore(),
+                            //                                   versionStore: InMemoryWhatsNewVersionStore(),
+                            // Pass a `WhatsNewCollectionProvider` or an array of WhatsNew instances
+                            whatsNewCollection: whatsNewCollection
+                          )
+            )
             //            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
         }
     }

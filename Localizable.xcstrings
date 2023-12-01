@@ -646,6 +646,16 @@
         }
       }
     },
+    "Improved interaction logic on iPad.\nFixed the bug that OCR content and tags cannot be selected on the book editing page after iOS17." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "改进了 iPad 下的交互逻辑。\n修正了 iOS17 后书籍编辑页面无法选择OCR内容、无法选择标签的 BUG."
+          }
+        }
+      }
+    },
     "Keep" : {
       "localizations" : {
         "zh-Hans" : {
@@ -735,6 +745,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今日未阅读"
+          }
+        }
+      }
+    },
+    "Optimized the UI details of some pages." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "优化了一些页面的UI细节。"
           }
         }
       }
@@ -1050,6 +1070,7 @@
       }
     },
     "The widget is compatible with the latest version of API of iOS17.\nFixed the problem that the book rating point with three stars cannot respond." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
