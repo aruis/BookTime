@@ -6,13 +6,13 @@
          contextName = "closure #1 in BookList.body.getter:BookList.swift">
          <PersistentStrings>
             <PersistentString
-               value = " searchText.isEmpty">
+               value = "searchText">
             </PersistentString>
             <PersistentString
                value = "books.count">
             </PersistentString>
             <PersistentString
-               value = "searchText">
+               value = " searchText.isEmpty">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -20,7 +20,10 @@
          contextName = "Statistics.initAllLog():Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "components.day">
+               value = "Date().format(format: &quot;YYYY&quot;) ">
+            </PersistentString>
+            <PersistentString
+               value = "Date().format(&quot;YYYY&quot;)">
             </PersistentString>
             <PersistentString
                value = "longHit">
@@ -32,7 +35,7 @@
                value = "log.day">
             </PersistentString>
             <PersistentString
-               value = "Date().format(format: &quot;YYYY&quot;) ">
+               value = "components.day">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -48,10 +51,10 @@
          contextName = "closure #8 in TimerView.body.getter:TimerView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "reminDateMin">
+               value = "thisMinute">
             </PersistentString>
             <PersistentString
-               value = "thisMinute">
+               value = "reminDateMin">
             </PersistentString>
             <PersistentString
                value = "isRemind">
@@ -191,13 +194,13 @@
          contextName = "closure #2 in BookCard.body.getter:BookCard.swift">
          <PersistentStrings>
             <PersistentString
-               value = "newOrientation">
+               value = "newOrientation.isPortrait">
             </PersistentString>
             <PersistentString
                value = "orientation.isPortrait">
             </PersistentString>
             <PersistentString
-               value = "newOrientation.isPortrait">
+               value = "newOrientation">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -306,10 +309,10 @@
          contextName = "closure #1 in closure #1 in closure #1 in closure #5 in closure #1 in Statistics.reportView(isRendererImage:):Statistics.swift">
          <PersistentStrings>
             <PersistentString
-               value = "selectBookID">
+               value = "selectBookIndex">
             </PersistentString>
             <PersistentString
-               value = "selectBookIndex">
+               value = "selectBookID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -397,6 +400,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Statistics.readedBooks.getter:Statistics.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Date().format(&quot;YYYY&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in closure #3 in closure #1 in closure #2 in closure #1 in closure #1 in Setting.body.getter:Setting.swift">
          <PersistentStrings>
             <PersistentString
@@ -411,6 +422,12 @@
                value = "Date().dayOfYear">
             </PersistentString>
             <PersistentString
+               value = "customDateBegin">
+            </PersistentString>
+            <PersistentString
+               value = "calendar.component(.year, from: currentDate)">
+            </PersistentString>
+            <PersistentString
                value = "mounthFirst.dayOfYear ">
             </PersistentString>
             <PersistentString
@@ -421,9 +438,6 @@
             </PersistentString>
             <PersistentString
                value = "logInYear[mounthFirst.dayOfYear]">
-            </PersistentString>
-            <PersistentString
-               value = "customDateBegin">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -323,12 +323,12 @@ struct BookList: View {
             
             var logInYear =  [Int](repeating: 0, count: 366)
             
-            let thisYear = Date().format("YYYY")
+            let now = Date()
             
             todayReadMin = 0
             
             for log:ReadLog in logs{
-                if(thisYear == log.day.format("YYYY") && log.readMinutes > logInYear[log.day.dayOfYear-1]){
+                if(now.isSameYear(log.day) && log.readMinutes > logInYear[log.day.dayOfYear-1]){
                     logInYear[log.day.dayOfYear-1] = log.readMinutes
                 }
                 if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
@@ -457,21 +457,7 @@ struct AddBookView: View {
                     .frame(width: 300)
                     .font(.title)
                     .offset(y:60)
-            }
-            .overlay(alignment:.bottomTrailing){
-                Image(systemName: "hand.point.up.left.fill")
-                    .font(.system(size: 100))
-                    .shadow(radius: 3,x: 3,y: 3)
-                    .foregroundColor(Color(uiColor: .lightGray))
-                    .offset(x: handMove ? 125 : 55,y: handMove ? 125 : 55)
-            }
-        
-            .onAppear(perform: {
-                withAnimation(.easeOut(duration: 2).repeatForever()){
-                    handMove.toggle()
-                }
-            })
-        
+            }        
         
         
     }

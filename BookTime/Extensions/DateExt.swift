@@ -58,4 +58,14 @@ extension Date {
     func isSameDay(_ date2:Date) -> Bool{
         return Calendar.current.isDate(self, equalTo: date2, toGranularity: .day)
     }
+    
+    func isSameYear(_ date2:Date) -> Bool{
+        return Calendar.current.isDate(self, equalTo: date2, toGranularity: .year)
+    }
+
+    func isSameMonth(_ date2:Date) -> Bool{
+        return Calendar.current.isDate(self, equalTo: date2, toGranularity: .month)
+    }
+
+    
 }

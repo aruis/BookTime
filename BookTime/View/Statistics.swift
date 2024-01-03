@@ -50,7 +50,7 @@ struct Statistics: View {
     @State private var totalReadBook_custom = 0
     
     @State private var isShowMonth = false
-    @State private var isShowYear = false    
+    @State private var isShowYear = false
     
     @State private var isShowReadedBooks  = false
     @State private var showSharePic  = false
@@ -100,26 +100,27 @@ struct Statistics: View {
     var readedBooks:[Book]{
         get{
             var _books:[Book] = []
-            
+            let now = Date()
             for book:Book in books{
                 if(book.isDone){
-                    switch sumType {
-                    case .all:
-                        _books.append(book)
-                    case .year:
-                        
-                        if(Date().format("YYYY") == book.doneTime?.format("YYYY")) {
+                    if let doneTime = book.doneTime {
+                        switch sumType {
+                        case .all:
                             _books.append(book)
+                        case .year:
+                            if( now.isSameYear(doneTime)) {
+                                _books.append(book)
+                            }
+                        case .month:
+                            if(now.isSameMonth(doneTime)) {
+                                _books.append(book)
+                            }
+                        case .custom:
+                            if doneTime >= customDateBegin && doneTime <= customDateEnd || doneTime.isSameDay(customDateEnd) {
+                                _books.append(book)
+                            }
+                            
                         }
-                    case .month:
-                        if(Date().format("YYYY-MM") == book.doneTime?.format("YYYY-MM")) {
-                            _books.append(book)
-                        }
-                    case .custom:
-                        if book.doneTime! >= customDateBegin && book.doneTime! <= customDateEnd {
-                            _books.append(book)
-                        }
-                        
                     }
                 }
             }
@@ -131,12 +132,22 @@ struct Statistics: View {
     var chartLogs:[Log]{
         let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
         
+        
+        let currentDate = Date()
+
+        // Use the current calendar
+        let calendar = Calendar.current
+
+        // Extract the year component
+        let currentYear =  "\(calendar.component(.year, from: currentDate))"
+        
+        
         switch sumType{
         case .all:
             return logs.map{Log(day: $0.day, readMinutes: $0.readMinutes)}
         case .year:
-            return  (0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1)).map{
-                Log(day: Date(Date().format("yyyy") + "-01-01").advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[$0])
+            return  (0...(Date(currentYear + "-12-31").dayOfYear - 1)).map{
+                Log(day: Date(currentYear + "-01-01").advanced(by: TimeInterval($0 * 24 * 60 * 60)), readMinutes: logInYear[$0])
             }
         case .month:
             let mounthFirst = Date(Date().format("yyyy-MM") + "-01")
@@ -163,7 +174,8 @@ struct Statistics: View {
         }
         
         totalReadBook_custom =   books.filter{
-            $0.isDone && $0.doneTime! >= customDateBegin && $0.doneTime! <= customDateEnd
+            $0.isDone && ( $0.doneTime! >= customDateBegin && $0.doneTime! <= customDateEnd
+            || $0.doneTime!.isSameDay(customDateEnd))
         }.count
         
     }
@@ -232,7 +244,7 @@ struct Statistics: View {
                                      gradient: Gradient(colors: [Color("AccentColor").opacity(0.6), Color("AccentColor")])
                     )
                     
-                   
+                    
                     
                 }
                 .padding(.trailing,8)
@@ -359,7 +371,7 @@ struct Statistics: View {
                                         showCover = true
                                     }
                                 })
-                                
+                            
                             
                         }
                     }
@@ -398,14 +410,14 @@ struct Statistics: View {
             }
             .padding()
             .overlay(
-                    RoundedRectangle(cornerRadius: 10.0)
-                        .stroke(lineWidth: 3.0)
-                        .foregroundColor(Color("AccentColor"))
-                        .opacity(isShow ? 0 : 1)
+                RoundedRectangle(cornerRadius: 10.0)
+                    .stroke(lineWidth: 3.0)
+                    .foregroundColor(Color("AccentColor"))
+                    .opacity(isShow ? 0 : 1)
             )
         }
         .preferredColorScheme(.light)
-//        .background(Color.white)
+        //        .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
         .padding()
         .ignoresSafeArea()
@@ -425,11 +437,11 @@ struct Statistics: View {
                     .padding()
                     .navigationTitle("Achievement")
                     .toolbar(content: {
-                            Button{
-                                showSharePic = true
-                            }label:{
-                                Image(systemName: "square.and.arrow.up")
-                            }
+                        Button{
+                            showSharePic = true
+                        }label:{
+                            Image(systemName: "square.and.arrow.up")
+                        }
                     })
                 
             }
@@ -444,20 +456,20 @@ struct Statistics: View {
                     Color.accentColor.frame(height:1)
                         .padding(.top,0)
                         .padding(.bottom,30)
-                                                    
+                    
                     ShareLink(item: Image(uiImage: generateSnapshot()), preview: SharePreview("BookTime")){
                         Label( "Share",systemImage:"square.and.arrow.up.circle")
                             .font(.largeTitle)
                             .labelStyle(.iconOnly)
-                            
+                        
                     }
                 }
                 
-
+                
             }
             
         }
-
+        
         .sheet(isPresented:  $showCover, content: {
             GeometryReader{reader in
                 let scale = reader.size.height / 400 * 0.618
@@ -513,24 +525,27 @@ struct Statistics: View {
         
         var lastHitDay:Date? = nil
         
+        let now = Date()
+        
         for log:ReadLog in logs{
             
             if(log.readMinutes>0){
                 
-                if( Date().format("YYYY") == log.day.format("YYYY")) {
+                if( now.isSameYear(log.day)) {
                     totalReadDay_year += 1
                     totalReadMin_year +=  log.readMinutes
-                }
-                
-                if( Date().format("YYYY-MM") == log.day.format("YYYY-MM")) {
-                    if(totalReadDay_month == 0){
-                        customDateBegin = log.day
-                    }
                     
-                    totalReadDay_month += 1
-                    totalReadMin_month += log.readMinutes
+                    if(now.isSameMonth(log.day)) {
+                        if(totalReadDay_month == 0){
+                            customDateBegin = log.day
+                        }
+                        
+                        totalReadDay_month += 1
+                        totalReadMin_month += log.readMinutes
+                    }
                 }
                 
+                                
                 totalReadDay += 1
                 totalReadMin += log.readMinutes
                 
@@ -564,12 +579,12 @@ struct Statistics: View {
                 if book.isDone {
                     totalReadBook += 1
                     
-                    if( Date().format("YYYY") == doneTime.format("YYYY")) {
+                    if( now.isSameYear(doneTime)) {
                         totalReadBook_year += 1
-                    }
-                    
-                    if( Date().format("YYYY-MM") == doneTime.format("YYYY-MM")) {
-                        totalReadBook_month += 1
+                                                
+                        if(now.isSameMonth(doneTime)) {
+                            totalReadBook_month += 1
+                        }
                     }
                     
                 }
