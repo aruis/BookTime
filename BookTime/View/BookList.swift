@@ -228,11 +228,14 @@ struct BookList: View {
             }
             .overlay{
                 if  booksGroup.count == 0 && searchText.isEmpty  {
-                    AddBookView()
-                        .onTapGesture {
-                            bookViewModel.clean()
-                            self.showNewBook = true
-                        }
+                    
+                    Button(action: {
+                        bookViewModel.clean()
+                        self.showNewBook = true
+                    }, label: {
+                        Label("Tap here to add a book", systemImage: "plus.circle")
+                    })
+                    .font(.title)
                 }
             }
             .toolbar{                
@@ -444,21 +447,3 @@ struct BookList_Previews: PreviewProvider {
     }
 }
 
-struct AddBookView: View {
-    @State private var handMove = false
-    
-    var body: some View {
-        
-        Image(systemName: "plus.circle")
-            .font(.system(size: 70))
-            .foregroundColor(.accentColor)
-            .overlay(alignment: .bottom){
-                Text("Tap here to add a book")
-                    .frame(width: 300)
-                    .font(.title)
-                    .offset(y:60)
-            }        
-        
-        
-    }
-}

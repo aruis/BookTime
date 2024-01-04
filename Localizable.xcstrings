@@ -967,6 +967,7 @@
       }
     },
     "Select a photo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {

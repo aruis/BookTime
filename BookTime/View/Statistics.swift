@@ -141,6 +141,9 @@ struct Statistics: View {
         // Extract the year component
         let currentYear =  "\(calendar.component(.year, from: currentDate))"
         
+        if logs.isEmpty {
+            return []
+        }        
         
         switch sumType{
         case .all:
