@@ -13,7 +13,7 @@ struct Provider: TimelineProvider {
     let keyStore = NSUbiquitousKeyValueStore()
     
     func placeholder(in context: Context) -> BookTimeWidgetEntry {
-        BookTimeWidgetEntry(date: Date(), lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear:  [Int](repeating: 0, count: 365))
+        BookTimeWidgetEntry(date: Date(), lastReadDate:nil, todayReadMin: 0,targetMinPerday: 45,logInYear:  [Int](repeating: 0, count: 366))
     }
     
     func getSnapshot(in context: Context, completion: @escaping (BookTimeWidgetEntry) -> ()) {
@@ -59,7 +59,7 @@ struct Provider: TimelineProvider {
         }
         
         
-        let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
+        let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 366)
         
         
         let targetMinPerdayCloud  = keyStore.object(forKey: "targetMinPerday") as? Int ?? 45

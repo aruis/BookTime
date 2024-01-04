@@ -130,20 +130,18 @@ struct Statistics: View {
     }
     
     var chartLogs:[Log]{
-        let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 365)
+        
+        let logInYear:[Int] = keyStore.object(forKey: "logInYear") as? [Int] ??  [Int](repeating: 0, count: 366)
         
         
         let currentDate = Date()
-
+        
         // Use the current calendar
         let calendar = Calendar.current
-
+        
         // Extract the year component
         let currentYear =  "\(calendar.component(.year, from: currentDate))"
         
-        if logs.isEmpty {
-            return []
-        }        
         
         switch sumType{
         case .all:
@@ -162,8 +160,8 @@ struct Statistics: View {
                 return  $0.day >= customDateBegin && $0.day <= customDateEnd
             }
             .map{Log(day: $0.day, readMinutes: $0.readMinutes)}
-            
         }
+        
     }
     
     func processCustom(){
@@ -178,7 +176,7 @@ struct Statistics: View {
         
         totalReadBook_custom =   books.filter{
             $0.isDone && ( $0.doneTime! >= customDateBegin && $0.doneTime! <= customDateEnd
-            || $0.doneTime!.isSameDay(customDateEnd))
+                           || $0.doneTime!.isSameDay(customDateEnd))
         }.count
         
     }
@@ -548,7 +546,7 @@ struct Statistics: View {
                     }
                 }
                 
-                                
+                
                 totalReadDay += 1
                 totalReadMin += log.readMinutes
                 
@@ -584,7 +582,7 @@ struct Statistics: View {
                     
                     if( now.isSameYear(doneTime)) {
                         totalReadBook_year += 1
-                                                
+                        
                         if(now.isSameMonth(doneTime)) {
                             totalReadBook_month += 1
                         }
