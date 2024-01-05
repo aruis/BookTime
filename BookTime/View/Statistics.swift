@@ -135,11 +135,7 @@ struct Statistics: View {
         
         
         let currentDate = Date()
-        
-        // Use the current calendar
         let calendar = Calendar.current
-        
-        // Extract the year component
         let currentYear =  "\(calendar.component(.year, from: currentDate))"
         
         

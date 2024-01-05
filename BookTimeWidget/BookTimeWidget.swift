@@ -191,10 +191,13 @@ struct BookTimeWidgetEntryView : View {
     
     @ViewBuilder
     var largeView:some View{
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
         VStack(spacing:0){
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 9),spacing: 2),],spacing: 2) {
-                ForEach(0...(Date(Date().format("yyyy") + "-12-31").dayOfYear - 1),id: \.self){index in
+                ForEach(0...(calendar.range(of: .day, in: .year, for: currentDate)!.count - 1),id: \.self){index in
                     Rectangle()
                         .frame(width: 9,height: 9)
                         .foregroundColor(Color("AccentColor").opacity(squareOpacity(entry.logInYear[index])))

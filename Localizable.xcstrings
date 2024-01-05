@@ -322,7 +322,6 @@
       }
     },
     "Bookshelf" : {
-      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
