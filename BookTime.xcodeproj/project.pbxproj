@@ -695,7 +695,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.24.3;
+				MARKETING_VERSION = 2.24.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -735,7 +735,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.24.3;
+				MARKETING_VERSION = 2.24.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
