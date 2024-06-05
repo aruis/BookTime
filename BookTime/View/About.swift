@@ -40,14 +40,20 @@ struct About: View {
                         Text("Looking forward to your evaluation\(Image(systemName: "face.smiling"))")
                     }
                     
-                                        
-                    Spacer()
+                    
+                    
                     
                 }
                 .padding()
-                .padding(.bottom,20)
+                .ignoresSafeArea()
                 .navigationTitle("About")
             }
+            .overlay(alignment: .bottom, content: {
+                Text("苏ICP备2024057896号-1A")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+
+            })
             .toolbar{
                 Button(action: {
                     dismiss()
