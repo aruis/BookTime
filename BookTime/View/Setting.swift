@@ -153,14 +153,14 @@ struct Setting: View {
                         .onAppear{
                             _targetReadMin = CGFloat(targetMinPerday)
                         }
-                        .onChange(of: _targetReadMin, perform: {value in
-                            if Int(value) % 60 == 0 {
+                        .onChange(of: _targetReadMin, {
+                            if Int(_targetReadMin) % 60 == 0 {
                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             }
                         })
                                                 
-                        Toggle("Reading Reminder", isOn: $isRemind).onChange(of: isRemind, perform: {value in
-                            if value{
+                        Toggle("Reading Reminder", isOn: $isRemind).onChange(of: isRemind, {
+                            if isRemind{
                                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                                     if success {
                                         if reminDateHour > -1 && reminDateMin > -1 {
@@ -185,8 +185,8 @@ struct Setting: View {
                         .onAppear{
                             checkNotificationAuth()
                         }
-                        .onChange(of: scenePhase) { newPhase in
-                                       if newPhase == .active {
+                        .onChange(of: scenePhase) {
+                                       if scenePhase == .active {
                                            checkNotificationAuth()
                                        }
                         }
@@ -194,11 +194,11 @@ struct Setting: View {
                         if isRemind {
                             DatePicker("Reminder Time", selection: $remindDate, displayedComponents: .hourAndMinute)
                                 .foregroundColor(.accentColor)
-                                .onChange(of: remindDate, perform: {date in
+                                .onChange(of: remindDate, {
                                     let calendar = Calendar.current
                                     
-                                    reminDateHour = calendar.component(.hour, from: date)
-                                    reminDateMin = calendar.component(.minute, from: date)
+                                    reminDateHour = calendar.component(.hour, from: remindDate)
+                                    reminDateMin = calendar.component(.minute, from: remindDate)
                                     
                                     NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday: todayReadMin > 0)
                                                                         

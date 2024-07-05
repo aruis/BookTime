@@ -8,6 +8,7 @@
 import SwiftUI
 import VisionKit
 import Vision
+import Combine
 
 struct ScanDocumentView: UIViewControllerRepresentable {
         
@@ -33,6 +34,7 @@ struct ScanDocumentView: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
         var parent: ScanDocumentView
+        var cancellable: AnyCancellable?
         
         init(_ parent: ScanDocumentView){
             self.parent = parent
@@ -46,7 +48,7 @@ struct ScanDocumentView: UIViewControllerRepresentable {
             let image =  scan.imageOfPage(at: 0)
             parent.selectedImage = UIImage(data: image.aspectFittedToHeight(400).jpegData(compressionQuality: 0.85)!) ?? UIImage()
             
-            Image2Text.request(saveImage: parent.selectedImage)
+            cancellable = Image2Text.request(saveImage: parent.selectedImage)
                 .sink(receiveCompletion: { completion in
                 }, receiveValue: { someValue in
                     // do what you want with the resulting value passed down

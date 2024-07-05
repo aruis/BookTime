@@ -312,7 +312,7 @@ struct Statistics: View {
                                     DatePicker("-", selection: $customDateEnd,in: ...Date(), displayedComponents:.date)
                                     Spacer()
                                 }
-                                .onChange(of: customDateBegin, perform: { date in
+                                .onChange(of: customDateBegin,  {
                                     if customDateBegin > customDateEnd {
                                         customDateEnd = customDateBegin
                                     }
@@ -320,7 +320,7 @@ struct Statistics: View {
                                     processCustom()
                                     
                                 })
-                                .onChange(of: customDateEnd, perform: { date in
+                                .onChange(of: customDateEnd, { 
                                     if customDateBegin > customDateEnd {
                                         customDateBegin = customDateEnd
                                     }

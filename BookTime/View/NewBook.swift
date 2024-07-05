@@ -295,9 +295,8 @@ struct NewBook: View {
         .toast(isPresenting: $showToast,duration: 3,tapToDismiss: true){
             AlertToast(displayMode: .banner(.pop), type: .systemImage("exclamationmark.circle.fill", .orange), title: String(localized: "You haven't entered the title of the book yet"))
         }
-        
-        .onChange(of: textInPhoto, perform: {value in
-            textInPhotoList = value.split(separator: ",").map{String($0)}
+        .onChange(of: textInPhoto,  {
+            textInPhotoList = textInPhoto.split(separator: ",").map{String($0)}
         })
         
     }

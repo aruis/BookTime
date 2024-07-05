@@ -294,7 +294,7 @@ struct TimerView: View {
             })
         }
         
-        .onChange(of: tabSelected, perform: { _ in
+        .onChange(of: tabSelected, {
             changeTabAuto = false
         })
         .animation(.easeInOut, value: tabSelected)

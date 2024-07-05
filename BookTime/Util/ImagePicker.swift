@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import Vision
+import Combine
 
 struct ImagePicker:UIViewControllerRepresentable{
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
@@ -36,7 +37,9 @@ struct ImagePicker:UIViewControllerRepresentable{
     }
     
     final class Coordinator:NSObject,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+        var cancellable: AnyCancellable?
         var parent: ImagePicker
+        
         init(_ parent: ImagePicker){
             self.parent = parent
         }
@@ -47,21 +50,9 @@ struct ImagePicker:UIViewControllerRepresentable{
                 let saveImage = UIImage(data: image.aspectFittedToHeight(400).jpegData(compressionQuality: 0.85)!) ?? UIImage()
                 parent.selectedImage = saveImage
                 
-//                let size = saveImage.size
-//
-//                let cropRect = CGRect(
-//                    x: size.width * 0.1,
-//                    y: size.height * 0.1,
-//                    width: size.width * 0.8,
-//                    height: size.height * 0.8
-//                ).integral
-                
-                Image2Text.request(saveImage: saveImage)
+                cancellable = Image2Text.request(saveImage: saveImage)
                     .sink(receiveCompletion: { completion in
                     }, receiveValue: { someValue in
-                        // do what you want with the resulting value passed down
-                        // be aware that depending on the publisher, this closure
-                        // may be invoked multiple times.
                         self.parent.textInPhoto = someValue
                     })
                 
