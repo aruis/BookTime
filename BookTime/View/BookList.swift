@@ -251,18 +251,31 @@ struct BookList: View {
                                     booksGroup.nsPredicate = predicate
                                     
                                 },label: {
-                                    Label(tag.name,systemImage: selectTag?.name == tag.name ?  "checkmark" : "")
+                                    if selectTag?.name == tag.name {
+                                        Label(tag.name,systemImage: "checkmark")
+                                    }else{
+                                        Text(tag.name )
+                                    }
+                                    
                                 })
                             }
                             
                             Button(action: {
                                 selectTag = nil
                                 
-                                let predicate = NSPredicate(value: true)
-                                booksGroup.nsPredicate = predicate
+                                Task{                                    
+                                    booksGroup.nsPredicate = NSPredicate(value: true)
+                                }
+                                
+                                
                                 
                             }, label: {
-                                Label("-",systemImage: selectTag == nil ?  "checkmark" : "")
+                                if selectTag == nil {
+                                    Label("-",systemImage: "checkmark")
+                                }else{
+                                    Text("-")
+                                }
+                                
                             })
                             
                             
