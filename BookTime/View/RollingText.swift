@@ -55,18 +55,22 @@ struct RollingText: View {
                 updateText(v)
             }
         }
-        .onChange(of: value) { newValue in
+        .onChange(of: value, {
             // MARK: Handling Addition/Removal to Extra Value
             let extra = "\(value)".count - animationRange.count
             if extra > 0{
                 // Adding Extra Range
                 for _ in 0..<extra{
-                    withAnimation(.easeIn(duration: 0.1)){animationRange.append(0)}
+                    withAnimation(.easeIn(duration: 0.1)){
+                        animationRange.append(0)
+                    }
                 }
             }else{
                 // Removing Extra Range
                 for _ in 0..<(-extra){
-                    withAnimation(.easeIn(duration: 0.1)){animationRange.removeLast()}
+                    _ = withAnimation(.easeIn(duration: 0.1)){
+                        animationRange.removeLast()
+                    }
                 }
             }
             
@@ -74,7 +78,10 @@ struct RollingText: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05){
                 updateText()
             }
-        }
+
+        })
+//        .onChange(of: value) { newValue in
+//        }
     }
     
     func updateText(_ v:Int? = nil){

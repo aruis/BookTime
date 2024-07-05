@@ -219,13 +219,13 @@ struct BookList: View {
             })
             .navigationBarTitleDisplayMode(.automatic)
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
-            .onChange(of: searchText){ searchText in
+            .onChange(of: searchText,{ 
                 let predicate = searchText.isEmpty
                 ? NSPredicate(value: true)
                 : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
                 
                 booksGroup.nsPredicate = predicate
-            }
+            })
             .overlay{
                 if  booksGroup.count == 0 && searchText.isEmpty  {
                     
