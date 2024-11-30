@@ -2,7 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "shouldTranslate" : false
     },
     "       The idea💡 for creating this app came from my daughter👧🏻 who is in the second grade of elementary school. She has an assignment that requires 30 minutes of reading every day. With this app, I can better urge her to read and clock in.\n       The teacher counts the children's reading volume every semester and asks parents to make a record of their children's reading, so this app has helped me a lot, because her annual reading volume is about 100 books, it is really difficult for me to keep track of it. Record her reading progress. Now, I only need to export the reading data from the App.\n       This App also helped me develop the habit of reading every day. You can find my [Reading Sharing Video](https://space.bilibili.com/24370353/channel/seriesdetail?sid=320833) here. You are also welcome to send [mail](mailto:cheetah_chugs.0g@icloud.com) to me to communicate anything you want to communicate.\n       Finally, I hope you like this App, and I wish you always enjoy the fun of reading ❤️" : {
       "localizations" : {
@@ -15,13 +15,13 @@
       }
     },
     " days" : {
-
+      "shouldTranslate" : false
     },
     " minutes in " : {
-
+      "shouldTranslate" : false
     },
     "-" : {
-
+      "shouldTranslate" : false
     },
     "- at the end of 2021." : {
       "localizations" : {
@@ -61,7 +61,8 @@
             "value" : ""
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "》" : {
       "localizations" : {
@@ -71,7 +72,8 @@
             "value" : ""
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "**%d** Minutes Today" : {
       "extractionState" : "manual",
@@ -85,16 +87,13 @@
       }
     },
     "**%lld**" : {
-
+      "shouldTranslate" : false
     },
     "**%lld**分钟" : {
-
-    },
-    "%f" : {
-
+      "shouldTranslate" : false
     },
     "%lld" : {
-
+      "shouldTranslate" : false
     },
     "%lld %% of the Plan Completed" : {
       "localizations" : {
@@ -147,7 +146,7 @@
       }
     },
     "%lld%%" : {
-
+      "shouldTranslate" : false
     },
     "%lld%% %@" : {
       "localizations" : {
@@ -157,13 +156,14 @@
             "value" : "%1$lld%% %2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "~" : {
-
+      "shouldTranslate" : false
     },
     "8" : {
-
+      "shouldTranslate" : false
     },
     "A Total of" : {
       "comment" : "累计阅读",
@@ -212,17 +212,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "读一本新书"
-          }
-        }
-      }
-    },
-    "Added AI camera, available for testing." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "新增 AI 相机，开放测试使用。"
           }
         }
       }
@@ -295,17 +284,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "作者"
-          }
-        }
-      }
-    },
-    "Automatically display update log when launching the app." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "增加了启动App时自动展示更新日志。"
           }
         }
       }
@@ -564,17 +542,6 @@
         }
       }
     },
-    "Fixed syntax issues in the code.\nCorrected the issue where on iOS, adding a new book was not possible to select book title, author name, and tags from OCR content due to an iOS bug." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "修复 代码中遗留的语法问题\n修正 因iOS自身bug导致的新增书籍时无法从OCR内容中选择书名、作者名、标签的问题。"
-          }
-        }
-      }
-    },
     "Get into the habit of punching in every day to achieve results." : {
       "localizations" : {
         "zh-Hans" : {
@@ -596,7 +563,7 @@
       }
     },
     "Heartfelt Update:" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -780,7 +747,7 @@
       }
     },
     "Persisted" : {
-      "extractionState" : "migrated",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -882,7 +849,7 @@
       }
     },
     "Reading for" : {
-      "comment" : "fredingForDay",
+      "comment" : "fredingForDay\nfredingForMin",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -962,17 +929,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "按书名搜索"
-          }
-        }
-      }
-    },
-    "Select a photo" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "选择一张照片"
           }
         }
       }
@@ -1066,17 +1022,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "点此添加一本书"
-          }
-        }
-      }
-    },
-    "The widget is compatible with the latest version of API of iOS17.\nFixed the problem that the book rating point with three stars cannot respond." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "小组件兼容iOS17最新版的API\n修正书籍评分点三星无法响应的问题"
           }
         }
       }
@@ -1195,7 +1140,7 @@
       }
     },
     "Unread" : {
-      "extractionState" : "migrated",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1206,7 +1151,7 @@
       }
     },
     "Value" : {
-
+      "shouldTranslate" : false
     },
     "Welcome to BookTime." : {
       "localizations" : {
@@ -1282,13 +1227,13 @@
       }
     },
     "天，共计" : {
-
+      "shouldTranslate" : false
     },
     "苏ICP备2024057896号-1A" : {
-
+      "shouldTranslate" : false
     },
     "阅读" : {
-
+      "shouldTranslate" : false
     }
   },
   "version" : "1.0"

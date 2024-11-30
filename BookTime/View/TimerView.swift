@@ -179,7 +179,6 @@ struct TimerView: View {
                 }
 
         }
-        .preferredColorScheme(.light)
         .ignoresSafeArea()
         .gesture(DragGesture().onEnded{value in
             
