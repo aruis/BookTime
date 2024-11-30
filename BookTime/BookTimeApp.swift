@@ -107,15 +107,10 @@ struct BookTimeApp: App {
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
             .environment(\.whatsNew,
                           WhatsNewEnvironment(
-                            // Specify in which way the presented WhatsNew Versions are stored.
-                            // In default the `UserDefaultsWhatsNewVersionStore` is used.
                             versionStore: UserDefaultsWhatsNewVersionStore(),
-                            //                                   versionStore: InMemoryWhatsNewVersionStore(),
-                            // Pass a `WhatsNewCollectionProvider` or an array of WhatsNew instances
                             whatsNewCollection: whatsNewCollection
                           )
             )
-            //            .environment(\.managedObjectContext , BookPersistenceController.preview.container.viewContext)
         }
     }
 }
