@@ -81,6 +81,7 @@ struct BookTimeApp: App {
                 
                 if isShowSplashtop {
                     Icon(iconSize:$iconSize,deltaAngle:$deltaAngle)
+                        .compositingGroup()
                         .opacity(hideSplashtop ? 0 : 1)
                         .onAppear{
                             withAnimation(.easeIn(duration: 0.9 * transitionTime ).delay(0.25 * transitionTime)){
