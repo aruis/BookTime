@@ -403,7 +403,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					83731C8E2755D0D600305305 = {
 						CreatedOnToolsVersion = 13.1;
@@ -671,13 +671,12 @@
 		83731CA32755D0D700305305 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -695,7 +694,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.24.4;
+				MARKETING_VERSION = 3.24.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -711,13 +710,12 @@
 		83731CA42755D0D700305305 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BookTime/BookTime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_ASSET_PATHS = "\"BookTime/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				ENABLE_PREVIEWS = YES;
@@ -735,7 +733,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.24.4;
+				MARKETING_VERSION = 3.24.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime;
 				PRODUCT_NAME = BookTime;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -756,7 +754,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;
@@ -768,7 +766,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.24.4;
+				MARKETING_VERSION = 3.24.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime.BookTimeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -788,7 +786,7 @@
 				CODE_SIGN_ENTITLEMENTS = BookTimeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_TEAM = M84W4U7RV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookTimeWidget/Info.plist;
@@ -800,7 +798,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.24.4;
+				MARKETING_VERSION = 3.24.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTime.BookTimeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

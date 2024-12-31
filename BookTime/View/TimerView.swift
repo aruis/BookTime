@@ -373,7 +373,7 @@ struct TimerView: View {
             
             if var _ = logInYear {
                 let dayIndex = now.dayOfYear
-                if readLog.readMinutes > logInYear![dayIndex] as! Int {
+                if readLog.readMinutes > logInYear![dayIndex-1] as! Int {
                     logInYear![dayIndex-1] = readLog.readMinutes
                 }
             }
