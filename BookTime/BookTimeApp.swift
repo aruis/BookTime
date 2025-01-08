@@ -105,12 +105,12 @@ struct BookTimeApp: App {
             }
             .environmentObject(appData)
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
-            .environment(\.whatsNew,
-                          WhatsNewEnvironment(
-                            versionStore: UserDefaultsWhatsNewVersionStore(),
-                            whatsNewCollection: whatsNewCollection
-                          )
-            )
+//            .environment(\.whatsNew,
+//                          WhatsNewEnvironment(
+//                            versionStore: UserDefaultsWhatsNewVersionStore(),
+//                            whatsNewCollection: whatsNewCollection
+//                          )
+//            )
         }
     }
 }
