@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CloudKit
+import CoreData
 import WidgetKit
 import UniformTypeIdentifiers
 import AlertToast
@@ -20,14 +21,6 @@ struct Setting: View {
     @Environment(\.managedObjectContext) var context
     
     let keyStore = NSUbiquitousKeyValueStore()
-    
-    @FetchRequest(entity: Book.entity(), sortDescriptors:[])
-    var books: FetchedResults<Book>
-    
-    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
-    ])
-    var logs: FetchedResults<ReadLog>
     
     @AppStorage("isRemind") var isRemind = false
     
@@ -374,6 +367,8 @@ struct Setting: View {
 //                    if selectedFile.startAccessingSecurityScopedResource() {
                         
                         guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
+                        let existingBooksByID = Dictionary(uniqueKeysWithValues: fetchBooks().map { ($0.id, $0) })
+                        let existingLogsByDay = Dictionary(uniqueKeysWithValues: fetchLogs().map { ($0.day, $0) })
                         
                         let lines = message.split(separator: "\n")
                         
@@ -405,7 +400,7 @@ struct Setting: View {
                                 let status = Int16(cells[13]) ?? 1
                                 
                                 
-                                let matchBook = books.first(where: {$0.id == id})
+                                let matchBook = existingBooksByID[id]
                                 
                                 if let book = matchBook { //书存在
                                     if readMinutes > book.readMinutes
@@ -447,7 +442,7 @@ struct Setting: View {
                                 let readMinutes = Int(cells[1]) ?? 0
                                 
                                 if let day = day {
-                                    let matchLog = logs.first(where: {$0.day == day})
+                                    let matchLog = existingLogsByDay[day]
                                     
                                     if let log = matchLog{
                                         if(readMinutes > log.readMinutes){
@@ -509,6 +504,8 @@ struct Setting: View {
     }
     
     func exportData(){
+        let books = fetchBooks()
+        let logs = fetchLogs()
         var str = "id,name,author,image,isDone,readMinutes,createTime,firstReadTime,lastReadTime,doneTime,rating,readDays,tags,status\n"
         for book in books{
             str.append("\(book.id),")
@@ -587,7 +584,7 @@ struct Setting: View {
         if(bookRecords.count == 0 ){ // 云端没数据，无脑local->cloud
             await  local2Cloud()
             
-        }else if(books.count == 0){ // 本地无数据，无脑cloud->local
+        }else if(fetchBookCount() == 0){ // 本地无数据，无脑cloud->local
             await cloud2Local()
         }else{ // 用户选择
             showCloudSheet = true
@@ -595,6 +592,9 @@ struct Setting: View {
     }
     
     func cleanLocal(){
+        let books = fetchBooks()
+        let logs = fetchLogs()
+        
         for book in books {
             context.delete(book)
         }
@@ -672,6 +672,8 @@ struct Setting: View {
     
     func local2Cloud() async{
         await  ctrl.cleanCloud()
+        let books = fetchBooks()
+        let logs = fetchLogs()
         
         for book in books{
             ctrl.saveBookInICloud(book: book)
@@ -717,6 +719,40 @@ struct Setting: View {
     func showToast(_ text:String){
         toastString = text
         isShowToast  = true
+    }
+    
+    private func fetchBooks() -> [Book] {
+        let request = NSFetchRequest<Book>(entityName: "Book")
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Could not fetch books. \(error)")
+            return []
+        }
+    }
+    
+    private func fetchLogs() -> [ReadLog] {
+        let request = NSFetchRequest<ReadLog>(entityName: "ReadLog")
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)]
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Could not fetch logs. \(error)")
+            return []
+        }
+    }
+    
+    private func fetchBookCount() -> Int {
+        let request = NSFetchRequest<Book>(entityName: "Book")
+        
+        do {
+            return try context.count(for: request)
+        } catch {
+            print("Could not count books. \(error)")
+            return 0
+        }
     }
     
     

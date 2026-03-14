@@ -48,6 +48,7 @@ struct MainTab: View {
                 }
                 .tag(Tab.setting)
         }
+        .sensoryFeedback(.selection, trigger: selectedTab)
         .sheet(isPresented: walkthroughBinding){
             Tutorial()
         }
