@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ImageIO
 
 extension UIImage {
     func aspectFittedToHeight(_ newHeight: CGFloat) -> UIImage {
@@ -30,4 +31,28 @@ extension UIImage {
         }
     }
 
+}
+
+extension Data {
+    func makeThumbnailData(maxPixelSize: CGFloat = 340, compressionQuality: CGFloat = 0.82) -> Data? {
+        let options: [CFString: Any] = [
+            kCGImageSourceShouldCache: false
+        ]
+        
+        guard let source = CGImageSourceCreateWithData(self as CFData, options as CFDictionary) else {
+            return nil
+        }
+        
+        let thumbnailOptions: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
+        ]
+        
+        guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions as CFDictionary) else {
+            return nil
+        }
+        
+        return UIImage(cgImage: cgImage).jpegData(compressionQuality: compressionQuality)
+    }
 }

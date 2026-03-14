@@ -300,12 +300,22 @@ class BookPersistenceController {
         record.setValue(book.readDays, forKey: "readDays")
         
         
-        let imageFilePath = NSTemporaryDirectory() + book.name
+        let tempBase = UUID().uuidString
+        let imageFilePath = NSTemporaryDirectory() + tempBase + "-image"
         let imageFileURL = URL(fileURLWithPath: imageFilePath)
         try? book.image.write(to: imageFileURL)
         
         let imageAsset = CKAsset(fileURL: imageFileURL)
         record.setValue(imageAsset, forKey: "image")
+        
+        var thumbnailFileURL: URL? = nil
+        if let thumbnail = book.thumbnailImage ?? book.image.makeThumbnailData() {
+            let thumbnailFilePath = NSTemporaryDirectory() + tempBase + "-thumb"
+            let url = URL(fileURLWithPath: thumbnailFilePath)
+            try? thumbnail.write(to: url)
+            record.setValue(CKAsset(fileURL: url), forKey: "thumbnailImage")
+            thumbnailFileURL = url
+        }
         
         privateDB.save(record, completionHandler: { (record, error) -> Void  in
             
@@ -315,6 +325,9 @@ class BookPersistenceController {
             
             // Remove temp file
             try? FileManager.default.removeItem(at: imageFileURL)
+            if let thumbnailFileURL {
+                try? FileManager.default.removeItem(at: thumbnailFileURL)
+            }
         })
         
         

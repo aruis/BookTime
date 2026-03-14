@@ -51,6 +51,7 @@ struct BookList: View {
     @StateObject private var bookViewModel: BookViewModel = BookViewModel()
     
     @State private var columnVisibility = NavigationSplitViewVisibility.automatic
+    @State private var searchDebounceTask: Task<Void, Never>? = nil
     
     @ViewBuilder
     func itemInList(book:Book) -> some View{
@@ -219,12 +220,22 @@ struct BookList: View {
             })
             .navigationBarTitleDisplayMode(.automatic)
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search by book title" )
-            .onChange(of: searchText,{ 
-                let predicate = searchText.isEmpty
-                ? NSPredicate(value: true)
-                : NSPredicate(format: "name CONTAINS[c] %@ ", searchText)
+            .onChange(of: searchText,{
+                searchDebounceTask?.cancel()
+                let currentText = searchText
                 
-                booksGroup.nsPredicate = predicate
+                searchDebounceTask = Task {
+                    try? await Task.sleep(nanoseconds: 300_000_000)
+                    if Task.isCancelled { return }
+                    
+                    let predicate = currentText.isEmpty
+                    ? NSPredicate(value: true)
+                    : NSPredicate(format: "name CONTAINS[c] %@ ", currentText)
+                    
+                    await MainActor.run {
+                        booksGroup.nsPredicate = predicate
+                    }
+                }
             })
             .overlay{
                 if  booksGroup.count == 0 && searchText.isEmpty  {
@@ -334,30 +345,15 @@ struct BookList: View {
         }
         .task(priority: .low) {
             initTags()
-            //                isDone2status()
-            
-            
-            var logInYear =  [Int](repeating: 0, count: 366)
-            
-            let now = Date()
-            
-            todayReadMin = 0
-            
-            for log:ReadLog in logs{
-                if(now.isSameYear(log.day) && log.readMinutes > logInYear[log.day.dayOfYear-1]){
-                    logInYear[log.day.dayOfYear-1] = log.readMinutes
-                }
-                if(Calendar.current.isDateInToday(log.day) && log.readMinutes > todayReadMin){
-                    todayReadMin = log.readMinutes
-                }
+            refreshTodayReadAndWidgetIfNeeded()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: context)) { notification in
+            if hasReadLogChanges(notification.userInfo) {
+                refreshTodayReadAndWidgetIfNeeded()
             }
-            
-            keyStore.set(todayReadMin, forKey: "todayReadMin")
-            keyStore.set(logInYear, forKey: "logInYear")
-            keyStore.synchronize()
-            
-            WidgetCenter.shared.reloadAllTimelines()
-            
+        }
+        .onDisappear {
+            searchDebounceTask?.cancel()
         }
         
         
@@ -427,6 +423,52 @@ struct BookList: View {
         }
     }
     
+    private func hasReadLogChanges(_ userInfo: [AnyHashable: Any]?) -> Bool {
+        guard let userInfo else { return false }
+        
+        let keys: [String] = [NSInsertedObjectsKey, NSUpdatedObjectsKey, NSDeletedObjectsKey]
+        for key in keys {
+            if let objects = userInfo[key] as? Set<NSManagedObject>,
+               objects.contains(where: { $0.entity.name == "ReadLog" }) {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    private func refreshTodayReadAndWidgetIfNeeded() {
+        var logInYear = [Int](repeating: 0, count: 366)
+        let now = Date()
+        var computedTodayReadMin = 0
+        
+        for log: ReadLog in logs {
+            if now.isSameYear(log.day) {
+                let index = log.day.dayOfYear - 1
+                if index >= 0 && index < logInYear.count && log.readMinutes > logInYear[index] {
+                    logInYear[index] = log.readMinutes
+                }
+            }
+            
+            if Calendar.current.isDateInToday(log.day) && log.readMinutes > computedTodayReadMin {
+                computedTodayReadMin = log.readMinutes
+            }
+        }
+        
+        let storedLogInYear = keyStore.array(forKey: "logInYear") as? [Int] ?? []
+        let hasTodayChanged = todayReadMin != computedTodayReadMin
+        let hasYearLogChanged = storedLogInYear != logInYear
+        
+        guard hasTodayChanged || hasYearLogChanged else { return }
+        
+        todayReadMin = computedTodayReadMin
+        keyStore.set(computedTodayReadMin, forKey: "todayReadMin")
+        keyStore.set(logInYear, forKey: "logInYear")
+        keyStore.synchronize()
+        
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+    
     
     
 }
@@ -459,4 +501,3 @@ struct BookList_Previews: PreviewProvider {
             .preferredColorScheme(.dark)
     }
 }
-

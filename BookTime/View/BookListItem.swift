@@ -6,16 +6,79 @@
 //
 
 import SwiftUI
+import CoreData
+
+private final class BookCoverImageCache {
+    static let shared = BookCoverImageCache()
+    private let cache = NSCache<NSString, UIImage>()
+    
+    private init() {
+        cache.countLimit = 200
+    }
+    
+    func image(for key: String, data: Data) -> UIImage {
+        let nsKey = key as NSString
+        if let image = cache.object(forKey: nsKey) {
+            return image
+        }
+        
+        let image: UIImage
+        if let thumbData = data.makeThumbnailData(), let thumbImage = UIImage(data: thumbData) {
+            image = thumbImage
+        } else {
+            image = UIImage(data: data) ?? UIImage()
+        }
+        
+        cache.setObject(image, forKey: nsKey)
+        return image
+    }
+}
+
+private final class BookThumbnailGenerator {
+    static let shared = BookThumbnailGenerator()
+    private var inFlightKeys = Set<String>()
+    private let lock = NSLock()
+    
+    private init() {}
+    
+    func generateIfNeeded(key: String, sourceData: Data, completion: @escaping (Data?) -> Void) {
+        lock.lock()
+        if inFlightKeys.contains(key) {
+            lock.unlock()
+            return
+        }
+        inFlightKeys.insert(key)
+        lock.unlock()
+        
+        DispatchQueue.global(qos: .utility).async {
+            let thumbnailData = sourceData.makeThumbnailData()
+            DispatchQueue.main.async {
+                self.lock.lock()
+                self.inFlightKeys.remove(key)
+                self.lock.unlock()
+                completion(thumbnailData)
+            }
+        }
+    }
+}
 
 struct BookListItem: View {
+    @Environment(\.managedObjectContext) private var context
     @ObservedObject var book: Book
+    
+    private var coverKey: String {
+        let thumbnailCount = book.thumbnailImage?.count ?? 0
+        return "\(book.objectID.uriRepresentation().absoluteString)-\(book.image.count)-\(thumbnailCount)"
+    }
+    
+    private var listCoverData: Data {
+        book.thumbnailImage ?? book.image
+    }
     
     var body: some View {
         
         HStack(alignment: .top) {
-            let imageData = book.image
-            
-            Image(uiImage: UIImage(data: imageData) ?? UIImage())
+            Image(uiImage: BookCoverImageCache.shared.image(for: coverKey, data: listCoverData))
                 .resizable()
                 .scaledToFill()
                 .frame(width: 85, height: 115 , alignment: .center)
@@ -83,8 +146,29 @@ struct BookListItem: View {
             
         }
         .padding(.vertical,2)
+        .onAppear {
+            buildThumbnailIfNeeded()
+        }
 //        .frame(height:120)
         
+    }
+    
+    private func buildThumbnailIfNeeded() {
+        guard book.thumbnailImage == nil else { return }
+        
+        let key = book.objectID.uriRepresentation().absoluteString
+        let sourceData = book.image
+        
+        BookThumbnailGenerator.shared.generateIfNeeded(key: key, sourceData: sourceData) { thumbnailData in
+            guard let thumbnailData, book.thumbnailImage == nil else { return }
+            
+            book.thumbnailImage = thumbnailData
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
+        }
     }
 }
 

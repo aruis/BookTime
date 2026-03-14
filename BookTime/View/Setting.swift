@@ -427,6 +427,7 @@ struct Setting: View {
                                     book.name = name
                                     book.author = author
                                     book.image = image
+                                    book.thumbnailImage = image.makeThumbnailData()
                                     book.isDone = isDone
                                     book.readMinutes = readMinutes
                                     book.createTime = createTime ?? Date()
@@ -635,10 +636,17 @@ struct Setting: View {
             book.tags = bookRecord.object(forKey: "tags") as? String
             
             let imageFile:CKAsset? = bookRecord.object(forKey: "image") as? CKAsset
+            let thumbnailFile:CKAsset? = bookRecord.object(forKey: "thumbnailImage") as? CKAsset
             
             if let file = imageFile {
                 if let data = NSData(contentsOf: file.fileURL!){
                     book.image = data as Data
+                    if let thumbnailFile,
+                       let thumbnailData = NSData(contentsOf: thumbnailFile.fileURL!) {
+                        book.thumbnailImage = thumbnailData as Data
+                    } else {
+                        book.thumbnailImage = (data as Data).makeThumbnailData()
+                    }
                 }
             }
         }

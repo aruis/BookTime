@@ -6,7 +6,7 @@
         <attribute name="doneTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="firstReadTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastReadTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -15,6 +15,7 @@
         <attribute name="readMinutes" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="status" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="tags" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailImage" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
     </entity>
     <entity name="ReadLog" representedClassName=".ReadLog" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

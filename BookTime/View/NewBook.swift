@@ -334,7 +334,9 @@ struct NewBook: View {
         addTag()
         
         if let book = bookViewModel.book{
-            book.image = bookViewModel.image.pngData()!
+            let imageData = bookViewModel.image.pngData()!
+            book.image = imageData
+            book.thumbnailImage = imageData.makeThumbnailData()
             book.name = bookViewModel.name
             book.author = bookViewModel.author
             var tag = ""
@@ -347,7 +349,9 @@ struct NewBook: View {
         }else{
             let book = Book(context:context)
             book.id = UUID().uuidString
-            book.image = bookViewModel.image.pngData()!
+            let imageData = bookViewModel.image.pngData()!
+            book.image = imageData
+            book.thumbnailImage = imageData.makeThumbnailData()
             book.name = bookViewModel.name
             book.author = bookViewModel.author
             book.isDone = false
@@ -416,5 +420,4 @@ enum PhotoSource: Identifiable{
         hashValue
     }
 }
-
 
