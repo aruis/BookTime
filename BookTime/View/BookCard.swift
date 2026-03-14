@@ -139,8 +139,8 @@ struct BookCard: View {
                 
                 
                 ZStack{
-                    RoundedRectangle(cornerRadius: isDone ? 25:5)
-                        .frame(width: isDone ? 50:250, height: 50)
+                    RoundedRectangle(cornerRadius: isDone ? 25:12)
+                        .frame(width: isDone ? 50:200, height: 50)
                         .foregroundColor(isDone ? .green : Color(UIColor.systemGray5))
                         .overlay(
                             //                                Text("")
