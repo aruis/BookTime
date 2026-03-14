@@ -248,7 +248,7 @@
     },
     "All data has been deleted" : {
       "comment" : "所有数据已删除",
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -256,7 +256,8 @@
             "value" : "所有数据已删除"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "All your reading data has been cleared." : {
       "localizations" : {
@@ -684,6 +685,16 @@
         }
       }
     },
+    "Import Completed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入完成"
+          }
+        }
+      }
+    },
     "Import Data" : {
       "localizations" : {
         "zh-Hans" : {
@@ -700,16 +711,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "导入失败"
-          }
-        }
-      }
-    },
-    "Import Completed" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "导入完成"
           }
         }
       }
@@ -1383,6 +1384,16 @@
         }
       }
     },
+    "This action cannot be undone." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此操作无法撤销。"
+          }
+        }
+      }
+    },
     "This Month" : {
       "localizations" : {
         "zh-Hans" : {
@@ -1409,16 +1420,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "时间是你唯一拥有的东西"
-          }
-        }
-      }
-    },
-    "This action cannot be undone." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此操作无法撤销。"
           }
         }
       }
