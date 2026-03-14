@@ -13,6 +13,9 @@ import FlipView
 import PacmanProgress
 
 struct TimerView: View {
+    private let widgetRefreshInterval = 5
+    private static let batteryRefreshInterval = 30.0
+    
     let keyStore = NSUbiquitousKeyValueStore()
     
     @AppStorage("isRemind") var isRemind = false
@@ -21,6 +24,7 @@ struct TimerView: View {
     @AppStorage("remindDateMin") var reminDateMin = -1
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let batteryTimer = Timer.publish(every: TimerView.batteryRefreshInterval, on: .main, in: .common).autoconnect()
     
     @State private var count = 0
     
@@ -38,8 +42,6 @@ struct TimerView: View {
     @State private var thisMinute:Int  = 0
     
     @State private var beginDate  = Date()
-    
-    @State private var readSecond = 0
     
     @State private var showRealTime = false
     
@@ -72,6 +74,40 @@ struct TimerView: View {
     @State private var isShowProgress = true
     
     @State private var landscapeRight:Bool?
+    @State private var todayLogMinutes = 0
+    @State private var batteryLevel = 0
+    @State private var isCharging = false
+    
+    private func shouldRefreshExternalState(readMinutes: Int) -> Bool {
+        readMinutes % widgetRefreshInterval == 0
+    }
+    
+    private func refreshBatteryStatus() {
+        batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
+        isCharging = UIDevice.current.batteryState == .charging || UIDevice.current.batteryState == .full
+    }
+    
+    private func refreshTodayLogState() -> ReadLog {
+        let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
+        todayLogMinutes = readLog.readMinutes
+        return readLog
+    }
+    
+    private func syncExternalState(now: Date, readLog: ReadLog, logInYear: [Any]?, force: Bool = false) {
+        todayLogMinutes = readLog.readMinutes
+        todayReadMin = readLog.readMinutes
+        keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
+        keyStore.set(targetMinPerday, forKey: "targetMinPerday")
+        keyStore.set(now, forKey: "lastReadDate")
+        keyStore.set(logInYear, forKey: "logInYear")
+        
+        guard force || shouldRefreshExternalState(readMinutes: readLog.readMinutes) else {
+            return
+        }
+        
+        keyStore.synchronize()
+        WidgetCenter.shared.reloadAllTimelines()
+    }
     
     var body: some View {
 //        TabView(selection: $tabSelected){
@@ -128,6 +164,7 @@ struct TimerView: View {
 //        }
         TimelineView(.periodic(from: beginDate, by: 1)) { context in
             let date = context.date
+            let elapsedSeconds = max(Int(date.timeIntervalSince(beginDate)), thisMinute * 60)
             
             // 当前时间
             let dataArr  = date.format("HH:mm:ss").split(separator: ":")
@@ -138,13 +175,12 @@ struct TimerView: View {
 
             // 本次阅读时间
 
-            let thisS = "\(readSecond%60)".count == 1 ? "0\(readSecond%60)" : "\(readSecond%60)"
+            let thisS = "\(elapsedSeconds%60)".count == 1 ? "0\(elapsedSeconds%60)" : "\(elapsedSeconds%60)"
             let thisH = String( thisMinute.asString().split(separator: ":")[0])
             let thisM = String( thisMinute.asString().split(separator: ":")[1])
-            let batteryLevel = Int(round(UIDevice.current.batteryLevel * 100))
-                                                
+            
             // 今日已阅读时间
-            let thisMinute = Int( BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes)
+            let thisMinute = todayLogMinutes
             
             let todayS = thisS
             let todayH = String( thisMinute.asString().split(separator: ":")[0])
@@ -158,7 +194,7 @@ struct TimerView: View {
             
             let title = isShowProgress ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed")  :  date.dayString()
                         
-            ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: UIDevice.current.batteryState == .charging,progress: .constant(process),isShowProgress:$isShowProgress,isShowButtons: $isShowButtons, clockTap:{
+            ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: isCharging,progress: .constant(process),isShowProgress:$isShowProgress,isShowButtons: $isShowButtons, clockTap:{
                 showRealTime.toggle()
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })
@@ -308,8 +344,10 @@ struct TimerView: View {
             UIApplication.shared.isIdleTimerDisabled = true
             UIDevice.current.isBatteryMonitoringEnabled = true
             oldLight = UIScreen.main.brightness
+            beginDate = Date()
+            refreshBatteryStatus()
             
-            if(targetMinPerday>0 && BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes
+            if(targetMinPerday>0 && refreshTodayLogState().readMinutes
                >= targetMinPerday
             ){
                 isHit = true
@@ -325,31 +363,37 @@ struct TimerView: View {
             UIDevice.current.isBatteryMonitoringEnabled = false
             
             timer.upstream.connect().cancel()
-            if isRemind {
-                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0 || BookPersistenceController.shared.checkAndBuildTodayLog().readMinutes > 0)
-            }
-                                    
-            WidgetCenter.shared.reloadAllTimelines()
-            
-        })
-        .onReceive(timer, perform: { now in
-            readSecond += 1
-                        
-                        
-            if readSecond%60 != 0 {
-                return
-            } else {
-                self.thisMinute += 1
-            }
-                        
             
             let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
+            let lastReadDate = book.lastReadTime ?? Date()
+            syncExternalState(now: lastReadDate, readLog: readLog, logInYear: keyStore.array(forKey: "logInYear"), force: true)
+            
+            if isRemind {
+                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0 || readLog.readMinutes > 0)
+            }
+            
+        })
+        .onReceive(batteryTimer) { _ in
+            refreshBatteryStatus()
+        }
+        .onReceive(timer, perform: { now in
+            let elapsedMinutes = Int(now.timeIntervalSince(beginDate)) / 60
+            let addedMinutes = elapsedMinutes - thisMinute
+            
+            if addedMinutes <= 0 {
+                return
+            }
+            
+            self.thisMinute = elapsedMinutes
+                        
+            
+            let readLog = refreshTodayLogState()
             
             
             if book.readMinutes == 0 { //第一次读
                 book.firstReadTime = now
             }
-            book.readMinutes += 1
+            book.readMinutes += addedMinutes
             if let lastReadTime = book.lastReadTime {
                 if(!Calendar.current.isDateInToday(lastReadTime)){
                     book.readDays += 1
@@ -358,11 +402,12 @@ struct TimerView: View {
                 book.readDays  = 1
             }
             book.lastReadTime = now
-            readLog.readMinutes += 1
+            readLog.readMinutes += addedMinutes
             
          
             
-            if(targetMinPerday>0 && targetMinPerday == readLog.readMinutes){
+            let reachedGoal = targetMinPerday > 0 && !isHit && readLog.readMinutes >= targetMinPerday
+            if reachedGoal {
                 generator.notificationOccurred(.success)
                 isHit = true
                 showToast = true
@@ -378,15 +423,7 @@ struct TimerView: View {
                 }
             }
             
-            todayReadMin = readLog.readMinutes
-            keyStore.set(readLog.readMinutes, forKey: "todayReadMin")
-            keyStore.set(targetMinPerday, forKey: "targetMinPerday")            
-            keyStore.set(now, forKey: "lastReadDate")
-            keyStore.set(logInYear, forKey: "logInYear")
-            
-            keyStore.synchronize()
-            
-            WidgetCenter.shared.reloadAllTimelines()
+            syncExternalState(now: now, readLog: readLog, logInYear: logInYear, force: reachedGoal)
             
             DispatchQueue.main.async {
                 do{
