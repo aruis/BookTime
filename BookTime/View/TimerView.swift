@@ -43,6 +43,7 @@ struct TimerView: View {
     @ObservedObject var book: Book
     
     @State private var thisMinute:Int  = 0
+    @State private var sessionDisplayMinute:Int = 0
     
     @State private var beginDate  = Date()
     
@@ -196,7 +197,7 @@ struct TimerView: View {
 //            .tag(ShowTimeType.time)
 //
 //        }
-        let elapsedSeconds = max(Int(Date().timeIntervalSince(beginDate)), thisMinute * 60)
+        let elapsedSeconds = max(Int(Date().timeIntervalSince(beginDate)), sessionDisplayMinute * 60)
         
         let dataArr  = date.format("HH:mm:ss").split(separator: ":")
         
@@ -205,8 +206,8 @@ struct TimerView: View {
         let ss = String(dataArr[2])
 
         let thisS = timerShowSecond ? ("\(elapsedSeconds%60)".count == 1 ? "0\(elapsedSeconds%60)" : "\(elapsedSeconds%60)") : "--"
-        let thisH = String( thisMinute.asString().split(separator: ":")[0])
-        let thisM = String( thisMinute.asString().split(separator: ":")[1])
+        let thisH = String( sessionDisplayMinute.asString().split(separator: ":")[0])
+        let thisM = String( sessionDisplayMinute.asString().split(separator: ":")[1])
         
         let thisMinute = todayLogMinutes
         
@@ -408,6 +409,7 @@ struct TimerView: View {
             UIDevice.current.isBatteryMonitoringEnabled = true
             oldLight = UIScreen.main.brightness
             beginDate = Date()
+            sessionDisplayMinute = 0
             refreshBatteryStatus()
             updateDisplayedDate(now: Date())
             
@@ -417,9 +419,15 @@ struct TimerView: View {
                 isHit = true
             }
             
-            if !timerPowerModeHintShown {
-                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-                    presentModeBanner(String(localized: "Long press the light button to switch to power saving display", comment: "Hint shown near the top of the timer screen to teach the long-press gesture"))
+            if timerShowSecond {
+                if !timerPowerModeHintShown {
+                    DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                        presentModeBanner(String(localized: "Long press the light button to switch to power saving display", comment: "Hint shown near the top of the timer screen to teach the long-press gesture"))
+                    }
+                }
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.8) {
+                    presentModeBanner(String(localized: "Power saving display enabled", comment: "Shown when the timer screen opens while minute-only power saving display is already enabled"))
                 }
             }
             
@@ -450,6 +458,9 @@ struct TimerView: View {
             updateDisplayedDate(now: now)
             
             let elapsedMinutes = Int(now.timeIntervalSince(beginDate)) / 60
+            if sessionDisplayMinute != elapsedMinutes {
+                sessionDisplayMinute = elapsedMinutes
+            }
             let addedMinutes = elapsedMinutes - thisMinute
             
             if addedMinutes <= 0 {

@@ -1018,7 +1018,7 @@
       }
     },
     "Power saving display enabled" : {
-      "comment" : "Shown when the user enables minute-only power saving display",
+      "comment" : "Shown when the timer screen opens while minute-only power saving display is already enabled\nShown when the user enables minute-only power saving display",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
