@@ -204,13 +204,13 @@ struct TimerView: View {
         let mm = String(dataArr[1])
         let ss = String(dataArr[2])
 
-        let thisS = timerShowSecond ? ("\(elapsedSeconds%60)".count == 1 ? "0\(elapsedSeconds%60)" : "\(elapsedSeconds%60)") : "00"
+        let thisS = timerShowSecond ? ("\(elapsedSeconds%60)".count == 1 ? "0\(elapsedSeconds%60)" : "\(elapsedSeconds%60)") : "--"
         let thisH = String( thisMinute.asString().split(separator: ":")[0])
         let thisM = String( thisMinute.asString().split(separator: ":")[1])
         
         let thisMinute = todayLogMinutes
         
-        let todayS = timerShowSecond ? thisS : "00"
+        let todayS = timerShowSecond ? thisS : "--"
         let todayH = String( thisMinute.asString().split(separator: ":")[0])
         let todayM = String( thisMinute.asString().split(separator: ":")[1])
                     
@@ -218,7 +218,7 @@ struct TimerView: View {
         
         let hour = isShowProgress ? todayH : showRealTime ? hh : thisH
         let min = isShowProgress ? todayM : showRealTime ? mm : thisM
-        let second = timerShowSecond ? (isShowProgress ? todayS : showRealTime ? ss : thisS) : "00"
+        let second = timerShowSecond ? (isShowProgress ? todayS : showRealTime ? ss : thisS) : "--"
         
         let title = isShowProgress ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed")  :  date.dayString()
                     

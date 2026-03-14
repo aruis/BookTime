@@ -772,10 +772,26 @@
       }
     },
     "Long press the light button to switch to power saving display" : {
-      "comment" : "Hint shown near the top of the timer screen to teach the long-press gesture"
+      "comment" : "Hint shown near the top of the timer screen to teach the long-press gesture",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "长按小灯泡可切换为省电显示"
+          }
+        }
+      }
     },
     "Long press to switch to power saving display" : {
-      "comment" : "Hint shown after tapping the light button for the first time"
+      "comment" : "Hint shown after tapping the light button for the first time",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "长按可切换为省电显示"
+          }
+        }
+      }
     },
     "Longest consecutive hits for" : {
       "comment" : "最长连续打卡",
@@ -1002,7 +1018,15 @@
       }
     },
     "Power saving display enabled" : {
-      "comment" : "Shown when the user enables minute-only power saving display"
+      "comment" : "Shown when the user enables minute-only power saving display",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已开启省电显示"
+          }
+        }
+      }
     },
     "Preparing import data..." : {
       "localizations" : {
@@ -1131,7 +1155,15 @@
       }
     },
     "Second display enabled" : {
-      "comment" : "Shown when the user enables second-by-second time display"
+      "comment" : "Shown when the user enables second-by-second time display",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已开启读秒显示"
+          }
+        }
+      }
     },
     "Set the book cover" : {
       "localizations" : {
