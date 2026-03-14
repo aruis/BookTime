@@ -22,6 +22,9 @@ struct TimerView: View {
     
     @AppStorage("remindDateHour") var reminDateHour = -1
     @AppStorage("remindDateMin") var reminDateMin = -1
+    @AppStorage("timerShowSecond") var timerShowSecond = true
+    @AppStorage("timerPowerModeHintShown") var timerPowerModeHintShown = false
+    @AppStorage("timerLightTapHintShown") var timerLightTapHintShown = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let batteryTimer = Timer.publish(every: TimerView.batteryRefreshInterval, on: .main, in: .common).autoconnect()
@@ -51,6 +54,9 @@ struct TimerView: View {
     @State private var isHit:Bool = false
     
     @State private var showToast = false
+    @State private var showModeToast = false
+    @State private var modeToastText = ""
+    @State private var suppressLightTapAction = false
     
     @State private var oldLight:CGFloat = 0
     @State private var lowLight:Bool = false
@@ -77,6 +83,7 @@ struct TimerView: View {
     @State private var todayLogMinutes = 0
     @State private var batteryLevel = 0
     @State private var isCharging = false
+    @State private var displayedDate = Date()
     
     private func shouldRefreshExternalState(readMinutes: Int) -> Bool {
         readMinutes % widgetRefreshInterval == 0
@@ -109,7 +116,34 @@ struct TimerView: View {
         WidgetCenter.shared.reloadAllTimelines()
     }
     
+    private func displayDateValue(for date: Date) -> Date {
+        guard !timerShowSecond else {
+            return date
+        }
+        
+        return Calendar.current.dateInterval(of: .minute, for: date)?.start ?? date
+    }
+    
+    private func updateDisplayedDate(now: Date) {
+        let newDate = displayDateValue(for: now)
+        if displayedDate != newDate {
+            displayedDate = newDate
+        }
+    }
+    
+    private func presentModeBanner(_ text: String, duration: TimeInterval = 1.8) {
+        modeToastText = text
+        showModeToast = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            if modeToastText == text {
+                showModeToast = false
+            }
+        }
+    }
+    
     var body: some View {
+        let date = displayedDate
 //        TabView(selection: $tabSelected){
 //            TimelineView(.periodic(from: beginDate, by: 1)) { context in
 //                let date = context.date
@@ -162,60 +196,66 @@ struct TimerView: View {
 //            .tag(ShowTimeType.time)
 //
 //        }
-        TimelineView(.periodic(from: beginDate, by: 1)) { context in
-            let date = context.date
-            let elapsedSeconds = max(Int(date.timeIntervalSince(beginDate)), thisMinute * 60)
-            
-            // 当前时间
-            let dataArr  = date.format("HH:mm:ss").split(separator: ":")
-            
-            let hh = String(dataArr[0])
-            let mm = String(dataArr[1])
-            let ss = String(dataArr[2])
+        let elapsedSeconds = max(Int(Date().timeIntervalSince(beginDate)), thisMinute * 60)
+        
+        let dataArr  = date.format("HH:mm:ss").split(separator: ":")
+        
+        let hh = String(dataArr[0])
+        let mm = String(dataArr[1])
+        let ss = String(dataArr[2])
 
-            // 本次阅读时间
-
-            let thisS = "\(elapsedSeconds%60)".count == 1 ? "0\(elapsedSeconds%60)" : "\(elapsedSeconds%60)"
-            let thisH = String( thisMinute.asString().split(separator: ":")[0])
-            let thisM = String( thisMinute.asString().split(separator: ":")[1])
-            
-            // 今日已阅读时间
-            let thisMinute = todayLogMinutes
-            
-            let todayS = thisS
-            let todayH = String( thisMinute.asString().split(separator: ":")[0])
-            let todayM = String( thisMinute.asString().split(separator: ":")[1])
-                        
-            let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
-            
-            let hour = isShowProgress ? todayH : showRealTime ? hh : thisH
-            let min = isShowProgress ? todayM : showRealTime ? mm : thisM
-            let second = isShowProgress ? todayS : showRealTime ? ss : thisS
-            
-            let title = isShowProgress ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed")  :  date.dayString()
-                        
-            ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: isCharging,progress: .constant(process),isShowProgress:$isShowProgress,isShowButtons: $isShowButtons, clockTap:{
-                showRealTime.toggle()
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            })
-                .onTapGesture(count: 2) {
-                    isShowButtons.toggle()
-                }
-                .onTapGesture {
-                    if !isShowProgress {
-                        isShowProgress = true
-                        DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
-                            isShowProgress = false
-                        })
-                    } else {
-                        isShowProgress = false
-                    }
+        let thisS = timerShowSecond ? ("\(elapsedSeconds%60)".count == 1 ? "0\(elapsedSeconds%60)" : "\(elapsedSeconds%60)") : "00"
+        let thisH = String( thisMinute.asString().split(separator: ":")[0])
+        let thisM = String( thisMinute.asString().split(separator: ":")[1])
+        
+        let thisMinute = todayLogMinutes
+        
+        let todayS = timerShowSecond ? thisS : "00"
+        let todayH = String( thisMinute.asString().split(separator: ":")[0])
+        let todayM = String( thisMinute.asString().split(separator: ":")[1])
                     
-
+        let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
+        
+        let hour = isShowProgress ? todayH : showRealTime ? hh : thisH
+        let min = isShowProgress ? todayM : showRealTime ? mm : thisM
+        let second = timerShowSecond ? (isShowProgress ? todayS : showRealTime ? ss : thisS) : "00"
+        
+        let title = isShowProgress ? String(localized: "\( Int( round( process * 100))) % of the Plan Completed")  :  date.dayString()
+                    
+        ClockView(hour: hour, min:  min, second: second,headTitle: title, batteryLevel: batteryLevel,inCharging: isCharging,progress: .constant(process),isShowProgress:$isShowProgress,isShowButtons: $isShowButtons, clockTap:{
+            showRealTime.toggle()
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        })
+            .onTapGesture(count: 2) {
+                isShowButtons.toggle()
+            }
+            .onTapGesture {
+                if !isShowProgress {
+                    isShowProgress = true
+                    DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
+                        isShowProgress = false
+                    })
+                } else {
+                    isShowProgress = false
                 }
-
         }
         .ignoresSafeArea()
+        .safeAreaInset(edge: .top) {
+            if showModeToast {
+                Text(modeToastText)
+                    .font(.subheadline.weight(.medium))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.clockText)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule(style: .continuous)
+                            .fill(Color.clock.opacity(0.92))
+                    )
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
         .gesture(DragGesture().onEnded{value in
             
             if abs( value.translation.width) > 20 {
@@ -280,6 +320,11 @@ struct TimerView: View {
                     }
                     
                     Button{
+                        if suppressLightTapAction {
+                            suppressLightTapAction = false
+                            return
+                        }
+                        
                         if lowLight{
                             UIScreen.main.brightness = oldLight
                         }else{
@@ -288,11 +333,29 @@ struct TimerView: View {
                             
                         }
                         lowLight.toggle()
+                        
+                        if !timerPowerModeHintShown && !timerLightTapHintShown {
+                            timerLightTapHintShown = true
+                            presentModeBanner(String(localized: "Long press to switch to power saving display", comment: "Hint shown after tapping the light button for the first time"))
+                        }
 
                     } label: {
                         Image(systemName: lowLight ? "lightbulb":"lightbulb.fill")
                     }
                     .buttonStyle(TimerButtonStyle())
+                    .simultaneousGesture(
+                        LongPressGesture(minimumDuration: 0.6).onEnded { _ in
+                            suppressLightTapAction = true
+                            timerShowSecond.toggle()
+                            timerPowerModeHintShown = true
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            presentModeBanner(
+                                timerShowSecond
+                                ? String(localized: "Second display enabled", comment: "Shown when the user enables second-by-second time display")
+                                : String(localized: "Power saving display enabled", comment: "Shown when the user enables minute-only power saving display")
+                            )
+                        }
+                    )
                     
                         
                     
@@ -346,11 +409,18 @@ struct TimerView: View {
             oldLight = UIScreen.main.brightness
             beginDate = Date()
             refreshBatteryStatus()
+            updateDisplayedDate(now: Date())
             
             if(targetMinPerday>0 && refreshTodayLogState().readMinutes
                >= targetMinPerday
             ){
                 isHit = true
+            }
+            
+            if !timerPowerModeHintShown {
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    presentModeBanner(String(localized: "Long press the light button to switch to power saving display", comment: "Hint shown near the top of the timer screen to teach the long-press gesture"))
+                }
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
@@ -377,6 +447,8 @@ struct TimerView: View {
             refreshBatteryStatus()
         }
         .onReceive(timer, perform: { now in
+            updateDisplayedDate(now: now)
+            
             let elapsedMinutes = Int(now.timeIntervalSince(beginDate)) / 60
             let addedMinutes = elapsedMinutes - thisMinute
             

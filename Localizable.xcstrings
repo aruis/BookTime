@@ -771,6 +771,12 @@
         }
       }
     },
+    "Long press the light button to switch to power saving display" : {
+      "comment" : "Hint shown near the top of the timer screen to teach the long-press gesture"
+    },
+    "Long press to switch to power saving display" : {
+      "comment" : "Hint shown after tapping the light button for the first time"
+    },
     "Longest consecutive hits for" : {
       "comment" : "最长连续打卡",
       "extractionState" : "manual",
@@ -995,6 +1001,9 @@
         }
       }
     },
+    "Power saving display enabled" : {
+      "comment" : "Shown when the user enables minute-only power saving display"
+    },
     "Preparing import data..." : {
       "localizations" : {
         "zh-Hans" : {
@@ -1120,6 +1129,9 @@
           }
         }
       }
+    },
+    "Second display enabled" : {
+      "comment" : "Shown when the user enables second-by-second time display"
     },
     "Set the book cover" : {
       "localizations" : {
