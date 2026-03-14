@@ -68,6 +68,23 @@ struct Setting: View {
     
     @Environment(\.scenePhase) var scenePhase
     
+    private let recommendedApps: [RecommendedApp] = [
+        .init(
+            name: "PinTime",
+            taglineKey: "Mark your important moments",
+            appStoreURL: URL(string: "https://apps.apple.com/app/id6757686170")!,
+            assetName: "PinTimeLogo",
+            tintColor: .indigo
+        ),
+        .init(
+            name: "TimeBank",
+            taglineKey: "Time is the only thing you truly own",
+            appStoreURL: URL(string: "https://apps.apple.com/app/id6474505609")!,
+            assetName: "TimeBankLogo",
+            tintColor: .orange
+        )
+    ]
+    
     
     
     private var greeting:String{
@@ -213,6 +230,15 @@ struct Setting: View {
 //                                    .labelsHidden()
 
                     }
+                    Section(header: Text(String(localized: "More Apps"))) {
+                        ForEach(recommendedApps) { app in
+                            Link(destination: app.appStoreURL) {
+                                RecommendedAppRow(app: app)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    
                     //                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
                     Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : "Your data is automatically syncing via iCloud")) {
                         
@@ -686,4 +712,52 @@ struct Setting: View {
     }
     
     
+}
+
+private struct RecommendedApp: Identifiable {
+    let id = UUID()
+    let name: String
+    let taglineKey: String
+    let appStoreURL: URL
+    let assetName: String
+    let tintColor: Color
+}
+
+private struct RecommendedAppRow: View {
+    let app: RecommendedApp
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(app.assetName)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 44, height: 44)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.white.opacity(0.25), lineWidth: 1)
+                }
+            
+            VStack(alignment: .leading, spacing: 1) {
+                Text(app.name)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                Text(LocalizedStringKey(app.taglineKey))
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+            }
+            
+            Spacer(minLength: 8)
+            
+            Image(systemName: "arrow.up.right")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(app.tintColor)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 2)
+        .contentShape(Rectangle())
+    }
 }

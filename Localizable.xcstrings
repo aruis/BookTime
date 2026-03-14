@@ -686,12 +686,42 @@
         }
       }
     },
+    "More Apps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更多应用"
+          }
+        }
+      }
+    },
+    "Mark your important moments" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记您的重要时刻"
+          }
+        }
+      }
+    },
     "My Bookshelf" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "我的书架"
+          }
+        }
+      }
+    },
+    "Time is the only thing you truly own" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时间是你唯一拥有的东西"
           }
         }
       }
