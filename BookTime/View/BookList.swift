@@ -29,13 +29,7 @@ struct BookList: View {
             SortDescriptor(\Book.createTime, order: .reverse)
         ])
     private var booksGroup: SectionedFetchResults<Int16, Book>
-    
-    @FetchRequest(entity: ReadLog.entity(), sortDescriptors:[
-        NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)
-    ],predicate:NSPredicate(format: "readMinutes > 0"))
-    var logs: FetchedResults<ReadLog>
-    
-    
+
     @Environment(\.managedObjectContext) var context
     
     @State var showNewBook = false
@@ -52,6 +46,8 @@ struct BookList: View {
     
     @State private var columnVisibility = NavigationSplitViewVisibility.automatic
     @State private var searchDebounceTask: Task<Void, Never>? = nil
+    @State private var tagRefreshTask: Task<Void, Never>? = nil
+    @State private var readSummaryTask: Task<Void, Never>? = nil
     
     @ViewBuilder
     func itemInList(book:Book) -> some View{
@@ -201,7 +197,7 @@ struct BookList: View {
             .navigationDestination(isPresented: $showNewBook){
                 NewBook(bookViewModel:bookViewModel)
                     .onDisappear{
-                        initTags()
+                        scheduleTagRefresh(immediate: true)
                     }
             }
             
@@ -212,7 +208,7 @@ struct BookList: View {
                 //                    index
                 Button("Delete this book (unrecoverable)", role: .destructive) {
                     delete(book: wantDelete)
-                    initTags()
+                    scheduleTagRefresh(immediate: true)
                 }
                 Button("Cancel", role: .cancel) {
                     self.showAlert = false
@@ -344,44 +340,27 @@ struct BookList: View {
             //
         }
         .task(priority: .low) {
-            initTags()
-            refreshTodayReadAndWidgetIfNeeded()
+            scheduleTagRefresh()
+            scheduleReadSummaryRefresh()
         }
         .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: context)) { notification in
             if hasReadLogChanges(notification.userInfo) {
-                refreshTodayReadAndWidgetIfNeeded()
+                scheduleReadSummaryRefresh()
+            }
+            
+            if hasBookChanges(notification.userInfo) {
+                scheduleTagRefresh(immediate: true)
             }
         }
         .onDisappear {
             searchDebounceTask?.cancel()
+            tagRefreshTask?.cancel()
+            readSummaryTask?.cancel()
         }
         
         
         
         
-        
-    }
-    
-    func initTags(){
-        appData.tags.removeAll()
-        
-        booksGroup.forEach{
-            $0.forEach{book in
-                if let tagString = book.tags ,!tagString.isEmpty {
-                    tagString.split(separator: ",").forEach{
-                        let _tag = Tag(name: String($0))
-                        if(appData.tags.firstIndex(where: { tag in
-                            tag.name == _tag.name
-                        }) == nil){
-                            appData.tags.append(_tag)
-                        }
-                    }
-                }
-            }
-            
-        }
-        
-        //        booksAll.forEach()
         
     }
     
@@ -437,33 +416,59 @@ struct BookList: View {
         return false
     }
     
-    private func refreshTodayReadAndWidgetIfNeeded() {
-        var logInYear = [Int](repeating: 0, count: 366)
-        let now = Date()
-        var computedTodayReadMin = 0
+    private func hasBookChanges(_ userInfo: [AnyHashable: Any]?) -> Bool {
+        guard let userInfo else { return false }
         
-        for log: ReadLog in logs {
-            if now.isSameYear(log.day) {
-                let index = log.day.dayOfYear - 1
-                if index >= 0 && index < logInYear.count && log.readMinutes > logInYear[index] {
-                    logInYear[index] = log.readMinutes
-                }
-            }
-            
-            if Calendar.current.isDateInToday(log.day) && log.readMinutes > computedTodayReadMin {
-                computedTodayReadMin = log.readMinutes
+        let keys: [String] = [NSInsertedObjectsKey, NSUpdatedObjectsKey, NSDeletedObjectsKey]
+        for key in keys {
+            if let objects = userInfo[key] as? Set<NSManagedObject>,
+               objects.contains(where: { $0.entity.name == "Book" }) {
+                return true
             }
         }
         
+        return false
+    }
+    
+    private func scheduleTagRefresh(immediate: Bool = false) {
+        tagRefreshTask?.cancel()
+        tagRefreshTask = Task(priority: .utility) {
+            if !immediate {
+                try? await Task.sleep(nanoseconds: 250_000_000)
+            }
+            
+            guard !Task.isCancelled else { return }
+            let tags = await ctrl.fetchTags()
+            guard !Task.isCancelled else { return }
+            
+            await MainActor.run {
+                appData.tags = tags
+            }
+        }
+    }
+    
+    private func scheduleReadSummaryRefresh() {
+        readSummaryTask?.cancel()
+        readSummaryTask = Task(priority: .utility) {
+            let summary = await ctrl.fetchReadSummary()
+            guard !Task.isCancelled else { return }
+            
+            await MainActor.run {
+                persistReadSummaryIfNeeded(summary)
+            }
+        }
+    }
+    
+    private func persistReadSummaryIfNeeded(_ summary: BookReadSummary) {
         let storedLogInYear = keyStore.array(forKey: "logInYear") as? [Int] ?? []
-        let hasTodayChanged = todayReadMin != computedTodayReadMin
-        let hasYearLogChanged = storedLogInYear != logInYear
+        let hasTodayChanged = todayReadMin != summary.todayReadMin
+        let hasYearLogChanged = storedLogInYear != summary.logInYear
         
         guard hasTodayChanged || hasYearLogChanged else { return }
         
-        todayReadMin = computedTodayReadMin
-        keyStore.set(computedTodayReadMin, forKey: "todayReadMin")
-        keyStore.set(logInYear, forKey: "logInYear")
+        todayReadMin = summary.todayReadMin
+        keyStore.set(summary.todayReadMin, forKey: "todayReadMin")
+        keyStore.set(summary.logInYear, forKey: "logInYear")
         keyStore.synchronize()
         
         WidgetCenter.shared.reloadAllTimelines()

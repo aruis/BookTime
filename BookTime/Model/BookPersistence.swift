@@ -10,6 +10,11 @@ import CloudKit
 import UIKit
 import SwiftUI
 
+struct BookReadSummary {
+    let todayReadMin: Int
+    let logInYear: [Int]
+}
+
 class BookPersistenceController {
     @AppStorage("lastBackupTime") var lastBackupTime:String = ""
     
@@ -125,6 +130,86 @@ class BookPersistenceController {
     
     func cleanTodayLog(){
         todayLog = nil
+    }
+    
+    func fetchTags() async -> [Tag] {
+        let context = container.newBackgroundContext()
+        
+        return await context.perform {
+            let request = NSFetchRequest<NSDictionary>(entityName: "Book")
+            request.resultType = .dictionaryResultType
+            request.propertiesToFetch = ["tags"]
+            request.predicate = NSPredicate(format: "tags != nil AND tags != ''")
+            
+            do {
+                let results = try context.fetch(request)
+                var seen = Set<String>()
+                var tags = [Tag]()
+                
+                for result in results {
+                    guard let tagString = result["tags"] as? String else { continue }
+                    
+                    for rawTag in tagString.split(separator: ",") {
+                        let name = String(rawTag).trimmingCharacters(in: .whitespacesAndNewlines)
+                        guard !name.isEmpty, seen.insert(name).inserted else { continue }
+                        tags.append(Tag(name: name))
+                    }
+                }
+                
+                return tags.sorted {
+                    $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+                }
+            } catch let error as NSError {
+                print("Could not fetch tags. \(error), \(error.userInfo)")
+                return []
+            }
+        }
+    }
+    
+    func fetchReadSummary(for date: Date = Date()) async -> BookReadSummary {
+        let context = container.newBackgroundContext()
+        let calendar = Calendar.current
+        let startOfYear = calendar.date(from: calendar.dateComponents([.year], from: date)) ?? date.start()
+        let startOfNextYear = calendar.date(byAdding: .year, value: 1, to: startOfYear) ?? date
+        
+        return await context.perform {
+            let request = NSFetchRequest<NSDictionary>(entityName: "ReadLog")
+            request.resultType = .dictionaryResultType
+            request.propertiesToFetch = ["day", "readMinutes"]
+            request.predicate = NSPredicate(
+                format: "readMinutes > 0 AND day >= %@ AND day < %@",
+                startOfYear as NSDate,
+                startOfNextYear as NSDate
+            )
+            request.sortDescriptors = [
+                NSSortDescriptor(key: "day", ascending: true)
+            ]
+            
+            var logInYear = [Int](repeating: 0, count: 366)
+            var todayReadMin = 0
+            
+            do {
+                let results = try context.fetch(request)
+                
+                for result in results {
+                    guard let day = result["day"] as? Date else { continue }
+                    let readMinutes = result["readMinutes"] as? Int ?? 0
+                    let index = day.dayOfYear - 1
+                    
+                    if index >= 0 && index < logInYear.count && readMinutes > logInYear[index] {
+                        logInYear[index] = readMinutes
+                    }
+                    
+                    if calendar.isDateInToday(day) && readMinutes > todayReadMin {
+                        todayReadMin = readMinutes
+                    }
+                }
+            } catch let error as NSError {
+                print("Could not fetch read summary. \(error), \(error.userInfo)")
+            }
+            
+            return BookReadSummary(todayReadMin: todayReadMin, logInYear: logInYear)
+        }
     }
         
     func getAllTags() -> [Tag]{
