@@ -15,6 +15,23 @@ struct BookReadSummary {
     let logInYear: [Int]
 }
 
+struct StatisticsSummary {
+    let todayReadMin: Int
+    let totalReadDay: Int
+    let totalReadMin: Int
+    let totalReadBook: Int
+    let longHit: Int
+    let fishDay: Int
+    let totalReadDayYear: Int
+    let totalReadMinYear: Int
+    let totalReadBookYear: Int
+    let totalReadDayMonth: Int
+    let totalReadMinMonth: Int
+    let totalReadBookMonth: Int
+    let suggestedCustomDateBegin: Date?
+    let suggestedCustomDateEnd: Date?
+}
+
 class BookPersistenceController {
     @AppStorage("lastBackupTime") var lastBackupTime:String = ""
     
@@ -209,6 +226,127 @@ class BookPersistenceController {
             }
             
             return BookReadSummary(todayReadMin: todayReadMin, logInYear: logInYear)
+        }
+    }
+    
+    func fetchStatisticsSummary(for date: Date = Date()) async -> StatisticsSummary {
+        let context = container.newBackgroundContext()
+        let now = date
+        
+        return await context.perform {
+            let logRequest = NSFetchRequest<NSDictionary>(entityName: "ReadLog")
+            logRequest.resultType = .dictionaryResultType
+            logRequest.propertiesToFetch = ["day", "readMinutes"]
+            logRequest.sortDescriptors = [
+                NSSortDescriptor(key: "day", ascending: true)
+            ]
+            
+            let bookRequest = NSFetchRequest<NSDictionary>(entityName: "Book")
+            bookRequest.resultType = .dictionaryResultType
+            bookRequest.propertiesToFetch = ["doneTime", "isDone"]
+            bookRequest.predicate = NSPredicate(format: "isDone == YES AND doneTime != nil")
+            
+            var todayReadMin = 0
+            var totalReadDay = 0
+            var totalReadMin = 0
+            var totalReadBook = 0
+            var longHit = 0
+            var fishDay = 0
+            var totalReadDayYear = 0
+            var totalReadMinYear = 0
+            var totalReadBookYear = 0
+            var totalReadDayMonth = 0
+            var totalReadMinMonth = 0
+            var totalReadBookMonth = 0
+            var lastHitDay: Date? = nil
+            var suggestedCustomDateBegin: Date? = nil
+            var suggestedCustomDateEnd: Date? = nil
+            
+            do {
+                let logResults = try context.fetch(logRequest)
+                
+                for result in logResults {
+                    guard
+                        let day = result["day"] as? Date,
+                        let readMinutes = result["readMinutes"] as? Int,
+                        readMinutes > 0
+                    else { continue }
+                    
+                    if Calendar.current.isDateInToday(day) && readMinutes > todayReadMin {
+                        todayReadMin = readMinutes
+                    }
+                    
+                    if now.isSameYear(day) {
+                        totalReadDayYear += 1
+                        totalReadMinYear += readMinutes
+                        
+                        if now.isSameMonth(day) {
+                            if suggestedCustomDateBegin == nil {
+                                suggestedCustomDateBegin = day
+                            }
+                            totalReadDayMonth += 1
+                            totalReadMinMonth += readMinutes
+                        }
+                    }
+                    
+                    totalReadDay += 1
+                    totalReadMin += readMinutes
+                    
+                    if let lastHitDay {
+                        let begin = lastHitDay.start()
+                        let end = day.start()
+                        let components = Calendar.current.dateComponents([.day], from: begin, to: end)
+                        if components.day == 0 || components.day == 1 {
+                            longHit += 1
+                        } else {
+                            longHit = 1
+                        }
+                    } else {
+                        longHit = 1
+                    }
+                    
+                    lastHitDay = day
+                    suggestedCustomDateEnd = day
+                }
+                
+                if let lastHitDay {
+                    fishDay = Calendar.current.dateComponents([.day], from: lastHitDay, to: now).day ?? 0
+                }
+                
+                let bookResults = try context.fetch(bookRequest)
+                for result in bookResults {
+                    guard let doneTime = result["doneTime"] as? Date else { continue }
+                    
+                    totalReadBook += 1
+                    
+                    if now.isSameYear(doneTime) {
+                        totalReadBookYear += 1
+                        
+                        if now.isSameMonth(doneTime) {
+                            totalReadBookMonth += 1
+                        }
+                    }
+                }
+            } catch let error as NSError {
+                print("Could not fetch statistics summary. \(error), \(error.userInfo)")
+            }
+            
+            return StatisticsSummary(
+                todayReadMin: todayReadMin,
+                totalReadDay: totalReadDay,
+                totalReadMin: totalReadMin,
+                totalReadBook: totalReadBook,
+                longHit: longHit,
+                fishDay: fishDay,
+                totalReadDayYear: totalReadDayYear,
+                totalReadMinYear: totalReadMinYear,
+                totalReadBookYear: totalReadBookYear,
+                totalReadDayMonth: totalReadDayMonth,
+                totalReadMinMonth: totalReadMinMonth,
+                totalReadBookMonth: totalReadBookMonth,
+                suggestedCustomDateBegin: suggestedCustomDateBegin,
+                suggestedCustomDateEnd: suggestedCustomDateEnd
+            )
         }
     }
         
