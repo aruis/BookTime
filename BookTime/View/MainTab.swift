@@ -9,22 +9,28 @@ import SwiftUI
 import WidgetKit
 
 struct MainTab: View {
+    enum Tab: Hashable {
+        case bookshelf
+        case statistics
+        case setting
+    }
     
     @AppStorage("targetMinPerday") var targetMinPerday = 45
     @AppStorage("todayReadMin") var todayReadMin = 0
+    @Environment(\.scenePhase) private var scenePhase
     
-    @State private var selectedTabIndex = 0
+    @State private var selectedTab: Tab = .bookshelf
     @AppStorage("hasViewdWalkthrough") var hasViewdWalkthrough = false
-    @State private var showWalkthrough = false
+    @State private var didEvaluateWalkthrough = false
     
     var body: some View {
-        TabView(selection: $selectedTabIndex){
+        TabView(selection: $selectedTab){
             
             BookList()
                 .tabItem {
                     Label("Bookshelf",systemImage: "books.vertical")
                 }
-                .tag(0)
+                .tag(Tab.bookshelf)
             
             Statistics()
                 .tabItem {
@@ -34,22 +40,38 @@ struct MainTab: View {
                         Image(systemName: "target",variableValue: CGFloat(todayReadMin)/CGFloat(targetMinPerday))
                     }
                 }
-                .tag(1)
+                .tag(Tab.statistics)
             
             Setting()
                 .tabItem{
                     Label("Setting",systemImage: "gearshape")
                 }
-                .tag(2)
+                .tag(Tab.setting)
         }
-        .sheet(isPresented: $showWalkthrough){
+        .sheet(isPresented: walkthroughBinding){
             Tutorial()
         }
         .onAppear(){
-            showWalkthrough = hasViewdWalkthrough ? false : true
-            WidgetCenter.shared.reloadAllTimelines()
-            //                showWalkthrough = true
+            didEvaluateWalkthrough = true
         }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                WidgetCenter.shared.reloadAllTimelines()
+            }
+        }
+    }
+    
+    private var walkthroughBinding: Binding<Bool> {
+        Binding(
+            get: {
+                didEvaluateWalkthrough && !hasViewdWalkthrough
+            },
+            set: { newValue in
+                if !newValue {
+                    didEvaluateWalkthrough = false
+                }
+            }
+        )
     }
 }
 
