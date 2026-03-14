@@ -248,11 +248,22 @@
     },
     "All data has been deleted" : {
       "comment" : "所有数据已删除",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "所有数据已删除"
+          }
+        }
+      }
+    },
+    "All your reading data has been cleared." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的阅读数据已全部清空。"
           }
         }
       }
@@ -389,6 +400,16 @@
         }
       }
     },
+    "Data Cleared" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数据已清空"
+          }
+        }
+      }
+    },
     "Data in iCloud has been deleted" : {
       "comment" : "iCloud数据已删除",
       "localizations" : {
@@ -481,6 +502,16 @@
         }
       }
     },
+    "Done" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已完成"
+          }
+        }
+      }
+    },
     "End reading" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -502,12 +533,72 @@
         }
       }
     },
+    "Export Completed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出完成"
+          }
+        }
+      }
+    },
     "Export Data" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "导出数据"
+          }
+        }
+      }
+    },
+    "Export failed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出失败"
+          }
+        }
+      }
+    },
+    "Failed to access iCloud data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "访问 iCloud 数据失败"
+          }
+        }
+      }
+    },
+    "Failed to delete iCloud data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除 iCloud 数据失败"
+          }
+        }
+      }
+    },
+    "Failed to download iCloud data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下载 iCloud 数据失败"
+          }
+        }
+      }
+    },
+    "Failed to upload iCloud data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上传 iCloud 数据失败"
           }
         }
       }
@@ -603,12 +694,58 @@
         }
       }
     },
+    "Import failed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入失败"
+          }
+        }
+      }
+    },
+    "Import Completed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入完成"
+          }
+        }
+      }
+    },
     "Important Enhancements:" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "重要改进："
+          }
+        }
+      }
+    },
+    "Importing %lld / %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Importing %1$lld / %2$lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在导入 %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "Importing Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在导入数据"
           }
         }
       }
@@ -655,6 +792,16 @@
         }
       }
     },
+    "Mark your important moments" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记您的重要时刻"
+          }
+        }
+      }
+    },
     "min" : {
       "localizations" : {
         "zh-Hans" : {
@@ -696,32 +843,12 @@
         }
       }
     },
-    "Mark your important moments" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "标记您的重要时刻"
-          }
-        }
-      }
-    },
     "My Bookshelf" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "我的书架"
-          }
-        }
-      }
-    },
-    "Time is the only thing you truly own" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "时间是你唯一拥有的东西"
           }
         }
       }
@@ -837,6 +964,16 @@
         }
       }
     },
+    "Please keep this screen open" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请保持当前页面开启"
+          }
+        }
+      }
+    },
     "Please place the device horizontally and start timing" : {
       "localizations" : {
         "zh-Hans" : {
@@ -853,6 +990,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请选择一本书"
+          }
+        }
+      }
+    },
+    "Preparing import data..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在准备导入数据..."
           }
         }
       }
@@ -874,6 +1021,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "读了"
+          }
+        }
+      }
+    },
+    "Reading file..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在读取文件..."
           }
         }
       }
@@ -983,6 +1140,176 @@
         }
       }
     },
+    "setting.greeting.over1" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 1 minute.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A good start is half the win.\nA good goal gets you the rest of the way."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好的开始=成功*1/2，好的目标=好的开始*1/2。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over15" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 15 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Small steps add up.\nPage by page, you go farther than you think."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不积跬步，无以至千里。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over30" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 30 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are already ahead of the crowd.\nThat kind of consistency stands out."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已经打败了全国99%的非用户。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over45" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 45 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is the kind of goal built by grit.\nHonest effort, every single day."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "真的猛士，敢于直面惨淡的人生，敢于正视淋漓的鲜血。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over60" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 60 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A long road is still worth walking.\nKeep going, chapter after chapter."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "路漫漫其修远兮，吾将上下而求索。 "
+          }
+        }
+      }
+    },
+    "setting.greeting.over90" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 90 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once you know your path, commit to it.\nEven a big goal becomes real when you keep showing up."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "道之所在，虽千万人吾往矣。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over120" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 120 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That goal is legendary.\nDeep respect from one reader to another."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自古英雄惜英雄，请收下作者的膝盖。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over180" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 180 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That is serious reading ambition.\nRemember to rest your eyes between chapters."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "为革命，保护视力，眼保健操，请自行脑补。"
+          }
+        }
+      }
+    },
+    "setting.greeting.over240" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is greater than 240 minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Books can carry us upward.\nJust remember to enjoy the view along the way."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "书籍是人类进步的阶梯，\n但阶梯不是目的，两侧的风景才是。"
+          }
+        }
+      }
+    },
+    "setting.greeting.zero" : {
+      "comment" : "Encouraging message shown in settings when the daily reading goal is set to zero minutes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear your mind.\nA quiet page can still be a beginning."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菩提本无树，明镜亦非台。"
+          }
+        }
+      }
+    },
     "Share" : {
       "localizations" : {
         "zh-Hans" : {
@@ -1072,6 +1399,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "本年"
+          }
+        }
+      }
+    },
+    "Time is the only thing you truly own" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时间是你唯一拥有的东西"
+          }
+        }
+      }
+    },
+    "This action cannot be undone." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此操作无法撤销。"
           }
         }
       }
@@ -1252,6 +1599,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的数据已通过iCloud自动同步"
+          }
+        }
+      }
+    },
+    "Your reading data has been exported successfully." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的阅读数据已成功导出。"
           }
         }
       }

@@ -41,7 +41,6 @@ struct Setting: View {
     @State var showAbout = false
     @State var isShowToast = false
     @State var showDeleteCloudSucToast = false
-    @State var showDeleteAllSucToast = false
     
     @State var sliderIsChange = false
     
@@ -49,13 +48,19 @@ struct Setting: View {
     
     @State private var iCloudCanUse = false
     
-    @State private var showCleanSheet = false
+    @State private var showClearDataConfirmation = false
     @State private var showCloudSheet = false
     @State private var showDeleteCloudSheet = false
     
     @State private var document: BookTimeFileDoc = BookTimeFileDoc(message: "Hello, World!")
     @State private var isExporting: Bool = false
     @State private var isImporting: Bool = false
+    @State private var isImportingData = false
+    @State private var importProgress: Double = 0
+    @State private var importProgressText = ""
+    @State private var importPhase: ImportPhase = .idle
+    @State private var successStatusCard: SuccessStatusCard? = nil
+    @State private var successStatusCardTask: Task<Void, Never>? = nil
     
     @State private var toastString:String = ""
     
@@ -82,43 +87,56 @@ struct Setting: View {
     
     private var greeting:String{
         get {
-            if !Tools.isCN(){
-                return ""
-            }
-            
             let value = _targetReadMin
             if(value > 240){
-                return "书籍是人类进步的阶梯，\n但阶梯不是目的，两侧的风景才是。"
+                return String(localized: "setting.greeting.over240")
             }
             if(value > 180){
-                return "为革命，保护视力，眼保健操，请自行脑补。"
+                return String(localized: "setting.greeting.over180")
             }
             if(value > 120){
-                return "自古英雄惜英雄，请收下作者的膝盖。"
+                return String(localized: "setting.greeting.over120")
             }
             if(value > 90){
-                return "道之所在，虽千万人吾往矣。"
+                return String(localized: "setting.greeting.over90")
             }
             if(value > 60){
-                return "路漫漫其修远兮，吾将上下而求索。 "
+                return String(localized: "setting.greeting.over60")
             }
             if(value > 45){
-                return "真的猛士，敢于直面惨淡的人生，敢于正视淋漓的鲜血。"
+                return String(localized: "setting.greeting.over45")
             }
             if(value > 30){
-                return "您已经打败了全国99%的非用户。"
+                return String(localized: "setting.greeting.over30")
             }
             if(value > 15){
-                return "不积跬步，无以至千里。"
+                return String(localized: "setting.greeting.over15")
             }
             if(value > 1){
-                return "好的开始=成功*1/2，好的目标=好的开始*1/2。"
+                return String(localized: "setting.greeting.over1")
             }
             if(value == 0){
-                return "菩提本无树，明镜亦非台。"
+                return String(localized: "setting.greeting.zero")
             }
             return ""
         }
+    }
+    
+    private var activeStatusCard: StatusCardState? {
+        if isImportingData {
+            return .progress(
+                title: String(localized: "Importing Data"),
+                message: importProgressText,
+                phase: importPhase,
+                progress: importProgress
+            )
+        }
+        
+        if let successStatusCard {
+            return .success(successStatusCard)
+        }
+        
+        return nil
     }
     
     
@@ -233,7 +251,14 @@ struct Setting: View {
                     }
                     
                     //                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : lastBackupTime.isEmpty ? "" : "Last backup time: \(lastBackupTime)")) {
-                    Section(header: Text("About data"),footer: Text(!iCloudCanUse ? "iCloud is not enabled on your device" : "Your data is automatically syncing via iCloud")) {
+                    Section(
+                        header: Text("About data"),
+                        footer: Text(
+                            !iCloudCanUse
+                            ? String(localized: "iCloud is not enabled on your device")
+                            : String(localized: "Your data is automatically syncing via iCloud")
+                        )
+                    ) {
                         
                         Button(action: exportData){
                             Label("Export Data",systemImage: "arrow.up.doc")
@@ -249,22 +274,13 @@ struct Setting: View {
                         
                         Button(role: .destructive,action: {
                             generator.notificationOccurred(.warning)
-                            showCleanSheet = true
+                            withAnimation(.spring(response: 0.22, dampingFraction: 0.92)) {
+                                showClearDataConfirmation = true
+                            }
                         }){
                             Label(String(localized:"Clear All Data") + (useiCloud ? String(localized: "(Include iCloud)")  :""),systemImage: "exclamationmark.triangle.fill")
                                 .foregroundColor(.red.opacity(0.85))
                         }
-                        .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCleanSheet, titleVisibility : .visible, actions: {
-                            Button("I want to clear all data", role: .destructive) {
-                                Task{
-                                    await cleanAllData()
-                                }
-                            }
-                            
-                            Button("Cancel", role: .cancel) {
-                                self.showCleanSheet = false
-                            }
-                        })
 
 
 
@@ -299,28 +315,63 @@ struct Setting: View {
                 .sheet(isPresented: $showAbout){
                     About()
                 }
+                .overlay(alignment: .center) {
+                    if showClearDataConfirmation {
+                        ZStack {
+                            Rectangle()
+                                .fill(.black.opacity(0.16))
+                                .ignoresSafeArea()
+                            
+                            ClearDataConfirmationCard(
+                                onConfirm: {
+                                    withAnimation(.easeOut(duration: 0.16)) {
+                                        showClearDataConfirmation = false
+                                    }
+                                    Task {
+                                        await cleanAllData()
+                                    }
+                                },
+                                onCancel: {
+                                    withAnimation(.easeOut(duration: 0.16)) {
+                                        showClearDataConfirmation = false
+                                    }
+                                }
+                            )
+                            .padding(.horizontal, 24)
+                        }
+                        .transition(.opacity)
+                    } else if let activeStatusCard {
+                        ZStack {
+                            Rectangle()
+                                .fill(.black.opacity(activeStatusCard.blocksInteraction ? 0.12 : 0.02))
+                                .ignoresSafeArea()
+                                .allowsHitTesting(activeStatusCard.blocksInteraction)
+                            
+                            StatusCardView(state: activeStatusCard)
+                                .padding(.horizontal, 24)
+                        }
+                        .transition(.opacity)
+                    }
+                }
                 .toast(isPresenting: $isShowToast,duration: 3,tapToDismiss: true){
                     AlertToast( type: .complete(.green), title:toastString)
                 }
                 .toast(isPresenting: $showDeleteCloudSucToast,duration: 3,tapToDismiss: true){
                     AlertToast( type: .complete(.green), title: String(localized: "Data in iCloud has been deleted",comment:  "iCloud数据已删除") )
                 }
-                .toast(isPresenting: $showDeleteAllSucToast,duration: 3,tapToDismiss: true){
-                    AlertToast( type: .complete(.green), title: String(localized: "All data has been deleted" ,comment: "所有数据已删除") )
-                }
             }
-            .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCloudSheet, titleVisibility : .visible, actions: {
-                Button("Overwrite local data to the cloud", role: .destructive) {
-                    Task{
-                        await  local2Cloud()
+                .confirmationDialog("Data is priceless, please choose carefully!", isPresented: $showCloudSheet, titleVisibility : .visible, actions: {
+                    Button("Overwrite local data to the cloud", role: .destructive) {
+                        Task{
+                            await local2Cloud()
+                        }
+                        
                     }
-                    
-                }
-                Button("Overwrite cloud data to local", role: .destructive) {
-                    Task{
-                        await cloud2Local()
+                    Button("Overwrite cloud data to local", role: .destructive) {
+                        Task{
+                            await cloud2Local()
+                        }
                     }
-                }
                 Button("Cancel", role: .cancel) {
                     self.showCloudSheet = false
                     //                    useiCloud = false
@@ -329,8 +380,12 @@ struct Setting: View {
             .confirmationDialog("After turning off iCloud, delete the data on iCloud at the same time?", isPresented: $showDeleteCloudSheet, titleVisibility : .visible, actions: {
                 Button("Delete", role: .destructive) {
                     Task{
-                        await  ctrl.cleanCloud()
-                        showDeleteCloudSucToast = true
+                        do {
+                            try await ctrl.cleanCloud()
+                            showDeleteCloudSucToast = true
+                        } catch {
+                            showToast(String(localized: "Failed to delete iCloud data"))
+                        }
                     }
                 }
                 Button("Keep", role: .destructive) {
@@ -347,11 +402,14 @@ struct Setting: View {
                 contentType: UTType.commaSeparatedText,
                 defaultFilename: "books"
             ) { result in
-                if case .success = result {
-//                    print(result)
-                    // Handle success.
-                } else {
-                    // Handle failure.
+                switch result {
+                case .success:
+                    showSuccessStatusCard(
+                        title: String(localized: "Export Completed"),
+                        message: String(localized: "Your reading data has been exported successfully.")
+                    )
+                case .failure:
+                    showToast(String(localized: "Export failed"))
                 }
             }
             .fileImporter(
@@ -364,121 +422,58 @@ struct Setting: View {
                     
                     //trying to get access to url contents
                     if (CFURLStartAccessingSecurityScopedResource(selectedFile as CFURL)) {
-//                    if selectedFile.startAccessingSecurityScopedResource() {
+                        isImportingData = true
+                        importProgress = 0
+                        importPhase = .reading
+                        importProgressText = String(localized: "Reading file...")
                         
-                        guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
-                        let existingBooksByID = Dictionary(uniqueKeysWithValues: fetchBooks().map { ($0.id, $0) })
-                        let existingLogsByDay = Dictionary(uniqueKeysWithValues: fetchLogs().map { ($0.day, $0) })
-                        
-                        let lines = message.split(separator: "\n")
-                        
-                        if(lines.count == 2) {return}
-                        
-                        var importBookCount = 0
-                        
-                        for str in  lines[1...]{
-                            let cells = str.split(separator: ",",omittingEmptySubsequences: false).map{String($0)}
-                            
-                            if(cells[0] == "day"){
-                                continue
+                        Task {
+                            defer {
+                                CFURLStopAccessingSecurityScopedResource(selectedFile as CFURL)
                             }
                             
-                            if(cells.count > 2){ // 书籍信息
-                                let id = cells[0]
-                                let name = cells[1].replacingOccurrences(of: monkeyStr, with: ",")
-                                let author = cells[2].replacingOccurrences(of: monkeyStr, with: ",")
-                                let image = Data(base64Encoded: String(cells[3])) ?? UIImage(named: "camera")!.pngData()!
-                                let isDone = cells[4] == "true"
-                                let readMinutes = Int( cells[5]) ?? 0
-                                let createTime =  dateFormatter.date(from: String(cells[6]))
-                                let firstReadTime =  dateFormatter.date(from: String(cells[7]))
-                                let lastReadTime =  dateFormatter.date(from: String(cells[8]))
-                                let doneTime =  dateFormatter.date(from: String(cells[9]))
-                                let rating = Int( cells[10]) ?? 0
-                                let readDays = Int(cells[11]) ?? 0
-                                let tags = cells[12].replacingOccurrences(of: monkeyStr, with: ",")
-                                let status = Int16(cells[13]) ?? 1
+                            do {
+                                await Task.yield()
+                                let messageData = try Data(contentsOf: selectedFile)
                                 
-                                
-                                let matchBook = existingBooksByID[id]
-                                
-                                if let book = matchBook { //书存在
-                                    if readMinutes > book.readMinutes
-                                        && readDays >= book.readDays{
-                                        book.readMinutes = readMinutes
-                                        book.lastReadTime = lastReadTime
-                                        
-                                        book.isDone = isDone
-                                        book.rating = rating
-                                        book.readDays = readDays
-                                        book.status = status
-                                        
-                                        book.tags = tags
-                                    }
-                                                                        
-                                } else {//书不存在
-                                    let book  = Book(context: context)
-                                    book.id = id
-                                    book.name = name
-                                    book.author = author
-                                    book.image = image
-                                    book.thumbnailImage = image.makeThumbnailData()
-                                    book.isDone = isDone
-                                    book.readMinutes = readMinutes
-                                    book.createTime = createTime ?? Date()
-                                    book.firstReadTime = firstReadTime
-                                    book.lastReadTime = lastReadTime
-                                    book.doneTime = doneTime
-                                    book.rating = rating
-                                    book.readDays = readDays
-                                    book.status = status
-                                    book.tags = tags
-                                                                        
-                                    importBookCount+=1
+                                await MainActor.run {
+                                    importPhase = .preparing
+                                    importProgressText = String(localized: "Preparing import data...")
                                 }
-                                                                
-                            }else{ // 日志信息
-                                let day = dateFormatter.date(from: String(cells[0]))
-                                let readMinutes = Int(cells[1]) ?? 0
                                 
-                                if let day = day {
-                                    let matchLog = existingLogsByDay[day]
-                                    
-                                    if let log = matchLog{
-                                        if(readMinutes > log.readMinutes){
-                                            log.readMinutes = readMinutes
-                                        }
-                                        
-                                    }else {
-                                        let log = ReadLog(context:context)
-                                        log.day = day
-                                        log.readMinutes = readMinutes
-                                        
-                                    }
-
+                                guard let message = String(data: messageData, encoding: .utf8) else {
+                                    throw ImportError.invalidFormat
                                 }
-                            }
-                                                                                                         
-                            
-                        }
-                        
-                        DispatchQueue.main.async {
-                            do{
-                                try context.save()
-                                showToast(String(localized: "\(importBookCount) book has been imported"))
-                            }catch{
-                                print(error)
+                                
+                                let parsedRows = try parseImportRows(from: message)
+                                let importedBookCount = try await MainActor.run {
+                                    try applyImportedRows(parsedRows)
+                                }
+                                
+                                await MainActor.run {
+                                    isImportingData = false
+                                    importProgress = 1
+                                    importPhase = .idle
+                                    showSuccessStatusCard(
+                                        title: String(localized: "Import Completed"),
+                                        message: String(localized: "\(importedBookCount) book has been imported")
+                                    )
+                                }
+                            } catch {
+                                await MainActor.run {
+                                    isImportingData = false
+                                    importPhase = .idle
+                                    showToast(String(localized: "Import failed"))
+                                }
+                                print(error.localizedDescription)
                             }
                         }
-                                                                       
-                        
-                        //done accessing the url
-                        CFURLStopAccessingSecurityScopedResource(selectedFile as CFURL)
                     }
                     else {
                         print("Permission error!")
                     }
                 } catch {
+                    isImportingData = false
                     // Handle failure.
                     print(error.localizedDescription)
                 }
@@ -489,6 +484,7 @@ struct Setting: View {
             checkIfICloudCanUse()
         }
         .onDisappear{
+            successStatusCardTask?.cancel()
             keyStore.synchronize()
         }
         
@@ -579,15 +575,19 @@ struct Setting: View {
     }
     
     func iCloudStart() async{
-        let bookRecords = await ctrl.fetchBooksFromICloud()
-        
-        if(bookRecords.count == 0 ){ // 云端没数据，无脑local->cloud
-            await  local2Cloud()
+        do {
+            let bookRecords = try await ctrl.fetchBooksFromICloud()
             
-        }else if(fetchBookCount() == 0){ // 本地无数据，无脑cloud->local
-            await cloud2Local()
-        }else{ // 用户选择
-            showCloudSheet = true
+            if(bookRecords.count == 0 ){ // 云端没数据，无脑local->cloud
+                await local2Cloud()
+                
+            }else if(fetchBookCount() == 0){ // 本地无数据，无脑cloud->local
+                await cloud2Local()
+            }else{ // 用户选择
+                showCloudSheet = true
+            }
+        } catch {
+            showToast(String(localized: "Failed to access iCloud data"))
         }
     }
     
@@ -615,85 +615,92 @@ struct Setting: View {
     
     func cloud2Local() async{
         cleanLocal()
-        
-        let bookRecords = await ctrl.fetchBooksFromICloud()
-        let logRecords = await ctrl.fetchLogsFromICloud()
-        
-        for bookRecord in bookRecords {
-            let book  = Book(context: context)
-            book.id = bookRecord.object(forKey: "id") as! String
-            book.name = bookRecord.object(forKey: "name") as! String
-            book.author = bookRecord.object(forKey: "author") as? String
+
+        do {
+            let bookRecords = try await ctrl.fetchBooksFromICloud()
+            let logRecords = try await ctrl.fetchLogsFromICloud()
             
-            book.isDone = bookRecord.object(forKey: "isDone") as! Bool
-            book.readMinutes = bookRecord.object(forKey: "readMinutes") as! Int
-            book.createTime = bookRecord.object(forKey: "createTime") as! Date
-            book.firstReadTime = bookRecord.object(forKey: "firstReadTime") as? Date
-            book.lastReadTime = bookRecord.object(forKey: "lastReadTime") as? Date
-            book.doneTime = bookRecord.object(forKey: "doneTime") as? Date
-            book.rating = bookRecord.object(forKey: "rating") as! Int
-            book.readDays = bookRecord.object(forKey: "readDays") as! Int
-            book.tags = bookRecord.object(forKey: "tags") as? String
-            
-            let imageFile:CKAsset? = bookRecord.object(forKey: "image") as? CKAsset
-            let thumbnailFile:CKAsset? = bookRecord.object(forKey: "thumbnailImage") as? CKAsset
-            
-            if let file = imageFile {
-                if let data = NSData(contentsOf: file.fileURL!){
-                    book.image = data as Data
-                    if let thumbnailFile,
-                       let thumbnailData = NSData(contentsOf: thumbnailFile.fileURL!) {
-                        book.thumbnailImage = thumbnailData as Data
-                    } else {
-                        book.thumbnailImage = (data as Data).makeThumbnailData()
+            for bookRecord in bookRecords {
+                let book  = Book(context: context)
+                book.id = bookRecord.object(forKey: "id") as! String
+                book.name = bookRecord.object(forKey: "name") as! String
+                book.author = bookRecord.object(forKey: "author") as? String
+                
+                book.isDone = bookRecord.object(forKey: "isDone") as! Bool
+                book.readMinutes = bookRecord.object(forKey: "readMinutes") as! Int
+                book.createTime = bookRecord.object(forKey: "createTime") as! Date
+                book.firstReadTime = bookRecord.object(forKey: "firstReadTime") as? Date
+                book.lastReadTime = bookRecord.object(forKey: "lastReadTime") as? Date
+                book.doneTime = bookRecord.object(forKey: "doneTime") as? Date
+                book.rating = bookRecord.object(forKey: "rating") as! Int
+                book.readDays = bookRecord.object(forKey: "readDays") as! Int
+                book.tags = bookRecord.object(forKey: "tags") as? String
+                
+                let imageFile:CKAsset? = bookRecord.object(forKey: "image") as? CKAsset
+                let thumbnailFile:CKAsset? = bookRecord.object(forKey: "thumbnailImage") as? CKAsset
+                
+                if let file = imageFile {
+                    if let data = NSData(contentsOf: file.fileURL!){
+                        book.image = data as Data
+                        if let thumbnailFile,
+                           let thumbnailData = NSData(contentsOf: thumbnailFile.fileURL!) {
+                            book.thumbnailImage = thumbnailData as Data
+                        } else {
+                            book.thumbnailImage = (data as Data).makeThumbnailData()
+                        }
                     }
                 }
             }
-        }
-        
-        for logRecord in logRecords {
-            let log = ReadLog(context:context)
-            log.day = logRecord.object(forKey: "day") as! Date
-            log.readMinutes = logRecord.object(forKey: "readMinutes") as! Int
-        }
-        
-        
-        DispatchQueue.main.async {
-            do{
-                try context.save()
-//                showToast = true
-            }catch{
-                print(error)
+
+            for logRecord in logRecords {
+                let log = ReadLog(context:context)
+                log.day = logRecord.object(forKey: "day") as! Date
+                log.readMinutes = logRecord.object(forKey: "readMinutes") as! Int
             }
+            
+            DispatchQueue.main.async {
+                do{
+                    try context.save()
+                }catch{
+                    print(error)
+                }
+            }
+        } catch {
+            showToast(String(localized: "Failed to download iCloud data"))
         }
-        
-        
     }
     
     func local2Cloud() async{
-        await  ctrl.cleanCloud()
-        let books = fetchBooks()
-        let logs = fetchLogs()
-        
-        for book in books{
-            ctrl.saveBookInICloud(book: book)
+        do {
+            try await ctrl.cleanCloud()
+            let books = fetchBooks()
+            let logs = fetchLogs()
+            
+            for book in books{
+                try await ctrl.saveBookInICloud(book: book)
+            }
+            
+            for log in logs{
+                try await ctrl.saveLogInICloud(log: log)
+            }
+            
+            ctrl.tapLastBackuptime()
+        } catch {
+            showToast(String(localized: "Failed to upload iCloud data"))
         }
-        
-        for log in logs{
-            ctrl.saveLogInICloud(log: log)
-        }
-        
-        ctrl.tapLastBackuptime()
-//        showToast = true
     }
     
     
     func cleanAllData() async{
         if(useiCloud){
-            await ctrl.cleanCloud()
+            do {
+                try await ctrl.cleanCloud()
+            } catch {
+                showToast(String(localized: "Failed to delete iCloud data"))
+                return
+            }
         }
         cleanLocal()
-        showDeleteAllSucToast = true
         targetMinPerday = 45
         _targetReadMin = 45
         todayReadMin = 0
@@ -714,11 +721,35 @@ struct Setting: View {
         
         keyStore.synchronize()
         WidgetCenter.shared.reloadAllTimelines()
+        await MainActor.run {
+            showSuccessStatusCard(
+                title: String(localized: "Data Cleared"),
+                message: String(localized: "All your reading data has been cleared.")
+            )
+        }
     }
     
     func showToast(_ text:String){
         toastString = text
         isShowToast  = true
+    }
+    
+    private func showSuccessStatusCard(title: String, message: String) {
+        successStatusCardTask?.cancel()
+        withAnimation(.spring(response: 0.32, dampingFraction: 0.86)) {
+            successStatusCard = SuccessStatusCard(title: title, message: message)
+        }
+        
+        successStatusCardTask = Task {
+            try? await Task.sleep(nanoseconds: 2_200_000_000)
+            guard !Task.isCancelled else { return }
+            
+            await MainActor.run {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    successStatusCard = nil
+                }
+            }
+        }
     }
     
     private func fetchBooks() -> [Book] {
@@ -755,7 +786,363 @@ struct Setting: View {
         }
     }
     
+    @MainActor
+    private func applyImportedRows(_ rows: [ImportRow]) throws -> Int {
+        var existingBooksByID = Dictionary(uniqueKeysWithValues: fetchBooks().map { ($0.id, $0) })
+        var existingLogsByDay = Dictionary(uniqueKeysWithValues: fetchLogs().map { ($0.day, $0) })
+        let totalRows = max(rows.count, 1)
+        var importBookCount = 0
+        importPhase = .importing
+        
+        for (index, row) in rows.enumerated() {
+            switch row {
+            case .book(let payload):
+                if let book = existingBooksByID[payload.id] {
+                    if payload.readMinutes > book.readMinutes && payload.readDays >= book.readDays {
+                        book.readMinutes = payload.readMinutes
+                        book.lastReadTime = payload.lastReadTime
+                        book.isDone = payload.isDone
+                        book.rating = payload.rating
+                        book.readDays = payload.readDays
+                        book.status = payload.status
+                        book.tags = payload.tags
+                    }
+                } else {
+                    let book = Book(context: context)
+                    book.id = payload.id
+                    book.name = payload.name
+                    book.author = payload.author
+                    book.image = payload.image
+                    book.thumbnailImage = payload.image.makeThumbnailData()
+                    book.isDone = payload.isDone
+                    book.readMinutes = payload.readMinutes
+                    book.createTime = payload.createTime ?? Date()
+                    book.firstReadTime = payload.firstReadTime
+                    book.lastReadTime = payload.lastReadTime
+                    book.doneTime = payload.doneTime
+                    book.rating = payload.rating
+                    book.readDays = payload.readDays
+                    book.status = payload.status
+                    book.tags = payload.tags
+                    existingBooksByID[payload.id] = book
+                    importBookCount += 1
+                }
+            case .log(let payload):
+                if let log = existingLogsByDay[payload.day] {
+                    if payload.readMinutes > log.readMinutes {
+                        log.readMinutes = payload.readMinutes
+                    }
+                } else {
+                    let log = ReadLog(context: context)
+                    log.day = payload.day
+                    log.readMinutes = payload.readMinutes
+                    existingLogsByDay[payload.day] = log
+                }
+            }
+            
+            importProgress = Double(index + 1) / Double(totalRows)
+            importProgressText = String(localized: "Importing \(index + 1) / \(totalRows)")
+        }
+        
+        try context.save()
+        return importBookCount
+    }
     
+    private func parseImportRows(from message: String) throws -> [ImportRow] {
+        let lines = message.split(separator: "\n")
+        guard lines.count > 2 else { return [] }
+        
+        var rows: [ImportRow] = []
+        rows.reserveCapacity(lines.count - 1)
+        
+        for line in lines[1...] {
+            let cells = line.split(separator: ",", omittingEmptySubsequences: false).map(String.init)
+            guard !cells.isEmpty else { continue }
+            
+            if cells[0] == "day" {
+                continue
+            }
+            
+            if cells.count > 13 {
+                let payload = BookImportPayload(
+                    id: cells[0],
+                    name: cells[1].replacingOccurrences(of: monkeyStr, with: ","),
+                    author: cells[2].replacingOccurrences(of: monkeyStr, with: ","),
+                    image: Data(base64Encoded: cells[3]) ?? UIImage(named: "camera")!.pngData()!,
+                    isDone: cells[4] == "true",
+                    readMinutes: Int(cells[5]) ?? 0,
+                    createTime: dateFormatter.date(from: cells[6]),
+                    firstReadTime: dateFormatter.date(from: cells[7]),
+                    lastReadTime: dateFormatter.date(from: cells[8]),
+                    doneTime: dateFormatter.date(from: cells[9]),
+                    rating: Int(cells[10]) ?? 0,
+                    readDays: Int(cells[11]) ?? 0,
+                    tags: cells[12].replacingOccurrences(of: monkeyStr, with: ","),
+                    status: Int16(cells[13]) ?? 1
+                )
+                rows.append(.book(payload))
+            } else if cells.count > 1, let day = dateFormatter.date(from: cells[0]) {
+                rows.append(.log(LogImportPayload(day: day, readMinutes: Int(cells[1]) ?? 0)))
+            }
+        }
+        
+        return rows
+    }
+    
+    
+}
+
+private enum ImportError: Error {
+    case invalidFormat
+}
+
+private enum ImportPhase {
+    case idle
+    case reading
+    case preparing
+    case importing
+}
+
+private enum ImportRow {
+    case book(BookImportPayload)
+    case log(LogImportPayload)
+}
+
+private struct BookImportPayload {
+    let id: String
+    let name: String
+    let author: String?
+    let image: Data
+    let isDone: Bool
+    let readMinutes: Int
+    let createTime: Date?
+    let firstReadTime: Date?
+    let lastReadTime: Date?
+    let doneTime: Date?
+    let rating: Int
+    let readDays: Int
+    let tags: String
+    let status: Int16
+}
+
+private struct LogImportPayload {
+    let day: Date
+    let readMinutes: Int
+}
+
+private struct SuccessStatusCard {
+    let title: String
+    let message: String
+}
+
+private enum StatusCardState {
+    case progress(title: String, message: String, phase: ImportPhase, progress: Double)
+    case success(SuccessStatusCard)
+    
+    var blocksInteraction: Bool {
+        if case .progress = self {
+            return true
+        }
+        
+        return false
+    }
+}
+
+private struct StatusCardView: View {
+    let state: StatusCardState
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            iconView
+            
+            VStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            
+            footerView
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 22)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.white.opacity(0.24), lineWidth: 1)
+        }
+        .shadow(color: .black.opacity(0.16), radius: 24, y: 12)
+    }
+    
+    @ViewBuilder
+    private var iconView: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            accentColor.opacity(0.16),
+                            accentColor.opacity(0.05)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 68, height: 68)
+            
+            switch state {
+            case .progress(_, _, let phase, _):
+                if phase == .importing {
+                    Image(systemName: "square.and.arrow.down.on.square")
+                        .font(.system(size: 26, weight: .semibold))
+                        .foregroundStyle(accentColor)
+                } else {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(accentColor)
+                        .scaleEffect(1.15)
+                }
+            case .success:
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 30, weight: .semibold))
+                    .foregroundStyle(accentColor)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var footerView: some View {
+        switch state {
+        case .progress(_, _, let phase, let progress):
+            VStack(spacing: 8) {
+                if phase == .importing {
+                    ProgressView(value: progress, total: 1)
+                        .progressViewStyle(.linear)
+                        .tint(accentColor)
+                    
+                    HStack {
+                        Text("\(Int(progress * 100))%")
+                            .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                    }
+                } else {
+                    HStack(spacing: 8) {
+                        Image(systemName: "hourglass")
+                            .font(.caption.weight(.semibold))
+                        Text(String(localized: "Please keep this screen open"))
+                            .font(.caption)
+                    }
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            .frame(width: 220)
+            
+        case .success:
+            Text(String(localized: "Done"))
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.top, 2)
+        }
+    }
+    
+    private var title: String {
+        switch state {
+        case .progress(let title, _, _, _):
+            return title
+        case .success(let card):
+            return card.title
+        }
+    }
+    
+    private var message: String {
+        switch state {
+        case .progress(_, let message, _, _):
+            return message
+        case .success(let card):
+            return card.message
+        }
+    }
+    
+    private var accentColor: Color {
+        switch state {
+        case .progress:
+            return .accentColor
+        case .success:
+            return .green
+        }
+    }
+}
+
+private struct ClearDataConfirmationCard: View {
+    let onConfirm: () -> Void
+    let onCancel: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 18) {
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.red.opacity(0.16),
+                                Color.orange.opacity(0.08)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 68, height: 68)
+                
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 28, weight: .semibold))
+                    .foregroundStyle(.red)
+            }
+            
+            VStack(spacing: 8) {
+                Text(String(localized: "Data is priceless, please choose carefully!"))
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .multilineTextAlignment(.center)
+                
+                Text(String(localized: "This action cannot be undone."))
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            
+            VStack(spacing: 10) {
+                Button(role: .destructive, action: onConfirm) {
+                    Text(String(localized: "I want to clear all data"))
+                        .font(.system(size: 16, weight: .semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
+                
+                Button(action: onCancel) {
+                    Text(String(localized: "Cancel"))
+                        .font(.system(size: 16, weight: .medium))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                }
+                .buttonStyle(.bordered)
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 22)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.white.opacity(0.24), lineWidth: 1)
+        }
+        .shadow(color: .black.opacity(0.16), radius: 24, y: 12)
+    }
 }
 
 private struct RecommendedApp: Identifiable {

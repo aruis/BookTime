@@ -143,10 +143,10 @@ class BookPersistenceController {
         }
     }
     
-    private var todayLog:ReadLog? = nil
+    private var todayLogObjectID: NSManagedObjectID? = nil
     
     func cleanTodayLog(){
-        todayLog = nil
+        todayLogObjectID = nil
     }
     
     func fetchTags() async -> [Tag] {
@@ -383,44 +383,43 @@ class BookPersistenceController {
     }
     
     func checkAndBuildTodayLog() -> ReadLog{
-        if let todayLog = todayLog {
-            if todayLog.day.isSameDay(Date()) && todayLog.readMinutes > 0{
-                return todayLog
-            }
+        let context = container.viewContext
+        let today = Date().start()
+        
+        if let todayLogObjectID,
+           let cachedLog = try? context.existingObject(with: todayLogObjectID) as? ReadLog,
+           !cachedLog.isDeleted,
+           cachedLog.day.isSameDay(today) {
+            return cachedLog
         }
         
-        let context = container.viewContext
-        let fetchReq = ReadLog.fetchRequest()
-        
-        
-        fetchReq.predicate =  NSPredicate(format: "day = %@",  Date().start() as NSDate)
+        let fetchReq = ReadLog.fetchRequest() as! NSFetchRequest<ReadLog>
+        fetchReq.predicate = NSPredicate(format: "day = %@", today as NSDate)
+        fetchReq.sortDescriptors = [NSSortDescriptor(keyPath: \ReadLog.day, ascending: true)]
                 
         do {
             let todays = try context.fetch(fetchReq)
-            if todays.count > 0 {
-                
-                var logs:[ReadLog] = []
-                var totalReadMin = 0
-                
-                todays.forEach{ it in
-                    let log:ReadLog = it as! ReadLog
-                    totalReadMin += log.readMinutes
-                    logs.append(log)
+            if let primaryLog = todays.first {
+                if todays.count > 1 {
+                    let totalReadMin = todays.reduce(0) { $0 + $1.readMinutes }
+                    primaryLog.readMinutes = totalReadMin
+                    
+                    for redundantLog in todays.dropFirst() {
+                        context.delete(redundantLog)
+                    }
+                    
+                    if context.hasChanges {
+                        try? context.save()
+                    }
                 }
                 
-                logs.first!.readMinutes = totalReadMin
-                
-                while logs.count > 1{
-                    context.delete(logs.removeLast())
-                }
-                
-                self.todayLog = logs.first
-                return self.todayLog!
+                todayLogObjectID = primaryLog.objectID
+                return primaryLog
             } else {
                 let readLog = ReadLog(context: context)
                 readLog.readMinutes = 0
-                readLog.day = Date().start()
-                self.todayLog = readLog
+                readLog.day = today
+                todayLogObjectID = readLog.objectID
                 return readLog
             }
             
@@ -428,88 +427,31 @@ class BookPersistenceController {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         
-        return ReadLog()
+        let readLog = ReadLog(context: context)
+        readLog.readMinutes = 0
+        readLog.day = today
+        todayLogObjectID = readLog.objectID
+        return readLog
     }
     
-    func  fetchBooksFromICloud () async ->[CKRecord] {
-        var bookRecords:[CKRecord] = []
-        
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "Book", predicate: predicate)
-        
-        do {
-            let results = try await privateDB.records(matching: query)
-            
-            for record in results.matchResults {
-                bookRecords.append( try record.1.get())
-            }
-            
-            return bookRecords
-            
-            // Process the records
-            
-        } catch {
-            // Handle the error
-        }
-        
-        return bookRecords
+    func fetchBooksFromICloud() async throws -> [CKRecord] {
+        try await fetchAllRecords(recordType: "Book")
     }
     
-    func fetchLogsFromICloud () async ->[CKRecord] {
-        var bookRecords:[CKRecord] = []
-        
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "ReadLog", predicate: predicate)
-        
-        do {
-            let results = try await privateDB.records(matching: query)
-            
-            for record in results.matchResults {
-                bookRecords.append( try record.1.get())
-            }
-            
-            return bookRecords
-            
-            // Process the records
-            
-        } catch {
-            // Handle the error
-        }
-        
-        return bookRecords
+    func fetchLogsFromICloud() async throws -> [CKRecord] {
+        try await fetchAllRecords(recordType: "ReadLog")
     }
     
-    func cleanCloud() async{
-        
-        
-        let cloudContainer = CKContainer.default()
-        let privateDB = cloudContainer.privateCloudDatabase
-        
-        let predicate = NSPredicate(value: true)
-        let queryBook = CKQuery(recordType: "Book", predicate: predicate)
-        let queryLog = CKQuery(recordType: "ReadLog", predicate: predicate)
-        
-        do {
-            let results = try await privateDB.records(matching: queryBook)
-            for record in results.matchResults {
-                try await privateDB.deleteRecord(withID: record.1.get().recordID)
-            }
-            
-            let results2 = try await privateDB.records(matching: queryLog)
-            for record in results2.matchResults {
-                try await privateDB.deleteRecord(withID: record.1.get().recordID)
-            }
-            
-        } catch {
-            
-        }
+    func cleanCloud() async throws {
+        try await deleteAllRecords(recordType: "Book")
+        try await deleteAllRecords(recordType: "ReadLog")
         
         store.removeObject(forKey: "lastBackupTime")
         lastBackupTime = ""
     }
     
-    func saveBookInICloud(book:Book){
-        let record = CKRecord(recordType: "Book")
+    func saveBookInICloud(book: Book) async throws {
+        let record = CKRecord(recordType: "Book", recordID: CKRecord.ID(recordName: book.id))
         record.setValue(book.id, forKey: "id")
         record.setValue(book.name, forKey: "name")
         record.setValue(book.author, forKey: "author")
@@ -540,41 +482,56 @@ class BookPersistenceController {
             thumbnailFileURL = url
         }
         
-        privateDB.save(record, completionHandler: { (record, error) -> Void  in
-            
-            if error != nil {
-                print(error.debugDescription)
-            }
-            
-            // Remove temp file
+        defer {
             try? FileManager.default.removeItem(at: imageFileURL)
             if let thumbnailFileURL {
                 try? FileManager.default.removeItem(at: thumbnailFileURL)
             }
-        })
+        }
         
-        
+        _ = try await privateDB.modifyRecords(saving: [record], deleting: [], atomically: true)
     }
     
-    func saveLogInICloud(log:ReadLog){
-        let record = CKRecord(recordType: "ReadLog")
+    func saveLogInICloud(log: ReadLog) async throws {
+        let record = CKRecord(recordType: "ReadLog", recordID: CKRecord.ID(recordName: log.day.format("yyyy-MM-dd")))
         record.setValue(log.day, forKey: "day")
         record.setValue(log.readMinutes, forKey: "readMinutes")
         
-        privateDB.save(record, completionHandler: { (record, error) -> Void  in
-            
-            if error != nil {
-                print(error.debugDescription)
-            }
-            
-        })
-        
+        _ = try await privateDB.modifyRecords(saving: [record], deleting: [], atomically: true)
     }
     
     func tapLastBackuptime(){
         let time = Date().format("yyyy-MM-dd HH:mm:ss")
         store.set(time, forKey: "lastBackupTime")
         lastBackupTime = time
+    }
+    
+    private func fetchAllRecords(recordType: String) async throws -> [CKRecord] {
+        let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
+        var records: [CKRecord] = []
+        var nextBatch = try await privateDB.records(matching: query)
+        
+        while true {
+            for matchResult in nextBatch.matchResults {
+                records.append(try matchResult.1.get())
+            }
+            
+            guard let cursor = nextBatch.queryCursor else {
+                break
+            }
+            
+            nextBatch = try await privateDB.records(continuingMatchFrom: cursor)
+        }
+        
+        return records
+    }
+    
+    private func deleteAllRecords(recordType: String) async throws {
+        let records = try await fetchAllRecords(recordType: recordType)
+        guard !records.isEmpty else { return }
+        
+        let recordIDs = records.map(\.recordID)
+        _ = try await privateDB.modifyRecords(saving: [], deleting: recordIDs, atomically: false)
     }
     
 }
