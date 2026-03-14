@@ -185,7 +185,7 @@ struct Setting: View {
                                         }
                                     } else {
                                         isRemind = false
-                                        Task{
+                                        Task { @MainActor in
                                             if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
                                                 let reuslt = await UIApplication.shared.open(appSettings)
                                                 print(reuslt)
