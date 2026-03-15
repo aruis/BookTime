@@ -206,6 +206,16 @@
         }
       }
     },
+    "Adapted the interface to match iOS Liquid Glass visuals." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "适配了 iOS 的液态玻璃展示效果。"
+          }
+        }
+      }
+    },
     "Add a New Book" : {
       "localizations" : {
         "zh-Hans" : {
@@ -332,6 +342,7 @@
       }
     },
     "Bug Fixes:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -716,6 +727,7 @@
       }
     },
     "Important Enhancements:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -752,6 +764,7 @@
       }
     },
     "Improved interaction logic on iPad.\nFixed the bug that OCR content and tags cannot be selected on the book editing page after iOS17." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -767,6 +780,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保留"
+          }
+        }
+      }
+    },
+    "Liquid Glass Ready" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "液态玻璃已适配"
           }
         }
       }
@@ -897,6 +920,7 @@
       }
     },
     "Optimized the UI details of some pages." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1017,6 +1041,16 @@
         }
       }
     },
+    "Polished a number of interface details for a smoother reading experience." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "优化了部分 UI 细节，让阅读体验更顺滑。"
+          }
+        }
+      }
+    },
     "Power saving display enabled" : {
       "comment" : "Shown when the timer screen opens while minute-only power saving display is already enabled\nShown when the user enables minute-only power saving display",
       "localizations" : {
@@ -1086,6 +1120,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "阅读定时提醒"
+          }
+        }
+      }
+    },
+    "Refined UI Details" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "界面细节优化"
           }
         }
       }
@@ -1468,6 +1512,16 @@
         }
       }
     },
+    "Timer mode now supports a no-seconds ultra power saving display. Long press the light button to switch." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "计时器模式支持不“读秒”的超省电显示，长按灯泡按钮即可切换。"
+          }
+        }
+      }
+    },
     "Title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1537,6 +1591,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "阅读纸质书的同时开启计时模式，或者用分屏模式给电子书阅读计时。"
+          }
+        }
+      }
+    },
+    "Ultra Power Saving Timer" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超省电计时器"
           }
         }
       }

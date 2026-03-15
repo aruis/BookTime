@@ -25,36 +25,33 @@ struct BookTimeApp: App {
     
     var whatsNewCollection: WhatsNewCollection {[
         WhatsNew(
-            version: "2.23.5",
+            version: "3.26.1",
             title: WhatsNew.Title(text: WhatsNew.Text(String(localized: "What's New"))),
             features: [
-                //                .init(
-                //                    image: .init(
-                //                        systemName: "heart.fill",
-                //                        foregroundColor: .red
-                //                    ),
-                //                    title: WhatsNew.Text(String(localized: "Heartfelt Update:")),
-                //                    subtitle: WhatsNew.Text(String(localized:"Added AI camera, available for testing."))
-                //                ),
                 .init(
                     image: .init(
-                        systemName: "star.fill",
+                        systemName: "sparkles",
                         foregroundColor: .accentColor
                     ),
-                    title: WhatsNew.Text(String(localized: "Important Enhancements:")),
-                    subtitle: WhatsNew.Text(String(localized:"Optimized the UI details of some pages."))
+                    title: WhatsNew.Text(String(localized: "Liquid Glass Ready")),
+                    subtitle: WhatsNew.Text(String(localized: "Adapted the interface to match iOS Liquid Glass visuals."))
                 ),
-                
-                    .init(
-                        image: .init(
-                            systemName: "terminal.fill",
-                            foregroundColor: .blue
-                        ),
-                        title: WhatsNew.Text(String(localized: "Bug Fixes:")),
-                        subtitle: WhatsNew.Text(String(localized:"Improved interaction logic on iPad.\nFixed the bug that OCR content and tags cannot be selected on the book editing page after iOS17."))
-                    )
-                
-                
+                .init(
+                    image: .init(
+                        systemName: "lightbulb.max.fill",
+                        foregroundColor: .yellow
+                    ),
+                    title: WhatsNew.Text(String(localized: "Ultra Power Saving Timer")),
+                    subtitle: WhatsNew.Text(String(localized:"Timer mode now supports a no-seconds ultra power saving display. Long press the light button to switch."))
+                ),
+                .init(
+                    image: .init(
+                        systemName: "paintbrush.pointed.fill",
+                        foregroundColor: .blue
+                    ),
+                    title: WhatsNew.Text(String(localized: "Refined UI Details")),
+                    subtitle: WhatsNew.Text(String(localized:"Polished a number of interface details for a smoother reading experience."))
+                )
             ],
             primaryAction: WhatsNew.PrimaryAction(
                 title: WhatsNew.Text(String(localized: "Continue")),
@@ -105,12 +102,12 @@ struct BookTimeApp: App {
             }
             .environmentObject(appData)
             .environment(\.managedObjectContext,bookPersistenceController.container.viewContext)
-//            .environment(\.whatsNew,
-//                          WhatsNewEnvironment(
-//                            versionStore: UserDefaultsWhatsNewVersionStore(),
-//                            whatsNewCollection: whatsNewCollection
-//                          )
-//            )
+            .environment(\.whatsNew,
+                          WhatsNewEnvironment(
+                            versionStore: UserDefaultsWhatsNewVersionStore(),
+                            whatsNewCollection: whatsNewCollection
+                          )
+            )
         }
     }
 }
