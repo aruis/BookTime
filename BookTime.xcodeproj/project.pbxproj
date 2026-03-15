@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84A000001111111111111111 /* TimerSessionLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A000031111111111111111 /* TimerSessionLogicTests.swift */; };
+		84A000011111111111111111 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A000051111111111111111 /* XCTest.framework */; };
 		8301421C285AD0F700E91808 /* TestSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8301421B285AD0F700E91808 /* TestSwiftUIView.swift */; };
 		830935D8279F9F37006F8F56 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830935D7279F9F37006F8F56 /* ActivityView.swift */; };
 		830F9F5F28572F0600339AEF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83924E63276CDB7E002D0678 /* CloudKit.framework */; };
@@ -68,6 +70,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		84A000061111111111111111 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83731C872755D0D600305305 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83731C8E2755D0D600305305;
+			remoteInfo = BookTime;
+		};
 		83D54000282906B400A72716 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83731C872755D0D600305305 /* Project object */;
@@ -102,6 +111,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		84A000031111111111111111 /* TimerSessionLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSessionLogicTests.swift; sourceTree = "<group>"; };
+		84A000041111111111111111 /* BookTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84A000051111111111111111 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		8301421B285AD0F700E91808 /* TestSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSwiftUIView.swift; sourceTree = "<group>"; };
 		830935D7279F9F37006F8F56 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		8317F8992772FE5C00864D2F /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
@@ -159,6 +171,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		84A000091111111111111111 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84A000011111111111111111 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83731C8C2755D0D600305305 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -185,6 +205,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84A000071111111111111111 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				84A000031111111111111111 /* TimerSessionLogicTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		83193904280267FA0011AA3C /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -213,6 +241,7 @@
 				83420C652ABAF0BA00BC50C3 /* Localizable.xcstrings */,
 				839B9C2227734802001094C6 /* InfoPlist.strings */,
 				83731C912755D0D600305305 /* BookTime */,
+				84A000071111111111111111 /* Tests */,
 				83D53FFA282906B300A72716 /* BookTimeWidget */,
 				83731C902755D0D600305305 /* Products */,
 				83924E62276CDB7E002D0678 /* Frameworks */,
@@ -223,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				83731C8F2755D0D600305305 /* BookTime.app */,
+				84A000041111111111111111 /* BookTimeTests.xctest */,
 				83D53FF7282906B300A72716 /* BookTimeWidgetExtension.appex */,
 			);
 			name = Products;
@@ -232,7 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				83193904280267FA0011AA3C /* Style */,
-				838316E327B3B5DF001575E0 /* Resources */,
 				83CE5BF7277DF4A00041D919 /* Info.plist */,
 				83924E61276CDA55002D0678 /* BookTime.entitlements */,
 				839B4E65275758A500AB05AF /* Util */,
@@ -293,25 +322,11 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		838316E327B3B5DF001575E0 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				838316E427B3B5E8001575E0 /* Fonts */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		838316E427B3B5E8001575E0 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
 		83924E62276CDB7E002D0678 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				83924E63276CDB7E002D0678 /* CloudKit.framework */,
+				84A000051111111111111111 /* XCTest.framework */,
 				8392247D2827A7EA00303541 /* WidgetKit.framework */,
 				8392247F2827A7EA00303541 /* SwiftUI.framework */,
 			);
@@ -351,6 +366,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		84A000081111111111111111 /* BookTimeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84A0000F1111111111111111 /* Build configuration list for PBXNativeTarget "BookTimeTests" */;
+			buildPhases = (
+				84A0000B1111111111111111 /* Sources */,
+				84A000091111111111111111 /* Frameworks */,
+				84A0000A1111111111111111 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				84A0000C1111111111111111 /* PBXTargetDependency */,
+			);
+			name = BookTimeTests;
+			productName = BookTimeTests;
+			productReference = 84A000041111111111111111 /* BookTimeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		83731C8E2755D0D600305305 /* BookTime */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 83731CA22755D0D700305305 /* Build configuration list for PBXNativeTarget "BookTime" */;
@@ -405,6 +438,10 @@
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 2630;
 				TargetAttributes = {
+					84A000081111111111111111 = {
+						CreatedOnToolsVersion = 17.0;
+						TestTargetID = 83731C8E2755D0D600305305;
+					};
 					83731C8E2755D0D600305305 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -434,6 +471,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				84A000081111111111111111 /* BookTimeTests */,
 				83731C8E2755D0D600305305 /* BookTime */,
 				83D53FF6282906B300A72716 /* BookTimeWidgetExtension */,
 			);
@@ -441,6 +479,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		84A0000A1111111111111111 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83731C8D2755D0D600305305 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -464,6 +509,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		84A0000B1111111111111111 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84A000001111111111111111 /* TimerSessionLogicTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83731C8B2755D0D600305305 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -523,6 +576,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		84A0000C1111111111111111 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 83731C8E2755D0D600305305 /* BookTime */;
+			targetProxy = 84A000061111111111111111 /* PBXContainerItemProxy */;
+		};
 		83D54001282906B400A72716 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 83D53FF6282906B300A72716 /* BookTimeWidgetExtension */;
@@ -543,6 +601,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		84A0000D1111111111111111 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTimeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BookTime.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BookTime";
+				TEST_TARGET_NAME = BookTime;
+			};
+			name = Debug;
+		};
+		84A0000E1111111111111111 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aruistar.BookTimeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BookTime.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BookTime";
+				TEST_TARGET_NAME = BookTime;
+			};
+			name = Release;
+		};
 		83731CA02755D0D700305305 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -813,6 +927,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		84A0000F1111111111111111 /* Build configuration list for PBXNativeTarget "BookTimeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84A0000D1111111111111111 /* Debug */,
+				84A0000E1111111111111111 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		83731C8A2755D0D600305305 /* Build configuration list for PBXProject "BookTime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -85,6 +85,7 @@ struct TimerView: View {
     @State private var batteryLevel = 0
     @State private var isCharging = false
     @State private var displayedDate = Date()
+    @State private var activeLogDay = Date().start()
     
     private func shouldRefreshExternalState(readMinutes: Int) -> Bool {
         readMinutes % widgetRefreshInterval == 0
@@ -99,6 +100,25 @@ struct TimerView: View {
         let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
         todayLogMinutes = readLog.readMinutes
         return readLog
+    }
+
+    private func refreshDailyGoalState(using readLog: ReadLog) {
+        let hitGoal = TimerSessionLogic.isGoalHit(targetMinutesPerDay: targetMinPerday, readMinutes: readLog.readMinutes)
+        if isHit != hitGoal {
+            isHit = hitGoal
+        }
+    }
+
+    private func refreshForPotentialDayChange(at now: Date, forceSync: Bool = false) {
+        guard TimerSessionLogic.didDayChange(activeLogDay: activeLogDay, now: now) else {
+            return
+        }
+        let today = TimerSessionLogic.activeLogDay(for: now)
+        activeLogDay = today
+
+        let readLog = refreshTodayLogState()
+        refreshDailyGoalState(using: readLog)
+        syncExternalState(now: now, readLog: readLog, logInYear: keyStore.array(forKey: "logInYear"), force: forceSync)
     }
     
     private func syncExternalState(now: Date, readLog: ReadLog, logInYear: [Any]?, force: Bool = false) {
@@ -115,6 +135,54 @@ struct TimerView: View {
         
         keyStore.synchronize()
         WidgetCenter.shared.reloadAllTimelines()
+    }
+    
+    private func persistReadMinutes(_ addedMinutes: Int, at now: Date, forceSync: Bool = false) {
+        guard addedMinutes > 0 else {
+            return
+        }
+        
+        let readLog = refreshTodayLogState()
+        
+        if book.readMinutes == 0 {
+            book.firstReadTime = now
+        }
+        book.readMinutes += addedMinutes
+        if let lastReadTime = book.lastReadTime {
+            if !Calendar.current.isDateInToday(lastReadTime) {
+                book.readDays += 1
+            }
+        } else {
+            book.readDays = 1
+        }
+        book.lastReadTime = now
+        readLog.readMinutes += addedMinutes
+        
+        let reachedGoal = targetMinPerday > 0 && !isHit && readLog.readMinutes >= targetMinPerday
+        if reachedGoal {
+            generator.notificationOccurred(.success)
+            isHit = true
+            showToast = true
+        }
+        
+        var logInYear = keyStore.array(forKey: "logInYear")
+        
+        if var _ = logInYear {
+            let dayIndex = now.dayOfYear
+            if readLog.readMinutes > logInYear![dayIndex-1] as! Int {
+                logInYear![dayIndex-1] = readLog.readMinutes
+            }
+        }
+        
+        syncExternalState(now: now, readLog: readLog, logInYear: logInYear, force: forceSync || reachedGoal)
+        
+        DispatchQueue.main.async {
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
+        }
     }
     
     private func displayDateValue(for date: Date) -> Date {
@@ -209,13 +277,13 @@ struct TimerView: View {
         let thisH = String( sessionDisplayMinute.asString().split(separator: ":")[0])
         let thisM = String( sessionDisplayMinute.asString().split(separator: ":")[1])
         
-        let thisMinute = todayLogMinutes
+        let todayMinutes = todayLogMinutes
         
         let todayS = timerShowSecond ? thisS : "--"
-        let todayH = String( thisMinute.asString().split(separator: ":")[0])
-        let todayM = String( thisMinute.asString().split(separator: ":")[1])
+        let todayH = String( todayMinutes.asString().split(separator: ":")[0])
+        let todayM = String( todayMinutes.asString().split(separator: ":")[1])
                     
-        let process = targetMinPerday > 0 ? Float( thisMinute)/Float( targetMinPerday) : Float( thisMinute)/Float( 45)
+        let process = targetMinPerday > 0 ? Float( todayMinutes)/Float( targetMinPerday) : Float( todayMinutes)/Float( 45)
         
         let hour = isShowProgress ? todayH : showRealTime ? hh : thisH
         let min = isShowProgress ? todayM : showRealTime ? mm : thisM
@@ -410,14 +478,13 @@ struct TimerView: View {
             oldLight = UIScreen.main.brightness
             beginDate = Date()
             sessionDisplayMinute = 0
+            self.thisMinute = 0
+            activeLogDay = TimerSessionLogic.activeLogDay(for: Date())
             refreshBatteryStatus()
             updateDisplayedDate(now: Date())
             
-            if(targetMinPerday>0 && refreshTodayLogState().readMinutes
-               >= targetMinPerday
-            ){
-                isHit = true
-            }
+            let readLog = refreshTodayLogState()
+            refreshDailyGoalState(using: readLog)
             
             if timerShowSecond {
                 if !timerPowerModeHintShown {
@@ -442,12 +509,25 @@ struct TimerView: View {
             
             timer.upstream.connect().cancel()
             
+            let now = Date()
+            refreshForPotentialDayChange(at: now, forceSync: true)
+            let elapsedMinutes = TimerSessionLogic.elapsedMinutes(since: beginDate, now: now)
+            let pendingMinutes = TimerSessionLogic.pendingMinutes(
+                since: beginDate,
+                now: now,
+                persistedSessionMinutes: self.thisMinute
+            )
+            if pendingMinutes > 0 {
+                self.thisMinute = elapsedMinutes
+                persistReadMinutes(pendingMinutes, at: now, forceSync: true)
+            }
+            
             let readLog = BookPersistenceController.shared.checkAndBuildTodayLog()
             let lastReadDate = book.lastReadTime ?? Date()
             syncExternalState(now: lastReadDate, readLog: readLog, logInYear: keyStore.array(forKey: "logInYear"), force: true)
             
             if isRemind {
-                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :thisMinute > 0 || readLog.readMinutes > 0)
+                NotificationTool.add(hour: reminDateHour, minute: reminDateMin,readedToday :self.thisMinute > 0 || readLog.readMinutes > 0)
             }
             
         })
@@ -455,68 +535,24 @@ struct TimerView: View {
             refreshBatteryStatus()
         }
         .onReceive(timer, perform: { now in
+            refreshForPotentialDayChange(at: now)
             updateDisplayedDate(now: now)
             
-            let elapsedMinutes = Int(now.timeIntervalSince(beginDate)) / 60
+            let elapsedMinutes = TimerSessionLogic.elapsedMinutes(since: beginDate, now: now)
             if sessionDisplayMinute != elapsedMinutes {
                 sessionDisplayMinute = elapsedMinutes
             }
-            let addedMinutes = elapsedMinutes - thisMinute
+            let addedMinutes = TimerSessionLogic.addedMinutes(
+                elapsedMinutes: elapsedMinutes,
+                persistedSessionMinutes: self.thisMinute
+            )
             
             if addedMinutes <= 0 {
                 return
             }
             
             self.thisMinute = elapsedMinutes
-                        
-            
-            let readLog = refreshTodayLogState()
-            
-            
-            if book.readMinutes == 0 { //第一次读
-                book.firstReadTime = now
-            }
-            book.readMinutes += addedMinutes
-            if let lastReadTime = book.lastReadTime {
-                if(!Calendar.current.isDateInToday(lastReadTime)){
-                    book.readDays += 1
-                }
-            }else{
-                book.readDays  = 1
-            }
-            book.lastReadTime = now
-            readLog.readMinutes += addedMinutes
-            
-         
-            
-            let reachedGoal = targetMinPerday > 0 && !isHit && readLog.readMinutes >= targetMinPerday
-            if reachedGoal {
-                generator.notificationOccurred(.success)
-                isHit = true
-                showToast = true
-            }
-            
-            
-            var logInYear =  keyStore.array(forKey: "logInYear")
-            
-            if var _ = logInYear {
-                let dayIndex = now.dayOfYear
-                if readLog.readMinutes > logInYear![dayIndex-1] as! Int {
-                    logInYear![dayIndex-1] = readLog.readMinutes
-                }
-            }
-            
-            syncExternalState(now: now, readLog: readLog, logInYear: logInYear, force: reachedGoal)
-            
-            DispatchQueue.main.async {
-                do{
-                    try context.save()
-                }catch{
-                    print(error)
-                }
-            }
-
-            
+            persistReadMinutes(addedMinutes, at: now)
 
         })
         

@@ -27,3 +27,30 @@ struct Tools{
     }
     
 }
+
+struct TimerSessionLogic {
+    static func elapsedMinutes(since beginDate: Date, now: Date) -> Int {
+        max(Int(now.timeIntervalSince(beginDate)) / 60, 0)
+    }
+
+    static func addedMinutes(elapsedMinutes: Int, persistedSessionMinutes: Int) -> Int {
+        elapsedMinutes - persistedSessionMinutes
+    }
+
+    static func pendingMinutes(since beginDate: Date, now: Date, persistedSessionMinutes: Int) -> Int {
+        let elapsedMinutes = elapsedMinutes(since: beginDate, now: now)
+        return addedMinutes(elapsedMinutes: elapsedMinutes, persistedSessionMinutes: persistedSessionMinutes)
+    }
+
+    static func activeLogDay(for now: Date, calendar: Calendar = .current) -> Date {
+        calendar.startOfDay(for: now)
+    }
+
+    static func didDayChange(activeLogDay: Date, now: Date, calendar: Calendar = .current) -> Bool {
+        !calendar.isDate(activeLogDay, inSameDayAs: now)
+    }
+
+    static func isGoalHit(targetMinutesPerDay: Int, readMinutes: Int) -> Bool {
+        targetMinutesPerDay > 0 && readMinutes >= targetMinutesPerDay
+    }
+}
